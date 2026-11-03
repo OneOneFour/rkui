@@ -19,8 +19,12 @@ Rob King's toon component library. Rob reviews every diff by hand.
 ## Hard rules
 
 - **Never push.** Commit locally; Rob pushes.
-- **Work on `develop`, never on `main`.** `main` is the stable release: Rob merges `develop` into it
-  by pull request and tags each release.
+- **Branches.** `main` is the stable release; `develop` is where work lands.
+  - Each feature or fix is built on its own branch off `develop` (an agent's worktree branch, or
+    `feature/<name>`), then squash-merged into `develop` as one commit with a plain message saying
+    what it adds. Never commit to `main`.
+  - Rob releases by pull request from `develop` to `main` with a merge commit (never a squash, so
+    the next release doesn't conflict), and tags the merge.
 - **Never write site content.** No site copy, posts, bios or captions. Specimen and demo text in the
   docs site is fine.
 - **Never hard-code a colour.** Colours come from the token files only
