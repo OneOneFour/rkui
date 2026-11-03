@@ -1,0 +1,24 @@
+---
+/**
+ * A small raised panel that a button opens with the browser's Popover API, for a toggletip or a few
+ * controls. The slot is the panel's content. Give the opening button `popovertarget` set to this
+ * `id`; a button inside can close it with `popovertargetaction="hide"`. `class`, `style` and other
+ * attributes go on the panel.
+ *
+ * @example
+ * <Button popovertarget="filter-popup">Filter</Button>
+ * <Popup id="filter-popup"><p>Filter options.</p></Popup>
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'div'> {
+  /** The panel's id, which the button's `popovertarget` names. */
+  id: string
+}
+
+const { id, class: className, ...attrs } = Astro.props
+---
+
+<div class:list={['rkui-popup', className]} id={id} popover {...attrs}>
+  <slot />
+</div>

@@ -1,0 +1,25 @@
+---
+/**
+ * One link in a SidebarGroup, in its own list item. The slot is the link text. `class`, `style`
+ * and other attributes go on the `<li>`.
+ *
+ * @example
+ * <SidebarLink href="/button/" current>Button</SidebarLink>
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'li'> {
+  /** Where the link goes. */
+  href: string
+  /** Marks the link as the current page; false when left out. */
+  current?: boolean
+}
+
+const { href, current = false, class: className, ...attrs } = Astro.props
+---
+
+<li class={className} {...attrs}>
+  <a class="rkui-sidebar-link" href={href} aria-current={current ? 'page' : undefined}>
+    <slot />
+  </a>
+</li>

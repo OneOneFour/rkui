@@ -1,0 +1,184 @@
+---
+/**
+ * The ballot with letter, empty, icon and color tiles, as checkboxes and with the tiles on the
+ * right; checked boxes tinted to match their tile; its states; and the layout modifiers, alone and
+ * combined.
+ *
+ * @param theme the panel's theme, used to keep input names unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import Ballot from './Ballot.astro'
+import SunIcon from '@oneonefour/rkui/icons/sun.svg'
+import CloudIcon from '@oneonefour/rkui/icons/cloud.svg'
+import CloudRainIcon from '@oneonefour/rkui/icons/cloud-rain.svg'
+import CloudLightningIcon from '@oneonefour/rkui/icons/cloud-lightning.svg'
+import MoonIcon from '@oneonefour/rkui/icons/moon.svg'
+import LeafIcon from '@oneonefour/rkui/icons/leaf.svg'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const SPECIMEN_TEXT =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'
+const CHOICES = ['First', 'Second', 'Third', 'Fourth'].map((ordinal) => ({
+  value: ordinal.toLowerCase(),
+  title: `${ordinal} choice`,
+}))
+const LETTERED = CHOICES.map((choice, index) => ({ ...choice, mark: 'ABCD'[index] }))
+const NUMBERED = CHOICES.map((choice, index) => ({ ...choice, mark: String(index + 1) }))
+
+const BALLOTS = [
+  {
+    label: 'letters, one choice',
+    options: LETTERED.map((option) => ({ ...option, checked: option.value === 'second' })),
+  },
+  {
+    label: 'empty tiles, longer text',
+    options: CHOICES.slice(0, 3).map((option) => ({
+      ...option,
+      text: SPECIMEN_TEXT,
+      checked: option.value === 'first',
+    })),
+  },
+  {
+    label: 'icons',
+    options: [
+      { value: 'sun', title: 'Sun', Icon: SunIcon },
+      { value: 'cloud', title: 'Cloud', Icon: CloudIcon, checked: true },
+      { value: 'rain', title: 'Rain', Icon: CloudRainIcon },
+      { value: 'lightning', title: 'Lightning', Icon: CloudLightningIcon },
+    ],
+  },
+  {
+    label: 'colours',
+    options: ['teal', 'green', 'sky', 'tangerine'].map((color) => ({
+      value: color,
+      title: color[0].toUpperCase() + color.slice(1),
+      color,
+      checked: color === 'green',
+    })),
+  },
+  {
+    label: 'colours, checked box tinted to match (--rkui-selected-tint)',
+    options: ['teal', 'green', 'sky', 'coral'].map((color) => ({
+      value: color,
+      title: color[0].toUpperCase() + color.slice(1),
+      color,
+      tint: color,
+      checked: color === 'teal',
+    })),
+  },
+  {
+    label: 'icons, checked box tinted to match the icon (--rkui-selected-tint)',
+    options: [
+      { value: 'sun', title: 'Sun', Icon: SunIcon, tint: 'yellow' },
+      { value: 'moon', title: 'Moon', Icon: MoonIcon, tint: 'lilac', checked: true },
+      { value: 'leaf', title: 'Leaf', Icon: LeafIcon, tint: 'green' },
+      { value: 'rain', title: 'Rain', Icon: CloudRainIcon, tint: 'sky' },
+    ],
+  },
+  {
+    label: 'numbers, checkboxes (several choices)',
+    multiple: true,
+    options: NUMBERED.map((option) => ({
+      ...option,
+      checked: ['first', 'third'].includes(option.value),
+    })),
+  },
+  {
+    label: 'tiles on the right (.rkui-ballot--mark-end)',
+    modifier: 'rkui-ballot--mark-end',
+    options: LETTERED.map((option) => ({ ...option, checked: option.value === 'third' })),
+  },
+]
+
+const STATES = [
+  { title: 'Rest' },
+  { title: 'Hover', state: 'is-hover' },
+  { title: 'Pressed', state: 'is-active' },
+  { title: 'Focused', state: 'is-focus' },
+  { title: 'Checked', checked: true },
+  { title: 'Checked and focused', checked: true, state: 'is-focus' },
+  { title: 'Disabled', disabled: true },
+  { title: 'Checked and disabled', checked: true, disabled: true },
+].map((option, index) => ({ ...option, value: String(index), mark: 'ABCDEFGH'[index] }))
+
+const ONE_CHECKED = LETTERED.map((option) => ({ ...option, checked: option.value === 'second' }))
+const LAYOUTS = [
+  { label: '.rkui-ballot--overlap', modifier: 'rkui-ballot--overlap', options: ONE_CHECKED },
+  { label: '.rkui-ballot--inside', modifier: 'rkui-ballot--inside', options: ONE_CHECKED },
+  { label: '.rkui-ballot--tight', modifier: 'rkui-ballot--tight', options: ONE_CHECKED },
+  {
+    label: 'tight + overlap',
+    modifier: 'rkui-ballot--tight rkui-ballot--overlap',
+    options: ONE_CHECKED,
+  },
+  {
+    label: 'tight + inside',
+    modifier: 'rkui-ballot--tight rkui-ballot--inside',
+    options: ONE_CHECKED,
+  },
+  {
+    label: 'overlap + mark-end',
+    modifier: 'rkui-ballot--overlap rkui-ballot--mark-end',
+    options: ONE_CHECKED,
+  },
+  {
+    label: 'tight + inside, longer text',
+    modifier: 'rkui-ballot--tight rkui-ballot--inside',
+    options: LETTERED.slice(0, 3).map((option) => ({
+      ...option,
+      text: SPECIMEN_TEXT,
+      checked: option.value === 'first',
+    })),
+  },
+]
+---
+
+<SpecimenRow title="Ballot: tiles">
+  {BALLOTS.map((ballot, index) => (
+    <Specimen label={ballot.label} wide>
+      <Ballot
+        legend="Vote"
+        name={`${theme}-ballot-${index}`}
+        options={ballot.options}
+        multiple={ballot.multiple}
+        modifier={ballot.modifier}
+      />
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<SpecimenRow title="Ballot: states (checkboxes)">
+  <Specimen label="each row in the state it names" wide>
+    <Ballot legend="States" name={`${theme}-ballot-states`} options={STATES} multiple />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Ballot: layouts (click to try)">
+  {LAYOUTS.map((layout, index) => (
+    <Specimen label={layout.label} wide>
+      <Ballot
+        legend="Vote"
+        name={`${theme}-ballot-layout-${index}`}
+        options={layout.options}
+        modifier={layout.modifier}
+      />
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<SpecimenRow title="Ballot: states, tight + overlap (checkboxes)">
+  <Specimen label="each row in the state it names" wide>
+    <Ballot
+      legend="States"
+      name={`${theme}-ballot-tight-states`}
+      options={STATES}
+      multiple
+      modifier="rkui-ballot--tight rkui-ballot--overlap"
+    />
+  </Specimen>
+</SpecimenRow>

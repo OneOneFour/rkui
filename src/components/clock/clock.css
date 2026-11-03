@@ -1,0 +1,256 @@
+/* Clock: a settable clock face over a time input. Needs rkui-clock.js, which draws the face
+   or adopts one drawn at build time; without it, the label and the time input show on their own.
+
+   <rkui-clock class="rkui-clock">
+     <label for="t">Label</label>
+     <input class="rkui-input" id="t" type="time" step="300" value="07:30">
+     <svg class="rkui-icon rkui-clock-day-icon">…</svg>    (optional, e.g. icons/sun.svg)
+     <svg class="rkui-icon rkui-clock-night-icon">…</svg>  (optional, e.g. icons/moon.svg)
+   </rkui-clock>
+
+   The face's SVG is 200 units square. The hands turn, but each tag turns back by its hand's
+   angle, so it stays upright with its shadow on the light's side. */
+
+.rkui-clock {
+  --rkui-clock-size: 15rem;
+  --rkui-clock-day: var(--rkui-sky);
+  --rkui-clock-night: var(--rkui-navy);
+
+  display: grid;
+  gap: var(--rkui-space-2);
+  max-inline-size: 30rem;
+}
+
+.rkui-clock > label {
+  font-weight: 600;
+}
+
+/* Until rkui-clock.js puts them on the face. A face in the markup stays hidden until the element
+   is defined. */
+.rkui-clock > :is(.rkui-clock-day-icon, .rkui-clock-night-icon),
+.rkui-clock:not(:defined) > .rkui-clock-face {
+  display: none;
+}
+
+.rkui-clock:defined:has(> .rkui-clock-face) {
+  grid-template-columns: var(--rkui-clock-size);
+  justify-items: center;
+}
+
+.rkui-clock-face {
+  display: grid;
+  position: relative;
+  box-sizing: border-box;
+  inline-size: var(--rkui-clock-size);
+  aspect-ratio: 1;
+  margin-block-end: var(--rkui-space-2);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: 50%;
+  background: var(--rkui-raised);
+  box-shadow: var(--rkui-shadow);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}
+
+.rkui-clock-face > svg {
+  grid-area: 1 / 1;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.rkui-clock-day,
+.rkui-clock-night {
+  fill: none;
+}
+
+.rkui-clock-day {
+  stroke: var(--rkui-clock-day);
+}
+
+.rkui-clock-night {
+  stroke: var(--rkui-clock-night);
+}
+
+.rkui-clock-ring-edge {
+  fill: none;
+  stroke: var(--rkui-line-unfilled);
+  stroke-width: var(--rkui-outline-width);
+}
+
+.rkui-clock-tick {
+  stroke: var(--rkui-muted);
+  stroke-width: 2px;
+  stroke-linecap: round;
+}
+
+.rkui-clock-tick--quarter {
+  stroke: var(--rkui-fg);
+  stroke-width: 3px;
+}
+
+/* Centred on the point the face's --rkui-clock-day-x/y or --rkui-clock-night-x/y name */
+.rkui-clock-day-icon {
+  --rkui-clock-x: var(--rkui-clock-day-x);
+  --rkui-clock-y: var(--rkui-clock-day-y);
+}
+
+.rkui-clock-night-icon {
+  --rkui-clock-x: var(--rkui-clock-night-x);
+  --rkui-clock-y: var(--rkui-clock-night-y);
+}
+
+.rkui-clock-face > .rkui-icon {
+  --rkui-icon-size: calc(var(--rkui-clock-size) * 0.1);
+
+  position: absolute;
+  left: var(--rkui-clock-x);
+  top: var(--rkui-clock-y);
+  inline-size: var(--rkui-icon-size);
+  block-size: var(--rkui-icon-size);
+  margin: calc(var(--rkui-icon-size) / -2) 0 0 calc(var(--rkui-icon-size) / -2);
+  color: var(--rkui-ink);
+  pointer-events: none;
+}
+
+/* A hand covers the face and turns about its centre. Its bar runs from the centre to the tip. */
+.rkui-clock-hand {
+  --rkui-hand-width: 0.375rem;
+
+  position: absolute;
+  inset: 0;
+  rotate: var(--rkui-hand-angle, 0deg);
+  transition: rotate var(--rkui-duration-spring) var(--rkui-ease-snap);
+  pointer-events: none;
+}
+
+.rkui-clock-hand--minute {
+  --rkui-hand-width: 0.25rem;
+}
+
+.rkui-clock-hand::before {
+  content: '';
+  position: absolute;
+  left: calc(50% - var(--rkui-hand-width) / 2);
+  bottom: 50%;
+  inline-size: var(--rkui-hand-width);
+  block-size: var(--rkui-hand-length);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-fg);
+}
+
+/* A point at the hand's tip, turning back as the hand turns, on the same timing. */
+.rkui-clock-tip {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - var(--rkui-hand-length));
+  rotate: calc(-1 * var(--rkui-hand-angle, 0deg));
+  transition: rotate var(--rkui-duration-spring) var(--rkui-ease-snap);
+}
+
+/* The tag is the part that pops; translate is free for it, as the tip does the turning. */
+.rkui-clock-tag {
+  --rkui-tag-size: calc(var(--rkui-clock-size) * 0.14);
+  --rkui-tag-shadow: var(--rkui-shadow);
+  --rkui-tag-shift: 0px;
+
+  display: grid;
+  place-items: center;
+  position: absolute;
+  left: calc(var(--rkui-tag-size) / -2);
+  top: calc(var(--rkui-tag-size) / -2);
+  box-sizing: border-box;
+  inline-size: var(--rkui-tag-size);
+  aspect-ratio: 1;
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: 50%;
+  background: var(--rkui-selected);
+  color: var(--rkui-on-selected);
+  box-shadow: var(--rkui-tag-shadow);
+  font-family: var(--rkui-font-mono);
+  font-size: var(--rkui-step--1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: auto;
+  translate: calc(var(--rkui-shadow-dx) * var(--rkui-tag-shift))
+    calc(var(--rkui-shadow-dy) * var(--rkui-tag-shift));
+  transition:
+    translate var(--rkui-duration-fast) ease,
+    box-shadow var(--rkui-duration-fast) ease;
+}
+
+/* As on an unchecked checkbox: in dark mode the outline, not the raised fill, stands out. */
+.rkui-clock-hand--minute .rkui-clock-tag {
+  --rkui-tag-size: calc(var(--rkui-clock-size) * 0.12);
+
+  border-color: var(--rkui-line-unfilled);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+}
+
+.rkui-clock-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  inline-size: 8%;
+  aspect-ratio: 1;
+  margin: -4% 0 0 -4%;
+  border-radius: 50%;
+  background: var(--rkui-fg);
+}
+
+/* States */
+
+@media (hover: hover) {
+  .rkui-clock-tag:hover {
+    --rkui-tag-shadow: var(--rkui-shadow-hover);
+    --rkui-tag-shift: calc(-1 * var(--rkui-lift-offset));
+  }
+}
+
+.rkui-clock-hand[data-grabbed] {
+  z-index: 1;
+}
+
+.rkui-clock-hand[data-grabbed] .rkui-clock-tag {
+  --rkui-tag-shadow: var(--rkui-shadow-pressed);
+  --rkui-tag-shift: var(--rkui-press-offset);
+}
+
+.rkui-clock:has(> input:disabled) > .rkui-clock-face {
+  opacity: 0.45;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.rkui-clock:has(> input:disabled) .rkui-clock-tag {
+  --rkui-tag-shadow: none;
+  --rkui-tag-shift: 0px;
+
+  pointer-events: none;
+}
+
+/* Forced colours: the SVG and the hands keep their own colours, so the time stays visible. */
+@media (forced-colors: active) {
+  .rkui-clock-face > svg,
+  .rkui-clock-hand::before,
+  .rkui-clock-hub {
+    forced-color-adjust: none;
+  }
+
+  .rkui-clock-day,
+  .rkui-clock-night {
+    stroke: Canvas;
+  }
+
+  .rkui-clock-ring-edge,
+  .rkui-clock-tick {
+    stroke: CanvasText;
+  }
+
+  .rkui-clock-hand::before,
+  .rkui-clock-hub {
+    background: CanvasText;
+  }
+}

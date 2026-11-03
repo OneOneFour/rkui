@@ -1,0 +1,36 @@
+---
+/**
+ * A progress bar on the native `<progress>`, inside a `<label>` that holds its visible label.
+ * Striped by default; without a `value` it is indeterminate. `class` and other attributes go on the
+ * `<progress>`.
+ *
+ * @example
+ * <Progress label="Uploading" value={65} />
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'progress'> {
+  /** The bar's visible label, which is also its accessible name. */
+  label: string
+  /** How far along, from 0 to `max`; an indeterminate bar when left out. */
+  value?: number
+  /** The full value; 100 when left out. */
+  max?: number
+  /** A plain fill instead of stripes; striped when left out. Open, see DECISIONS ("Loading"). */
+  flat?: boolean
+}
+
+const { label, value, max = 100, flat = false, class: className, ...attrs } = Astro.props
+---
+
+<label class="rkui-field">
+  {label}{' '}
+  <progress
+    class:list={['rkui-progress', { 'rkui-progress--flat': flat }, className]}
+    max={value === undefined ? undefined : max}
+    value={value}
+    {...attrs}
+  >
+    {value !== undefined && `${Math.round((value / max) * 100)}%`}
+  </progress>
+</label>

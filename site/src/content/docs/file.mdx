@@ -1,0 +1,44 @@
+---
+title: File
+description: A file input, as a framed button or a drop panel.
+group: Form controls
+order: 46
+---
+
+import Demo from '../../components/Demo.astro'
+import Button from '../../examples/file/button.astro'
+import buttonCode from '../../examples/file/button.astro?raw'
+import Multiple from '../../examples/file/multiple.astro'
+import multipleCode from '../../examples/file/multiple.astro?raw'
+import Drop from '../../examples/file/drop.astro'
+import dropCode from '../../examples/file/drop.astro?raw'
+import Disabled from '../../examples/file/disabled.astro'
+import disabledCode from '../../examples/file/disabled.astro?raw'
+import ErrorDemo from '../../examples/file/error.astro'
+import errorCode from '../../examples/file/error.astro?raw'
+
+<Demo code={buttonCode} label="File input with a button" stack>
+  <Button />
+</Demo>
+
+<Demo code={multipleCode} label="File input for several files" stack>
+  <Multiple />
+</Demo>
+
+## Drop panel
+
+<Demo code={dropCode} label="File drop panel" stack>
+  <Drop />
+</Demo>
+
+## Disabled
+
+<Demo code={disabledCode} label="Disabled file inputs" stack>
+  <Disabled />
+</Demo>
+
+## Error
+
+<Demo code={errorCode} label="File inputs with an error" stack>
+  <ErrorDemo />
+</Demo>

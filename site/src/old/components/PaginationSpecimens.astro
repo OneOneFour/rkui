@@ -1,0 +1,102 @@
+---
+/**
+ * Pagination, on page 2: A as folder tabs over the page's sheet, B as tiles between previous and
+ * next buttons.
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import CaretLeftIcon from '@oneonefour/rkui/icons/caret-left.svg'
+import CaretRightIcon from '@oneonefour/rkui/icons/caret-right.svg'
+
+const PAGES = [1, 2, 3, null, 9]
+const CURRENT = 2
+const STATES = [
+  { label: 'live', class: '' },
+  { label: 'page 3 focused', class: 'is-focus' },
+]
+---
+
+<SpecimenRow title="A: folder tabs">
+  <Specimen label="index-card tabs" wide>
+    <rkui-folder class="rkui-folder">
+      <nav aria-label="Pagination">
+        <ol class="rkui-folder-tabs rkui-scroll">
+          <li>
+            <a class="rkui-folder-tab" href="#specimen-link" rel="prev">
+              <CaretLeftIcon class="rkui-icon rkui-icon--small" />
+              <span class="rkui-visually-hidden">Previous page</span>
+            </a>
+          </li>
+          {PAGES.map((page) => (
+            <li>
+              {page === null ? (
+                '…'
+              ) : (
+                <a
+                  class="rkui-folder-tab"
+                  href="#specimen-link"
+                  aria-current={page === CURRENT ? 'page' : undefined}
+                >
+                  {page}
+                </a>
+              )}
+            </li>
+          ))}
+          <li>
+            <a class="rkui-folder-tab" href="#specimen-link" rel="next">
+              <CaretRightIcon class="rkui-icon rkui-icon--small" />
+              <span class="rkui-visually-hidden">Next page</span>
+            </a>
+          </li>
+        </ol>
+      </nav>
+      <div class="rkui-folder-sheet">
+        <p>Page {CURRENT}</p>
+      </div>
+    </rkui-folder>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="B: tiles and buttons">
+  {STATES.map((state) => (
+    <Specimen label={state.label}>
+      <nav class="rkui-pagination" aria-label="Pagination">
+        <a class="rkui-button rkui-button--small" href="#specimen-link" rel="prev">
+          <CaretLeftIcon class="rkui-icon rkui-icon--small" />
+          Previous
+        </a>
+        <ol class="rkui-tiles rkui-tiles--compact">
+          {PAGES.map((page) => (
+            <li>
+              {page === null ? (
+                '…'
+              ) : (
+                <a
+                  class:list={['rkui-tile', page === 3 && state.class]}
+                  href="#specimen-link"
+                  aria-current={page === CURRENT ? 'page' : undefined}
+                >
+                  {page}
+                </a>
+              )}
+            </li>
+          ))}
+        </ol>
+        <a class="rkui-button rkui-button--small" href="#specimen-link" rel="next">
+          Next
+          <CaretRightIcon class="rkui-icon rkui-icon--small" />
+        </a>
+      </nav>
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<style>
+  .rkui-folder-sheet p {
+    margin: 0;
+  }
+</style>
+
+<script>
+  import '@oneonefour/rkui/components/folder/folder.js'
+</script>

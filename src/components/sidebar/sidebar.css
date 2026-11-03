@@ -1,0 +1,440 @@
+/* Sidebar: a column of links grouped under headings, which scrolls on its own when it is taller
+   than its box. The page gives it a height or a max height. The scroller shares the scroll
+   region's toon scrollbar (overflow.css), which shows on hover and keyboard focus; hints at the
+   top and bottom edges show when there is more to scroll to.
+
+   <nav class="rkui-sidebar" aria-label="Docs">
+     <div class="rkui-sidebar-scroll">
+       <section class="rkui-sidebar-group">
+         <h2 class="rkui-sidebar-heading"><span>Start</span></h2>
+         <ul class="rkui-sidebar-list">
+           <li><a class="rkui-sidebar-link" href="…" aria-current="page">Getting started</a></li>
+         </ul>
+       </section>
+     </div>
+     <span class="rkui-sidebar-more rkui-sidebar-more--above" aria-hidden="true"></span>
+     <span class="rkui-sidebar-more rkui-sidebar-more--below" aria-hidden="true"></span>
+   </nav>
+
+   Plain by default: the page's own colour, dots at the edges, headings that scroll away, and the
+   current page a tinted pill on a slab shadow. One modifier for each other look:
+   .rkui-sidebar--card     a raised card; headings lift into slabs as they stick; "more" tabs on
+                           its edges; the current page pushed in;
+   .rkui-sidebar--folders  each group a folder, its heading the tab, sticking as you scroll;
+   .rkui-sidebar--deck     every link a raised key, the current page pushed in (interactive.css);
+   .rkui-sidebar--note     a taped sticky note (with .rkui-sticky-note .rkui-sticky-note--tape);
+                           the current page an ink pill.
+
+   The hints follow the scroll position with a scroll-driven animation on a timeline the nav
+   shares with its scroller. Browsers without one show the scrollbar at all times and no hints. */
+
+.rkui-sidebar {
+  /* What a sticky heading covers the links with: the panel's own colour */
+  --rkui-sidebar-panel: var(--rkui-surface);
+  /* The room above and below the scroller, where the hints show */
+  --rkui-sidebar-gutter: var(--rkui-space-4);
+  /* The room around the links, for a pushed-in key and its focus band */
+  --rkui-sidebar-pad: calc(var(--rkui-shadow-offset) + var(--rkui-focus-width));
+  /* An edge that is there but not shown, so a look can show it without the text moving */
+  --rkui-sidebar-edge-off: transparent;
+  --rkui-sidebar-dot-color: var(--rkui-line-unfilled);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+  padding-block: var(--rkui-sidebar-gutter);
+  background: var(--rkui-sidebar-panel);
+  color: var(--rkui-fg);
+  timeline-scope: --rkui-sidebar;
+}
+
+.rkui-sidebar-scroll {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  padding: var(--rkui-sidebar-pad);
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scroll-timeline-name: --rkui-sidebar;
+  scroll-timeline-axis: block;
+}
+
+.rkui-sidebar-group + .rkui-sidebar-group {
+  margin-block-start: var(--rkui-space-4);
+}
+
+.rkui-sidebar-heading {
+  margin: 0;
+  font: inherit;
+}
+
+.rkui-sidebar-heading > span {
+  display: block;
+  padding: var(--rkui-space-1) var(--rkui-space-3);
+  border: 0 solid var(--rkui-sidebar-edge-off);
+  color: var(--rkui-muted);
+  font-size: var(--rkui-step--1);
+  font-weight: 700;
+  line-height: var(--rkui-line-height-heading);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rkui-sidebar-list {
+  display: grid;
+  gap: var(--rkui-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rkui-sidebar-link {
+  display: block;
+  padding: var(--rkui-space-1) var(--rkui-space-3);
+  border: var(--rkui-outline-width) solid var(--rkui-sidebar-edge-off);
+  border-radius: var(--rkui-radius);
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .rkui-sidebar:not(.rkui-sidebar--deck) .rkui-sidebar-link:hover {
+    text-decoration: underline;
+    text-decoration-thickness: var(--rkui-outline-width);
+  }
+}
+
+/* The current page starts in view: its scroller opens scrolled to it, where supported. */
+.rkui-sidebar-link[aria-current='page'] {
+  scroll-initial-target: nearest;
+  border-color: var(--rkui-line-unfilled);
+  background: var(--rkui-selected-tint);
+  font-weight: 700;
+  box-shadow: var(--rkui-shadow);
+}
+
+/* Marker-pen focus (base.css), over the current page's fill too. Deck keys have an outline, so
+   they take the focus band instead (interactive.css). */
+.rkui-sidebar:not(.rkui-sidebar--deck) .rkui-sidebar-link:focus-visible {
+  background: var(--rkui-focus);
+  color: var(--rkui-ink);
+}
+
+/* The hints: three dots in each gutter, unless a look draws its own. Hidden until the scroll
+   timeline shows them. */
+.rkui-sidebar-more {
+  --rkui-dot-size: 0.3rem;
+  --rkui-dot-spacing: 0.55rem;
+  --rkui-dot: radial-gradient(closest-side, var(--rkui-sidebar-dot-color) 90%, transparent);
+
+  position: absolute;
+  inset-inline: 0;
+  block-size: var(--rkui-sidebar-gutter);
+  background-image: var(--rkui-dot), var(--rkui-dot), var(--rkui-dot);
+  background-position:
+    calc(50% - var(--rkui-dot-spacing)) center,
+    center,
+    calc(50% + var(--rkui-dot-spacing)) center;
+  background-size: var(--rkui-dot-size) var(--rkui-dot-size);
+  background-repeat: no-repeat;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rkui-sidebar-more--above {
+  inset-block-start: 0;
+}
+
+.rkui-sidebar-more--below {
+  inset-block-end: 0;
+}
+
+@keyframes rkui-sidebar-more-above {
+  from {
+    opacity: 0;
+  }
+
+  5%,
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rkui-sidebar-more-below {
+  from,
+  95% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* A scroll timeline is inactive when everything fits, so the hints stay hidden. Longhands only,
+   as in overflow.css. */
+@supports (timeline-scope: --a) {
+  .rkui-sidebar-more {
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: --rkui-sidebar;
+  }
+
+  .rkui-sidebar-more--above {
+    animation-name: rkui-sidebar-more-above;
+  }
+
+  .rkui-sidebar-more--below {
+    animation-name: rkui-sidebar-more-below;
+  }
+
+  /* The hints show that there is more, so the scrollbar waits for hover or keyboard focus, as a
+     scroll region's does (overflow.css). Forced colours keep it visible. */
+  @media (forced-colors: none) {
+    .rkui-sidebar-scroll:not(:hover, :has(:focus-visible)) {
+      --rkui-scroll-track: transparent;
+      --rkui-scroll-track-edge: transparent;
+      --rkui-scroll-thumb: transparent;
+      --rkui-scroll-thumb-edge: transparent;
+    }
+  }
+}
+
+/* A framed look (card, note) keeps its scrollbar off the frame. */
+:is(.rkui-sidebar--card, .rkui-sidebar--note) {
+  padding-inline: var(--rkui-space-1);
+}
+
+/* Sticky headings (card, folders, note): each sticks to the top while its group scrolls under it,
+   until the next group's heading pushes it off. It covers the scroller's whole width and its top
+   padding, so nothing that scrolls under it shows beside or above it. Each heading is a
+   scroll-state container, so its label can change while it is stuck. A link reached by Tab
+   scrolls clear of the stuck heading. */
+:is(.rkui-sidebar--card, .rkui-sidebar--folders, .rkui-sidebar--note) .rkui-sidebar-scroll {
+  scroll-padding-block: var(--rkui-space-8) var(--rkui-space-2);
+}
+
+:where(.rkui-sidebar--card, .rkui-sidebar--folders, .rkui-sidebar--note) .rkui-sidebar-heading {
+  position: sticky;
+  inset-block-start: calc(-1 * var(--rkui-sidebar-pad));
+  z-index: 1;
+  margin: calc(-1 * var(--rkui-sidebar-pad)) calc(-1 * var(--rkui-sidebar-pad)) 0;
+  padding: var(--rkui-sidebar-pad) var(--rkui-sidebar-pad) 0;
+  container-type: scroll-state;
+  background: var(--rkui-sidebar-panel);
+}
+
+/* Their labels are in sentence case at body size. */
+:is(.rkui-sidebar--card, .rkui-sidebar--folders, .rkui-sidebar--note) .rkui-sidebar-heading > span {
+  color: inherit;
+  font-size: var(--rkui-step-0);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* The current page filled with the selected colour (card, folders, deck). */
+:is(.rkui-sidebar--card, .rkui-sidebar--folders, .rkui-sidebar--deck)
+  .rkui-sidebar-link[aria-current='page'] {
+  border-color: var(--rkui-line);
+  background: var(--rkui-selected);
+  color: var(--rkui-on-selected);
+  box-shadow: none;
+}
+
+/* Card: a raised card with an outline and a slab shadow. A heading lifts into an outlined slab
+   while it is stuck, with room kept below it for its shadow. Small yellow tabs with dots sit on
+   the card's top and bottom edges while there is more that way. The current page is pushed in. */
+.rkui-sidebar--card {
+  --rkui-sidebar-panel: var(--rkui-raised);
+  --rkui-sidebar-dot-color: var(--rkui-on-selected);
+
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius);
+  box-shadow: var(--rkui-shadow);
+}
+
+/* :where() keeps this below the scrollbar's hide-until-hover rule (overflow.css). */
+:where(.rkui-sidebar--card) .rkui-sidebar-scroll {
+  --rkui-scroll-track: var(--rkui-surface);
+}
+
+.rkui-sidebar--card .rkui-sidebar-more {
+  --rkui-sidebar-more-size: var(--rkui-space-4);
+
+  inline-size: var(--rkui-space-7);
+  block-size: var(--rkui-sidebar-more-size);
+  margin-inline: auto;
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: var(--rkui-radius-pill);
+  background-color: var(--rkui-selected);
+  box-shadow: var(--rkui-shadow);
+}
+
+.rkui-sidebar--card .rkui-sidebar-more--above {
+  inset-block-start: calc(var(--rkui-sidebar-more-size) / -2);
+}
+
+.rkui-sidebar--card .rkui-sidebar-more--below {
+  inset-block-end: calc(var(--rkui-sidebar-more-size) / -2);
+}
+
+.rkui-sidebar--card .rkui-sidebar-heading {
+  padding-block-end: calc(var(--rkui-shadow-offset-hover) + var(--rkui-space-1));
+}
+
+.rkui-sidebar--card .rkui-sidebar-heading > span {
+  border-width: var(--rkui-outline-width);
+  border-radius: var(--rkui-radius);
+  font-family: var(--rkui-font-display);
+  font-weight: 800;
+  transition: box-shadow var(--rkui-duration-fast) ease;
+}
+
+@container scroll-state(stuck: top) {
+  .rkui-sidebar--card .rkui-sidebar-heading > span {
+    border-color: var(--rkui-line-unfilled);
+    box-shadow: var(--rkui-shadow);
+  }
+}
+
+.rkui-sidebar--card .rkui-sidebar-link[aria-current='page'] {
+  box-shadow: var(--rkui-shadow-inset);
+}
+
+/* Folders: each group is a small folder, its heading the tab and its list the sheet. The heading
+   draws the sheet's top edge beside the tab (::after), so a stuck heading still reads as the top
+   of the folder; the tab covers the edge where it stands on it. */
+.rkui-sidebar--folders .rkui-sidebar-heading {
+  display: flex;
+}
+
+.rkui-sidebar--folders .rkui-sidebar-heading::after {
+  content: '';
+  position: absolute;
+  inset-inline: var(--rkui-sidebar-pad);
+  inset-block-end: 0;
+  border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+}
+
+/* The tab reaches a pixel past the edge line, so no hairline of it shows inside the tab. */
+.rkui-sidebar--folders .rkui-sidebar-heading > span {
+  position: relative;
+  z-index: 1;
+  margin-block-end: -1px;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-block-end: 0;
+  border-start-start-radius: var(--rkui-radius);
+  border-start-end-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  font-weight: 600;
+  box-shadow: var(--rkui-shadow);
+  clip-path: inset(-100vmax -100vmax 0);
+}
+
+.rkui-sidebar--folders .rkui-sidebar-list {
+  padding: var(--rkui-space-2);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-block-start: 0;
+  border-end-start-radius: var(--rkui-radius);
+  border-end-end-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  box-shadow: var(--rkui-shadow);
+}
+
+/* Deck: every link is a raised key, like a deck of Segmented keys. It pops on hover and sinks
+   when pressed, and the current page is pushed in flush (interactive.css). Headings scroll
+   away. */
+.rkui-sidebar--deck .rkui-sidebar-list {
+  gap: calc(var(--rkui-depth-gap-scale) * var(--rkui-space-2));
+}
+
+.rkui-sidebar--deck .rkui-sidebar-heading > span {
+  padding-block: var(--rkui-space-2);
+}
+
+.rkui-sidebar--deck .rkui-sidebar-link {
+  border-color: var(--rkui-line-unfilled);
+  background: var(--rkui-raised);
+  font-weight: 600;
+  box-shadow: var(--rkui-shadow);
+  transition:
+    translate var(--rkui-duration-fast) ease,
+    box-shadow var(--rkui-duration-fast) ease;
+}
+
+/* Note: the sidebar is a taped sticky note (sticky-note.css), with ink text, ink dots and a
+   scrollbar of tape. Slab headings stick, with a dashed rule under them while stuck. The current
+   page is an ink pill. */
+.rkui-sidebar--note {
+  --rkui-sidebar-panel: var(--rkui-note-fill);
+  --rkui-sidebar-dot-color: var(--rkui-on-fill);
+
+  padding-block-start: var(--rkui-space-6);
+  color: var(--rkui-on-fill);
+}
+
+/* :where() keeps this below the scrollbar's hide-until-hover rule (overflow.css). */
+:where(.rkui-sidebar--note) .rkui-sidebar-scroll {
+  --rkui-scroll-track: var(--rkui-note-tape);
+  --rkui-scroll-track-edge: var(--rkui-line);
+  --rkui-scroll-thumb: var(--rkui-glint);
+}
+
+/* Below the tape. */
+.rkui-sidebar--note .rkui-sidebar-more--above {
+  inset-block-start: calc(var(--rkui-space-6) - var(--rkui-sidebar-gutter));
+}
+
+.rkui-sidebar--note .rkui-sidebar-heading {
+  padding-block-end: var(--rkui-space-1);
+}
+
+.rkui-sidebar--note .rkui-sidebar-heading > span {
+  border-block-end: var(--rkui-outline-width) dashed var(--rkui-sidebar-edge-off);
+  font-family: var(--rkui-font-display);
+  font-weight: 800;
+}
+
+@container scroll-state(stuck: top) {
+  .rkui-sidebar--note .rkui-sidebar-heading > span {
+    border-block-end-color: var(--rkui-line);
+  }
+}
+
+.rkui-sidebar--note .rkui-sidebar-link[aria-current='page'] {
+  border-color: var(--rkui-line);
+  background: var(--rkui-ink);
+  color: var(--rkui-on-ink);
+  box-shadow: none;
+}
+
+/* Forced colours: edges that aren't shown become Canvas, the dots become a system-colour line at
+   the scroller's edge, and the current page takes Highlight. */
+@media (forced-colors: active) {
+  .rkui-sidebar {
+    --rkui-sidebar-edge-off: Canvas;
+  }
+
+  .rkui-sidebar-more {
+    block-size: var(--rkui-outline-width);
+    background: CanvasText;
+  }
+
+  .rkui-sidebar-more--above {
+    inset-block-start: calc(var(--rkui-sidebar-gutter) - var(--rkui-outline-width));
+  }
+
+  .rkui-sidebar-more--below {
+    inset-block-end: calc(var(--rkui-sidebar-gutter) - var(--rkui-outline-width));
+  }
+
+  /* A focused current page takes the focus style's system colours instead. */
+  .rkui-sidebar .rkui-sidebar-link[aria-current='page']:not(:focus-visible) {
+    forced-color-adjust: none;
+    border-color: Highlight;
+    box-shadow: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

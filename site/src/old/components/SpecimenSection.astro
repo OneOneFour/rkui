@@ -1,0 +1,78 @@
+---
+/**
+ * A styleguide section, with an anchor made from its title: a heading, an optional intro (default
+ * slot), and the `light` and `dark` slots shown side by side in panels forced to each theme.
+ *
+ * @param title the section heading
+ * @param stacked put the dark panel under the light one at every width, for wide content
+ * @param collapsed put the panels in a closed <details> with this summary text
+ */
+import { sectionId } from './section-id'
+
+interface Props {
+  title: string
+  stacked?: boolean
+  collapsed?: string
+}
+
+const { title, stacked = false, collapsed } = Astro.props
+const Wrapper = collapsed ? 'details' : Fragment
+---
+
+<section class="specimen-section" id={sectionId(title)}>
+  <h2>{title}</h2>
+  <slot />
+  <Wrapper>
+    {collapsed && <summary>{collapsed}</summary>}
+    <div class:list={['panels', { stacked }]}>
+      <div class="panel" style="color-scheme: light">
+        <p class="panel-label">Light</p>
+        <slot name="light" />
+      </div>
+      <div class="panel" style="color-scheme: dark">
+        <p class="panel-label">Dark</p>
+        <slot name="dark" />
+      </div>
+    </div>
+  </Wrapper>
+</section>
+
+<style>
+  .specimen-section {
+    margin-block: var(--rkui-space-7);
+  }
+
+  .panels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
+    gap: var(--rkui-space-4);
+  }
+
+  summary {
+    margin-block: var(--rkui-space-5) var(--rkui-space-4);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .panels.stacked {
+    grid-template-columns: 100%;
+  }
+
+  .panel {
+    min-width: 0;
+    padding: var(--rkui-space-5);
+    border: 1px solid var(--rkui-muted);
+    border-radius: var(--rkui-radius);
+    background: var(--rkui-surface);
+    color: var(--rkui-fg);
+  }
+
+  .panel-label {
+    margin-block: 0 var(--rkui-space-4);
+    color: var(--rkui-muted);
+    font-size: var(--rkui-step--1);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>

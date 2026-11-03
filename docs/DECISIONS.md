@@ -1,0 +1,206 @@
+# rkui design decisions
+
+When and why the rules in [DESIGN.md](DESIGN.md) were chosen, and the questions still open.
+Rob makes the design calls; entries that record a fix or a finding rather than his call say so.
+A gate entry is his review of that phase's work. Newest first. When a decision changes, add a
+new entry and update DESIGN.md; don't rewrite the old one.
+
+- [Decisions](#decisions)
+- [Open decisions](#open-decisions)
+
+## Decisions
+
+### 2026-11-02
+
+**Prefix changed to `rkui-`, and every custom property takes `--rkui-`** (Rob), to match the
+package name `@oneonefour/rkui` and avoid clashing with sites' own classes and variables.
+
+**Code block language logos.** CodeBlock takes the logo from the site (the `logo` slot); without
+one it shows Phosphor's file-type icon for the language, else the file extension as grey text.
+The library holds no brand logos. The one logo it holds is its own (`Logo`).
+
+**Dark-mode shadows.** The outlined slab (option B) is the default; own-colour extrusion (option
+D) is a supported mode, `data-shadow="color"`. A near-black shadow is hard to see on night blue.
+Four options were tried at Gate 1b and narrowed to these two.
+
+**Unfilled buttons, pressed** (Gate 1b). They fill with `--rkui-raised`, so the near-black inset shows
+in dark mode. `--rkui-shadow-inset` is the pressed offset in `--rkui-line`, near-black in both themes.
+
+**Depth.** The deep mode, `data-depth="deep"`, is approved on the terms in DESIGN §4.3.
+
+**Page palettes.** Cream is the default and the site ships cream. Slate and greige stay as
+opt-ins. (The greige palette was built at Gate 1b from the greige code slate Rob liked, with a
+cool slate palette beside it.)
+
+**The shading group** (from the colour audit). Repeated mixes became named tokens so the contrast
+check reads them: `--rkui-stripe`, `--rkui-shade`, `--rkui-folder-back`.
+- The code panel's inset moved from 20% `--rkui-line` to `--rkui-stripe` (25%), a touch darker.
+- `--rkui-illustration-red-shade` and `--rkui-wave-line` stay as they are, though each is close to a
+  `--rkui-shade`.
+
+**`--rkui-ease-snap` retuned.** Rob found it "a tad too snappy", the overshoot "a bit much". It was
+`cubic-bezier(0.3, 1.5, 0.45, 1)` (8% overshoot, 90% there at a quarter of the time). At Rob's
+second look it went gentler again, to the current curve (DESIGN §5).
+
+**Maths.**
+- Numbering: both styles, a `\label` per `align` row, or one per `aligned`/`gathered` block.
+- Wrappers: bare by default, with `--panel`, `--rule` and `--key`.
+- Colour-coded terms: the hue's tint behind `--rkui-fg` text. The coloured-text option was removed.
+
+**Components.**
+- Filling (busy) button, `.rkui-button[aria-busy]` + `.rkui-water`.
+- Dial ramps (`--ramp`, `--ramp-heat`) approved; the clock approved; sticky notes approved.
+- Folder tabs: a flat scrollbar.
+- Top bar: toast by default, flush for full-width headers.
+- Spinners: ring, dots, water, orbit, triangle and squash stay; C (the icon spinner) and E were
+  removed.
+- Loader: the hopping ball stays; the others were removed.
+- Progress: striped by default.
+- Water and pending: the filling panel stays; the slosh was removed.
+
+**Illustration style.** From a flat cartoon locomotive Rob shared as a reference (not copied). Rob
+ranked B, the pop look, first; C, the sticker, second; A, subdued, last ("too muted, not really
+aligned with the brand"). The subdued look and per-part keylines were removed.
+
+**The contrast check was dropped.** Rob: "honestly I'll do it and tweak it manually; the palette
+we've chosen now is pretty robust." `scripts/check-contrast.js` and `scripts/color.js` and the
+`npm run contrast` gate are gone. The WCAG targets in DESIGN stay as rules, checked by hand on the
+docs page's Colours section, which prints each hex and ratio as the browser painted it. The check's
+other job, matching the light-only fallback (`tokens/fallback.css`) against the `light-dark()`
+tokens, is now by hand too.
+
+**Contrast shortfalls accepted by Rob** (recorded from the dropped check, with his reasons):
+- Ink icon lines (`--rkui-on-fill`) on the coral note's fold (`--rkui-shade` of `--rkui-note-coral`) in dark mode,
+  2.8:1 against 3:1. "Just under in dark mode; the lines also read against the note."
+- Colour shadow mode, dark theme: coral's and grape's `--rkui-shade` against the page (`--rkui-surface` and
+  `--rkui-raised`), below 3:1 (coral 2.4–2.9:1, grape's on `--rkui-raised` 2.6–2.8:1). "Fine as they are; the
+  ink outline marks the element's edge."
+- A known gap, not one of Rob's acceptances: the dark-theme `--rkui-line` against the page, about
+  1.2–1.4:1 (DESIGN §10).
+
+**Contrast fix** (a fix, not a call). A busy `--rkui-section` button's label on its empty part was
+2.9:1. The empty part now keeps 70% of the fill, giving 6.0–6.2:1.
+
+**Framework wrappers.** Planned for Astro only, with an optional integration. Vue and vanilla
+sites use the core directly.
+
+**PowerPoint template.** First built ("route 1"), from the tokens. No review by Rob is recorded
+yet; see [Open decisions](#open-decisions).
+
+### Gate 1b: components and styleguide (approved 2026-11-02)
+
+- **Options instead of one-offs.** Alternatives are kept as opt-in classes beside the default, on
+  purpose.
+- **One light** drives every shadow and pop; glints sit opposite.
+- **Code panels:** cool slate is the default under every palette; `.rkui-slate-greige` opts in.
+- **Code block:** the inset panel is the default.
+- **Equation pills:** vivid `--rkui-lilac` in both themes, not the dark lilac tint.
+- **Text fields:** the background sinks to the page on hover by default; ring, underline and none
+  are opt-ins.
+- **Folder tabs:** the bar sits above the tabs.
+- **Scroll region:** dots plus a hover scrollbar by default; `--bar` is the alternate.
+- **Grouping panel:** the direction (dashed, flat and raised) is agreed; it is not built.
+- **Motion policy** written (DESIGN §5); two of its rules are still open.
+- **Joins move with inset offsets, not `translate`** (a finding): seen on the folder tabs, where a
+  `translate` transition opened a hairline seam.
+- **Data visualisation:** nothing chart-related ships in this version of rkui (Rob: "just for
+  general vibe check"). The toon charts are the only look on the styleguide.
+
+### Gate 1a: foundations (approved 2026-11-01)
+
+- **Hues:** Rob kept the proposed value of every `-deep` and `-tint`.
+- **`--rkui-coral-solid`** added: coral for fills with small text.
+- **`--rkui-coral-deep` `#c8322a`**, over the first candidate `#da382f`, which reached only 4.12:1.
+- **Theme:** `color-scheme: light dark`, unregistered tokens, the `rkui-theme` key shared across the
+  domain, an inlined classic script before first paint, and a Light / Dark / System toggle.
+- **Type scale:** ratio 1.3, Rob's pick over 1.25 and 1.28, with `--rkui-step--1` fixed at 0.8rem.
+- **JetBrains Mono:** ligatures on.
+- **Focus:** the tangerine highlighter band.
+- **Buttons:** filled, yellow by default. Text inputs, checkboxes, radios, switches, the range and
+  chips (checked takes `--rkui-section`) decided in their current form.
+- **Chart series order** checked for colour-blind viewers (DESIGN §9); the old order put green next
+  to yellow (ΔE 2.6).
+
+### 2026-11-01
+
+**Font pairing A:** Roboto Slab headings, Xmind body and UI, self-hosted (reasons in DESIGN §3.1).
+Xmind had been on Google Fonts only since 2026-10-20.
+
+**Auxiliary colours** (approved direction): grape, lilac, tangerine and apricot have set jobs and
+are never section colours.
+
+**Iconography** (approved after Rob saw the icons on the mood board): Phosphor duotone from the
+GitHub sources, Tabler for gaps.
+- Rejected: Phosphor's npm and Iconify builds (pre-flattened, no adjustable stroke); `astro-icon`
+  (untested).
+- Avoided: the sets in DESIGN §6. Remix Icon's licence turned restrictive in January 2026.
+- Brand marks stay in each site, not in rkui.
+
+**Equation references:** `\label` and `\eqref`, clickable, through a small rehype plugin before
+KaTeX, since no off-the-shelf plugin does it.
+
+**The pop:** keep the mood board's feel (Rob). A springy overshoot was offered and not adopted.
+
+**Unfilled buttons:** discouraged (Rob).
+
+**Distribution:** no CDN, so no third-party requests and no permanent URLs. The first rule, "no
+build step", was replaced on 2026-11-02 (Rob, library goals): an npm task builds static, minified
+CSS and JS, and Astro sites install the package with a one-line integration. Plain-HTML sites use
+the same built files; copying them into a site's `vendor/` is the proposed route.
+
+**Prefix `rk-`** (Gate 0): fixed, since it is in every consumer's markup and namespaces storage
+keys.
+
+## Open decisions
+
+The options are built, lettered as on the docs site; the docs-site section to look at is in
+quotes. Each pick is one small change that deletes the losing variant and updates DESIGN.md.
+
+**Motion**
+- [ ] "Only clickable things lift and sink": stays, or changes. ("Motion")
+- [ ] Under reduced motion, illustrative loops stop while state loops fade: stays, or changes.
+  ("Motion")
+- [ ] `<rkui-motion>` (the Pause button, off-screen pausing): stays in rkui, or not. ("Motion",
+  "Diagrams")
+- [ ] Loaders and spinners: time their loops with the `--rkui-loop-*` tokens, or keep their own.
+  ("Loading")
+
+**Picks among built options**
+- [ ] Custom select list, checked option: A filled, or B tinted (`--tint`). ("Custom select list")
+- [ ] File input: A framed button and filename, or B drop panel. ("Special inputs")
+- [ ] Search: A icon inside, or B attached button. ("Special inputs")
+- [ ] Range ticks: A native, B datalist tick row with labels, or C dots on the track. ("Range
+  slider")
+- [ ] Dial: A knob, or B arc. ("Dial")
+- [ ] Dial ramp: blocks lit up to the value (as built), or all lit. ("Dial")
+- [ ] Clock: the hour hand stays longer than the minute hand (as built), or not. ("Clock")
+- [ ] Colour-tile flair: none, A paint brush, B paint drops, or C palette and brush stroke with
+  legend. ("Tile and colour pickers")
+- [ ] `.rkui-progress--flat`: stays, or goes. ("Loading")
+- [ ] Tooltip: A inverted (the default), or B toon. ("Tooltips and popups")
+- [ ] Corner badge edge: A outline, B ring, or C sticker. ("Badges")
+- [ ] Breadcrumbs: A plain links, B chips, or C path bar. ("Breadcrumbs")
+- [ ] Pagination: A folder tabs, or B tiles between buttons. ("Pagination")
+- [ ] Logo: lift (the pop only), or motifs (each tile's motif plays on hover). ("Logo")
+- [ ] Sidebar: A plain (the default), B card, C folders, D deck, or E note. ("Sidebar")
+- [ ] Inline maths size (`--rkui-maths-scale`): A 1em, B 1.1em, C 1.15em (proposed, as built), or D
+  1.21em (KaTeX's default). ("Maths in text")
+- [ ] Number stepper: split, or stacked. No pick recorded; both may stay as opt-ins.
+- [ ] Segmented control: pill, or deck. No pick recorded; both may stay as opt-ins.
+
+**Docs site only**
+- [ ] Heatmap layout: A side by side with ink gutters, or B tiles. ("Charts")
+- [ ] Sequential scale: A navy (`--rkui-seq-*`), or B vivid (`--rkui-seq-vivid-*`). ("Chart colours",
+  "Charts")
+- [ ] Exploded view: A no sticker, or B the single-outline sticker demo. ("Exploded view")
+- [ ] Exploded view: parts lose their shadows under the focus band (as built), or keep them.
+- [ ] Exploded view: an open assembly labels every part (as built), or only the hovered one.
+
+**Proposed, not built**
+- [ ] `\Cref` for a reference that leads a sentence (the long "Equation (n)" pill).
+- [ ] The dashed grouping panel, flat and raised, with the widget frame as one use of it; to be
+  built with the site's card work.
+- [ ] Card variants (post, project, paper, album), `HeaderBand`, `PullQuote`, `Sidenote`.
+- [ ] Custom marks: a gravity-wave signature, a monogram.
+- [ ] The PowerPoint template: review it, after the re-check in
+  [pptx/README.md](../pptx/README.md#needs-updating-before-the-next-build).

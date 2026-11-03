@@ -1,0 +1,30 @@
+/* Figure: an image, chart or widget with a caption under it and an optional source line.
+
+   <figure class="rkui-figure">
+     …image, chart or widget…
+     <figcaption class="rkui-figure-caption">
+       <span class="rkui-figure-label">Figure 1.</span> Caption text.
+       <span class="rkui-figure-source">Source: …</span>
+     </figcaption>
+   </figure> */
+
+.rkui-figure {
+  display: grid;
+  gap: var(--rkui-space-3);
+  margin: var(--rkui-space-5) 0;
+}
+
+.rkui-figure-caption {
+  max-inline-size: 68ch;
+  font-size: var(--rkui-step--1);
+}
+
+.rkui-figure-label {
+  font-weight: 700;
+}
+
+.rkui-figure-source {
+  display: block;
+  margin-block-start: var(--rkui-space-1);
+  color: var(--rkui-muted);
+}

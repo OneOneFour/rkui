@@ -1,0 +1,62 @@
+/* Switch: a native checkbox with role="switch", drawn as a pill track with a round thumb.
+   On, the track fills with --rkui-selected. Wrap it in a label.rkui-check. */
+
+.rkui-switch {
+  --rkui-switch-width: 2.75rem;
+  --rkui-thumb-size: 1rem;
+  --rkui-thumb-gap: 0.1875rem;
+  --rkui-thumb-travel: calc(
+    var(--rkui-switch-width) - 2 * var(--rkui-outline-width) - var(--rkui-thumb-size) - 2 *
+      var(--rkui-thumb-gap)
+  );
+
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  inline-size: var(--rkui-switch-width);
+  block-size: calc(
+    var(--rkui-thumb-size) + 2 * var(--rkui-thumb-gap) + 2 * var(--rkui-outline-width)
+  );
+  margin: 0;
+  padding-inline: var(--rkui-thumb-gap);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-raised);
+  cursor: pointer;
+}
+
+.rkui-switch::before {
+  content: '';
+  inline-size: var(--rkui-thumb-size);
+  block-size: var(--rkui-thumb-size);
+  border-radius: 50%;
+  background: var(--rkui-fg);
+  transition: translate var(--rkui-duration-fast) ease;
+}
+
+.rkui-switch:checked {
+  border-color: var(--rkui-line);
+  background: var(--rkui-selected);
+}
+
+.rkui-switch:checked::before {
+  background: var(--rkui-on-selected);
+  translate: var(--rkui-thumb-travel) 0;
+}
+
+/* Forced colours drop the fills, so the thumb and the on track use system colours. */
+@media (forced-colors: active) {
+  .rkui-switch::before {
+    background: CanvasText;
+  }
+
+  .rkui-switch:checked {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .rkui-switch:checked::before {
+    background: HighlightText;
+  }
+}

@@ -1,0 +1,20 @@
+/* rkui spacing, radius and outline and focus widths. */
+
+:root {
+  /* Spacing */
+  --rkui-space-1: 0.25rem;
+  --rkui-space-2: 0.5rem;
+  --rkui-space-3: 0.75rem;
+  --rkui-space-4: 1rem;
+  --rkui-space-5: 1.5rem;
+  --rkui-space-6: 2rem;
+  --rkui-space-7: 3rem;
+  --rkui-space-8: 4rem;
+
+  /* Shape */
+  --rkui-radius: 10px;
+  --rkui-radius-pill: 999px;
+  --rkui-outline-width: 2px;
+  --rkui-focus-width: 6px;
+  --rkui-focus-offset: 0;
+}

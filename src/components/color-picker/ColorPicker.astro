@@ -1,0 +1,89 @@
+---
+/**
+ * A colour picker: a tile group of the palette's hues (ColorTile children, or every hue when there
+ * are none), optionally ending with a custom colour tile (a native colour input). The custom tile
+ * needs `<rkui-color-picker>`, which this component wraps around the group and loads, so that
+ * picking a colour also checks the tile's radio. `class`, `style` and other attributes go on the
+ * fieldset (`disabled` disables the whole group).
+ *
+ * The flair for the checked tile is an open choice, see DECISIONS ("Colour-tile flair").
+ *
+ * @example
+ * <ColorPicker legend="Colour" custom>
+ *   <ColorTile hue="teal" checked />
+ *   <ColorTile hue="coral" />
+ * </ColorPicker>
+ */
+import type { HTMLAttributes } from 'astro/types'
+import PaletteIcon from '@oneonefour/rkui/icons/palette.svg'
+import PaintBrushIcon from '@oneonefour/rkui/icons/paint-brush.svg'
+import ColorTile from './ColorTile.astro'
+import { HUES } from '../../shared/hues'
+import { fillOptions } from '../../shared/option-group'
+import { uniqueId } from '../../shared/unique-id'
+
+interface Props extends HTMLAttributes<'fieldset'> {
+  /** The group's name; visually hidden unless `flair` is 'stroke'. */
+  legend: string
+  /** The radios' name, filled into every tile; a unique one is made when left out. */
+  name?: string
+  /** The hue (when every hue is shown) or 'custom' checked at the start; tiles can say `checked`. */
+  value?: string
+  /** End the group with a custom colour tile. */
+  custom?: boolean
+  /** Flair for the checked tile: open, see DECISIONS. */
+  flair?: 'brush' | 'drops' | 'stroke'
+}
+
+const {
+  legend,
+  name = uniqueId('rkui-color'),
+  value,
+  custom = false,
+  flair,
+  class: className,
+  ...attrs
+} = Astro.props
+
+const tiles = Astro.slots.has('default')
+  ? fillOptions(await Astro.slots.render('default'), name, false)
+  : undefined
+
+// Only a group with a custom colour tile needs the element.
+const Wrapper = custom ? 'rkui-color-picker' : Fragment
+---
+
+<Wrapper>
+  <fieldset class:list={['rkui-tiles', flair && `rkui-tiles--${flair}`, className]} {...attrs}>
+    {flair === 'stroke' ? (
+      <legend>
+        <PaletteIcon class="rkui-icon rkui-icon--small" aria-hidden="true" />
+        {legend}
+      </legend>
+    ) : (
+      <legend class="rkui-visually-hidden">{legend}</legend>
+    )}
+    {tiles === undefined ? (
+      HUES.map((hue) => <ColorTile hue={hue} type="radio" name={name} checked={hue === value} />)
+    ) : (
+      <Fragment set:html={tiles} />
+    )}
+    {custom && (
+      <label class="rkui-tile rkui-tile--custom-color">
+        <input
+          type="radio"
+          name={name}
+          value="custom"
+          checked={value === 'custom'}
+          aria-label="Custom colour"
+        />
+        <input type="color" name={`${name}-custom`} aria-label="Choose custom colour" />
+        <PaintBrushIcon aria-hidden="true" />
+      </label>
+    )}
+  </fieldset>
+</Wrapper>
+
+<script>
+  import '@oneonefour/rkui/components/color-picker/color-picker.js'
+</script>

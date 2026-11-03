@@ -1,0 +1,159 @@
+---
+/**
+ * Scroll regions: the default and the always-visible scrollbar on a long code line, a long
+ * equation and a wide table, plus a narrow strip of folder tabs with the default, then code and an
+ * equation that fit, which show no hint.
+ */
+import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.astro'
+import JavaScriptLogo from './languages/javascript.svg'
+import Equation from './Equation.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import { LORENZ_JS } from './code-samples'
+
+const OPTIONS = [
+  {
+    name: 'default',
+    title: 'Default: dots, and the scrollbar on hover and focus (.rkui-scroll)',
+    class: undefined,
+    withFolder: true,
+  },
+  {
+    name: '.rkui-scroll--bar',
+    title: 'The scrollbar always shows, with no dots (.rkui-scroll--bar)',
+    class: 'rkui-scroll--bar',
+  },
+]
+
+const LONG_EQUATION = String.raw`\frac{\partial u}{\partial t} + u\frac{\partial u}{\partial x} + v\frac{\partial u}{\partial y} + w\frac{\partial u}{\partial z} = -\frac{1}{\rho}\frac{\partial p}{\partial x} + \nu\left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2}\right) + fv`
+
+const SHORT_EQUATION = String.raw`\dot{x} = \sigma (y - x)`
+
+const TABS = ['Tab one', 'Tab two', 'Tab three', 'Tab four', 'Tab five', 'Tab six']
+const SELECTED_TAB = 2
+
+const TABLE_HEAD = [
+  'Run',
+  'σ',
+  'ρ',
+  'β',
+  'Δt',
+  'Steps',
+  'x₀',
+  'y₀',
+  'z₀',
+  'λ₁',
+  'max |x|',
+  'Wall time',
+]
+const TABLE_ROWS = [
+  ['a', '10', '28', '2.667', '0.01', '10 000', '1.0', '1.0', '1.0', '0.906', '19.6', '0.8 s'],
+  ['b', '10', '99.96', '2.667', '0.005', '20 000', '0.1', '0.0', '0.0', '1.42', '41.3', '1.7 s'],
+  ['c', '16', '45.92', '4.0', '0.01', '10 000', '−5.0', '5.0', '20.0', '1.50', '27.8', '0.9 s'],
+]
+---
+
+{OPTIONS.map((option) => (
+  <SpecimenRow title={option.title}>
+    <Specimen label="long code line" wide>
+      <CodeBlock code={LORENZ_JS} lang="javascript" label="JavaScript" preClass={option.class}>
+        <JavaScriptLogo slot="logo" class="rkui-icon rkui-icon--small" aria-hidden="true" />
+      </CodeBlock>
+    </Specimen>
+    <Specimen label="long equation" wide>
+      <Equation tex={LONG_EQUATION} class={option.class} />
+    </Specimen>
+    <Specimen label="wide table" wide>
+      <div
+        class:list={['rkui-scroll', option.class, 'table-scroll']}
+        tabindex="0"
+        role="region"
+        aria-label="Wide table"
+      >
+        <table>
+          <thead>
+            <tr>
+              {TABLE_HEAD.map((heading) => (
+                <th scope="col">{heading}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {TABLE_ROWS.map((row) => (
+              <tr>
+                {row.map((cell) => (
+                  <td>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Specimen>
+    {option.withFolder && (
+      <Specimen label="folder tabs, 16rem wide: the scrollbar sits above the tabs" wide>
+        <rkui-folder class="narrow rkui-folder">
+          <nav aria-label="Specimen pages">
+            <ol class="rkui-folder-tabs rkui-scroll">
+              {TABS.map((name, i) => (
+                <li>
+                  <a
+                    class="rkui-folder-tab"
+                    href="#specimen-link"
+                    aria-current={i === SELECTED_TAB ? 'page' : undefined}
+                  >
+                    {name}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+          <div class="rkui-folder-sheet">Sheet</div>
+        </rkui-folder>
+      </Specimen>
+    )}
+  </SpecimenRow>
+))}
+
+<SpecimenRow title="Content that fits shows no hint">
+  {OPTIONS.map((option) => (
+    <>
+      <Specimen label={`code, ${option.name}`} wide>
+        <CodeBlock code="x = lorenz(1.0, 1.0, 1.0)" lang="python" preClass={option.class} />
+      </Specimen>
+      <Specimen label={`equation, ${option.name}`} wide>
+        <Equation tex={SHORT_EQUATION} class={option.class} />
+      </Specimen>
+    </>
+  ))}
+</SpecimenRow>
+
+<style>
+  .table-scroll {
+    padding-block-end: var(--rkui-space-2);
+  }
+
+  table {
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  th,
+  td {
+    padding: var(--rkui-space-1) var(--rkui-space-3);
+    text-align: start;
+    white-space: nowrap;
+  }
+
+  th {
+    border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  }
+
+  .narrow {
+    max-inline-size: 16rem;
+  }
+</style>
+
+<script>
+  import '@oneonefour/rkui/components/folder/folder.js'
+</script>

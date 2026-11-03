@@ -1,0 +1,32 @@
+---
+title: Breadcrumbs
+description: The trail of pages leading to this one.
+group: Navigation
+order: 90
+---
+
+import Demo from '../../components/Demo.astro'
+import Plain from '../../examples/breadcrumbs/plain.astro'
+import plainCode from '../../examples/breadcrumbs/plain.astro?raw'
+import Chips from '../../examples/breadcrumbs/chips.astro'
+import chipsCode from '../../examples/breadcrumbs/chips.astro?raw'
+import Path from '../../examples/breadcrumbs/path.astro'
+import pathCode from '../../examples/breadcrumbs/path.astro?raw'
+
+The last item is the current page.
+
+<Demo code={plainCode} label="Plain breadcrumbs">
+  <Plain />
+</Demo>
+
+## Chips
+
+<Demo code={chipsCode} label="Chip breadcrumbs">
+  <Chips />
+</Demo>
+
+## Path bar
+
+<Demo code={pathCode} label="Path bar breadcrumbs">
+  <Path />
+</Demo>

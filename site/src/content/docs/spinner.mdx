@@ -1,0 +1,32 @@
+---
+title: Spinner
+description: The ring spinner, a busy indicator.
+group: Loading
+order: 80
+---
+
+import Demo from '../../components/Demo.astro'
+import Ring from '../../examples/spinner/ring.astro'
+import ringCode from '../../examples/spinner/ring.astro?raw'
+import Sizes from '../../examples/spinner/sizes.astro'
+import sizesCode from '../../examples/spinner/sizes.astro?raw'
+import Fills from '../../examples/spinner/fills.astro'
+import fillsCode from '../../examples/spinner/fills.astro?raw'
+
+An outlined ring with a wedge rolling round inside it. Its label is read out, not shown.
+
+<Demo code={ringCode} label="Ring spinner">
+  <Ring />
+</Demo>
+
+## Sizes
+
+<Demo code={sizesCode} label="Ring spinner sizes">
+  <Sizes />
+</Demo>
+
+## Hues
+
+<Demo code={fillsCode} label="Ring spinner hues">
+  <Fills />
+</Demo>

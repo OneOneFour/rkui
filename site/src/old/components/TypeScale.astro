@@ -1,0 +1,74 @@
+---
+/**
+ * The heading and body stack on the type scale, with each step's size. The sizes are read from
+ * the browser (show-sizes.ts), so they follow type.css.
+ */
+const HEADINGS = [
+  { role: 'h1', step: 4, text: 'Sphinx of black quartz' },
+  { role: 'h2', step: 3, text: 'Judge my vow' },
+  { role: 'h3', step: 2, text: 'Pack my box with five dozen jugs' },
+  { role: 'h4', step: 1, text: 'The quick brown fox jumps' },
+]
+---
+
+<div class="scale" data-readout>
+  <p class="size">
+    --rkui-type-ratio: <output data-custom-property="--rkui-type-ratio"></output>
+  </p>
+  {HEADINGS.map(({ role, step, text }) => (
+    <>
+      <p class="size">
+        {role} · step {step} · <output data-show="size" data-of={role} />
+      </p>
+      <p class="heading" data-sample={role} style={`font-size: var(--rkui-step-${step})`}>
+        {text}
+      </p>
+    </>
+  ))}
+  <p class="size">
+    body · step 0 · <output data-show="size" data-of="body" />
+  </p>
+  <p class="body" data-sample="body">
+    Pack my box with five dozen liquor jugs. The quick brown fox jumps over the lazy dog. Sphinx of
+    black quartz, judge my vow. How vexingly quick daft zebras jump.
+  </p>
+  <p class="size">
+    small · step -1 · <output data-show="size" data-of="small" />
+  </p>
+  <p class="small" data-sample="small">
+    Bright vixens jump; dozy fowl quack. Waltz, bad nymph, for quick jigs vex.
+  </p>
+</div>
+
+<script>
+  import './show-sizes'
+</script>
+
+<style>
+  p {
+    margin: 0;
+  }
+
+  .size {
+    margin-block-start: var(--rkui-space-4);
+    color: var(--rkui-muted);
+    font-size: var(--rkui-step--1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .heading {
+    font-family: var(--rkui-font-display);
+    font-weight: 800;
+    line-height: var(--rkui-line-height-heading);
+  }
+
+  .body {
+    font-size: var(--rkui-step-0);
+    line-height: var(--rkui-line-height-body);
+  }
+
+  .small {
+    font-size: var(--rkui-step--1);
+    line-height: var(--rkui-line-height-body);
+  }
+</style>

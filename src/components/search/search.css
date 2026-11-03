@@ -1,0 +1,138 @@
+/* Search fields, in two variants (A, B). Both swap WebKit's clear button for our ×.
+
+   Search A: a magnifying glass inside the field.
+   <div class="rkui-search">
+     <input class="rkui-input" type="search" aria-label="Search">
+   </div>
+
+   Search B: a filled search button joined to the field's end. The two are one raised unit, which
+   is pressed into its shadow when the button is.
+   <form class="rkui-search-bar" role="search">
+     <input class="rkui-input" type="search" aria-label="Search">
+     <button class="rkui-button" type="submit">Search</button>
+   </form>
+
+   The icons are masks filled with currentColor. forced-color-adjust keeps that fill in forced
+   colours, where currentColor is the system text colour. */
+
+.rkui-input[type='search'] {
+  appearance: none;
+}
+
+.rkui-input[type='search']::-webkit-search-decoration {
+  appearance: none;
+}
+
+.rkui-input[type='search']::-webkit-search-cancel-button {
+  appearance: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  margin-inline-start: var(--rkui-space-2);
+  background-color: currentColor;
+  mask: url('../../../dist/icons/x.svg') center / contain no-repeat;
+  forced-color-adjust: none;
+  cursor: pointer;
+}
+
+/* Search A */
+
+.rkui-search {
+  --rkui-search-icon-size: 1.25rem;
+
+  position: relative;
+  inline-size: 100%;
+  max-inline-size: 30rem;
+}
+
+.rkui-search::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--rkui-space-3);
+  inline-size: var(--rkui-search-icon-size);
+  background-color: currentColor;
+  mask: url('../../../dist/icons/magnifying-glass.svg') center / contain no-repeat;
+  forced-color-adjust: none;
+  pointer-events: none;
+}
+
+.rkui-search:has(:disabled)::before {
+  opacity: 0.45;
+}
+
+.rkui-search .rkui-input {
+  padding-inline-start: calc(
+    var(--rkui-space-3) + var(--rkui-search-icon-size) + var(--rkui-space-2)
+  );
+}
+
+/* Search B */
+
+.rkui-search-bar {
+  --rkui-press-overshoot: calc(var(--rkui-shadow-depth) * 2px);
+
+  display: flex;
+  inline-size: 100%;
+  max-inline-size: 30rem;
+  border-radius: var(--rkui-radius);
+  box-shadow: var(--rkui-shadow);
+  transition:
+    translate var(--rkui-duration-spring) var(--rkui-ease-spring),
+    box-shadow var(--rkui-duration-fast) ease;
+}
+
+.rkui-search-bar .rkui-input {
+  flex: 1;
+  min-inline-size: 0;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+/* The button's border is the divider, and matches the field's so the unit has one outline. */
+.rkui-search-bar .rkui-button {
+  margin-inline-start: calc(-1 * var(--rkui-outline-width));
+  border-color: var(--rkui-line-unfilled);
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+
+/* The unit pops, not the button. */
+.rkui-search-bar .rkui-button,
+.rkui-search-bar .rkui-button:is(:hover, :active) {
+  box-shadow: none;
+  translate: none;
+}
+
+/* Pressed, the unit drives past its pressed depth, flush with the page, then settles. On release
+   the transition springs it back up. */
+.rkui-search-bar:has(.rkui-button:active) {
+  box-shadow: var(--rkui-shadow-pressed);
+  translate: var(--rkui-press-offset-x) var(--rkui-press-offset-y);
+  animation: rkui-search-bar-press var(--rkui-duration-spring) ease-out;
+}
+
+@keyframes rkui-search-bar-press {
+  from {
+    box-shadow: var(--rkui-shadow);
+    translate: 0 0;
+  }
+
+  50% {
+    box-shadow: none;
+    translate: calc(
+        var(--rkui-press-offset-x) + var(--rkui-shadow-dx) * var(--rkui-press-overshoot)
+      )
+      calc(var(--rkui-press-offset-y) + var(--rkui-shadow-dy) * var(--rkui-press-overshoot));
+  }
+}
+
+/* The focused part shows the band, drawn over its neighbour, and the unit loses its shadow. */
+.rkui-search-bar > :focus-visible {
+  position: relative;
+  z-index: 1;
+}
+
+.rkui-search-bar:has(:focus-visible),
+.rkui-search-bar:has(:disabled) {
+  box-shadow: none;
+}

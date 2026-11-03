@@ -1,0 +1,37 @@
+---
+title: Pagination
+description: Page links as folder tabs over the page's sheet.
+group: Navigation
+order: 93
+---
+
+import Demo from '../../components/Demo.astro'
+import Default from '../../examples/pagination/default.astro'
+import defaultCode from '../../examples/pagination/default.astro?raw'
+import First from '../../examples/pagination/first.astro'
+import firstCode from '../../examples/pagination/first.astro?raw'
+import Narrow from '../../examples/pagination/narrow.astro'
+import narrowCode from '../../examples/pagination/narrow.astro?raw'
+
+Give it the `current` page, the `total` and an `href` function that returns a page's link. It
+links the first and last pages, the current one and its neighbours, with previous and next.
+
+<Demo code={defaultCode} label="Pagination" stack>
+  <Default />
+</Demo>
+
+## On the first page
+
+There is no previous link on the first page, and no next link on the last.
+
+<Demo code={firstCode} label="Pagination on the first page" stack>
+  <First />
+</Demo>
+
+## Narrow
+
+The scrollbar for the tabs sits above them.
+
+<Demo code={narrowCode} label="Narrow pagination" stack>
+  <Narrow />
+</Demo>

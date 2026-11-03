@@ -1,0 +1,41 @@
+---
+/**
+ * The list of docs pages, built from the docs collection: pages grouped by their `group` and
+ * sorted by `order`, in rkui's Sidebar. A group sits where its first page sits.
+ *
+ * @example
+ * <Sidebar current={page.id} label="Pages" />
+ */
+import RkuiSidebar from '@oneonefour/rkui/components/sidebar/Sidebar.astro'
+import SidebarGroup from '@oneonefour/rkui/components/sidebar/SidebarGroup.astro'
+import SidebarLink from '@oneonefour/rkui/components/sidebar/SidebarLink.astro'
+import { pageUrl, sortedPages, type DocsPage } from '../lib/pages'
+
+interface Props {
+  /** The id of the page being shown, marked as the current page. */
+  current: string
+  /** The navigation's accessible name; two sidebars on a page need different ones. */
+  label: string
+}
+
+const { current, label } = Astro.props
+
+const groups = new Map<string, DocsPage[]>()
+for (const page of await sortedPages()) {
+  const pages = groups.get(page.data.group) ?? []
+  pages.push(page)
+  groups.set(page.data.group, pages)
+}
+---
+
+<RkuiSidebar label={label}>
+  {[...groups].map(([group, pages]) => (
+    <SidebarGroup heading={group}>
+      {pages.map((page) => (
+        <SidebarLink href={pageUrl(page)} current={page.id === current}>
+          {page.data.title}
+        </SidebarLink>
+      ))}
+    </SidebarGroup>
+  ))}
+</RkuiSidebar>

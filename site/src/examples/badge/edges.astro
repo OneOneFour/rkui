@@ -1,0 +1,44 @@
+---
+import Badge from '@oneonefour/rkui/components/badge/Badge.astro'
+import BadgeHost from '@oneonefour/rkui/components/badge/BadgeHost.astro'
+import ImageIcon from '@oneonefour/rkui/icons/image.svg'
+---
+
+<BadgeHost round>
+  <span class="picture" role="img" aria-label="Picture">
+    <ImageIcon class="rkui-icon" />
+  </span>
+  <Badge hue="coral" corner hiddenLabel="new">
+    3
+  </Badge>
+</BadgeHost>
+<BadgeHost round>
+  <span class="picture" role="img" aria-label="Picture">
+    <ImageIcon class="rkui-icon" />
+  </span>
+  <Badge hue="coral" corner edge="ring" hiddenLabel="new">
+    3
+  </Badge>
+</BadgeHost>
+<BadgeHost round>
+  <span class="picture" role="img" aria-label="Picture">
+    <ImageIcon class="rkui-icon" />
+  </span>
+  <Badge hue="coral" corner edge="sticker" hiddenLabel="new">
+    3
+  </Badge>
+</BadgeHost>
+
+<style>
+  /* A stand-in for a photo or avatar. */
+  .picture {
+    --rkui-icon-fill: var(--rkui-teal);
+
+    display: grid;
+    place-items: center;
+    inline-size: 4rem;
+    block-size: 4rem;
+    border-radius: 50%;
+    background: var(--rkui-teal-tint);
+  }
+</style>

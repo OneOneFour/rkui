@@ -1,0 +1,85 @@
+/* Custom select list: add .rkui-select--picker to a .rkui-select. Where the browser supports
+   appearance: base-select, the open list is a raised panel in the toon look and options can hold
+   icons. Elsewhere it is the plain .rkui-select with the browser's own list, and the icons are left
+   out.
+
+   <select class="rkui-select rkui-select--picker">
+     <button><selectedcontent></selectedcontent></button>
+     <option value="one"><svg class="rkui-icon rkui-icon--small" aria-hidden="true">…</svg>
+       One</option>
+     …
+   </select>
+
+   The <button> line is optional: it shows the chosen option's icon in the closed select too.
+   Add .rkui-select--tint to show the checked option in --rkui-selected-tint instead of
+   --rkui-selected. */
+
+@supports (appearance: base-select) {
+  .rkui-select--picker,
+  .rkui-select--picker::picker(select) {
+    appearance: base-select;
+  }
+
+  /* .rkui-select draws its own caret. */
+  .rkui-select--picker::picker-icon {
+    display: none;
+  }
+
+  .rkui-select--picker::picker(select) {
+    margin-block: var(--rkui-space-1);
+    padding: var(--rkui-space-1);
+    border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+    border-radius: var(--rkui-radius);
+    background: var(--rkui-raised);
+    color: var(--rkui-fg);
+    box-shadow: var(--rkui-shadow);
+  }
+
+  /* The optional <button> only holds <selectedcontent>: the select draws the frame. */
+  .rkui-select--picker > button {
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .rkui-select--picker :is(selectedcontent, option) {
+    display: flex;
+    align-items: center;
+    gap: var(--rkui-space-2);
+  }
+
+  .rkui-select--picker option {
+    padding: var(--rkui-space-1) var(--rkui-space-3);
+    border-radius: calc(var(--rkui-radius) / 2);
+  }
+
+  .rkui-select--picker option:hover {
+    box-shadow: inset 0 0 0 var(--rkui-outline-width) var(--rkui-line-unfilled);
+  }
+
+  .rkui-select--picker option:checked {
+    background: var(--rkui-selected);
+    color: var(--rkui-on-selected);
+  }
+
+  .rkui-select--tint option:checked {
+    background: var(--rkui-selected-tint);
+    color: var(--rkui-fg);
+  }
+
+  /* Marker-pen focus, as on links: the list has no room for the band. The transparent outline
+     still shows in forced-colours mode. */
+  .rkui-select--picker option:focus-visible {
+    outline: var(--rkui-outline-width) solid transparent;
+    background: var(--rkui-focus);
+    color: var(--rkui-ink);
+  }
+
+  @media (forced-colors: active) {
+    .rkui-select--picker option:checked {
+      forced-color-adjust: none;
+      background: Highlight;
+      color: HighlightText;
+    }
+  }
+}

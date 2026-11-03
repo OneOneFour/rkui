@@ -1,0 +1,77 @@
+---
+title: Getting started
+description: Install rkui and set up the basics in an Astro site.
+group: Start
+order: 0
+---
+
+import Demo from '../../components/Demo.astro'
+import FirstButton from '../../examples/button/default.astro'
+import firstButtonCode from '../../examples/button/default.astro?raw'
+
+## Install
+
+```sh
+npm install @oneonefour/rkui
+```
+
+The package isn't on npm yet.
+
+## Set up the layout
+
+Import the stylesheet in your layout, and inline the theme script at the top of `<head>`. The
+script applies the reader's stored light or dark choice before the page paints, so it never
+flashes the wrong theme.
+
+```astro
+---
+// src/layouts/Layout.astro
+import '@oneonefour/rkui/styles.css'
+import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline set:html={themeInit} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My site</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+```
+
+## Use a component
+
+The Astro components are thin wrappers over rkui's classes.
+
+<Demo code={firstButtonCode} label="A first button">
+  <FirstButton />
+</Demo>
+
+## Add an element's script
+
+Interactive parts are custom elements that enhance markup you write. An Astro component loads its
+element for you; with plain markup, import the element's script yourself.
+
+```astro
+<rkui-code-block>
+  <figure class="rkui-code">
+    <pre class="rkui-scroll" tabindex="0"><code>npm run build</code></pre>
+    <button type="button" class="rkui-button rkui-button--small rkui-code-copy" hidden>
+      <span class="rkui-code-copy-label">Copy</span>
+    </button>
+  </figure>
+</rkui-code-block>
+
+<script>
+  import '@oneonefour/rkui/components/code/code-block.js'
+</script>
+```
+
+## Coming next
+
+An Astro integration will add the stylesheet and the theme script for you.

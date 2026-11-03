@@ -1,0 +1,50 @@
+---
+/** The toast and flush top bars, each at the top of a small page and in place rather than stuck. */
+import Specimen from './Specimen.astro'
+import BackToTop from '@oneonefour/rkui/components/topbar/BackToTop.astro'
+import Button from '@oneonefour/rkui/components/button/Button.astro'
+
+const SPECIMEN_TEXT =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+const VARIANTS = [
+  { label: '.rkui-topbar--toast (the default)', class: 'rkui-topbar--toast' },
+  {
+    label: ".rkui-topbar--flush, for full-width headers such as an article's title",
+    class: 'rkui-topbar--flush',
+  },
+]
+---
+
+{VARIANTS.map((variant) => (
+  <Specimen label={variant.label} wide>
+    <div class="page">
+      <div class:list={['rkui-topbar', variant.class]}>
+        <Button>Button</Button>
+        <BackToTop />
+      </div>
+      <p>{SPECIMEN_TEXT}</p>
+    </div>
+  </Specimen>
+))}
+
+<style>
+  .page {
+    overflow: clip;
+    border: 1px solid var(--rkui-muted);
+    border-radius: var(--rkui-radius);
+  }
+
+  .page .rkui-topbar {
+    position: static;
+  }
+
+  /* Shown as they look once the page has scrolled. */
+  .page .rkui-topbar,
+  .page :global(.rkui-back-to-top) {
+    animation: none;
+  }
+
+  p {
+    margin: var(--rkui-space-4);
+  }
+</style>

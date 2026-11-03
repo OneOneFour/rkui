@@ -1,0 +1,255 @@
+/* Toon water: a flat fill with a rolling wave on top and an outline along the wave. Put an
+   .rkui-water in a host that clips it; it sits behind the host's content. Set --rkui-water-level (0
+   to 1) on the host or the water for a fixed level, or add .rkui-water--rise to fill and drain it,
+   for an unknown wait.
+   Under reduced motion the water stays still and fades in and out instead.
+
+   Hosts in this file:
+   water spinner, .rkui-spinner--water with .rkui-water--rise: a flask that fills and drains;
+   filling button: a filled .rkui-button with aria-busy="true" and an .rkui-water child fills with
+   its own colour. Keep it focusable with aria-disabled="true" rather than disabled, so focus isn't
+   lost, ignore its clicks while busy, and say what is happening in its label;
+   pending panel, .rkui-pending with .rkui-water--rise: a dashed panel filling up while it waits.
+
+   <span class="rkui-spinner rkui-spinner--water" role="status">
+     <span class="rkui-water rkui-water--rise" aria-hidden="true"></span>
+     <span class="rkui-visually-hidden">Loading…</span>
+   </span>
+   <button class="rkui-button rkui-button--teal" type="button" aria-busy="true"
+     aria-disabled="true">
+     <span class="rkui-water rkui-water--rise" aria-hidden="true"></span>
+     Saving…
+   </button>
+   <div class="rkui-pending" role="status">
+     <span class="rkui-water rkui-water--rise" aria-hidden="true"></span>
+     <p>Loading…</p>
+   </div> */
+
+/* Registered so that it can be animated, and inherited so that a host can set it. */
+@property --rkui-water-level {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0.5;
+}
+
+.rkui-water {
+  --rkui-water-fill: var(--rkui-sky);
+  --rkui-wave-line: var(--rkui-line);
+  --rkui-wave-length: 2rem;
+  --rkui-wave-height: 0.5rem;
+  --rkui-wave-period: 1.2s;
+  --rkui-wave-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 12' preserveAspectRatio='none'%3E%3Cpath d='M0 6Q10 0 20 6T40 6V12H0Z'/%3E%3C/svg%3E");
+
+  position: absolute;
+  inset: 0 0 calc(-1 * var(--rkui-wave-height));
+  z-index: -1;
+  /* The top edge is the water's surface: level 0 puts the wave just below the host, 1 just
+     above it. */
+  translate: 0
+    calc((1 - var(--rkui-water-level)) * 100% - var(--rkui-water-level) * var(--rkui-wave-height));
+  transition: translate var(--rkui-duration-slide) var(--rkui-ease-spring);
+  pointer-events: none;
+}
+
+/* Two copies of the water with the wave along their tops: the outline colour, then the fill over
+   it, lower by the outline width, so the outline shows along the wave. */
+.rkui-water::before,
+.rkui-water::after {
+  content: '';
+  position: absolute;
+  inset-block: calc(-1 * var(--rkui-wave-height)) 0;
+  inset-inline-start: 0;
+  inline-size: calc(100% + var(--rkui-wave-length));
+  /* The wave, then solid water below it. A mask only reads alpha, so any opaque colour does. */
+  mask:
+    var(--rkui-wave-shape) 0 0 / var(--rkui-wave-length) var(--rkui-wave-height) repeat-x,
+    linear-gradient(var(--rkui-line) 0 0) 0 calc(var(--rkui-wave-height) - 1px) / 100% 100%
+      no-repeat;
+  animation: rkui-wave-roll var(--rkui-wave-period) linear infinite;
+}
+
+.rkui-water::before {
+  inset-block-start: calc(-1 * (var(--rkui-wave-height) + var(--rkui-outline-width)));
+  background: var(--rkui-wave-line);
+}
+
+.rkui-water::after {
+  background: var(--rkui-water-fill);
+}
+
+/* The animation sets the level, so the level's transition would only drag behind it. */
+.rkui-water--rise {
+  transition: none;
+  animation: rkui-water-rise 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes rkui-wave-roll {
+  to {
+    translate: calc(-1 * var(--rkui-wave-length)) 0;
+  }
+}
+
+@keyframes rkui-water-rise {
+  from {
+    --rkui-water-level: 0.1;
+  }
+
+  to {
+    --rkui-water-level: 0.9;
+  }
+}
+
+/* Water spinner: a round flask of water with the hard shadow, and a glint on the side the
+   light comes from. */
+.rkui-spinner--water {
+  --rkui-spinner-fill: var(--rkui-sky);
+
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  inline-size: var(--rkui-spinner-size);
+  block-size: var(--rkui-spinner-size);
+  overflow: hidden;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: 50%;
+  background: var(--rkui-raised);
+  box-shadow: var(--rkui-shadow);
+}
+
+.rkui-spinner--water > .rkui-water {
+  --rkui-water-fill: var(--rkui-spinner-fill);
+  --rkui-wave-length: calc(var(--rkui-spinner-size) * 0.6);
+  --rkui-wave-height: calc(var(--rkui-spinner-size) / 6);
+  --rkui-wave-period: 0.9s;
+}
+
+.rkui-spinner--water::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  inline-size: 22%;
+  block-size: 22%;
+  margin: auto;
+  border-radius: 50%;
+  background: var(--rkui-glint);
+  translate: calc(var(--rkui-shadow-dx) * var(--rkui-spinner-size) * -0.2)
+    calc(var(--rkui-shadow-dy) * var(--rkui-spinner-size) * -0.2);
+}
+
+/* The filling button's empty part is its fill mixed away from the label colour, so the label
+   reads on the empty and the full part alike. */
+.rkui-button {
+  --rkui-water-empty-mix: var(--rkui-glint);
+  --rkui-water-empty-fill: 45%;
+}
+
+/* The section fill is ink by default, already the darkest, so its empty part takes less glint:
+   still lighter than the water, and dark enough for its cream label. */
+.rkui-button--section {
+  --rkui-water-empty-fill: 70%;
+}
+
+.rkui-button--navy {
+  --rkui-water-empty-mix: var(--rkui-line);
+}
+
+.rkui-button--coral,
+.rkui-button--grape {
+  --rkui-water-empty-mix: var(--rkui-fg);
+}
+
+.rkui-button[aria-busy='true']:has(> .rkui-water) {
+  --rkui-water-empty: color-mix(
+    in oklab,
+    var(--rkui-button-fill) var(--rkui-water-empty-fill),
+    var(--rkui-water-empty-mix)
+  );
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--rkui-water-empty);
+}
+
+/* The wave line is a darker shade of the fill, so it doesn't muddle the label as it passes. */
+.rkui-button > .rkui-water {
+  --rkui-water-fill: var(--rkui-button-fill);
+  --rkui-wave-line: color-mix(in oklab, var(--rkui-button-fill) 60%, var(--rkui-line));
+  --rkui-wave-length: 1.5rem;
+  --rkui-wave-height: 0.375rem;
+}
+
+.rkui-button:not([aria-busy='true']) > .rkui-water {
+  display: none;
+}
+
+/* Pending panels: the dashed grouping outline, holding the place of content still to come. The
+   water is a tint, so text on it stays readable. */
+.rkui-pending {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-block-size: 10rem;
+  padding: var(--rkui-space-4);
+  overflow: hidden;
+  border: var(--rkui-outline-width) dashed var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+}
+
+.rkui-pending > .rkui-water {
+  --rkui-water-fill: var(--rkui-sky-tint);
+  --rkui-wave-line: var(--rkui-line-unfilled);
+  --rkui-wave-length: 4rem;
+  --rkui-wave-height: 0.75rem;
+  --rkui-wave-period: 2.4s;
+}
+
+.rkui-pending > .rkui-water--rise {
+  animation-duration: 4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rkui-water::before,
+  .rkui-water::after {
+    animation: none;
+  }
+
+  .rkui-water--rise {
+    animation: rkui-spinner-fade 1.8s ease-in-out infinite alternate;
+  }
+}
+
+/* Forced colours drop the fills, so the water keeps only its wave line, in a system colour. */
+@media (forced-colors: active) {
+  .rkui-water,
+  .rkui-pending > .rkui-water {
+    --rkui-water-fill: Canvas;
+    --rkui-wave-line: CanvasText;
+
+    forced-color-adjust: none;
+  }
+
+  .rkui-button > .rkui-water {
+    --rkui-water-fill: ButtonFace;
+    --rkui-wave-line: ButtonText;
+  }
+
+  .rkui-spinner--water {
+    --rkui-spinner-fill: Highlight;
+
+    forced-color-adjust: none;
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
+  .rkui-spinner--water > .rkui-water {
+    --rkui-wave-line: CanvasText;
+  }
+
+  .rkui-spinner--water::after {
+    display: none;
+  }
+}

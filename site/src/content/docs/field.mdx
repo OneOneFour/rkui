@@ -1,0 +1,30 @@
+---
+title: Field
+description: A label, a control and a hint or error message, stacked.
+group: Form controls
+order: 40
+---
+
+import Demo from '../../components/Demo.astro'
+import Hint from '../../examples/field/hint.astro'
+import hintCode from '../../examples/field/hint.astro?raw'
+import ErrorDemo from '../../examples/field/error.astro'
+import errorCode from '../../examples/field/error.astro?raw'
+import AroundControl from '../../examples/field/around-control.astro'
+import around_controlCode from '../../examples/field/around-control.astro?raw'
+
+<Demo code={hintCode} label="Field with a hint" stack>
+  <Hint />
+</Demo>
+
+## Error
+
+<Demo code={errorCode} label="Field with an error" stack>
+  <ErrorDemo />
+</Demo>
+
+## Around another control
+
+<Demo code={around_controlCode} label="Field around a range" stack>
+  <AroundControl />
+</Demo>

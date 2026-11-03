@@ -1,0 +1,106 @@
+---
+/**
+ * Display equations: the wrappers, equation numbers, short and long references and the
+ * jump target, an aligned system, a long equation that scrolls, and a key result.
+ *
+ * @param theme the panel's theme, used to keep anchors unique across the two panels
+ */
+import Equation from './Equation.astro'
+import EquationReference from './EquationReference.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const anchor = (label: string) => `eq-${label}-${theme}`
+
+const FLOW = String.raw`\frac{\mathrm{d}\mathbf{x}}{\mathrm{d}t} = \mathbf{f}(\mathbf{x};\, \sigma, \rho, \beta)`
+const LORENZ_ROWS = String.raw`
+  \dot{x} &= \sigma (y - x) \tag{2} \\
+  \dot{y} &= x (\rho - z) - y \tag{3} \\
+  \dot{z} &= x y - \beta z \tag{4}`
+const LORENZ_SYSTEM = String.raw`\begin{aligned}
+  \dot{x} &= \sigma (y - x) \\
+  \dot{y} &= x (\rho - z) - y \\
+  \dot{z} &= x y - \beta z
+\end{aligned} \tag{2}`
+const MOMENTUM = String.raw`\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y}
+  + w \frac{\partial u}{\partial z} - f v = -\frac{1}{\rho} \frac{\partial p}{\partial x}
+  + \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2} \right) \tag{5}`
+const LYAPUNOV = String.raw`\lambda = \lim_{t \to \infty} \frac{1}{t} \ln \frac{\lVert \delta \mathbf{x}(t) \rVert}{\lVert \delta \mathbf{x}(0) \rVert}`
+
+const flow = anchor('flow')
+const lorenz = anchor('lorenz')
+const WRAPPERS = [
+  { label: 'bare (the default); the references below jump here', class: undefined, id: flow },
+  { label: 'slate panel (.rkui-equation--panel)', class: 'rkui-equation--panel' },
+  {
+    label: 'left rule (.rkui-equation--rule.rkui-scroll--bar)',
+    class: 'rkui-equation--rule rkui-scroll--bar',
+  },
+]
+---
+
+<SpecimenRow title="Display equations">
+  {WRAPPERS.map((wrapper) => (
+    <Specimen label={wrapper.label} wide>
+      <Equation tex={`${FLOW} \\tag{1}`} class={wrapper.class} id={wrapper.id} />
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<SpecimenRow title="Equation numbers">
+  <Specimen label="one number per row (align, a \tag on each row)" wide>
+    <Equation tex={`\\begin{align*}${LORENZ_ROWS}\\end{align*}`} />
+  </Specimen>
+  <Specimen label="one number for the whole system (aligned, in one tagged display)" wide>
+    <Equation tex={LORENZ_SYSTEM} id={lorenz} />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="References and the jump target">
+  <Specimen label="short pill in prose (click to jump to (1) or (2) above)" wide>
+    <p>
+      Pack my box with <EquationReference to={flow} number={1} /> five dozen liquor jugs:{' '}
+      <EquationReference to={lorenz} number={2} class="is-hover" /> hovered,{' '}
+      <EquationReference to={lorenz} number={2} class="is-focus" /> focused.
+    </p>
+  </Specimen>
+  <Specimen label="targeted (static copy of :target)" wide>
+    <Equation tex={`${FLOW} \\tag{1}`} class="is-target" />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Long references, for a sentence that starts with one (click to jump)">
+  <Specimen label="long pill with the function icon, beside a short one" wide>
+    <p>
+      <EquationReference to={lorenz} number={2} long /> packs my box with five dozen liquor jugs,
+      beside a short <EquationReference to={flow} number={1} />. Sphinx of black quartz, judge my
+      vow: <EquationReference to={lorenz} number={2} long class="is-hover" /> hovered,{' '}
+      <EquationReference to={flow} number={1} long class="is-focus" /> focused.
+    </p>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Long equations scroll (more under Overflow)">
+  <Specimen label="phone width, focused: scroll, or tab in and use the arrow keys" wide>
+    <div class="phone">
+      <Equation tex={MOMENTUM} class="is-focus" />
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Key result">
+  <Specimen label="raised dashed panel (.rkui-equation--key.rkui-scroll--bar)" wide>
+    <Equation tex={`${LYAPUNOV} \\tag{6}`} class="rkui-equation--key rkui-scroll--bar" />
+  </Specimen>
+</SpecimenRow>
+
+<style>
+  .phone {
+    max-inline-size: 20rem;
+  }
+</style>

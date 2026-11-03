@@ -1,0 +1,46 @@
+/* Widget frame: a dashed panel holding an interactive figure, with a title, a stage for the
+   canvas or SVG, and a row of controls.
+
+   <figure class="rkui-widget-frame">
+     <figcaption class="rkui-widget-frame-title">Title</figcaption>
+     <div class="rkui-widget-frame-stage"><canvas>…</canvas></div>
+     <div class="rkui-widget-frame-controls">buttons, sliders…</div>
+   </figure> */
+
+.rkui-widget-frame {
+  display: grid;
+  gap: var(--rkui-space-4);
+  margin: 0;
+  padding: var(--rkui-space-4);
+  border: var(--rkui-outline-width) dashed var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-lilac-tint);
+}
+
+.rkui-widget-frame-title {
+  font-family: var(--rkui-font-display);
+  font-size: var(--rkui-step-1);
+  font-weight: 800;
+  line-height: var(--rkui-line-height-heading);
+}
+
+.rkui-widget-frame-stage {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+}
+
+.rkui-widget-frame-stage > :is(canvas, svg, img) {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+.rkui-widget-frame-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--rkui-space-3);
+}

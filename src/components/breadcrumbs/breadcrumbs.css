@@ -1,0 +1,104 @@
+/* Breadcrumbs: the trail of pages leading to this one. The last link is the current page, marked
+   with aria-current="page". The separators are drawn here, so screen readers don't read them.
+
+   <nav class="rkui-breadcrumbs" aria-label="Breadcrumb">
+     <ol>
+       <li><a href="/">Home</a></li>
+       <li><a href="/section/">Section</a></li>
+       <li><a href="/section/page/" aria-current="page">Page</a></li>
+     </ol>
+   </nav>
+
+   Put .rkui-chip on each link for a trail of chips, or add .rkui-breadcrumbs--path to the nav for a
+   path bar: one pill frame with slashes between the links. */
+
+.rkui-breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--rkui-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rkui-breadcrumbs li {
+  display: flex;
+  align-items: center;
+  gap: var(--rkui-space-2);
+}
+
+/* A caret the shape of icons/caret-right.svg. */
+.rkui-breadcrumbs li + li::before {
+  content: '';
+  flex: none;
+  inline-size: 0.75em;
+  block-size: 0.75em;
+  background: var(--rkui-muted);
+  clip-path: polygon(25% 10%, 75% 50%, 25% 90%);
+}
+
+/* :where() keeps this below the chip's own current-page fill. */
+.rkui-breadcrumbs :where([aria-current='page']) {
+  color: var(--rkui-fg);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.rkui-breadcrumbs--path ol {
+  display: inline-flex;
+  gap: var(--rkui-space-1);
+  padding: var(--rkui-space-1);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-raised);
+}
+
+.rkui-breadcrumbs--path li {
+  gap: var(--rkui-space-1);
+}
+
+.rkui-breadcrumbs--path li + li::before {
+  inline-size: var(--rkui-outline-width);
+  block-size: 1em;
+  clip-path: none;
+  rotate: 20deg;
+}
+
+.rkui-breadcrumbs--path a {
+  padding: var(--rkui-space-1) var(--rkui-space-3);
+  border-radius: var(--rkui-radius-pill);
+  color: var(--rkui-fg);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.rkui-breadcrumbs--path a:hover {
+  box-shadow: inset 0 0 0 var(--rkui-outline-width) var(--rkui-line-unfilled);
+}
+
+.rkui-breadcrumbs--path a[aria-current='page'] {
+  background: var(--rkui-section);
+  color: var(--rkui-on-section);
+}
+
+/* The marker-pen focus (base.css) wins over the current page's fill. */
+.rkui-breadcrumbs--path a:focus-visible {
+  background: var(--rkui-focus);
+  color: var(--rkui-ink);
+}
+
+/* Forced colours replace the separators' background with the page colour, which would hide
+   them, and drop the current page's fill. */
+@media (forced-colors: active) {
+  .rkui-breadcrumbs li + li::before {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+
+  .rkui-breadcrumbs--path a[aria-current='page'] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

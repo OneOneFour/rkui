@@ -1,0 +1,31 @@
+/* Form fields: .rkui-field stacks a label, its control and an optional message; .rkui-check is an
+   inline label for a checkbox, radio or switch. */
+
+.rkui-field {
+  display: grid;
+  gap: var(--rkui-space-1);
+  justify-items: start;
+  font-weight: 600;
+}
+
+.rkui-field-message {
+  color: var(--rkui-muted);
+  font-size: var(--rkui-step--1);
+  font-weight: 400;
+}
+
+.rkui-field-message--error {
+  color: var(--rkui-coral-deep);
+  font-weight: 600;
+}
+
+.rkui-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rkui-space-2);
+  cursor: pointer;
+}
+
+.rkui-check:has(:disabled) {
+  cursor: not-allowed;
+}

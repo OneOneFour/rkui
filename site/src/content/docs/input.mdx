@@ -1,0 +1,54 @@
+---
+title: Input
+description: A text input in the toon frame.
+group: Form controls
+order: 41
+---
+
+import Demo from '../../components/Demo.astro'
+import Default from '../../examples/input/default.astro'
+import defaultCode from '../../examples/input/default.astro?raw'
+import Types from '../../examples/input/types.astro'
+import typesCode from '../../examples/input/types.astro?raw'
+import Hint from '../../examples/input/hint.astro'
+import hintCode from '../../examples/input/hint.astro?raw'
+import Disabled from '../../examples/input/disabled.astro'
+import disabledCode from '../../examples/input/disabled.astro?raw'
+import ErrorDemo from '../../examples/input/error.astro'
+import errorCode from '../../examples/input/error.astro?raw'
+import Hover from '../../examples/input/hover.astro'
+import hoverCode from '../../examples/input/hover.astro?raw'
+
+<Demo code={defaultCode} label="Default input" stack>
+  <Default />
+</Demo>
+
+## Types
+
+<Demo code={typesCode} label="Input types" stack>
+  <Types />
+</Demo>
+
+## With a hint
+
+<Demo code={hintCode} label="Input with a hint" stack>
+  <Hint />
+</Demo>
+
+## Disabled
+
+<Demo code={disabledCode} label="Disabled input" stack>
+  <Disabled />
+</Demo>
+
+## Error
+
+<Demo code={errorCode} label="Input with an error" stack>
+  <ErrorDemo />
+</Demo>
+
+## Hover cues
+
+<Demo code={hoverCode} label="Hover cue options" stack>
+  <Hover />
+</Demo>

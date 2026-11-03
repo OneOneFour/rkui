@@ -1,0 +1,41 @@
+---
+/**
+ * The Light / Dark / System theme switch: rkui's `<rkui-theme-toggle>` markup with icons, a
+ * segmented group of radios whose script stores the choice. It takes no props.
+ *
+ * @example
+ * <ThemeToggle />
+ */
+import Sun from '@oneonefour/rkui/icons/sun.svg'
+import Moon from '@oneonefour/rkui/icons/moon.svg'
+import CircleHalf from '@oneonefour/rkui/icons/circle-half.svg'
+import { uniqueId } from '../../shared/unique-id'
+
+const options = [
+  { value: 'light', label: 'Light', Icon: Sun },
+  { value: 'dark', label: 'Dark', Icon: Moon },
+  { value: 'system', label: 'System', Icon: CircleHalf },
+]
+
+// Radios with the same name form one group across the page, so each toggle needs its own name.
+const name = uniqueId('rkui-theme')
+// No radio starts checked: the script checks the stored choice, so the sliding pill appears there
+// instead of sliding from a default on every page load.
+---
+
+<rkui-theme-toggle>
+  <fieldset class="rkui-segmented">
+    <legend class="rkui-visually-hidden">Theme</legend>
+    {options.map(({ value, label, Icon }) => (
+      <label>
+        <input type="radio" name={name} value={value} />
+        <Icon class="rkui-icon" aria-hidden="true" />
+        {label}
+      </label>
+    ))}
+  </fieldset>
+</rkui-theme-toggle>
+
+<script>
+  import '@oneonefour/rkui/components/theme-toggle/theme-toggle.js'
+</script>

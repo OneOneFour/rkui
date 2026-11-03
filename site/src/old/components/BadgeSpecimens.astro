@@ -1,0 +1,137 @@
+---
+/**
+ * Inline badges, solid and tint, in every hue; corner badge edge options A–C on a picture and an
+ * icon button; and status dots. The pictures are token-coloured placeholders.
+ */
+import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import ImageIcon from '@oneonefour/rkui/icons/image.svg'
+import EnvelopeIcon from '@oneonefour/rkui/icons/envelope-simple.svg'
+import SparkleIcon from '@oneonefour/rkui/icons/sparkle.svg'
+
+const HUES = ['navy', 'teal', 'green', 'coral', 'grape', 'tangerine']
+const EDGES = [
+  { label: 'A: outline', class: '' },
+  { label: 'B: ring in the page colour', class: 'rkui-badge--ring' },
+  { label: 'C: sticker (outline and shadow)', class: 'rkui-badge--sticker' },
+]
+---
+
+<SpecimenRow title="Inline">
+  <Specimen label="default (yellow)">
+    <span class="rkui-badge">Label</span>
+  </Specimen>
+  {HUES.map((hue) => (
+    <Specimen label={hue}>
+      <span class={`rkui-badge rkui-badge--${hue}`}>Label</span>
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<SpecimenRow title="Inline, tint">
+  <Specimen label="default (yellow)">
+    <span class="rkui-badge rkui-badge--tint">Label</span>
+  </Specimen>
+  {HUES.map((hue) => (
+    <Specimen label={hue}>
+      <span class={`rkui-badge rkui-badge--tint rkui-badge--${hue}`}>Label</span>
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<SpecimenRow title="Inline, in text">
+  <Specimen label="solid, with an icon">
+    <p class="in-text">
+      Lorem ipsum
+      <span class="rkui-badge rkui-badge--grape">
+        <SparkleIcon class="rkui-icon" />
+        Label
+      </span>
+    </p>
+  </Specimen>
+  <Specimen label="tint, with an icon">
+    <p class="in-text">
+      Lorem ipsum
+      <span class="rkui-badge rkui-badge--tint rkui-badge--tangerine">
+        <SparkleIcon class="rkui-icon" />
+        Label
+      </span>
+    </p>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="On a corner">
+  {EDGES.map((edge) => (
+    <Specimen label={edge.label}>
+      <span class="rkui-badge-host rkui-badge-host--round">
+        <span class="picture picture--round" role="img" aria-label="Picture">
+          <ImageIcon class="rkui-icon" />
+        </span>
+        <span class:list={['rkui-badge', 'rkui-badge--coral', 'rkui-badge--corner', edge.class]}>
+          3<span class="rkui-visually-hidden"> new</span>
+        </span>
+      </span>
+      <Button hue="teal" class="rkui-badge-host">
+        <EnvelopeIcon class="rkui-icon" />
+        <span class="rkui-visually-hidden">Messages</span>
+        <span class:list={['rkui-badge', 'rkui-badge--coral', 'rkui-badge--corner', edge.class]}>
+          12<span class="rkui-visually-hidden"> new</span>
+        </span>
+      </Button>
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<SpecimenRow title="Status dots and long counts">
+  <Specimen label="dot, bottom corner of a round picture">
+    <span class="rkui-badge-host rkui-badge-host--round">
+      <span class="picture picture--round" role="img" aria-label="Picture">
+        <ImageIcon class="rkui-icon" />
+      </span>
+      <span class="rkui-badge rkui-badge--green rkui-badge--corner rkui-badge--dot rkui-badge--bottom">
+        <span class="rkui-visually-hidden">Online</span>
+      </span>
+    </span>
+  </Specimen>
+  <Specimen label="dot, top corner of a square picture">
+    <span class="rkui-badge-host">
+      <span class="picture" role="img" aria-label="Picture">
+        <ImageIcon class="rkui-icon" />
+      </span>
+      <span class="rkui-badge rkui-badge--coral rkui-badge--corner rkui-badge--dot">
+        <span class="rkui-visually-hidden">New</span>
+      </span>
+    </span>
+  </Specimen>
+  <Specimen label="long count">
+    <span class="rkui-badge-host">
+      <span class="picture" role="img" aria-label="Picture">
+        <ImageIcon class="rkui-icon" />
+      </span>
+      <span class="rkui-badge rkui-badge--coral rkui-badge--corner">99+</span>
+    </span>
+  </Specimen>
+</SpecimenRow>
+
+<style>
+  .in-text {
+    margin: 0;
+  }
+
+  /* A stand-in for a photo or avatar. */
+  .picture {
+    --rkui-icon-fill: var(--rkui-teal);
+
+    display: grid;
+    place-items: center;
+    inline-size: 4rem;
+    block-size: 4rem;
+    border-radius: var(--rkui-radius);
+    background: var(--rkui-teal-tint);
+  }
+
+  .picture--round {
+    border-radius: 50%;
+  }
+</style>

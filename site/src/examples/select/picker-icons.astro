@@ -1,0 +1,21 @@
+---
+import Select from '@oneonefour/rkui/components/select/Select.astro'
+import SunIcon from '@oneonefour/rkui/icons/sun.svg'
+import MoonIcon from '@oneonefour/rkui/icons/moon.svg'
+import CircleHalfIcon from '@oneonefour/rkui/icons/circle-half.svg'
+---
+
+<Select label="Theme" name="select-icons" picker showSelected>
+  <option value="one">
+    <SunIcon class="rkui-icon rkui-icon--small" aria-hidden="true" />
+    Option one
+  </option>
+  <option value="two">
+    <MoonIcon class="rkui-icon rkui-icon--small" aria-hidden="true" />
+    Option two
+  </option>
+  <option value="three">
+    <CircleHalfIcon class="rkui-icon rkui-icon--small" aria-hidden="true" />
+    Option three
+  </option>
+</Select>

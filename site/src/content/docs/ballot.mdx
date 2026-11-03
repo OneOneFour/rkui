@@ -1,0 +1,84 @@
+---
+title: Ballot
+description: A column of options, each a tile beside a text box.
+group: Form controls
+order: 33
+---
+
+import Demo from '../../components/Demo.astro'
+import Default from '../../examples/ballot/default.astro'
+import defaultCode from '../../examples/ballot/default.astro?raw'
+import Text from '../../examples/ballot/text.astro'
+import textCode from '../../examples/ballot/text.astro?raw'
+import Icons from '../../examples/ballot/icons.astro'
+import iconsCode from '../../examples/ballot/icons.astro?raw'
+import Colors from '../../examples/ballot/colors.astro'
+import colorsCode from '../../examples/ballot/colors.astro?raw'
+import MarkEnd from '../../examples/ballot/mark-end.astro'
+import markEndCode from '../../examples/ballot/mark-end.astro?raw'
+import Overlap from '../../examples/ballot/overlap.astro'
+import overlapCode from '../../examples/ballot/overlap.astro?raw'
+import Inside from '../../examples/ballot/inside.astro'
+import insideCode from '../../examples/ballot/inside.astro?raw'
+import Tight from '../../examples/ballot/tight.astro'
+import tightCode from '../../examples/ballot/tight.astro?raw'
+import TightOverlap from '../../examples/ballot/tight-overlap.astro'
+import tightOverlapCode from '../../examples/ballot/tight-overlap.astro?raw'
+
+<Demo code={defaultCode} label="Ballot" stack>
+  <Default />
+</Demo>
+
+## Longer text
+
+<Demo code={textCode} label="Ballot with longer text" stack>
+  <Text />
+</Demo>
+
+## Icons, several choices
+
+Add `multiple` for checkboxes. Give an option a `hue` and `tint` to colour its checked box.
+
+<Demo code={iconsCode} label="Ballot with icons" stack>
+  <Icons />
+</Demo>
+
+## Colours
+
+A `hue` on an option with no icon or mark fills its tile with that colour.
+
+<Demo code={colorsCode} label="Ballot with colour tiles" stack>
+  <Colors />
+</Demo>
+
+## Tiles on the right
+
+<Demo code={markEndCode} label="Ballot with tiles on the right" stack>
+  <MarkEnd />
+</Demo>
+
+## Overlap
+
+<Demo code={overlapCode} label="Ballot with overlapping tiles" stack>
+  <Overlap />
+</Demo>
+
+## Inside
+
+<Demo code={insideCode} label="Ballot with tiles inside" stack>
+  <Inside />
+</Demo>
+
+## Tight
+
+<Demo code={tightCode} label="Tight ballot" stack>
+  <Tight />
+</Demo>
+
+## Tight and overlap
+
+The layout props combine freely.
+
+<Demo code={tightOverlapCode} label="Tight ballot with overlapping tiles" stack>
+  <TightOverlap />
+</Demo>

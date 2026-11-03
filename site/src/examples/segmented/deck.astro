@@ -1,0 +1,22 @@
+---
+import Segmented from '@oneonefour/rkui/components/segmented/Segmented.astro'
+import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.astro'
+import Play from '@oneonefour/rkui/icons/play.svg'
+import Pause from '@oneonefour/rkui/icons/pause.svg'
+import Reset from '@oneonefour/rkui/icons/arrow-counter-clockwise.svg'
+---
+
+<Segmented legend="Transport" deck>
+  <SegmentedOption value="play" checked>
+    <Play slot="icon" />
+    Play
+  </SegmentedOption>
+  <SegmentedOption value="pause">
+    <Pause slot="icon" />
+    Pause
+  </SegmentedOption>
+  <SegmentedOption value="reset">
+    <Reset slot="icon" />
+    Reset
+  </SegmentedOption>
+</Segmented>

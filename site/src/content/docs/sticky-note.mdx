@@ -1,0 +1,40 @@
+---
+title: Sticky note
+description: A card or a callout drawn as a sticky note.
+group: Containers
+order: 70
+---
+
+import Demo from '../../components/Demo.astro'
+import Hues from '../../examples/sticky-note/hues.astro'
+import huesCode from '../../examples/sticky-note/hues.astro?raw'
+import Callouts from '../../examples/sticky-note/callouts.astro'
+import calloutsCode from '../../examples/sticky-note/callouts.astro?raw'
+import Linked from '../../examples/sticky-note/linked.astro'
+import linkedCode from '../../examples/sticky-note/linked.astro?raw'
+import Options from '../../examples/sticky-note/options.astro'
+import optionsCode from '../../examples/sticky-note/options.astro?raw'
+
+`StickyNote` renders a card, or a callout with `as="callout"`, drawn as a sticky note.
+
+<Demo code={huesCode} label="Sticky notes in every hue">
+  <Hues />
+</Demo>
+
+## Callouts
+
+<Demo code={calloutsCode} label="Sticky note callouts">
+  <Callouts />
+</Demo>
+
+## Linked
+
+<Demo code={linkedCode} label="Linked sticky notes">
+  <Linked />
+</Demo>
+
+## Tilt, tape and pin
+
+<Demo code={optionsCode} label="Tilted, taped and pinned notes">
+  <Options />
+</Demo>

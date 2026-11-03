@@ -1,0 +1,213 @@
+/* The states every interactive component shares: the pop, the flush press for unfilled buttons,
+   the pushed-in deck key and tile, the focus band and disabled. Loaded after the components, so
+   these win over their rest styles. The range slider's thumb can't join these lists
+   (pseudo-elements), so range.css repeats them. */
+
+/* Pop: hover lifts the element and grows its shadow; press sinks it into the shadow. A ballot row
+   pops its tile from anywhere on the row; :where() keeps that below the tile's checked, focused
+   and disabled states. */
+:is(
+  .rkui-button,
+  .rkui-chip,
+  .rkui-card--link,
+  .rkui-checkbox,
+  .rkui-radio,
+  .rkui-switch,
+  .rkui-tile,
+  .rkui-color-input,
+  .rkui-logo
+) {
+  box-shadow: var(--rkui-shadow);
+  transition:
+    translate var(--rkui-duration-fast) ease,
+    box-shadow var(--rkui-duration-fast) ease;
+}
+
+@media (hover: hover) {
+  :is(
+    .rkui-button,
+    .rkui-chip,
+    .rkui-card--link,
+    .rkui-checkbox,
+    .rkui-radio,
+    .rkui-switch,
+    .rkui-tile,
+    .rkui-color-input,
+    .rkui-logo
+  ):hover,
+  .rkui-segmented--deck label:hover,
+  .rkui-sidebar--deck .rkui-sidebar-link:where(:not([aria-current='page'])):hover,
+  :where(.rkui-ballot-option:hover) > .rkui-tile {
+    box-shadow: var(--rkui-shadow-hover);
+    translate: calc(-1 * var(--rkui-lift-offset-x)) calc(-1 * var(--rkui-lift-offset-y));
+  }
+}
+
+:is(
+  .rkui-button,
+  .rkui-chip,
+  .rkui-card--link,
+  .rkui-checkbox,
+  .rkui-radio,
+  .rkui-switch,
+  .rkui-tile,
+  .rkui-color-input,
+  .rkui-logo
+):active,
+.rkui-segmented--deck label:active,
+.rkui-sidebar--deck .rkui-sidebar-link:where(:not([aria-current='page'])):active,
+:where(.rkui-ballot-option:active) > .rkui-tile {
+  box-shadow: var(--rkui-shadow-pressed);
+  translate: var(--rkui-press-offset-x) var(--rkui-press-offset-y);
+}
+
+/* A busy button keeps its resting shadow and doesn't pop, since it can't be used until it's done.
+   :where() keeps this below the focus band. */
+.rkui-button:where([aria-busy='true']) {
+  cursor: progress;
+}
+
+.rkui-button:where([aria-busy='true']):is(:hover, :active) {
+  box-shadow: var(--rkui-shadow);
+  translate: none;
+}
+
+/* Unfilled buttons sit flush. Pressed, the frame stays put and gets an inset shadow on the raised
+   background (so the dark inset shows in dark mode), and the label sinks: the padding shifts by
+   --rkui-press-offset, which moves the label without resizing. */
+.rkui-button--unfilled,
+.rkui-button--unfilled:hover {
+  box-shadow: none;
+  translate: none;
+}
+
+.rkui-button--unfilled:active {
+  background: var(--rkui-raised);
+  box-shadow: var(--rkui-shadow-inset);
+  translate: none;
+  padding-block: calc(var(--rkui-button-padding-block) + var(--rkui-press-offset-y))
+    calc(var(--rkui-button-padding-block) - var(--rkui-press-offset-y));
+  padding-inline: calc(var(--rkui-button-padding-inline) + var(--rkui-press-offset-x))
+    calc(var(--rkui-button-padding-inline) - var(--rkui-press-offset-x));
+}
+
+/* A checked deck key, or a sidebar deck's current page, is pushed in by the whole shadow offset,
+   flush with the page, and doesn't pop. */
+.rkui-segmented--deck label:has(:checked),
+.rkui-sidebar--deck .rkui-sidebar-link[aria-current='page'] {
+  box-shadow: none;
+  translate: var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y);
+}
+
+/* A checked tile, or the current page's, is pushed in the same way, with an inset shadow
+   instead. */
+.rkui-tile:is(:has(:checked), [aria-current='page']) {
+  box-shadow: var(--rkui-shadow-inset);
+  translate: var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y);
+}
+
+/* Folder tabs pop with their position offsets instead of translate. A translate transition puts
+   the tab on its own compositor layer, which snaps to whole pixels and can open a hairline at the
+   join with the sheet. The clip at the sheet's edge (folder.css) moves with the offsets. */
+.rkui-folder-tab {
+  inset-block-start: var(--rkui-folder-tab-y);
+  inset-inline-start: var(--rkui-folder-tab-x);
+  box-shadow: var(--rkui-shadow);
+  transition:
+    inset-block-start var(--rkui-duration-fast) ease,
+    inset-inline-start var(--rkui-duration-fast) ease,
+    clip-path var(--rkui-duration-fast) ease,
+    box-shadow var(--rkui-duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .rkui-folder-tab:hover {
+    --rkui-folder-tab-x: calc(-1 * var(--rkui-lift-offset-x));
+    --rkui-folder-tab-y: calc(-1 * var(--rkui-lift-offset-y));
+
+    box-shadow: var(--rkui-shadow-hover);
+  }
+}
+
+.rkui-folder-tab:active {
+  --rkui-folder-tab-x: var(--rkui-press-offset-x);
+  --rkui-folder-tab-y: var(--rkui-press-offset-y);
+
+  box-shadow: var(--rkui-shadow-pressed);
+}
+
+/* The selected folder tab is joined to the sheet and doesn't pop; its shadow is on ::before
+   (folder.css). It takes the selected state at once, so the press it was clicked with doesn't
+   ease back across the join. */
+.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']) {
+  --rkui-folder-tab-x: 0px;
+  --rkui-folder-tab-y: 0px;
+
+  box-shadow: none;
+  transition: none;
+}
+
+/* Focus band. Chips, cards, tiles, colour input frames and segmented groups (deck keys included)
+   show it for the input or link inside them; a segmented group shows it on the group, never on
+   one option. Chips and tiles can also be links, focused themselves. */
+:is(
+  .rkui-button,
+  .rkui-chip,
+  .rkui-tile,
+  .rkui-checkbox,
+  .rkui-radio,
+  .rkui-switch,
+  .rkui-input,
+  .rkui-select,
+  .rkui-logo
+):focus-visible,
+:is(.rkui-folder-tab, .rkui-folder-sheet):focus-visible,
+.rkui-sidebar--deck .rkui-sidebar-link:focus-visible,
+:is(.rkui-chip, .rkui-card--link, .rkui-segmented, .rkui-tile, .rkui-color-input):has(
+  :focus-visible
+) {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-focus-offset);
+  box-shadow: none;
+}
+
+/* The selected folder tab's band is drawn by its ::before in place of its shadow, and stops at
+   the sheet's edge like the tab's outline does. */
+.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']):focus-visible {
+  outline: none;
+}
+
+.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']):focus-visible::before {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-focus-offset);
+  box-shadow: none;
+  clip-path: inset(-100vmax -100vmax 0);
+}
+
+/* A focused sheet comes in front of the tabs, so its whole focus band shows, and loses its
+   shadow, so its selected tab does too. */
+.rkui-folder-sheet:focus-visible {
+  z-index: 3;
+}
+
+.rkui-folder:has(> .rkui-folder-sheet:focus-visible) > .rkui-folder-tabs .rkui-folder-tab::before {
+  box-shadow: none;
+}
+
+/* Disabled: dimmed and flat, with no pop. */
+:is(
+  .rkui-button,
+  .rkui-checkbox,
+  .rkui-radio,
+  .rkui-switch,
+  .rkui-input,
+  .rkui-select,
+  .rkui-range
+):disabled,
+:is(.rkui-chip, .rkui-segmented label, .rkui-tile, .rkui-color-input):has(:disabled),
+.rkui-ballot-option:has(:disabled) > .rkui-ballot-text {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  translate: none;
+}

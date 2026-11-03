@@ -1,0 +1,17 @@
+---
+import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Tooltip from '@oneonefour/rkui/components/tooltip/Tooltip.astro'
+---
+
+<div class="room-above">
+  <Tooltip id="tooltip-toon" text="Save the file" variant="toon">
+    <Button aria-describedby="tooltip-toon">Save</Button>
+  </Tooltip>
+</div>
+
+<style>
+  /* The bubble opens above its button, so leave room for it. */
+  .room-above {
+    padding-block-start: var(--rkui-space-7);
+  }
+</style>

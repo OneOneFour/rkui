@@ -1,0 +1,18 @@
+---
+import Sidebar from '@oneonefour/rkui/components/sidebar/Sidebar.astro'
+import SidebarGroup from '@oneonefour/rkui/components/sidebar/SidebarGroup.astro'
+import SidebarLink from '@oneonefour/rkui/components/sidebar/SidebarLink.astro'
+---
+
+<Sidebar label="Short example" style="max-inline-size: 16rem">
+  <SidebarGroup heading="Start">
+    <SidebarLink href="#" current>
+      Getting started
+    </SidebarLink>
+    <SidebarLink href="#">Install</SidebarLink>
+  </SidebarGroup>
+  <SidebarGroup heading="Form controls">
+    <SidebarLink href="#">Button</SidebarLink>
+    <SidebarLink href="#">Checkbox</SidebarLink>
+  </SidebarGroup>
+</Sidebar>

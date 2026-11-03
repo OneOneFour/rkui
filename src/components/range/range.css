@@ -1,0 +1,111 @@
+/* Range slider: a pill track and an outlined thumb that pops. WebKit and Firefox name the parts
+   differently and one unknown pseudo-element drops a whole selector list, so each part is styled
+   twice; the states set custom properties that both thumbs read. Put an <output
+   class="rkui-output"> beside it in a .rkui-range-row for a readout. */
+
+.rkui-range {
+  --rkui-track-height: 0.75rem;
+  --rkui-thumb-size: 1.5rem;
+  --rkui-thumb-shadow: var(--rkui-shadow);
+  /* How far the thumb sits towards the light. At rest it is one press offset off the track's
+     centre, so pressed in, it is centred. */
+  --rkui-thumb-shift: calc(-1 * var(--rkui-press-offset));
+
+  appearance: none;
+  inline-size: 100%;
+  block-size: calc(var(--rkui-thumb-size) + var(--rkui-space-2));
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rkui-range::-webkit-slider-runnable-track {
+  box-sizing: border-box;
+  block-size: var(--rkui-track-height);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-raised);
+}
+
+.rkui-range::-moz-range-track {
+  box-sizing: border-box;
+  block-size: var(--rkui-track-height);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-raised);
+}
+
+.rkui-range::-webkit-slider-thumb {
+  appearance: none;
+  box-sizing: border-box;
+  inline-size: var(--rkui-thumb-size);
+  block-size: var(--rkui-thumb-size);
+  /* WebKit puts the thumb at the top of the track's content box, inside the track border. */
+  margin-block-start: calc(
+    (var(--rkui-track-height) - var(--rkui-thumb-size)) / 2 - var(--rkui-outline-width)
+  );
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: 50%;
+  background: var(--rkui-selected);
+  box-shadow: var(--rkui-thumb-shadow);
+  translate: calc(var(--rkui-shadow-dx) * var(--rkui-thumb-shift))
+    calc(var(--rkui-shadow-dy) * var(--rkui-thumb-shift));
+  transition:
+    translate var(--rkui-duration-fast) ease,
+    box-shadow var(--rkui-duration-fast) ease;
+}
+
+.rkui-range::-moz-range-thumb {
+  box-sizing: border-box;
+  inline-size: var(--rkui-thumb-size);
+  block-size: var(--rkui-thumb-size);
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: 50%;
+  background: var(--rkui-selected);
+  box-shadow: var(--rkui-thumb-shadow);
+  translate: calc(var(--rkui-shadow-dx) * var(--rkui-thumb-shift))
+    calc(var(--rkui-shadow-dy) * var(--rkui-thumb-shift));
+  transition:
+    translate var(--rkui-duration-fast) ease,
+    box-shadow var(--rkui-duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .rkui-range:hover {
+    --rkui-thumb-shadow: var(--rkui-shadow-hover);
+    --rkui-thumb-shift: calc(-1 * (var(--rkui-press-offset) + var(--rkui-lift-offset)));
+  }
+}
+
+.rkui-range:active {
+  --rkui-thumb-shadow: var(--rkui-shadow-pressed);
+  --rkui-thumb-shift: 0px;
+}
+
+/* The focus band is a spread shadow on the thumb. Forced-colours mode drops shadows, so the
+   transparent outline keeps a visible ring there. */
+.rkui-range:focus-visible {
+  --rkui-thumb-shadow: 0 0 0 var(--rkui-focus-width) var(--rkui-focus);
+  outline: var(--rkui-outline-width) solid transparent;
+}
+
+.rkui-range:disabled {
+  --rkui-thumb-shadow: none;
+  --rkui-thumb-shift: 0px;
+}
+
+.rkui-range-row {
+  display: flex;
+  align-items: center;
+  gap: var(--rkui-space-3);
+  inline-size: 100%;
+  max-inline-size: 30rem;
+}
+
+.rkui-output {
+  min-inline-size: 5ch;
+  font-family: var(--rkui-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: end;
+}

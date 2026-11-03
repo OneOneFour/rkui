@@ -1,0 +1,24 @@
+---
+/**
+ * A native colour input on its own, with no palette, in a frame that pops and a paint brush icon.
+ * Other attributes (name, value, disabled, ...) go on the input; `class` goes on the frame.
+ *
+ * @param label the input's accessible name
+ *
+ * Usage: <ColorInput label="Background colour" name="background" />
+ */
+import type { HTMLAttributes } from 'astro/types'
+import PaintBrushIcon from '@oneonefour/rkui/icons/paint-brush.svg'
+
+interface Props extends Omit<HTMLAttributes<'input'>, 'type'> {
+  /** The input's accessible name. */
+  label: string
+}
+
+const { label, class: className, ...attrs } = Astro.props
+---
+
+<span class:list={['rkui-color-input', className]}>
+  <input type="color" aria-label={label} {...attrs} />
+  <PaintBrushIcon aria-hidden="true" />
+</span>

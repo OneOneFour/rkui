@@ -1,0 +1,80 @@
+---
+title: Colour picker
+description: Colour tiles from the palette, and a native colour input.
+group: Form controls
+order: 32
+---
+
+import Demo from '../../components/Demo.astro'
+import Palette from '../../examples/color-picker/palette.astro'
+import paletteCode from '../../examples/color-picker/palette.astro?raw'
+import Choose from '../../examples/color-picker/choose.astro'
+import chooseCode from '../../examples/color-picker/choose.astro?raw'
+import Custom from '../../examples/color-picker/custom.astro'
+import customCode from '../../examples/color-picker/custom.astro?raw'
+import Disabled from '../../examples/color-picker/disabled.astro'
+import disabledCode from '../../examples/color-picker/disabled.astro?raw'
+import FlairBrush from '../../examples/color-picker/flair-brush.astro'
+import flairBrushCode from '../../examples/color-picker/flair-brush.astro?raw'
+import FlairDrops from '../../examples/color-picker/flair-drops.astro'
+import flairDropsCode from '../../examples/color-picker/flair-drops.astro?raw'
+import FlairStroke from '../../examples/color-picker/flair-stroke.astro'
+import flairStrokeCode from '../../examples/color-picker/flair-stroke.astro?raw'
+import Input from '../../examples/color-picker/input.astro'
+import inputCode from '../../examples/color-picker/input.astro?raw'
+
+<Demo code={paletteCode} label="Palette tiles">
+  <Palette />
+</Demo>
+
+## Choosing the tiles
+
+With no children the picker shows every hue. Give it ColorTile children for a smaller palette.
+
+<Demo code={chooseCode} label="Colour picker with chosen tiles">
+  <Choose />
+</Demo>
+
+## With a custom colour
+
+The last tile opens the browser's colour picker.
+
+<Demo code={customCode} label="Palette with a custom colour tile">
+  <Custom />
+</Demo>
+
+## Disabled
+
+<Demo code={disabledCode} label="Disabled colour picker">
+  <Disabled />
+</Demo>
+
+## Flair A: paint brush
+
+Open, see DECISIONS.
+
+<Demo code={flairBrushCode} label="Colour picker, brush flair">
+  <FlairBrush />
+</Demo>
+
+## Flair B: paint drops
+
+Open, see DECISIONS.
+
+<Demo code={flairDropsCode} label="Colour picker, drops flair">
+  <FlairDrops />
+</Demo>
+
+## Flair C: palette and stroke
+
+Open, see DECISIONS.
+
+<Demo code={flairStrokeCode} label="Colour picker, stroke flair">
+  <FlairStroke />
+</Demo>
+
+## Colour input on its own
+
+<Demo code={inputCode} label="Colour input">
+  <Input />
+</Demo>

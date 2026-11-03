@@ -1,0 +1,206 @@
+---
+/**
+ * The segmented control and its deck keys variant, live with icons and text-only, and their option
+ * states, and deck keys with and without a plate.
+ *
+ * @param theme the panel's theme, used to keep radio names unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import SunIcon from '@oneonefour/rkui/icons/sun.svg'
+import MoonIcon from '@oneonefour/rkui/icons/moon.svg'
+import CircleHalfIcon from '@oneonefour/rkui/icons/circle-half.svg'
+import PlayIcon from '@oneonefour/rkui/icons/play.svg'
+import PauseIcon from '@oneonefour/rkui/icons/pause.svg'
+import ArrowCounterClockwiseIcon from '@oneonefour/rkui/icons/arrow-counter-clockwise.svg'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const OPTIONS = [
+  { value: 'one', label: 'One', Icon: SunIcon },
+  { value: 'two', label: 'Two', Icon: MoonIcon },
+  { value: 'three', label: 'Three', Icon: CircleHalfIcon },
+]
+const DECK_OPTIONS = [
+  { value: 'play', label: 'Play', Icon: PlayIcon },
+  { value: 'pause', label: 'Pause', Icon: PauseIcon },
+  { value: 'reset', label: 'Reset', Icon: ArrowCounterClockwiseIcon },
+]
+const STATES = [
+  { label: 'hover', class: 'is-hover' },
+  { label: 'pressed', class: 'is-active' },
+]
+const DECK_GROUPS = [
+  { label: 'no plate', class: '' },
+  { label: 'on a plate', class: 'rkui-segmented--plate' },
+]
+---
+
+<SpecimenRow title="Segmented control">
+  <Specimen label="live, with icons (the fill slides)">
+    <fieldset class="rkui-segmented">
+      <legend class="rkui-visually-hidden">Specimen</legend>
+      {OPTIONS.map(({ value, label, Icon }, i) => (
+        <label>
+          <input type="radio" name={`${theme}-segmented-icons`} value={value} checked={i === 0} />
+          <Icon class="rkui-icon" />
+          {label}
+        </label>
+      ))}
+    </fieldset>
+  </Specimen>
+  <Specimen label="live, text only (the fill slides)">
+    <fieldset class="rkui-segmented">
+      <legend class="rkui-visually-hidden">Specimen</legend>
+      {OPTIONS.map(({ value, label }, i) => (
+        <label>
+          <input type="radio" name={`${theme}-segmented-text`} value={value} checked={i === 2} />
+          {label}
+        </label>
+      ))}
+    </fieldset>
+  </Specimen>
+  {STATES.map((state, i) => (
+    <Specimen label={`second option ${state.label}`}>
+      <fieldset class="rkui-segmented">
+        <legend class="rkui-visually-hidden">Specimen</legend>
+        <label>
+          <input type="radio" name={`${theme}-segmented-state-${i}`} checked />
+          One
+        </label>
+        <label class={state.class}>
+          <input type="radio" name={`${theme}-segmented-state-${i}`} />
+          Two
+        </label>
+      </fieldset>
+    </Specimen>
+  ))}
+  <Specimen label="focused (band on the frame)">
+    <fieldset class="rkui-segmented is-focus">
+      <legend class="rkui-visually-hidden">Specimen</legend>
+      <label>
+        <input type="radio" name={`${theme}-segmented-focus`} /> One
+      </label>
+      <label>
+        <input type="radio" name={`${theme}-segmented-focus`} checked /> Two
+      </label>
+    </fieldset>
+  </Specimen>
+  <Specimen label="second option disabled">
+    <fieldset class="rkui-segmented">
+      <legend class="rkui-visually-hidden">Specimen</legend>
+      <label>
+        <input type="radio" name={`${theme}-segmented-disabled`} checked /> One
+      </label>
+      <label>
+        <input type="radio" name={`${theme}-segmented-disabled`} disabled /> Two
+      </label>
+    </fieldset>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Deck keys">
+  <Specimen label="live, with icons">
+    <fieldset class="rkui-segmented rkui-segmented--deck">
+      <legend class="rkui-visually-hidden">Specimen</legend>
+      {DECK_OPTIONS.map(({ value, label, Icon }, i) => (
+        <label>
+          <input type="radio" name={`${theme}-deck-icons`} value={value} checked={i === 0} />
+          <Icon class="rkui-icon" />
+          {label}
+        </label>
+      ))}
+    </fieldset>
+  </Specimen>
+  <Specimen label="live, text only">
+    <fieldset class="rkui-segmented rkui-segmented--deck">
+      <legend class="rkui-visually-hidden">Specimen</legend>
+      {OPTIONS.map(({ value, label }, i) => (
+        <label>
+          <input type="radio" name={`${theme}-deck-text`} value={value} checked={i === 2} />
+          {label}
+        </label>
+      ))}
+    </fieldset>
+  </Specimen>
+  {STATES.map((state, i) => (
+    <Specimen label={`second key ${state.label}`}>
+      <fieldset class="rkui-segmented rkui-segmented--deck">
+        <legend class="rkui-visually-hidden">Specimen</legend>
+        <label>
+          <input type="radio" name={`${theme}-deck-state-${i}`} checked />
+          One
+        </label>
+        <label class={state.class}>
+          <input type="radio" name={`${theme}-deck-state-${i}`} />
+          Two
+        </label>
+      </fieldset>
+    </Specimen>
+  ))}
+  <Specimen label="focused (band on the group)">
+    <fieldset class="rkui-segmented rkui-segmented--deck is-focus">
+      <legend class="rkui-visually-hidden">Specimen</legend>
+      <label>
+        <input type="radio" name={`${theme}-deck-focus`} /> One
+      </label>
+      <label>
+        <input type="radio" name={`${theme}-deck-focus`} checked /> Two
+      </label>
+    </fieldset>
+  </Specimen>
+  <Specimen label="second key disabled">
+    <fieldset class="rkui-segmented rkui-segmented--deck">
+      <legend class="rkui-visually-hidden">Specimen</legend>
+      <label>
+        <input type="radio" name={`${theme}-deck-disabled`} checked /> One
+      </label>
+      <label>
+        <input type="radio" name={`${theme}-deck-disabled`} disabled /> Two
+      </label>
+    </fieldset>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Deck keys, grouped">
+  {DECK_GROUPS.map((group, g) => (
+    <>
+      <Specimen label={`${group.label}: live`}>
+        <fieldset class:list={['rkui-segmented rkui-segmented--deck', group.class]}>
+          <legend class="rkui-visually-hidden">Specimen</legend>
+          {DECK_OPTIONS.map(({ value, label, Icon }, i) => (
+            <label>
+              <input
+                type="radio"
+                name={`${theme}-deck-group-${g}`}
+                value={value}
+                checked={i === 0}
+              />
+              <Icon class="rkui-icon" />
+              {label}
+            </label>
+          ))}
+        </fieldset>
+      </Specimen>
+      <Specimen label={`${group.label}: hover on Two, group focused`}>
+        <fieldset class:list={['rkui-segmented rkui-segmented--deck is-focus', group.class]}>
+          <legend class="rkui-visually-hidden">Specimen</legend>
+          {OPTIONS.map(({ value, label }, i) => (
+            <label class:list={{ 'is-hover': i === 1 }}>
+              <input
+                type="radio"
+                name={`${theme}-deck-group-states-${g}`}
+                value={value}
+                checked={i === 0}
+              />
+              {label}
+            </label>
+          ))}
+        </fieldset>
+      </Specimen>
+    </>
+  ))}
+</SpecimenRow>

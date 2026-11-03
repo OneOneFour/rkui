@@ -1,0 +1,109 @@
+/* File inputs, in two variants (A, B).
+
+   File A: the input frame with a small filled button that pops, and the browser's filename text.
+   <input class="rkui-input" type="file">
+
+   File B: a dashed drop panel. The input is invisible but covers the panel, so clicks and dropped
+   files land on it with no script. The chosen filename isn't shown without a script.
+   <label class="rkui-file-drop">
+     <input type="file">
+     <svg class="rkui-icon" aria-hidden="true">…</svg>
+     <span>Label</span>
+   </label> */
+
+/* File A */
+
+.rkui-input[type='file'] {
+  cursor: pointer;
+}
+
+/* The button moves with relative offsets rather than translate, so the filename beside it stays
+   still in every browser. At rest it sits one press offset towards the light, so pressed in, it
+   is centred in the frame. */
+.rkui-input[type='file']::file-selector-button {
+  position: relative;
+  inset-block-start: calc(-1 * var(--rkui-press-offset-y));
+  inset-inline-start: 0;
+  margin-inline-end: var(--rkui-space-4);
+  padding: var(--rkui-space-1) var(--rkui-space-3);
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-yellow);
+  color: var(--rkui-on-fill);
+  box-shadow: var(--rkui-shadow);
+  font: inherit;
+  font-size: var(--rkui-step--1);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    inset var(--rkui-duration-fast) ease,
+    box-shadow var(--rkui-duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .rkui-input[type='file']:enabled:hover::file-selector-button {
+    box-shadow: var(--rkui-shadow-hover);
+    inset-block-start: calc(-1 * (var(--rkui-press-offset-y) + var(--rkui-lift-offset-y)));
+    inset-inline-start: calc(-1 * var(--rkui-lift-offset-x));
+  }
+}
+
+.rkui-input[type='file']:enabled:active::file-selector-button {
+  box-shadow: var(--rkui-shadow-pressed);
+  inset-block-start: 0;
+  inset-inline-start: var(--rkui-press-offset-x);
+}
+
+.rkui-input[type='file']:disabled::file-selector-button {
+  inset-block-start: 0;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* File B */
+
+.rkui-file-drop {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--rkui-space-2);
+  inline-size: 100%;
+  max-inline-size: 30rem;
+  padding: var(--rkui-space-6) var(--rkui-space-4);
+  border: var(--rkui-outline-width) dashed var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+  font-weight: 600;
+  text-align: center;
+}
+
+.rkui-file-drop input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.rkui-file-drop:hover {
+  border-style: solid;
+}
+
+.rkui-file-drop:has(:focus-visible) {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-focus-offset);
+}
+
+.rkui-file-drop:has([aria-invalid='true']) {
+  border-color: var(--rkui-coral-deep);
+  background-color: var(--rkui-coral-tint);
+}
+
+.rkui-file-drop:has(:disabled) {
+  opacity: 0.45;
+  border-style: dashed;
+}
+
+.rkui-file-drop:has(:disabled) input {
+  cursor: not-allowed;
+}

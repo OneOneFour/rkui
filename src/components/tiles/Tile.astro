@@ -1,0 +1,53 @@
+---
+/**
+ * One round tile: a native radio or checkbox in a label, holding the slot's number or letter. With
+ * an icon (`slot="icon"`) or a `hue`, the slot becomes hidden text that names the tile. Put tiles
+ * in Tiles, which fills in their `name` and input type. `class` and `style` go on the label; other
+ * attributes go on the input.
+ *
+ * @example
+ * <Tile value="a" checked>A</Tile>
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { NAME_PLACEHOLDER } from '../../shared/option-group'
+import { onHue, type Hue } from '../../shared/hues'
+import { styleVars } from '../../shared/style-vars'
+
+interface Props extends Omit<HTMLAttributes<'input'>, 'type'> {
+  value: string
+  /** Fill the tile with this hue, as a colour tile. */
+  hue?: Hue
+  /** 'checkbox' or 'radio'; a group sets it for its tiles, so this is for a tile on its own. */
+  type?: 'checkbox' | 'radio'
+  /** 'span' when the tile sits inside another label (BallotOption); 'label' when left out. */
+  tag?: 'label' | 'span'
+}
+
+const {
+  value,
+  type = 'checkbox',
+  name = NAME_PLACEHOLDER,
+  checked,
+  disabled,
+  hue,
+  tag: Element = 'label',
+  class: className,
+  style,
+  ...attrs
+} = Astro.props
+
+const label = (await Astro.slots.render('default')).trim()
+const named = label && (hue || Astro.slots.has('icon'))
+const swatch = hue
+  ? { '--rkui-swatch': `var(--rkui-${hue})`, '--rkui-swatch-on': `var(${onHue(hue)})` }
+  : {}
+---
+
+<Element
+  class:list={['rkui-tile', { 'rkui-tile--color': hue }, className]}
+  style={styleVars(swatch, style)}
+>
+  <input type={type} name={name} value={value} checked={checked} disabled={disabled} {...attrs} />
+  <slot name="icon" />
+  {named ? <span class="rkui-visually-hidden" set:html={label} /> : <Fragment set:html={label} />}
+</Element>

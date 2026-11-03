@@ -1,0 +1,60 @@
+---
+title: Range
+description: A slider with a pill track and an outlined thumb.
+group: Form controls
+order: 38
+---
+
+import Demo from '../../components/Demo.astro'
+import Default from '../../examples/range/default.astro'
+import defaultCode from '../../examples/range/default.astro?raw'
+import Readout from '../../examples/range/readout.astro'
+import readoutCode from '../../examples/range/readout.astro?raw'
+import Disabled from '../../examples/range/disabled.astro'
+import disabledCode from '../../examples/range/disabled.astro?raw'
+import TicksNative from '../../examples/range/ticks-native.astro'
+import ticksNativeCode from '../../examples/range/ticks-native.astro?raw'
+import TicksScale from '../../examples/range/ticks-scale.astro'
+import ticksScaleCode from '../../examples/range/ticks-scale.astro?raw'
+import TicksDots from '../../examples/range/ticks-dots.astro'
+import ticksDotsCode from '../../examples/range/ticks-dots.astro?raw'
+
+<Demo code={defaultCode} label="Default range">
+  <Default />
+</Demo>
+
+## With a readout
+
+<Demo code={readoutCode} label="Range with a readout" stack>
+  <Readout />
+</Demo>
+
+## Disabled
+
+<Demo code={disabledCode} label="Disabled range">
+  <Disabled />
+</Demo>
+
+## Ticks A: native
+
+Open, see DECISIONS. The browser draws the ticks, where it supports them.
+
+<Demo code={ticksNativeCode} label="Range with native ticks">
+  <TicksNative />
+</Demo>
+
+## Ticks B: tick row with labels
+
+Open, see DECISIONS.
+
+<Demo code={ticksScaleCode} label="Range with a tick row" stack>
+  <TicksScale />
+</Demo>
+
+## Ticks C: dots on the track
+
+Open, see DECISIONS.
+
+<Demo code={ticksDotsCode} label="Range with dots on the track">
+  <TicksDots />
+</Demo>

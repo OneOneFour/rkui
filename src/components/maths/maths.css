@@ -1,0 +1,208 @@
+/* Maths: KaTeX's output, sized to the body font and coloured by the tokens. Load KaTeX's own
+   stylesheet before @oneonefour/rkui/styles.css, so these rules win. A display equation sits in a wrapper that
+   is a scroll region (overflow.css) for when it is too wide (tabindex="0" lets the keyboard scroll
+   it). Its id is the anchor that equation references (\href{#eq-…}) link to.
+
+   <div class="rkui-equation rkui-scroll" id="eq-lorenz" tabindex="0">
+     <span class="katex-display">…KaTeX output, with \tag{1}…</span>
+   </div>
+
+   A bare wrapper is the default. Modifiers on .rkui-equation: --panel (a slate panel), --rule (a
+   rule down the left) and --key (a raised dashed panel for a key result). --rule and --key have
+   side borders of their own, so they take .rkui-scroll--bar too, in place of the dots. Equation
+   numbers, and references to them in prose (.rkui-eqref), are small lilac pills.
+
+   Colour-coded terms: \htmlClass{rkui-maths-teal}{…}, one class per palette hue, put the hue's tint
+   behind the term. */
+
+/* KaTeX's maths italic x-height matches Xmind's at 1.15em; KaTeX's own default is 1.21em. */
+.katex {
+  font-size: var(--rkui-maths-scale, 1.15em);
+}
+
+.rkui-equation {
+  margin-block: var(--rkui-space-5);
+  overflow-y: hidden;
+  border-radius: var(--rkui-radius);
+  scroll-margin-block: var(--rkui-space-6);
+}
+
+/* A wide equation keeps its full width, so the number sits after it rather than on top of it.
+   Padding on both sides keeps a short equation centred and clear of its number. */
+.rkui-equation > .katex-display {
+  inline-size: max-content;
+  min-inline-size: 100%;
+  margin: 0;
+  padding: var(--rkui-space-2);
+  border-radius: inherit;
+}
+
+.rkui-equation .katex-html:has(> .katex-tag) {
+  padding-inline: 2.5em;
+}
+
+/* The equation a reference jumped to flashes a tint, then fades back. The tint fills the whole
+   wrapper, dots' gutters included, so it lines up with the focus band. Where the wrapper already
+   runs the scroll region's dots animation (overflow.css), the flash is added to that list.
+   Longhands only, as in overflow.css. */
+.rkui-equation:is(:target, :has(:target)) {
+  animation-name: rkui-equation-target;
+  animation-duration: 2s;
+  animation-timing-function: ease-in;
+}
+
+@supports (animation-timeline: scroll()) {
+  .rkui-equation:is(:target, :has(:target)) {
+    animation-name: rkui-scroll-more, rkui-equation-target;
+    animation-duration: auto, 2s;
+    animation-timing-function: linear, ease-in;
+    animation-fill-mode: both, none;
+    animation-timeline: scroll(self inline), auto;
+  }
+}
+
+@keyframes rkui-equation-target {
+  from,
+  40% {
+    background-color: var(--rkui-apricot-tint);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rkui-equation:is(:target, :has(:target)) {
+    background-color: var(--rkui-apricot-tint);
+  }
+}
+
+.rkui-equation--panel {
+  background: var(--rkui-slate);
+}
+
+.rkui-equation--panel > .katex-display {
+  padding: var(--rkui-space-4);
+}
+
+.rkui-equation--rule {
+  border-inline-start: var(--rkui-space-1) solid var(--rkui-grape);
+  border-radius: 0;
+}
+
+.rkui-equation--key {
+  margin-inline-end: var(--rkui-shadow-offset);
+  border: var(--rkui-outline-width) dashed var(--rkui-line-unfilled);
+  background: var(--rkui-yellow-tint);
+  box-shadow: var(--rkui-shadow);
+}
+
+.rkui-equation--key > .katex-display {
+  padding: var(--rkui-space-4);
+}
+
+/* \boxed{…}: KaTeX draws a hairline, which the toon look thickens. */
+.katex .fbox {
+  border-width: var(--rkui-outline-width);
+  border-radius: calc(var(--rkui-radius) / 2);
+}
+
+/* Each number is "(", the digits and ")"; the pill replaces the brackets. The pill is vivid lilac
+   with ink text in both themes: the dark lilac tint is too close to the dark page. */
+.katex-tag .mord.text {
+  padding-inline: 0.5em;
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-lilac);
+  color: var(--rkui-on-fill);
+  font-family: var(--rkui-font-body);
+  font-size: 0.75em;
+  font-weight: 600;
+}
+
+.katex-tag .mord.text > :is(:first-child, :last-child) {
+  display: none;
+}
+
+/* An equation reference in prose is a pill like the equation's number. Its brackets are in spans,
+   so it still reads "(2)" without CSS. A reference that starts or carries a sentence puts the word
+   in the link, optionally after an .rkui-icon:
+   <a class="rkui-eqref" href="#eq-lorenz"><span>(</span>2<span>)</span></a>
+   <a class="rkui-eqref" href="#eq-lorenz">Equation <span>(</span>2<span>)</span></a> */
+.rkui-eqref {
+  --rkui-icon-fill: var(--rkui-lilac);
+
+  padding-inline: 0.5em;
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-lilac);
+  color: var(--rkui-on-fill);
+  /* An equation number's pill is 0.75em of KaTeX's font, which is --rkui-maths-scale of the
+     text's */
+  font-size: calc(0.75 * var(--rkui-maths-scale, 1.15em));
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.rkui-eqref > span {
+  display: none;
+}
+
+/* Sized to the pill's text and lowered to sit on its baseline like a letter, so neither the pill
+   nor the line grows. */
+.rkui-eqref .rkui-icon {
+  --rkui-icon-stroke: 28;
+
+  inline-size: 1em;
+  block-size: 1em;
+  margin-inline-end: 0.25em;
+  color: inherit;
+  vertical-align: -0.125em;
+}
+
+.rkui-eqref:hover {
+  box-shadow: inset 0 0 0 var(--rkui-outline-width) var(--rkui-line);
+}
+
+/* A pill has no outline for the band to hug, so the band hugs a ring of the outline colour, as on
+   equations. */
+.rkui-eqref:focus-visible {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-outline-width);
+  box-shadow: 0 0 0 var(--rkui-outline-width) var(--rkui-line-unfilled);
+}
+
+/* Colour-coded terms: the hue's tint behind --rkui-fg text. */
+.rkui-maths-teal {
+  --rkui-term-tint: var(--rkui-teal-tint);
+}
+
+.rkui-maths-yellow {
+  --rkui-term-tint: var(--rkui-yellow-tint);
+}
+
+.rkui-maths-navy {
+  --rkui-term-tint: var(--rkui-navy-tint);
+}
+
+.rkui-maths-green {
+  --rkui-term-tint: var(--rkui-green-tint);
+}
+
+.rkui-maths-sky {
+  --rkui-term-tint: var(--rkui-sky-tint);
+}
+
+.rkui-maths-coral {
+  --rkui-term-tint: var(--rkui-coral-tint);
+}
+
+.rkui-maths-grape {
+  --rkui-term-tint: var(--rkui-lilac-tint);
+}
+
+.rkui-maths-tangerine {
+  --rkui-term-tint: var(--rkui-apricot-tint);
+}
+
+.katex .enclosing[class*='rkui-maths-'] {
+  padding-inline: 0.15em;
+  border-radius: calc(var(--rkui-radius) / 2);
+  background: var(--rkui-term-tint);
+}

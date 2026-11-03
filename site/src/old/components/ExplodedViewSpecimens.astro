@@ -1,0 +1,82 @@
+---
+/**
+ * Exploded views: a steam train of five assemblies, also as a sticker demo, and a lamp that is
+ * one, both drawn by ExplodedView from their data, with the illustration colors.
+ *
+ * @param theme the panel's theme, passed on to keep ids unique
+ */
+import ExplodedView from './ExplodedView.astro'
+import { ILLUSTRATION_COLORS } from './exploded-view'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import { steamTrain } from './steam-train'
+import { tableLamp } from './table-lamp'
+import './illustration-tokens.css'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+---
+
+<SpecimenRow title="Steam train: hover or focus an assembly to take it apart">
+  <Specimen
+    label="A: the UI's fills, and each assembly casts the resting shadow; apart on --rkui-ease-spring, home on --rkui-ease-snap; the switch pulls every assembly apart"
+    wide
+  >
+    <div class="train">
+      <ExplodedView illustration={steamTrain} theme={theme} />
+    </div>
+  </Specimen>
+  <Specimen
+    label="B: sticker demo (.rkui-explode--sticker), one glint keyline and edge round the whole drawing, which casts the resting shadow and stays put while the parts come apart"
+    wide
+  >
+    <div class="train">
+      <ExplodedView illustration={steamTrain} theme={theme} sticker />
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Lamp: the same parts, one assembly">
+  <Specimen label="nearer parts rise further and cast longer shadows">
+    <div class="lamp">
+      <ExplodedView illustration={tableLamp} theme={theme} />
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Illustration colours: the UI's four fills, three of them with one light or shade step">
+  {ILLUSTRATION_COLORS.map((colors) => (
+    <Specimen label={colors.map((color) => `--rkui-illustration-${color}`).join(', ')}>
+      <div class="steps">
+        {colors.map((color) => (
+          <span class="step" style={`background: var(--rkui-illustration-${color})`} />
+        ))}
+      </div>
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<style>
+  .train {
+    max-inline-size: 44rem;
+  }
+
+  .lamp {
+    inline-size: 9rem;
+  }
+
+  .steps {
+    display: flex;
+    overflow: hidden;
+    border: var(--rkui-outline-width) solid var(--rkui-line);
+    border-radius: var(--rkui-radius);
+  }
+
+  .step {
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+  }
+</style>

@@ -1,0 +1,20 @@
+---
+/**
+ * A switch: a native checkbox with role="switch", drawn as a pill track with a round thumb, inside
+ * a `label.rkui-check` with the label text in the slot. `class` and `style` go on the label; other
+ * attributes (name, checked, disabled, ...) go on the input.
+ *
+ * @example
+ *   <Switch name="wifi" checked>Wi-Fi</Switch>
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = Omit<HTMLAttributes<'input'>, 'type' | 'role'>
+
+const { class: className, style, ...attrs } = Astro.props
+---
+
+<label class:list={['rkui-check', className]} {style}>
+  <input class="rkui-switch" type="checkbox" role="switch" {...attrs} />
+  <slot />
+</label>

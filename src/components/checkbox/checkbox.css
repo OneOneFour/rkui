@@ -1,0 +1,72 @@
+/* Checkboxes (.rkui-checkbox) and radio buttons (.rkui-radio) on native inputs. Checked, they fill
+   with --rkui-selected and show a tick or dot in --rkui-on-selected. Wrap each in a
+   label.rkui-check. */
+
+.rkui-checkbox,
+.rkui-radio {
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+  flex: none;
+  inline-size: 1.375rem;
+  block-size: 1.375rem;
+  margin: 0;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  background: var(--rkui-raised);
+  cursor: pointer;
+}
+
+.rkui-checkbox {
+  border-radius: calc(var(--rkui-radius) / 2);
+}
+
+.rkui-radio {
+  border-radius: 50%;
+}
+
+.rkui-checkbox:checked,
+.rkui-radio:checked {
+  border-color: var(--rkui-line);
+  background: var(--rkui-selected);
+}
+
+/* The tick is the bottom and right borders of a box, turned 45°. */
+.rkui-checkbox:checked::before {
+  content: '';
+  inline-size: 0.375rem;
+  block-size: 0.75rem;
+  margin-block-start: -0.125rem;
+  border: solid var(--rkui-on-selected);
+  border-width: 0 3px 3px 0;
+  rotate: 45deg;
+}
+
+.rkui-radio:checked::before {
+  content: '';
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: var(--rkui-on-selected);
+}
+
+.rkui-checkbox[aria-invalid='true'],
+.rkui-radio[aria-invalid='true'] {
+  border-color: var(--rkui-coral-deep);
+}
+
+/* Forced colours drop the checked fill, so the checked box and its mark use system colours. */
+@media (forced-colors: active) {
+  .rkui-checkbox:checked,
+  .rkui-radio:checked {
+    border-color: Highlight;
+    background: Highlight;
+  }
+
+  .rkui-checkbox:checked::before {
+    border-color: HighlightText;
+  }
+
+  .rkui-radio:checked::before {
+    background: HighlightText;
+  }
+}

@@ -1,0 +1,89 @@
+---
+/**
+ * Static boxes for the shape, outline, shadow and focus tokens. The live versions are the
+ * components.
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+const BOXES = [
+  { class: 'panel', label: 'Panel', caption: '--rkui-radius, no outline (static)' },
+  { class: 'outlined', label: 'Resting', caption: '--rkui-outline-width, --rkui-shadow' },
+  {
+    class: 'outlined hover',
+    label: 'Hover',
+    caption: 'lifted by --rkui-lift-offset onto --rkui-shadow-hover',
+  },
+  {
+    class: 'outlined pressed',
+    label: 'Pressed',
+    caption: 'moved by --rkui-press-offset onto --rkui-shadow-pressed',
+  },
+  { class: 'outlined pill', label: 'Pill', caption: '--rkui-radius-pill' },
+  { class: 'unfilled', label: 'Unfilled', caption: '--rkui-line-unfilled, flush' },
+  { class: 'unfilled inset', label: 'Inset', caption: '--rkui-shadow-inset (unfilled, pressed)' },
+  {
+    class: 'outlined focused',
+    label: 'Focused',
+    caption: '--rkui-focus-width band of --rkui-focus, no shadow',
+  },
+]
+---
+
+<SpecimenRow title="Shape and shadow tokens">
+  {BOXES.map((box) => (
+    <Specimen label={box.caption}>
+      <div class:list={['box', box.class]}>{box.label}</div>
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<style>
+  .box {
+    padding: var(--rkui-space-3) var(--rkui-space-4);
+    border: var(--rkui-outline-width) solid transparent;
+    border-radius: var(--rkui-radius);
+    font-weight: 600;
+  }
+
+  .panel {
+    background: var(--rkui-raised);
+  }
+
+  .outlined {
+    border-color: var(--rkui-line);
+    background: var(--rkui-teal);
+    box-shadow: var(--rkui-shadow);
+    color: var(--rkui-on-fill);
+  }
+
+  .hover {
+    box-shadow: var(--rkui-shadow-hover);
+    translate: calc(-1 * var(--rkui-lift-offset-x)) calc(-1 * var(--rkui-lift-offset-y));
+  }
+
+  .pressed {
+    box-shadow: var(--rkui-shadow-pressed);
+    translate: var(--rkui-press-offset-x) var(--rkui-press-offset-y);
+  }
+
+  .pill {
+    border-radius: var(--rkui-radius-pill);
+    background: var(--rkui-yellow);
+  }
+
+  .unfilled {
+    border-color: var(--rkui-line-unfilled);
+  }
+
+  .inset {
+    background: var(--rkui-raised);
+    box-shadow: var(--rkui-shadow-inset);
+  }
+
+  .focused {
+    outline: var(--rkui-focus-width) solid var(--rkui-focus);
+    outline-offset: var(--rkui-focus-offset);
+    box-shadow: none;
+  }
+</style>

@@ -1,0 +1,20 @@
+---
+/**
+ * A radio button: a native radio inside a `label.rkui-check`, with the label text in the slot.
+ * Radios with the same `name` form a group. `class` and `style` go on the label; other attributes
+ * (name, value, checked, disabled, required, aria-invalid, ...) go on the input.
+ *
+ * @example
+ *   <Radio name="size" value="s" checked>Small</Radio>
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = Omit<HTMLAttributes<'input'>, 'type'>
+
+const { class: className, style, ...attrs } = Astro.props
+---
+
+<label class:list={['rkui-check', className]} {style}>
+  <input class="rkui-radio" type="radio" {...attrs} />
+  <slot />
+</label>

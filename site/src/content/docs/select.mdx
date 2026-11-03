@@ -1,0 +1,54 @@
+---
+title: Select
+description: A native select, with an optional custom open list.
+group: Form controls
+order: 43
+---
+
+import Demo from '../../components/Demo.astro'
+import Default from '../../examples/select/default.astro'
+import defaultCode from '../../examples/select/default.astro?raw'
+import Disabled from '../../examples/select/disabled.astro'
+import disabledCode from '../../examples/select/disabled.astro?raw'
+import ErrorDemo from '../../examples/select/error.astro'
+import errorCode from '../../examples/select/error.astro?raw'
+import Picker from '../../examples/select/picker.astro'
+import pickerCode from '../../examples/select/picker.astro?raw'
+import PickerIcons from '../../examples/select/picker-icons.astro'
+import picker_iconsCode from '../../examples/select/picker-icons.astro?raw'
+import PickerTint from '../../examples/select/picker-tint.astro'
+import picker_tintCode from '../../examples/select/picker-tint.astro?raw'
+
+<Demo code={defaultCode} label="Default select" stack>
+  <Default />
+</Demo>
+
+## Disabled
+
+<Demo code={disabledCode} label="Disabled select" stack>
+  <Disabled />
+</Demo>
+
+## Error
+
+<Demo code={errorCode} label="Select with an error" stack>
+  <ErrorDemo />
+</Demo>
+
+## Custom open list
+
+<Demo code={pickerCode} label="Select with the custom list" stack>
+  <Picker />
+</Demo>
+
+## Icons in options
+
+<Demo code={picker_iconsCode} label="Custom list with icons" stack>
+  <PickerIcons />
+</Demo>
+
+## Tinted checked option
+
+<Demo code={picker_tintCode} label="Custom list with a tinted checked option" stack>
+  <PickerTint />
+</Demo>

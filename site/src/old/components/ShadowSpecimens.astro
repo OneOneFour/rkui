@@ -1,0 +1,93 @@
+---
+/**
+ * The two dark-mode shadow modes, the default slab and color, each on a few raised things: fills
+ * that cast their own shade, and things that cast the lit shadow instead.
+ *
+ * @param theme the panel's theme, used to keep ids and names unique across the two panels
+ */
+import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Card from '@oneonefour/rkui/components/card/Card.astro'
+import Chip from '@oneonefour/rkui/components/chip/Chip.astro'
+import ChipGroup from '@oneonefour/rkui/components/chip/ChipGroup.astro'
+import Ballot from './Ballot.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import TilePicker from './TilePicker.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const MODES = [
+  { mode: 'slab', title: 'data-shadow="slab" (the default)' },
+  { mode: 'color', title: 'data-shadow="color"' },
+]
+const FILLS = ['navy', 'coral', 'grape', 'teal'] as const
+const KEYS = ['One', 'Two', 'Three']
+const TILES = ['1', '2', '3'].map((number) => ({ value: number, label: number }))
+const BALLOT = ['teal', 'green'].map((color) => ({
+  value: color,
+  title: color[0].toUpperCase() + color.slice(1),
+  color,
+  checked: color === 'green',
+}))
+---
+
+{MODES.map(({ mode, title }) => {
+  const prefix = `${theme}-shadow-${mode}`
+  return (
+    <div data-shadow={mode}>
+      <SpecimenRow title={title}>
+        <Specimen label="buttons: yellow, navy, coral, grape, teal">
+          <Button>Button</Button>
+          {FILLS.map((fill) => (
+            <Button hue={fill}>Button</Button>
+          ))}
+        </Specimen>
+        <Specimen label="yellow: hover, pressed">
+          <Button class="is-hover">Button</Button>
+          <Button class="is-active">Button</Button>
+        </Specimen>
+        <Specimen label="checkbox: off, on">
+          <label class="rkui-check">
+            <input class="rkui-checkbox" type="checkbox" name={`${prefix}-off`} /> Label
+          </label>
+          <label class="rkui-check">
+            <input class="rkui-checkbox" type="checkbox" name={`${prefix}-on`} checked /> Label
+          </label>
+        </Specimen>
+        <Specimen label="chips">
+          <ChipGroup legend="Specimen">
+            <Chip name={`${prefix}-chip`} value="one" checked>
+              One
+            </Chip>
+            <Chip name={`${prefix}-chip`} value="two">
+              Two
+            </Chip>
+          </ChipGroup>
+        </Specimen>
+        <Specimen label="deck keys on a plate">
+          <fieldset class="rkui-segmented rkui-segmented--deck rkui-segmented--plate">
+            <legend class="rkui-visually-hidden">Specimen</legend>
+            {KEYS.map((key, i) => (
+              <label>
+                <input type="radio" name={`${prefix}-plate`} value={key} checked={i === 0} />
+                {key}
+              </label>
+            ))}
+          </fieldset>
+        </Specimen>
+        <Specimen label="tiles (2 checked), a ballot with colour tiles">
+          <TilePicker legend="Specimen" name={`${prefix}-tiles`} tiles={TILES} checked={['2']} />
+          <Ballot legend="Specimen" name={`${prefix}-ballot`} options={BALLOT} />
+        </Specimen>
+        <Specimen label="linked card" wide>
+          <Card title="Card title" href="#specimen-link" meta="Meta line">
+            <p>Body text.</p>
+          </Card>
+        </Specimen>
+      </SpecimenRow>
+    </div>
+  )
+})}

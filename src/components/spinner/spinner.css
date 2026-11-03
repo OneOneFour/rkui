@@ -1,0 +1,143 @@
+/* Spinners: a busy indicator. Give it role="status" and a visually hidden label, or hide it
+   (aria-hidden) beside a visible one. Set --rkui-spinner-size to resize it.
+   .rkui-spinner--ring: an outlined ring with the hard shadow, and a wedge rolling round inside it
+   as if it had weight.
+   .rkui-spinner--dots: three dots that bounce in turn.
+   Under reduced motion nothing moves: each fades in and out instead.
+
+   <span class="rkui-spinner rkui-spinner--ring" role="status"><span
+     class="rkui-visually-hidden">Loading…</span></span>
+   <span class="rkui-spinner rkui-spinner--dots" role="status">
+     <span class="rkui-spinner-dot"></span><span class="rkui-spinner-dot"></span>
+       <span class="rkui-spinner-dot"></span>
+     <span class="rkui-visually-hidden">Loading…</span>
+   </span> */
+
+.rkui-spinner {
+  --rkui-spinner-size: 2rem;
+  --rkui-spinner-fill: var(--rkui-selected);
+
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+/* The wedge turns inside the ring, so the ring's shadow keeps to the light. It starts centred at
+   the top. */
+.rkui-spinner--ring {
+  position: relative;
+  box-sizing: border-box;
+  inline-size: var(--rkui-spinner-size);
+  block-size: var(--rkui-spinner-size);
+  overflow: hidden;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: 50%;
+  background: var(--rkui-raised);
+  box-shadow: var(--rkui-shadow);
+}
+
+.rkui-spinner--ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(from -45deg, var(--rkui-spinner-fill) 0 0.25turn, transparent 0);
+  animation: rkui-ring-roll 1.2s linear infinite;
+}
+
+.rkui-spinner--ring::after {
+  content: '';
+  position: absolute;
+  inset: 28%;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: 50%;
+  background: var(--rkui-surface);
+}
+
+.rkui-spinner--dots {
+  gap: calc(var(--rkui-spinner-size) / 8);
+  block-size: var(--rkui-spinner-size);
+}
+
+.rkui-spinner-dot {
+  box-sizing: border-box;
+  inline-size: calc(var(--rkui-spinner-size) / 3.5);
+  block-size: calc(var(--rkui-spinner-size) / 3.5);
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: 50%;
+  background: var(--rkui-teal);
+  box-shadow: var(--rkui-shadow-pressed);
+  animation: rkui-bounce 0.9s ease-in-out infinite;
+}
+
+.rkui-spinner-dot:nth-child(2) {
+  background: var(--rkui-yellow);
+  animation-delay: 0.15s;
+}
+
+.rkui-spinner-dot:nth-child(3) {
+  background: var(--rkui-coral);
+  animation-delay: 0.3s;
+}
+
+/* Each half turn is eased so the wedge slows over the top and speeds through the bottom. The
+   two curves are mirror images and meet at the same speed, so the roll never jerks. */
+@keyframes rkui-ring-roll {
+  from {
+    rotate: 0turn;
+    animation-timing-function: cubic-bezier(0.5, 0.2, 0.5, 0.2);
+  }
+
+  50% {
+    rotate: 0.5turn;
+    animation-timing-function: cubic-bezier(0.5, 0.8, 0.5, 0.8);
+  }
+
+  to {
+    rotate: 1turn;
+  }
+}
+
+@keyframes rkui-bounce {
+  0%,
+  60%,
+  100% {
+    translate: 0 0;
+  }
+
+  30% {
+    translate: 0 -60%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rkui-spinner--ring::before,
+  .rkui-spinner-dot {
+    animation-name: rkui-spinner-fade;
+    animation-duration: 1.8s;
+    animation-direction: alternate;
+  }
+}
+
+@keyframes rkui-spinner-fade {
+  to {
+    opacity: 0.3;
+  }
+}
+
+/* Forced colours drop the ring's fills and its wedge, so they use system colours. */
+@media (forced-colors: active) {
+  .rkui-spinner--ring {
+    --rkui-spinner-fill: Highlight;
+
+    forced-color-adjust: none;
+    border-color: CanvasText;
+    background: Canvas;
+  }
+
+  .rkui-spinner--ring::after {
+    border-color: CanvasText;
+    background: Canvas;
+  }
+}

@@ -1,0 +1,209 @@
+/* Colour pickers. Colours come from tokens through --rkui-swatch.
+
+   With a palette: a tile group (tiles.css) of colour tiles, each filled from --rkui-swatch and
+   named by hidden text. The checked one is pushed into the page and keeps its colour.
+   <fieldset class="rkui-tiles">
+     <legend class="rkui-visually-hidden">Colour</legend>
+     <label class="rkui-tile rkui-tile--color" style="--rkui-swatch: var(--rkui-teal)">
+       <input type="radio" name="color" value="teal">
+       <span class="rkui-visually-hidden">Teal</span>
+     </label>
+     …
+   </fieldset>
+
+   To allow any colour as well, end the group with a custom colour tile: a radio, a native colour
+   input and a paint brush icon. Wrap the group in <rkui-color-picker> (rkui-color-picker.js) so
+   that picking a colour also checks the tile's radio. Without the script, the radio is checked only
+   from the keyboard or by clicking the tile's outline.
+   <rkui-color-picker>
+     <fieldset class="rkui-tiles">
+       …
+       <label class="rkui-tile rkui-tile--custom-color">
+         <input type="radio" name="color" value="custom" aria-label="Custom colour">
+         <input type="color" aria-label="Choose custom colour">
+         <svg aria-hidden="true">…paint-brush…</svg>
+       </label>
+     </fieldset>
+   </rkui-color-picker>
+
+   Without a palette: the native colour input on its own, in a frame that pops, with the same
+   paint brush.
+   <span class="rkui-color-input">
+     <input type="color" aria-label="Colour">
+     <svg aria-hidden="true">…paint-brush…</svg>
+   </span> */
+
+/* Colour tiles and the standalone frame are filled, so they take the dark outline in both themes.
+   They keep their colours in forced colours, since the colour is the content. */
+:is(.rkui-tile--color, .rkui-tile--custom-color, .rkui-color-input) {
+  border-color: var(--rkui-line);
+  forced-color-adjust: none;
+}
+
+/* The standalone frame pops like a button (interactive.css). */
+.rkui-color-input {
+  --rkui-picker-radius: calc(var(--rkui-radius) - var(--rkui-outline-width));
+
+  position: relative;
+  display: inline-block;
+  inline-size: 3.5rem;
+  block-size: 2.5rem;
+  border-width: var(--rkui-outline-width);
+  border-style: solid;
+  border-radius: var(--rkui-radius);
+  cursor: pointer;
+}
+
+.rkui-tile--custom-color {
+  --rkui-picker-radius: 50%;
+}
+
+/* The native input fills the custom colour tile or the standalone frame, which shows the focus
+   band for it. --rkui-picker-radius rounds the input and the browser's swatch inside it to
+   match. */
+
+:is(.rkui-tile--custom-color, .rkui-color-input) > input[type='color'] {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--rkui-picker-radius);
+  outline: none;
+  background: none;
+  cursor: inherit;
+}
+
+:is(.rkui-tile--custom-color, .rkui-color-input)
+  > input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+:is(.rkui-tile--custom-color, .rkui-color-input) > input[type='color']::-webkit-color-swatch {
+  border: 0;
+  border-radius: var(--rkui-picker-radius);
+}
+
+:is(.rkui-tile--custom-color, .rkui-color-input) > input[type='color']::-moz-color-swatch {
+  border: 0;
+  border-radius: var(--rkui-picker-radius);
+}
+
+/* The paint brush sits on a neutral disc in the corner, so it reads on any picked colour. Clicks
+   pass through it to the input. */
+:is(.rkui-tile--custom-color, .rkui-color-input) > svg {
+  --rkui-icon-stroke: 28;
+
+  position: absolute;
+  inset-block-end: -0.375rem;
+  inset-inline-end: -0.375rem;
+  inline-size: 1.375rem;
+  block-size: 1.375rem;
+  padding: 0.125rem;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: 50%;
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+  forced-color-adjust: auto;
+  pointer-events: none;
+}
+
+/* Flair options for colour tiles. With none, the tiles are plain (flair none). Each
+   is a modifier on the group. */
+
+/* Flair A: add .rkui-tiles--brush for a faint paint brush on the checked and hovered colour tiles.
+   The brush is ink; give hues that carry white text their own colour through --rkui-swatch-on:
+   style="--rkui-swatch: var(--rkui-navy); --rkui-swatch-on: var(--rkui-on-navy)". */
+
+.rkui-tiles--brush .rkui-tile--color::after {
+  content: '';
+  position: absolute;
+  inset: 15%;
+  background-color: var(--rkui-swatch-on, var(--rkui-on-fill));
+  mask: url('../../../dist/icons/paint-brush.svg') center / contain no-repeat;
+  opacity: 0;
+  transition: opacity var(--rkui-duration-fast) ease;
+}
+
+.rkui-tiles--brush .rkui-tile--color:has(:checked)::after {
+  opacity: 0.7;
+}
+
+@media (hover: hover) {
+  .rkui-tiles--brush .rkui-tile--color:not(:has(:disabled)):hover::after {
+    opacity: 0.7;
+  }
+}
+
+/* Flair B: add .rkui-tiles--drops for tiles shaped like paint drops: a square with one sharp
+   corner, turned so that corner points up. Turning a tile turns its shadows too, so they are
+   redefined in its own axes: the shadow direction turned back by 45deg. */
+
+.rkui-tiles--drops {
+  --rkui-drop-corners: 0 50% 50% 50%;
+
+  padding-block-start: var(--rkui-space-2);
+}
+
+.rkui-tiles--drops .rkui-tile {
+  --rkui-diagonal: 1.4142;
+  --rkui-drop-dx: calc((var(--rkui-shadow-dx) + var(--rkui-shadow-dy)) * var(--rkui-diagonal) / 2);
+  --rkui-drop-dy: calc((var(--rkui-shadow-dy) - var(--rkui-shadow-dx)) * var(--rkui-diagonal) / 2);
+  --rkui-shadow:
+    calc(var(--rkui-shadow-offset) * var(--rkui-drop-dx))
+      calc(var(--rkui-shadow-offset) * var(--rkui-drop-dy)) 0 var(--rkui-shadow-color),
+    calc(var(--rkui-shadow-offset) * var(--rkui-drop-dx))
+      calc(var(--rkui-shadow-offset) * var(--rkui-drop-dy)) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
+  --rkui-shadow-hover:
+    calc(var(--rkui-shadow-offset-hover) * var(--rkui-drop-dx))
+      calc(var(--rkui-shadow-offset-hover) * var(--rkui-drop-dy)) 0 var(--rkui-shadow-color),
+    calc(var(--rkui-shadow-offset-hover) * var(--rkui-drop-dx))
+      calc(var(--rkui-shadow-offset-hover) * var(--rkui-drop-dy)) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
+  --rkui-shadow-pressed:
+    calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dx))
+      calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dy)) 0 var(--rkui-shadow-color),
+    calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dx))
+      calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dy)) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
+  --rkui-shadow-inset: inset calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dx))
+    calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dy)) 0 var(--rkui-line);
+  --rkui-picker-radius: var(--rkui-drop-corners);
+
+  border-radius: var(--rkui-drop-corners);
+  rotate: 45deg;
+}
+
+.rkui-tiles--drops .rkui-tile--custom-color > svg {
+  rotate: -45deg;
+}
+
+/* Flair C: add .rkui-tiles--stroke for a visible legend with a palette icon and a short paint
+   stroke in the checked colour under the checked tile.
+   <legend><svg class="rkui-icon rkui-icon--small" aria-hidden="true">…</svg> Colour</legend> */
+
+.rkui-tiles--stroke {
+  padding-block-end: var(--rkui-space-4);
+}
+
+.rkui-tiles--stroke legend {
+  display: flex;
+  align-items: center;
+  gap: var(--rkui-space-2);
+  margin-block-end: var(--rkui-space-2);
+  padding: 0;
+  font-weight: 600;
+}
+
+.rkui-tiles--stroke .rkui-tile--color:has(:checked)::after {
+  content: '';
+  position: absolute;
+  inset-block-start: calc(100% + var(--rkui-space-2));
+  inset-inline: calc(-1 * var(--rkui-space-2));
+  block-size: var(--rkui-space-1);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-swatch);
+}

@@ -1,0 +1,24 @@
+---
+title: Dots
+description: Three-dot loaders, a busy indicator.
+group: Loading
+order: 81
+---
+
+import Demo from '../../components/Demo.astro'
+import Bounce from '../../examples/dots/bounce.astro'
+import bounceCode from '../../examples/dots/bounce.astro?raw'
+import Variants from '../../examples/dots/variants.astro'
+import variantsCode from '../../examples/dots/variants.astro?raw'
+
+Three dots that move in turn. Their label is read out, not shown.
+
+<Demo code={bounceCode} label="Bouncing dots">
+  <Bounce />
+</Demo>
+
+## Squash, triangle and orbit
+
+<Demo code={variantsCode} label="Dots loader variants">
+  <Variants />
+</Demo>

@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+test-results/
+playwright-report/
+
+# PowerPoint generator: downloads, build products and the Python environment
+pptx/.venv/
+pptx/downloads/
+pptx/build/
+pptx/out/
+pptx/handoff/
+__pycache__/
+
+# Claude's working notes: plans, handoffs, briefs, logs (docs/ is for people)
+.claude/notes/
+# Agent worktrees
+.claude/worktrees/
+screenshots/

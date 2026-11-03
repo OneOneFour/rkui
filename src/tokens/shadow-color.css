@@ -1,0 +1,63 @@
+/* The colour shadow mode: set data-shadow="color" on <html> or any container, and in dark mode
+   each raised thing with a fill casts its hard shadow in that fill, darkened, instead of the
+   outlined slab. Everything else casts --rkui-shadow-lit, lighter than the page. Light mode is
+   unchanged. data-shadow="slab" switches back inside it. Browsers without @scope or light-dark()
+   keep the slab. */
+
+@supports (color: light-dark(black, white)) {
+  @scope ([data-shadow='color']) to ([data-shadow='slab']) {
+    /* Declared on every element, so each one resolves its own --rkui-extrusion. The shadow tokens
+       are built on every element too (shadows.css), from these. */
+    * {
+      --rkui-shadow-edge: transparent;
+      --rkui-shadow-color: light-dark(
+        var(--rkui-line),
+        var(--rkui-extrusion, var(--rkui-shadow-lit))
+      );
+    }
+
+    .rkui-button {
+      --rkui-shade-of: var(--rkui-button-fill);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    :is(.rkui-checkbox, .rkui-radio):checked,
+    .rkui-dial--arc .rkui-dial-face,
+    .rkui-clock-hand--hour .rkui-clock-tag {
+      --rkui-shade-of: var(--rkui-selected);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    /* The range thumb and the file button are pseudo-elements, so their inputs carry the colour. */
+    .rkui-range {
+      --rkui-shade-of: var(--rkui-selected);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    .rkui-input[type='file'] {
+      --rkui-shade-of: var(--rkui-yellow);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    .rkui-tile--color {
+      --rkui-shade-of: var(--rkui-swatch);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    .rkui-badge--sticker {
+      --rkui-shade-of: var(--rkui-badge-fill);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    /* sticky-note.css sets the note's --rkui-shade-of, for its fold. */
+    .rkui-sticky-note {
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    /* Darkened, these fills are too close to the page to read as a shadow. Checked chips are left
+       out for the same reason, since their default --rkui-section is ink. */
+    :is(.rkui-button--navy, .rkui-button--section) {
+      --rkui-extrusion: initial;
+    }
+  }
+}

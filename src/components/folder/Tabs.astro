@@ -1,0 +1,66 @@
+---
+/**
+ * Folder tabs with panels, inside `<rkui-tabs>`, which switches panels on click and with the arrow
+ * keys, Home and End, and puts a scrollbar above the strip when the tabs don't fit. Each `Tab` in
+ * the slot is one tab, and its slot is that tab's panel. Without the script every panel shows.
+ * `class`, `style` and other attributes go on the `<rkui-tabs>`.
+ *
+ * @example
+ * <Tabs label="Topics">
+ *   <Tab label="One"><p>First panel.</p></Tab>
+ *   <Tab label="Two"><p>Second panel.</p></Tab>
+ * </Tabs>
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { uniqueId } from '../../shared/unique-id'
+import { readTabs, strayContent } from './tab-items'
+
+interface Props extends HTMLAttributes<'div'> {
+  /** The tab list's accessible name. */
+  label: string
+  /** A sheet in the selected tint instead of the raised surface. */
+  tinted?: boolean
+}
+
+const { label, tinted = false, class: className, ...attrs } = Astro.props
+const base = uniqueId('rkui-tabs')
+const { tabs, outside } = readTabs(await Astro.slots.render('default'), 'Tabs')
+const stray = strayContent(outside)
+if (stray) {
+  throw new Error(`Tabs: put everything inside a Tab. Found outside one: ${stray.slice(0, 80)}`)
+}
+---
+
+<Fragment set:html={outside} />
+<rkui-tabs class:list={['rkui-folder', { 'rkui-folder--tinted': tinted }, className]} {...attrs}>
+  <div class="rkui-folder-tabs rkui-scroll" role="tablist" aria-label={label}>
+    {tabs.map((tab, i) => (
+      <button
+        class="rkui-folder-tab"
+        type="button"
+        role="tab"
+        id={`${base}-tab-${i}`}
+        aria-controls={`${base}-panel-${i}`}
+        aria-selected={tab.selected ? 'true' : 'false'}
+        tabindex={tab.selected ? undefined : -1}
+      >
+        {tab.label}
+      </button>
+    ))}
+  </div>
+  {tabs.map((tab, i) => (
+    <div
+      class="rkui-folder-sheet"
+      role="tabpanel"
+      id={`${base}-panel-${i}`}
+      aria-labelledby={`${base}-tab-${i}`}
+      tabindex="0"
+      hidden={!tab.selected}
+      set:html={tab.content}
+    />
+  ))}
+</rkui-tabs>
+
+<script>
+  import '@oneonefour/rkui/components/folder/tabs.js'
+</script>

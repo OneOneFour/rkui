@@ -1,0 +1,93 @@
+/* Tile picker: a radio group (or a checkbox group, to allow several choices) of equal round
+   tiles, each holding a number, a letter or an icon. The checked tile fills with --rkui-selected
+   and is pushed into the page. Colour tiles are in color-picker.css.
+
+   <fieldset class="rkui-tiles">
+     <legend class="rkui-visually-hidden">Rating</legend>
+     <label class="rkui-tile"><input type="radio" name="rating" value="1"> 1</label>
+     …
+   </fieldset>
+
+   An icon tile is named by hidden text:
+     <label class="rkui-tile">
+       <input type="checkbox" name="weather" value="sun">
+       <svg aria-hidden="true">…</svg>
+       <span class="rkui-visually-hidden">Sun</span>
+     </label>
+
+   Add .rkui-tiles--compact to the group for smaller tiles, and .rkui-tiles--vertical to stack them
+   in a column. A tile can also be a link (<a class="rkui-tile">), with aria-current="page" filling
+   it like a checked one (pagination.css). */
+
+.rkui-tiles {
+  --rkui-tile-size: 2.5rem;
+  --rkui-tile-font-size: var(--rkui-step-1);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--rkui-depth-gap-scale) * var(--rkui-space-3));
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rkui-tiles--compact {
+  --rkui-tile-size: 2rem;
+  --rkui-tile-font-size: var(--rkui-step-0);
+
+  gap: calc(var(--rkui-depth-gap-scale) * var(--rkui-space-2));
+}
+
+.rkui-tiles--vertical {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+
+/* Colour tiles set --rkui-swatch, which takes the place of both the resting and the checked
+   fill. */
+.rkui-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--rkui-tile-size);
+  block-size: var(--rkui-tile-size);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: 50%;
+  background: var(--rkui-swatch, var(--rkui-raised));
+  color: var(--rkui-fg);
+  font-family: var(--rkui-font-display);
+  font-size: var(--rkui-tile-font-size);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.rkui-tile > input:is([type='radio'], [type='checkbox']) {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rkui-tile > svg {
+  inline-size: 1em;
+  block-size: 1em;
+  --rkui-icon-stroke: 24;
+}
+
+.rkui-tile:is(:has(:checked), [aria-current='page']) {
+  border-color: var(--rkui-line);
+  background: var(--rkui-swatch, var(--rkui-selected));
+  color: var(--rkui-on-selected);
+}
+
+@media (forced-colors: active) {
+  .rkui-tile:is(:has(:checked), [aria-current='page']) {
+    border-color: Highlight;
+    background: var(--rkui-swatch, Highlight);
+    color: HighlightText;
+  }
+}

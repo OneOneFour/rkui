@@ -1,0 +1,37 @@
+---
+/**
+ * The ring spinner: an outlined ring with a wedge rolling round inside it as if it had weight. A
+ * busy indicator with `role="status"`; the label is read out, not shown. `class`, `style` and other
+ * attributes go on the `<span>`.
+ *
+ * @example
+ * <Spinner label="Loading results…" size="3rem" hue="teal" />
+ */
+import type { HTMLAttributes } from 'astro/types'
+import type { Hue } from '../../shared/hues'
+import { styleVars } from '../../shared/style-vars'
+
+interface Props extends HTMLAttributes<'span'> {
+  /** What is happening, for screen readers; "Loading…" when left out. */
+  label?: string
+  /** The spinner's size as a CSS length; 2rem when left out. */
+  size?: string
+  /** The wedge's colour; the selected colour when left out. */
+  hue?: Hue
+}
+
+const { label = 'Loading…', size, hue, class: className, style, ...attrs } = Astro.props
+const inlineStyle = styleVars(
+  { '--rkui-spinner-size': size, '--rkui-spinner-fill': hue && `var(--rkui-${hue})` },
+  style,
+)
+---
+
+<span
+  class:list={['rkui-spinner', 'rkui-spinner--ring', className]}
+  role="status"
+  style={inlineStyle}
+  {...attrs}
+>
+  <span class="rkui-visually-hidden">{label}</span>
+</span>

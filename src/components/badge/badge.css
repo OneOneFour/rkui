@@ -1,0 +1,126 @@
+/* Badges: a small pill for a status or a count. Static, so inline badges have no outline.
+   Solid by default (yellow); .rkui-badge--tint is the quiet version, a tint panel with --rkui-fg
+   text. The hue modifiers set both. An .rkui-icon inside takes the badge's hue as its fill.
+
+   On a corner: wrap the picture or button in .rkui-badge-host and add .rkui-badge--corner. On a
+   round host, add .rkui-badge-host--round so the badge sits on the circle's edge. .rkui-badge--dot
+   is a status dot with no visible text, and .rkui-badge--bottom moves a corner badge to the bottom.
+   The corner badge's edge has three options: A, the outline (default); B, .rkui-badge--ring, a ring
+   in the page colour; C, .rkui-badge--sticker, the outline and a small hard shadow.
+
+   <span class="rkui-badge rkui-badge--grape">Label</span>
+   <span class="rkui-badge-host">
+     <button class="rkui-button">…</button>
+     <span class="rkui-badge rkui-badge--coral rkui-badge--corner">3<span
+       class="rkui-visually-hidden"> new</span></span>
+   </span> */
+
+.rkui-badge {
+  --rkui-badge-fill: var(--rkui-yellow);
+  --rkui-badge-label: var(--rkui-on-fill);
+  --rkui-badge-tint: var(--rkui-yellow-tint);
+  --rkui-icon-fill: var(--rkui-badge-fill);
+
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rkui-space-1);
+  padding: 0.125rem var(--rkui-space-2);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-badge-fill);
+  color: var(--rkui-badge-label);
+  font-size: var(--rkui-step--1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: var(--rkui-line-height-heading);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.rkui-badge .rkui-icon {
+  inline-size: 1em;
+  block-size: 1em;
+  color: inherit;
+}
+
+.rkui-badge--tint {
+  background: var(--rkui-badge-tint);
+  color: var(--rkui-fg);
+}
+
+/* :where() keeps the host's display below a component's own, such as a button's. */
+:where(.rkui-badge-host) {
+  position: relative;
+  display: inline-flex;
+}
+
+/* 14.6% in from the box's corner is the point on a circle at 45°. */
+.rkui-badge-host--round {
+  --rkui-badge-inset: 14.6%;
+}
+
+/* The badge's centre sits on the corner: it overhangs by half its height on each side. */
+.rkui-badge--corner {
+  --rkui-badge-size: 1.25rem;
+
+  position: absolute;
+  inset-block-start: calc(var(--rkui-badge-inset, 0px) - var(--rkui-badge-size) / 2);
+  inset-inline-end: calc(var(--rkui-badge-inset, 0px) - var(--rkui-badge-size) / 2);
+  min-inline-size: var(--rkui-badge-size);
+  block-size: var(--rkui-badge-size);
+  padding: 0 var(--rkui-space-1);
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+}
+
+.rkui-badge--dot {
+  --rkui-badge-size: 0.875rem;
+
+  padding: 0;
+}
+
+.rkui-badge--bottom {
+  inset-block-start: auto;
+  inset-block-end: calc(var(--rkui-badge-inset, 0px) - var(--rkui-badge-size) / 2);
+}
+
+.rkui-badge--ring {
+  border-color: var(--rkui-surface);
+}
+
+.rkui-badge--sticker {
+  box-shadow: var(--rkui-shadow-pressed);
+}
+
+.rkui-badge--navy {
+  --rkui-badge-fill: var(--rkui-navy);
+  --rkui-badge-label: var(--rkui-on-navy);
+  --rkui-badge-tint: var(--rkui-navy-tint);
+}
+
+.rkui-badge--teal {
+  --rkui-badge-fill: var(--rkui-teal);
+  --rkui-badge-tint: var(--rkui-teal-tint);
+}
+
+.rkui-badge--green {
+  --rkui-badge-fill: var(--rkui-green);
+  --rkui-badge-tint: var(--rkui-green-tint);
+}
+
+.rkui-badge--coral {
+  --rkui-badge-fill: var(--rkui-coral-solid);
+  --rkui-badge-label: var(--rkui-on-coral);
+  --rkui-badge-tint: var(--rkui-coral-tint);
+}
+
+.rkui-badge--grape {
+  --rkui-badge-fill: var(--rkui-grape);
+  --rkui-badge-label: var(--rkui-on-grape);
+  --rkui-badge-tint: var(--rkui-lilac-tint);
+}
+
+.rkui-badge--tangerine {
+  --rkui-badge-fill: var(--rkui-tangerine);
+  --rkui-badge-tint: var(--rkui-apricot-tint);
+}

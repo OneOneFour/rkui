@@ -1,0 +1,66 @@
+---
+/**
+ * A ballot for the styleguide: a column of options, each a tile beside a text box.
+ *
+ * @param legend the group's name, visually hidden
+ * @param name the inputs' name, unique on the page
+ * @param options each option's value, title and optional text; its tile's content (a letter or
+ *   number, an icon, a color token's name, or nothing); whether it is checked or disabled;
+ *   a static state class for the row, e.g. 'is-hover'; and a color token's name whose tint
+ *   fills its box when checked
+ * @param multiple use checkboxes, so that several options can be checked
+ * @param modifier the group's modifier classes, space-separated, if any
+ */
+import type { SvgComponent } from 'astro/types'
+
+interface Option {
+  value: string
+  title: string
+  text?: string
+  mark?: string
+  Icon?: SvgComponent
+  color?: string
+  checked?: boolean
+  disabled?: boolean
+  state?: string
+  tint?: string
+}
+
+interface Props {
+  legend: string
+  name: string
+  options: Option[]
+  multiple?: boolean
+  modifier?: string
+}
+
+const { legend, name, options, multiple, modifier } = Astro.props
+---
+
+<fieldset class:list={['rkui-ballot', modifier]}>
+  <legend class="rkui-visually-hidden">{legend}</legend>
+  {options.map(({ value, title, text, mark, Icon, color, checked, disabled, state, tint }) => (
+    <label
+      class:list={['rkui-ballot-option', state]}
+      style={tint && `--rkui-selected-tint: var(--rkui-${tint}-tint)`}
+    >
+      <span
+        class:list={['rkui-tile', { 'rkui-tile--color': color }]}
+        style={color && `--rkui-swatch: var(--rkui-${color})`}
+      >
+        <input
+          type={multiple ? 'checkbox' : 'radio'}
+          name={name}
+          value={value}
+          checked={checked}
+          disabled={disabled}
+        />
+        {Icon ? <Icon aria-hidden="true" /> : mark}
+      </span>
+      <span class="rkui-ballot-text">
+        <strong>{title}</strong>
+        {text && <span>{text}</span>}
+      </span>
+    </label>
+  ))}
+</fieldset>

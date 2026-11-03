@@ -1,0 +1,177 @@
+---
+/**
+ * The site search: rkui's search field over Pagefind's JS API, with a plain list of results
+ * under it. The index is built after `astro build` (site/pagefind-index.js), so search works on
+ * the built site only; under `astro dev` it says so.
+ */
+import SearchField from '@oneonefour/rkui/components/search/Search.astro'
+import { link } from '../lib/pages'
+---
+
+<search class="docs-search" data-pagefind={link('pagefind/pagefind.js')} data-base={link()}>
+  <SearchField
+    placeholder="Search the docs"
+    aria-label="Search the docs"
+    aria-controls="docs-search-results"
+    autocomplete="off"
+  />
+  <div class="results" id="docs-search-results" hidden>
+    <p class="status" role="status"></p>
+    <ul></ul>
+  </div>
+</search>
+
+<style>
+  .docs-search {
+    position: relative;
+    flex: 1 1 14rem;
+    max-inline-size: 24rem;
+  }
+
+  .results {
+    position: absolute;
+    inset-block-start: calc(100% + var(--rkui-space-2));
+    inset-inline: 0;
+    z-index: 1;
+    max-block-size: 70dvh;
+    overflow-y: auto;
+    padding: var(--rkui-space-2);
+    border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+    border-radius: var(--rkui-radius);
+    background: var(--rkui-raised);
+    box-shadow: var(--rkui-shadow);
+  }
+
+  .status {
+    margin: var(--rkui-space-1) var(--rkui-space-2);
+    color: var(--rkui-muted);
+    font-size: var(--rkui-step--1);
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The links are written by the script, so these reach them with :global(). */
+  ul :global(a) {
+    display: block;
+    padding: var(--rkui-space-2);
+    border-radius: var(--rkui-radius);
+    color: var(--rkui-fg);
+    text-decoration: none;
+  }
+
+  ul :global(a:hover) {
+    background: var(--rkui-selected-tint);
+  }
+
+  ul :global(.title) {
+    display: block;
+    font-weight: 700;
+  }
+
+  ul :global(.excerpt) {
+    display: block;
+    color: var(--rkui-muted);
+    font-size: var(--rkui-step--1);
+  }
+
+  /* The marker-pen focus turns the link tangerine, so the excerpt takes its ink too. */
+  ul :global(a:focus-visible .excerpt) {
+    color: inherit;
+  }
+</style>
+
+<script>
+  /** The parts of Pagefind's JS API this search uses. */
+  interface PagefindResult {
+    url: string
+    excerpt: string
+    meta: { title?: string }
+  }
+
+  interface Pagefind {
+    options(options: { baseUrl: string }): Promise<void>
+    /** Resolves to null when a newer search has started. */
+    debouncedSearch(
+      query: string,
+    ): Promise<{ results: { data(): Promise<PagefindResult> }[] } | null>
+  }
+
+  const MAX_RESULTS = 8
+
+  const search = document.querySelector<HTMLElement>('.docs-search')
+  const input = search?.querySelector('input')
+  const results = search?.querySelector<HTMLElement>('.results')
+  const status = results?.querySelector('.status')
+  const list = results?.querySelector('ul')
+
+  /** Loads Pagefind from the built site, or gives null when there is no index (astro dev). */
+  async function loadPagefind(): Promise<Pagefind | null> {
+    try {
+      const pagefind: Pagefind = await import(/* @vite-ignore */ search?.dataset.pagefind ?? '')
+      await pagefind.options({ baseUrl: search?.dataset.base ?? '/' })
+      return pagefind
+    } catch {
+      return null
+    }
+  }
+
+  let pagefindLoading: Promise<Pagefind | null> | undefined
+
+  /** One result as a link: the page title, then Pagefind's excerpt with the matches marked. */
+  function resultItem({ url, excerpt, meta }: PagefindResult): HTMLLIElement {
+    const item = document.createElement('li')
+    const link = document.createElement('a')
+    link.href = url
+    const title = document.createElement('span')
+    title.className = 'title'
+    title.textContent = meta.title ?? url
+    const text = document.createElement('span')
+    text.className = 'excerpt'
+    // Pagefind escapes the page text and adds only <mark> around the matches.
+    text.innerHTML = excerpt
+    link.append(title, text)
+    item.append(link)
+    return item
+  }
+
+  async function showResults() {
+    if (!input || !results || !status || !list) return
+    const query = input.value.trim()
+    results.hidden = query === ''
+    if (query === '') return
+
+    pagefindLoading ??= loadPagefind()
+    const pagefind = await pagefindLoading
+    if (!pagefind) {
+      status.textContent = 'Search works on the built site: npm run build, then preview it.'
+      list.replaceChildren()
+      return
+    }
+
+    const found = await pagefind.debouncedSearch(query)
+    if (!found) return
+    const pages = await Promise.all(found.results.slice(0, MAX_RESULTS).map((r) => r.data()))
+    const count = found.results.length
+    status.textContent = count === 0 ? 'No results' : `${count} result${count === 1 ? '' : 's'}`
+    list.replaceChildren(...pages.map(resultItem))
+  }
+
+  input?.addEventListener('input', showResults)
+  input?.addEventListener('focus', showResults)
+  input?.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && results) results.hidden = true
+  })
+  // The results close on a click outside the search, or when the keyboard moves focus out of it.
+  // They open again when the field is focused.
+  document.addEventListener('click', (event) => {
+    if (results && !search?.contains(event.target as Node)) results.hidden = true
+  })
+  search?.addEventListener('focusout', (event) => {
+    const next = event.relatedTarget as Node | null
+    if (results && next && !search.contains(next)) results.hidden = true
+  })
+</script>

@@ -1,0 +1,454 @@
+---
+import SpecimenLayout from '../old/layouts/SpecimenLayout.astro'
+// After SpecimenLayout, which loads the core CSS, so the mirrored states win over the real ones.
+// The layout imports the bundled rkui.css, not styles.css, which the docs layout also imports:
+// Vite would hoist that shared file into a chunk that loads after this page's CSS.
+import '../old/components/states.css'
+import SpecimenSection from '../old/components/SpecimenSection.astro'
+import ColorSummary from '../old/components/ColorSummary.astro'
+import ColorTokens from '../old/components/ColorTokens.astro'
+import TypeScale from '../old/components/TypeScale.astro'
+import FontSpecimens from '../old/components/FontSpecimens.astro'
+import CodeSpecimens from '../old/components/CodeSpecimens.astro'
+import ShapeSpecimens from '../old/components/ShapeSpecimens.astro'
+import MotionSpecimens from '../old/components/MotionSpecimens.astro'
+import LightDirection from '../old/components/LightDirection.astro'
+import ShadowSpecimens from '../old/components/ShadowSpecimens.astro'
+import DepthSpecimens from '../old/components/DepthSpecimens.astro'
+import BaseSpecimens from '../old/components/BaseSpecimens.astro'
+import IconSpecimens from '../old/components/IconSpecimens.astro'
+import ButtonSpecimens from '../old/components/ButtonSpecimens.astro'
+import InputSpecimens from '../old/components/InputSpecimens.astro'
+import SpecialInputSpecimens from '../old/components/SpecialInputSpecimens.astro'
+import SelectPickerSpecimens from '../old/components/SelectPickerSpecimens.astro'
+import DialSpecimens from '../old/components/DialSpecimens.astro'
+import ClockSpecimens from '../old/components/ClockSpecimens.astro'
+import ChoiceSpecimens from '../old/components/ChoiceSpecimens.astro'
+import RangeSpecimens from '../old/components/RangeSpecimens.astro'
+import SegmentedSpecimens from '../old/components/SegmentedSpecimens.astro'
+import TileSpecimens from '../old/components/TileSpecimens.astro'
+import BallotSpecimens from '../old/components/BallotSpecimens.astro'
+import ChipSpecimens from '../old/components/ChipSpecimens.astro'
+import CardSpecimens from '../old/components/CardSpecimens.astro'
+import CalloutSpecimens from '../old/components/CalloutSpecimens.astro'
+import BadgeSpecimens from '../old/components/BadgeSpecimens.astro'
+import LoadingSpecimens from '../old/components/LoadingSpecimens.astro'
+import TooltipSpecimens from '../old/components/TooltipSpecimens.astro'
+import WidgetFrameSpecimen from '../old/components/WidgetFrameSpecimen.astro'
+import BreadcrumbSpecimens from '../old/components/BreadcrumbSpecimens.astro'
+import FolderSpecimens from '../old/components/FolderSpecimens.astro'
+import PaginationSpecimens from '../old/components/PaginationSpecimens.astro'
+import TopBarSpecimens from '../old/components/TopBarSpecimens.astro'
+import OverflowSpecimens from '../old/components/OverflowSpecimens.astro'
+import EquationSpecimens from '../old/components/EquationSpecimens.astro'
+import MathsInTextSpecimens from '../old/components/MathsInTextSpecimens.astro'
+import ChartPaletteSpecimens from '../old/components/ChartPaletteSpecimens.astro'
+import ChartSpecimens from '../old/components/ChartSpecimens.astro'
+import DiagramSpecimens from '../old/components/DiagramSpecimens.astro'
+import FigureSpecimens from '../old/components/FigureSpecimens.astro'
+import StickyNoteSpecimens from '../old/components/StickyNoteSpecimens.astro'
+import ExplodedViewSpecimens from '../old/components/ExplodedViewSpecimens.astro'
+import StyleguideContents from '../old/components/StyleguideContents.astro'
+import OpenDecision from '../old/components/OpenDecision.astro'
+
+const CONTENTS = [
+  {
+    title: 'Foundations',
+    sections: ['Colours', 'Type', 'Fonts', 'Icons', 'Shape, shadow and depth', 'Motion'],
+  },
+  {
+    title: 'Controls',
+    sections: [
+      'Buttons',
+      'Text inputs and selects',
+      'Custom select list',
+      'Special inputs',
+      'Checkboxes, radios and switches',
+      'Range slider',
+      'Dial',
+      'Clock',
+      'Segmented control',
+      'Tile and colour pickers',
+      'Ballot',
+      'Chips',
+    ],
+  },
+  {
+    title: 'Components',
+    sections: ['Cards', 'Callouts', 'Sticky notes', 'Code blocks', 'Widget frame'],
+  },
+  {
+    title: 'Feedback',
+    sections: ['Loading', 'Tooltips and popups', 'Badges'],
+  },
+  {
+    title: 'Navigation and scrolling',
+    sections: ['Breadcrumbs', 'Folder tabs', 'Pagination', 'Top bar', 'Overflow'],
+  },
+  {
+    title: 'Maths',
+    sections: ['Equations', 'Maths in text'],
+  },
+  {
+    title: 'Data visualisation',
+    sections: ['Chart colours', 'Charts', 'Diagrams', 'Figures and widgets'],
+  },
+  {
+    title: 'Illustration',
+    sections: ['Exploded view'],
+  },
+]
+---
+
+<SpecimenLayout title="Styleguide">
+  <main>
+    <h1>Styleguide</h1>
+    <StyleguideContents groups={CONTENTS} />
+
+    <SpecimenSection title="Colours" collapsed="All colour tokens">
+      <p>Ratios are WCAG contrast: AA needs 4.5 for body text, 3:1 for large text and UI edges.</p>
+      <ColorSummary />
+      <ColorTokens slot="light" />
+      <ColorTokens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Type">
+      <p>The type scale, then what base.css gives links, code, highlights and selections.</p>
+      <Fragment slot="light">
+        <TypeScale />
+        <BaseSpecimens />
+      </Fragment>
+      <Fragment slot="dark">
+        <TypeScale />
+        <BaseSpecimens />
+      </Fragment>
+    </SpecimenSection>
+
+    <SpecimenSection title="Fonts">
+      <FontSpecimens slot="light" />
+      <FontSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Icons">
+      <IconSpecimens slot="light" />
+      <IconSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Shape, shadow and depth" stacked>
+      <p>The light turns every shadow and pop on the page.</p>
+      <LightDirection />
+      <p>
+        Dark mode has two shadow modes: the slab by default, or data-shadow="color" on &lt;html&gt;
+        or any container, where each fill casts its own shade. The switch at the top sets it for the
+        whole page, so every component can be seen in both. Light mode is the same in both.
+      </p>
+      <p>
+        With data-depth="deep" on &lt;html&gt;, any container or one element, its shadows, insets
+        and pops are 1.5 times as deep; data-depth="normal" switches back inside it.
+      </p>
+      <Fragment slot="light">
+        <ShapeSpecimens />
+        <ShadowSpecimens theme="light" />
+        <DepthSpecimens theme="light" />
+      </Fragment>
+      <Fragment slot="dark">
+        <ShapeSpecimens />
+        <ShadowSpecimens theme="dark" />
+        <DepthSpecimens theme="dark" />
+      </Fragment>
+    </SpecimenSection>
+
+    <SpecimenSection title="Motion">
+      <p>
+        The patterns of the motion policy (DESIGN §5). Turn the light under Shape, shadow and depth
+        to see the shadows and the glint follow it while things move.
+      </p>
+      <OpenDecision>
+        Two rules of the policy: only clickable things lift and sink, and anything else pops in
+        place (the flow chart's steps under Diagrams); and illustrative loops stop under reduced
+        motion (the network's pulses), while loops that show a state fade. Keep or change each.
+      </OpenDecision>
+      <OpenDecision>
+        Whether &lt;rkui-motion&gt;, which gives these specimens and the diagrams their Pause button
+        and pauses them off-screen, stays in rkui.
+      </OpenDecision>
+      <MotionSpecimens slot="light" />
+      <MotionSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Buttons">
+      <ButtonSpecimens slot="light" />
+      <ButtonSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Text inputs and selects">
+      <InputSpecimens slot="light" theme="light" />
+      <InputSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Custom select list">
+      <p>
+        Open these in a browser with customizable select (appearance: base-select) to see the styled
+        list. Elsewhere they are the plain select above.
+      </p>
+      <OpenDecision>The checked option: A filled, or B tinted (.rkui-select--tint).</OpenDecision>
+      <SelectPickerSpecimens slot="light" theme="light" />
+      <SelectPickerSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Special inputs">
+      <OpenDecision>
+        File input A (button and filename) or B (drop panel), and search A (icon inside) or B
+        (attached button).
+      </OpenDecision>
+      <SpecialInputSpecimens slot="light" theme="light" />
+      <SpecialInputSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Checkboxes, radios and switches">
+      <ChoiceSpecimens slot="light" theme="light" />
+      <ChoiceSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Range slider">
+      <OpenDecision>
+        Tick marks A (native), B (a tick row with labels) or C (dots on the track).
+      </OpenDecision>
+      <RangeSpecimens slot="light" theme="light" />
+      <RangeSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Dial">
+      <p>
+        Each dial draws over a native range input, which stays the accessible control: it keeps
+        focus, the arrow keys, Home and End, Page Up and Page Down, and form submission. Add
+        rkui-dial--ramp to either dial for a ring of blocks that light up to the value in token
+        colours.
+      </p>
+      <OpenDecision>
+        Dial A (knob) or B (arc); and whether ramp blocks light up to the value, as built, or all
+        stay lit.
+      </OpenDecision>
+      <DialSpecimens slot="light" theme="light" />
+      <DialSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Clock">
+      <p>
+        Drag a hand's tag to set the time: the hour hand goes round once a day, on a ring with day
+        over the top and night under it. The time input below the face stays the control for the
+        keyboard and screen readers.
+      </p>
+      <OpenDecision>
+        Whether the hour hand stays longer than the minute hand, out to the day and night ring, as
+        built.
+      </OpenDecision>
+      <ClockSpecimens slot="light" theme="light" />
+      <ClockSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Segmented control">
+      <SegmentedSpecimens slot="light" theme="light" />
+      <SegmentedSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Tile and colour pickers">
+      <OpenDecision>
+        The checked colour tile's flair: none (the first colour picker row), A paint brush, B paint
+        drops or C palette and stroke.
+      </OpenDecision>
+      <TileSpecimens slot="light" theme="light" />
+      <TileSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Ballot">
+      <BallotSpecimens slot="light" theme="light" />
+      <BallotSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Chips">
+      <ChipSpecimens slot="light" theme="light" />
+      <ChipSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Cards">
+      <CardSpecimens slot="light" />
+      <CardSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Callouts">
+      <CalloutSpecimens slot="light" />
+      <CalloutSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Sticky notes">
+      <p>
+        Add .rkui-sticky-note to a card or a callout. Turn the light under Shape, shadow and depth
+        to see the tilted notes' shadows follow it.
+      </p>
+      <StickyNoteSpecimens slot="light" />
+      <StickyNoteSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Code blocks" stacked>
+      <p>
+        The copy buttons are live; without JavaScript they stay hidden. Tab into a block to scroll
+        long lines with the arrow keys; Overflow shows a long line.
+      </p>
+      <CodeSpecimens slot="light" />
+      <CodeSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Widget frame">
+      <WidgetFrameSpecimen slot="light" />
+      <WidgetFrameSpecimen slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Loading">
+      <OpenDecision>
+        Whether the spinners and loaders time their loops with the --rkui-loop-* tokens (DESIGN §5)
+        rather than their own durations; and whether .rkui-progress--flat stays.
+      </OpenDecision>
+      <LoadingSpecimens slot="light" />
+      <LoadingSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Tooltips and popups">
+      <p>
+        Popups open under their button where CSS anchor positioning is supported, and in the middle
+        of the window elsewhere.
+      </p>
+      <OpenDecision>Tooltip A (inverted) or B (toon, .rkui-tooltip--toon).</OpenDecision>
+      <TooltipSpecimens slot="light" theme="light" />
+      <TooltipSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Badges">
+      <OpenDecision>
+        The corner badge's edge: A outline, B ring in the page colour (.rkui-badge--ring) or C
+        sticker (.rkui-badge--sticker).
+      </OpenDecision>
+      <BadgeSpecimens slot="light" />
+      <BadgeSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Breadcrumbs">
+      <OpenDecision>A plain links, B chips or C path bar (.rkui-breadcrumbs--path).</OpenDecision>
+      <BreadcrumbSpecimens slot="light" />
+      <BreadcrumbSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Folder tabs">
+      <p>
+        The live tabs follow the ARIA tabs pattern: click a tab, or focus one and use the arrow
+        keys, Home and End.
+      </p>
+      <FolderSpecimens slot="light" theme="light" />
+      <FolderSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Pagination">
+      <OpenDecision>A folder tabs, or B tiles between previous and next buttons.</OpenDecision>
+      <PaginationSpecimens slot="light" />
+      <PaginationSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Top bar">
+      <p>
+        This page's own header is the toast; see <a href="?topbar=flush">the flush bar live</a>{' '}
+        here. At the top of the page the toast lies flat and the flush bar has no shadow; scroll a
+        little and they take the look below, and the back-to-top button appears.
+      </p>
+      <TopBarSpecimens slot="light" />
+      <TopBarSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Overflow" stacked>
+      <p>
+        The dots show only on the side with more to see, and not at all when everything fits.
+        Scroll, or tab into a block and use the arrow keys. The dots need scroll-driven animations;
+        other browsers show the scrollbar at all times.
+      </p>
+      <OverflowSpecimens slot="light" />
+      <OverflowSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Equations" stacked>
+      <p>Rendered by KaTeX at build time. Click a reference to jump to its equation.</p>
+      <EquationSpecimens slot="light" theme="light" />
+      <EquationSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Maths in text" stacked>
+      <OpenDecision>
+        The inline maths size, --rkui-maths-scale: A 1em, B 1.1em, C 1.15em (proposed) or D 1.21em.
+      </OpenDecision>
+      <MathsInTextSpecimens slot="light" theme="light" />
+      <MathsInTextSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Chart colours">
+      <p>
+        Data visualisation is a vibe check for the styleguide only: none of it is part of rkui in
+        this version. Its colours are the styleguide's chart tokens.
+      </p>
+      <OpenDecision>
+        The sequential scale: A navy (--rkui-seq-*) or B vivid (--rkui-seq-vivid-*). The heatmaps
+        under Charts show both.
+      </OpenDecision>
+      <ChartPaletteSpecimens slot="light" />
+      <ChartPaletteSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Charts" stacked>
+      <p>
+        A vibe check, not part of rkui in this version: inline SVG drawn at build time, in the toon
+        look and coloured by the styleguide's chart tokens.
+      </p>
+      <OpenDecision>
+        The heatmap layout, A side by side with ink gutters or B tiles (.rkui-chart--tiles), and its
+        sequential scale, A navy or B vivid.
+      </OpenDecision>
+      <ChartSpecimens slot="light" />
+      <ChartSpecimens slot="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Diagrams" stacked>
+      <p>
+        A vibe check like the charts: inline SVG in the toon look, animated by the motion policy
+        (DESIGN §5). Try them with the palette switch and the light.
+      </p>
+      <DiagramSpecimens slot="light" theme="light" />
+      <DiagramSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Figures and widgets" stacked>
+      <FigureSpecimens slot="light" theme="light" />
+      <FigureSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+
+    <SpecimenSection title="Exploded view">
+      <p>
+        Illustrations made only of flat toon shapes, whose assemblies come apart on hover or focus.
+        Each part says how far it moves and how many layers from the back it is. Try the light, the
+        palettes and the shadow modes.
+      </p>
+      <OpenDecision>
+        The train without a sticker (A) or with the single-outline sticker demo (B,
+        .rkui-explode--sticker). Also, as built, the parts lose their shadows under the focus band
+        and an open assembly shows every part's label: keep these, or keep the shadows and label
+        only the hovered part?
+      </OpenDecision>
+      <ExplodedViewSpecimens slot="light" theme="light" />
+      <ExplodedViewSpecimens slot="dark" theme="dark" />
+    </SpecimenSection>
+  </main>
+</SpecimenLayout>
+
+<style>
+  main {
+    max-width: 96rem;
+    margin-inline: auto;
+    padding: var(--rkui-space-6) var(--rkui-space-4);
+  }
+</style>

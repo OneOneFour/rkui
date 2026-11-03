@@ -1,0 +1,62 @@
+/* rkui light-only fallback for browsers without light-dark(). */
+
+/* Browsers without light-dark() (before mid-2024) get the light theme, on the cream page. */
+@supports not (color: light-dark(#000, #fff)) {
+  :root,
+  :root[data-theme] {
+    color-scheme: light;
+  }
+
+  :root,
+  [data-palette],
+  [data-shadow='slab'] {
+    --rkui-surface: #f7f3e5;
+    --rkui-raised: #fffaf0;
+    --rkui-fg: #1d232f;
+    --rkui-muted: #5b6070;
+    --rkui-line: #1d232f;
+    --rkui-shadow-edge: transparent;
+    --rkui-shadow-lit: var(--rkui-line);
+
+    --rkui-navy: #2c4d6e;
+    --rkui-teal: #2ea6b1;
+    --rkui-coral: #de4d45;
+    --rkui-coral-solid: var(--rkui-coral-deep);
+    --rkui-green: #7bba3d;
+    --rkui-grape: #7b4fc9;
+    --rkui-tangerine: #f58a2a;
+
+    --rkui-on-ink: #f7f3e5;
+    --rkui-on-coral: #ffffff;
+    --rkui-on-grape: #ffffff;
+
+    --rkui-navy-deep: #2c4d6e;
+    --rkui-teal-deep: #176f78;
+    --rkui-coral-deep: #c8322a;
+    --rkui-yellow-deep: #856000;
+    --rkui-green-deep: #3a7016;
+    --rkui-sky-deep: #216b9a;
+    --rkui-grape-deep: #7b4fc9;
+    --rkui-tangerine-deep: #a14c0a;
+
+    --rkui-navy-tint: #c7d5e6;
+    --rkui-teal-tint: #a6dfe3;
+    --rkui-coral-tint: #f6c1bb;
+    --rkui-yellow-tint: #fbdf94;
+    --rkui-green-tint: #c8e5a8;
+    --rkui-sky-tint: #8fd3f7;
+    --rkui-lilac-tint: #d4c4f5;
+    --rkui-apricot-tint: #ffd2a6;
+
+    --rkui-note-yellow: var(--rkui-yellow-tint);
+    --rkui-note-tangerine: var(--rkui-apricot-tint);
+    --rkui-note-green: var(--rkui-green-tint);
+    --rkui-note-coral: var(--rkui-coral-tint);
+    --rkui-note-grape: var(--rkui-lilac-tint);
+
+    --rkui-slate: #e7ebf3;
+    --rkui-slate-tab: #dbe0ea;
+    --rkui-slate-greige: #eae7e2;
+    --rkui-slate-greige-tab: #e0dcd6;
+  }
+}

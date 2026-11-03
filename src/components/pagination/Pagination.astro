@@ -1,0 +1,93 @@
+---
+/**
+ * Pagination as folder tabs over the page's sheet, inside `<rkui-folder>`, which puts a scrollbar
+ * above the tabs when they don't fit. The links are previous, the first and last pages, the
+ * current one and its neighbours, and next, with "…" for the gaps; the current page is marked
+ * `aria-current="page"`. The sheet, the page's content, is the slot. `class`, `style` and other
+ * attributes go on the `<rkui-folder>`.
+ *
+ * @example
+ * <Pagination current={2} total={9} href={(page) => `/posts/${page}/`}>Posts 11 to 20.</Pagination>
+ */
+import type { HTMLAttributes } from 'astro/types'
+import CaretLeftIcon from '@oneonefour/rkui/icons/caret-left.svg'
+import CaretRightIcon from '@oneonefour/rkui/icons/caret-right.svg'
+
+interface Props extends HTMLAttributes<'div'> {
+  /** The current page, counting from 1. */
+  current: number
+  /** How many pages there are. */
+  total: number
+  /** Where a page's link goes. */
+  href: (page: number) => string
+  /** The nav's accessible name; "Pagination" when left out. */
+  label?: string
+  /** A sheet in the selected tint instead of the raised surface. */
+  tinted?: boolean
+}
+
+const {
+  current,
+  total,
+  href,
+  label = 'Pagination',
+  tinted = false,
+  class: className,
+  ...attrs
+} = Astro.props
+
+/** The page numbers to link, with null where pages are left out. */
+const pages: (number | null)[] = []
+for (let page = 1; page <= total; page++) {
+  if (page === 1 || page === total || Math.abs(page - current) <= 1) {
+    pages.push(page)
+  } else if (pages.at(-1) !== null) {
+    pages.push(null)
+  }
+}
+---
+
+<rkui-folder class:list={['rkui-folder', { 'rkui-folder--tinted': tinted }, className]} {...attrs}>
+  <nav aria-label={label}>
+    <ol class="rkui-folder-tabs rkui-scroll">
+      {current > 1 && (
+        <li>
+          <a class="rkui-folder-tab" href={href(current - 1)} rel="prev">
+            <CaretLeftIcon class="rkui-icon rkui-icon--small" />
+            <span class="rkui-visually-hidden">Previous page</span>
+          </a>
+        </li>
+      )}
+      {pages.map((page) => (
+        <li>
+          {page === null ? (
+            '…'
+          ) : (
+            <a
+              class="rkui-folder-tab"
+              href={href(page)}
+              aria-current={page === current ? 'page' : undefined}
+            >
+              {page}
+            </a>
+          )}
+        </li>
+      ))}
+      {current < total && (
+        <li>
+          <a class="rkui-folder-tab" href={href(current + 1)} rel="next">
+            <CaretRightIcon class="rkui-icon rkui-icon--small" />
+            <span class="rkui-visually-hidden">Next page</span>
+          </a>
+        </li>
+      )}
+    </ol>
+  </nav>
+  <div class="rkui-folder-sheet">
+    <slot />
+  </div>
+</rkui-folder>
+
+<script>
+  import '@oneonefour/rkui/components/folder/folder.js'
+</script>

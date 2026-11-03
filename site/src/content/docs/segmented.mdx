@@ -1,0 +1,58 @@
+---
+title: Segmented
+description: A pill group of radios, with a fill that slides to the checked option.
+group: Form controls
+order: 30
+---
+
+import Demo from '../../components/Demo.astro'
+import Default from '../../examples/segmented/default.astro'
+import defaultCode from '../../examples/segmented/default.astro?raw'
+import Icons from '../../examples/segmented/icons.astro'
+import iconsCode from '../../examples/segmented/icons.astro?raw'
+import Disabled from '../../examples/segmented/disabled.astro'
+import disabledCode from '../../examples/segmented/disabled.astro?raw'
+import Deck from '../../examples/segmented/deck.astro'
+import deckCode from '../../examples/segmented/deck.astro?raw'
+import DeckText from '../../examples/segmented/deck-text.astro'
+import deckTextCode from '../../examples/segmented/deck-text.astro?raw'
+import DeckPlate from '../../examples/segmented/deck-plate.astro'
+import deckPlateCode from '../../examples/segmented/deck-plate.astro?raw'
+
+<Demo code={defaultCode} label="Segmented control">
+  <Default />
+</Demo>
+
+## With icons
+
+<Demo code={iconsCode} label="Segmented control with icons">
+  <Icons />
+</Demo>
+
+## A disabled option
+
+<Demo code={disabledCode} label="Segmented control with a disabled option">
+  <Disabled />
+</Demo>
+
+## Deck keys
+
+Add `deck` for a row of raised keys.
+
+<Demo code={deckCode} label="Deck keys">
+  <Deck />
+</Demo>
+
+## Deck keys, text only
+
+<Demo code={deckTextCode} label="Text-only deck keys">
+  <DeckText />
+</Demo>
+
+## Deck keys on a plate
+
+Add `plate` to a deck to show its frame.
+
+<Demo code={deckPlateCode} label="Deck keys on a plate">
+  <DeckPlate />
+</Demo>

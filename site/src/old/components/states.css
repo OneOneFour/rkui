@@ -1,0 +1,265 @@
+/* Static copies of the interactive states, so the docs page can show them side by side.
+   Styleguide only: the package uses the real pseudo-classes. Keep in step with interactive.css. */
+
+:is(
+  .rkui-button,
+  .rkui-chip,
+  .rkui-card--link,
+  .rkui-checkbox,
+  .rkui-radio,
+  .rkui-switch,
+  .rkui-tile,
+  .rkui-color-input
+).is-hover {
+  box-shadow: var(--rkui-shadow-hover);
+  translate: calc(-1 * var(--rkui-lift-offset-x)) calc(-1 * var(--rkui-lift-offset-y));
+}
+
+:is(
+  .rkui-button,
+  .rkui-chip,
+  .rkui-card--link,
+  .rkui-checkbox,
+  .rkui-radio,
+  .rkui-switch,
+  .rkui-tile,
+  .rkui-color-input
+).is-active {
+  box-shadow: var(--rkui-shadow-pressed);
+  translate: var(--rkui-press-offset-x) var(--rkui-press-offset-y);
+}
+
+.rkui-folder-tab.is-hover {
+  --rkui-folder-tab-x: calc(-1 * var(--rkui-lift-offset-x));
+  --rkui-folder-tab-y: calc(-1 * var(--rkui-lift-offset-y));
+
+  box-shadow: var(--rkui-shadow-hover);
+}
+
+.rkui-folder-tab.is-active {
+  --rkui-folder-tab-x: var(--rkui-press-offset-x);
+  --rkui-folder-tab-y: var(--rkui-press-offset-y);
+
+  box-shadow: var(--rkui-shadow-pressed);
+}
+
+.rkui-button--unfilled.is-hover {
+  box-shadow: none;
+  translate: none;
+  background: var(--rkui-raised);
+}
+
+.rkui-button--unfilled.is-active {
+  background: var(--rkui-raised);
+  box-shadow: var(--rkui-shadow-inset);
+  translate: none;
+  padding-block: calc(var(--rkui-button-padding-block) + var(--rkui-press-offset-y))
+    calc(var(--rkui-button-padding-block) - var(--rkui-press-offset-y));
+  padding-inline: calc(var(--rkui-button-padding-inline) + var(--rkui-press-offset-x))
+    calc(var(--rkui-button-padding-inline) - var(--rkui-press-offset-x));
+}
+
+.rkui-card--link.is-hover .rkui-card-link {
+  text-decoration: underline;
+}
+
+.rkui-sticky-note.rkui-card--link.is-hover {
+  --rkui-note-fold: var(--rkui-space-5);
+}
+
+.rkui-segmented label.is-hover {
+  box-shadow: inset 0 0 0 var(--rkui-outline-width) var(--rkui-line-unfilled);
+}
+
+.rkui-breadcrumbs--path a.is-hover {
+  box-shadow: inset 0 0 0 var(--rkui-outline-width) var(--rkui-line-unfilled);
+}
+
+.rkui-segmented label.is-active {
+  box-shadow: var(--rkui-shadow-inset);
+}
+
+.rkui-segmented--deck label.is-hover {
+  box-shadow: var(--rkui-shadow-hover);
+  translate: calc(-1 * var(--rkui-lift-offset-x)) calc(-1 * var(--rkui-lift-offset-y));
+}
+
+.rkui-segmented--deck label.is-active {
+  box-shadow: var(--rkui-shadow-pressed);
+  translate: var(--rkui-press-offset-x) var(--rkui-press-offset-y);
+}
+
+.rkui-range.is-hover {
+  --rkui-thumb-shadow: var(--rkui-shadow-hover);
+  --rkui-thumb-shift: calc(-1 * (var(--rkui-press-offset) + var(--rkui-lift-offset)));
+}
+
+.rkui-range.is-active {
+  --rkui-thumb-shadow: var(--rkui-shadow-pressed);
+  --rkui-thumb-shift: 0px;
+}
+
+.rkui-range.is-focus {
+  --rkui-thumb-shadow: 0 0 0 var(--rkui-focus-width) var(--rkui-focus);
+  outline: var(--rkui-outline-width) solid transparent;
+}
+
+:is(
+  .rkui-button,
+  .rkui-chip,
+  .rkui-card--link,
+  .rkui-checkbox,
+  .rkui-radio,
+  .rkui-switch,
+  .rkui-input,
+  .rkui-select,
+  .rkui-segmented,
+  .rkui-tile,
+  .rkui-color-input,
+  .rkui-folder-tab
+).is-focus {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-focus-offset);
+  box-shadow: none;
+}
+
+a.is-hover {
+  text-decoration-thickness: var(--rkui-outline-width);
+}
+
+a:where(:not(.rkui-button, .rkui-chip, .rkui-tile, .rkui-folder-tab, .rkui-eqref)).is-focus {
+  background: var(--rkui-focus);
+  color: var(--rkui-ink);
+}
+
+/* Special inputs */
+
+.rkui-input[type='file'].is-hover::file-selector-button {
+  box-shadow: var(--rkui-shadow-hover);
+  inset-block-start: calc(-1 * (var(--rkui-press-offset-y) + var(--rkui-lift-offset-y)));
+  inset-inline-start: calc(-1 * var(--rkui-lift-offset-x));
+}
+
+.rkui-input[type='file'].is-active::file-selector-button {
+  box-shadow: var(--rkui-shadow-pressed);
+  inset-block-start: 0;
+  inset-inline-start: var(--rkui-press-offset-x);
+}
+
+.rkui-file-drop.is-hover {
+  border-style: solid;
+}
+
+.rkui-file-drop.is-focus {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-focus-offset);
+}
+
+.rkui-search-bar.is-active {
+  box-shadow: var(--rkui-shadow-pressed);
+  translate: var(--rkui-press-offset-x) var(--rkui-press-offset-y);
+}
+
+.rkui-search-bar > .is-focus {
+  position: relative;
+  z-index: 1;
+}
+
+.rkui-search-bar:has(.is-focus) {
+  box-shadow: none;
+}
+
+.rkui-stepper--stacked button.is-hover {
+  background: var(--rkui-selected);
+  color: var(--rkui-on-selected);
+}
+
+.rkui-stepper--stacked button.is-active {
+  box-shadow: var(--rkui-shadow-inset);
+}
+
+.rkui-tiles--brush .rkui-tile--color.is-hover::after {
+  opacity: 0.7;
+}
+
+/* Folder tabs */
+
+.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']).is-focus {
+  outline: none;
+}
+
+.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']).is-focus::before {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-focus-offset);
+  box-shadow: none;
+  clip-path: inset(-100vmax -100vmax 0);
+}
+
+/* Input hover cue */
+
+:is(.rkui-input, .rkui-select).is-hover {
+  box-shadow: var(--rkui-input-hover-shadow);
+}
+
+:is(.rkui-input, .rkui-select).is-hover:not([aria-invalid='true']) {
+  background-color: var(--rkui-input-hover-background);
+}
+
+/* Ballot */
+
+:where(.rkui-ballot-option.is-hover) > .rkui-tile {
+  box-shadow: var(--rkui-shadow-hover);
+  translate: calc(-1 * var(--rkui-lift-offset-x)) calc(-1 * var(--rkui-lift-offset-y));
+}
+
+:where(.rkui-ballot-option.is-active) > .rkui-tile {
+  box-shadow: var(--rkui-shadow-pressed);
+  translate: var(--rkui-press-offset-x) var(--rkui-press-offset-y);
+}
+
+.rkui-ballot-option.is-focus > .rkui-tile {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-focus-offset);
+  box-shadow: none;
+}
+
+.rkui-ballot--tight .rkui-ballot-option.is-focus {
+  z-index: 2;
+}
+
+/* Tooltip */
+
+.rkui-tooltip.is-hover > .rkui-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+  translate: -50% 0;
+}
+
+/* Scroll regions and maths */
+
+.rkui-scroll.is-focus {
+  --rkui-scroll-track: var(--rkui-raised);
+  --rkui-scroll-track-edge: var(--rkui-line-unfilled);
+  --rkui-scroll-thumb: var(--rkui-selected);
+  --rkui-scroll-thumb-edge: var(--rkui-line);
+}
+
+.rkui-equation.is-focus {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-outline-width);
+  box-shadow: 0 0 0 var(--rkui-outline-width) var(--rkui-line-unfilled);
+}
+
+.rkui-equation.is-target {
+  background-color: var(--rkui-apricot-tint);
+}
+
+.rkui-eqref.is-hover {
+  box-shadow: inset 0 0 0 var(--rkui-outline-width) var(--rkui-line);
+}
+
+.rkui-eqref.is-focus {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-outline-width);
+  box-shadow: 0 0 0 var(--rkui-outline-width) var(--rkui-line-unfilled);
+}

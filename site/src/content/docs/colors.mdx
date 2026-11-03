@@ -1,0 +1,20 @@
+---
+title: Colours
+description: The core hues with their deep and tint steps, and the page colours.
+group: Foundations
+order: 10
+---
+
+import ColorPalette from '../../components/ColorPalette.astro'
+
+Click a colour to copy it. The hex values are read from the page as it is painted, so they change
+with the theme and palette switches at the top.
+
+<ColorPalette />
+
+## Using a colour
+
+In code, use the tokens rather than a copied hex: `var(--rkui-teal)` follows the theme and
+palette, and a hex doesn't.
+A fill carries its label token (`--rkui-on-fill`, `--rkui-on-navy`, `--rkui-on-coral`), a `-tint`
+carries `--rkui-fg`, and a `-deep` step is for text and links on the page.

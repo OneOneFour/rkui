@@ -1,0 +1,56 @@
+---
+title: Tiles
+description: Round tiles that pick one choice or several.
+group: Form controls
+order: 31
+---
+
+import Demo from '../../components/Demo.astro'
+import Numbers from '../../examples/tiles/numbers.astro'
+import numbersCode from '../../examples/tiles/numbers.astro?raw'
+import Letters from '../../examples/tiles/letters.astro'
+import lettersCode from '../../examples/tiles/letters.astro?raw'
+import Icons from '../../examples/tiles/icons.astro'
+import iconsCode from '../../examples/tiles/icons.astro?raw'
+import Compact from '../../examples/tiles/compact.astro'
+import compactCode from '../../examples/tiles/compact.astro?raw'
+import Vertical from '../../examples/tiles/vertical.astro'
+import verticalCode from '../../examples/tiles/vertical.astro?raw'
+import Disabled from '../../examples/tiles/disabled.astro'
+import disabledCode from '../../examples/tiles/disabled.astro?raw'
+
+<Demo code={numbersCode} label="Tile picker with numbers">
+  <Numbers />
+</Demo>
+
+## Letters
+
+<Demo code={lettersCode} label="Tile picker with letters">
+  <Letters />
+</Demo>
+
+## Icons, several choices
+
+Add `multiple` for checkboxes. An icon tile is named by hidden text.
+
+<Demo code={iconsCode} label="Tile picker with icons">
+  <Icons />
+</Demo>
+
+## Compact
+
+<Demo code={compactCode} label="Compact tiles">
+  <Compact />
+</Demo>
+
+## Vertical
+
+<Demo code={verticalCode} label="Vertical tiles">
+  <Vertical />
+</Demo>
+
+## Disabled
+
+<Demo code={disabledCode} label="Disabled tiles">
+  <Disabled />
+</Demo>

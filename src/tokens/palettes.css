@@ -1,0 +1,27 @@
+/* rkui page palettes: the surface and raised colours, and the shading mixed from them. */
+
+/* Page palettes: cream by default. Set data-palette="slate" or "greige" on <html> or any
+   container for a cool or warm grey page, or "cream" to switch back inside another palette. */
+:root,
+[data-palette='cream'] {
+  --rkui-surface: light-dark(#f7f3e5, #1a1f2b);
+  --rkui-raised: light-dark(#fffaf0, #232a39);
+}
+
+[data-palette='slate'] {
+  --rkui-surface: light-dark(#f1f3f8, #1f232b);
+  --rkui-raised: light-dark(#f9fafc, #282d37);
+}
+
+[data-palette='greige'] {
+  --rkui-surface: light-dark(#f2f1ee, #252420);
+  --rkui-raised: light-dark(#faf9f8, #302e29);
+}
+
+/* Shading mixed from the page colour. A custom property resolves its var()s on the element that
+   declares it, so these are declared again on every palette container. */
+:root,
+[data-palette] {
+  /* The page a step darker, behind the folder's unselected tabs */
+  --rkui-folder-back: color-mix(in srgb, var(--rkui-surface), var(--rkui-line) 8%);
+}

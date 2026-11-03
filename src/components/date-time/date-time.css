@@ -1,0 +1,51 @@
+/* Date and time inputs (date, time, month, week, datetime-local) on the text input frame. The
+   focused part of the value fills with --rkui-selected. The picker icon is a calendar (a clock for
+   time), drawn as a mask in currentColor the way search draws its icons. The popup picker and
+   Firefox's icon are the browser's own and can't be styled.
+
+   <input class="rkui-input" type="date"> */
+
+.rkui-input::-webkit-calendar-picker-indicator {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  margin-inline-start: var(--rkui-space-2);
+  padding: 0;
+  background: currentColor;
+  mask: url('../../../dist/icons/calendar-blank.svg') center / contain no-repeat;
+  forced-color-adjust: none;
+  cursor: pointer;
+}
+
+.rkui-input[type='time']::-webkit-calendar-picker-indicator {
+  mask-image: url('../../../dist/icons/clock.svg');
+}
+
+.rkui-input {
+  --rkui-date-part-fill: var(--rkui-selected);
+  --rkui-date-part-text: var(--rkui-on-selected);
+}
+
+/* Forced colours would drop the fill, so the focused part uses system colours there. */
+@media (forced-colors: active) {
+  .rkui-input {
+    --rkui-date-part-fill: Highlight;
+    --rkui-date-part-text: HighlightText;
+  }
+}
+
+/* One rule for every part: browsers treat unknown ::-webkit- names as valid, so the list holds. */
+.rkui-input::-webkit-datetime-edit-year-field:focus,
+.rkui-input::-webkit-datetime-edit-month-field:focus,
+.rkui-input::-webkit-datetime-edit-week-field:focus,
+.rkui-input::-webkit-datetime-edit-day-field:focus,
+.rkui-input::-webkit-datetime-edit-hour-field:focus,
+.rkui-input::-webkit-datetime-edit-minute-field:focus,
+.rkui-input::-webkit-datetime-edit-second-field:focus,
+.rkui-input::-webkit-datetime-edit-millisecond-field:focus,
+.rkui-input::-webkit-datetime-edit-ampm-field:focus,
+.rkui-input::-webkit-datetime-edit-meridiem-field:focus {
+  border-radius: calc(var(--rkui-radius) / 2);
+  background-color: var(--rkui-date-part-fill);
+  color: var(--rkui-date-part-text);
+  forced-color-adjust: none;
+}

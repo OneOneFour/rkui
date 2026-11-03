@@ -1,0 +1,28 @@
+---
+title: Logo
+description: The rkui logo as a home link that pops like a button.
+group: Actions
+order: 30
+---
+
+import Demo from '../../components/Demo.astro'
+import Lift from '../../examples/logo/lift.astro'
+import liftCode from '../../examples/logo/lift.astro?raw'
+import Motifs from '../../examples/logo/motifs.astro'
+import motifsCode from '../../examples/logo/motifs.astro?raw'
+
+`Logo` renders the rkui logo as a home link, raised on the hard shadow. It lifts on hover and sinks
+when pressed.
+
+<Demo code={liftCode} label="Logo">
+  <Lift />
+</Demo>
+
+## Motifs
+
+With `variant="motifs"`, hover and keyboard focus play each tile's motif: the folded corner lifts,
+the wave rolls, the stripes march and the dot of the i hops.
+
+<Demo code={motifsCode} label="Logo with motifs">
+  <Motifs />
+</Demo>

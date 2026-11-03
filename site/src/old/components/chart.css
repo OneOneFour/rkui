@@ -1,0 +1,335 @@
+/* Styleguide only: a vibe check for charts, not part of rkui in this version. */
+@import './chart-tokens.css';
+
+/* Charts: inline SVG coloured by the tokens, so a chart follows the theme with no redrawing.
+   The width and height attributes are the size at which text matches the type scale; the chart
+   shrinks to fit a narrower column. Put a series class on a mark or its group to colour it.
+
+   <svg class="rkui-chart" width="640" height="320" viewBox="0 0 640 320" role="img" aria-label="…">
+     <line class="rkui-chart-grid" … />           hairline gridline
+     <line class="rkui-chart-axis" … />           baseline
+     <text class="rkui-chart-tick" …>10</text>    tick label
+     <g class="rkui-chart-series-1">
+       <path class="rkui-chart-casing" d="…" />  ink edge under a line
+       <path class="rkui-chart-line" d="…" />
+       <circle class="rkui-chart-dot" … />
+     </g>
+     <path class="rkui-chart-shadow rkui-chart-series-1" d="…" />  hard shadow, under the bar
+     <path class="rkui-chart-bar rkui-chart-series-1" d="…" />
+     <rect class="rkui-chart-cell" style="fill: var(--rkui-seq-3)" … />
+     <text class="rkui-chart-label" …>Series A</text>  direct label, in text colours
+   </svg>
+
+   Marks are toon: ink outlines, and hard shadows under bars. Heatmaps have two options, with the
+   cells in a <g class="rkui-chart-cells">:
+   A, the default: cells side by side with ink gutters, on a .rkui-chart-shadow rect under the grid;
+   B, .rkui-chart--tiles: rounded tiles (rx in the markup) with gaps between them, each outlined
+   and on a short hard shadow.
+   Set --rkui-chart-bg on a chart or any ancestor that changes the colour behind it; the halos round
+   direct labels use it.
+
+   Around the SVG, in HTML:
+   - a legend: <ul class="rkui-chart-legend"><li class="rkui-chart-series-1">Series A</li>…</ul>
+   - a stepped scale's legend: <p class="rkui-chart-scale"><span>−1</span>
+     <span class="rkui-chart-scale-steps"><span
+       style="background: var(--rkui-div-cold-3)"></span>…</span>
+     <span>+1</span></p>
+   - a heatmap that pops the hovered or focused cell and shows its value: <rkui-heatmap>
+     (heatmap.js), with role="grid" on the SVG, its cells as role="gridcell" in role="row" groups,
+     each with data-value and data-name, and after the cells:
+     <g class="rkui-heatmap-pop" aria-hidden="true"><rect class="rkui-heatmap-pop-band" rx="4" />
+       <rect class="rkui-heatmap-pop-cell" rx="4" /></g>
+     and after the SVG a toon tooltip (tooltip.css) for it to place:
+     <span class="rkui-tooltip rkui-tooltip--toon rkui-heatmap-tip" aria-hidden="true"><span
+       class="rkui-tooltip-bubble"><strong class="rkui-heatmap-value"></strong>
+       <span class="rkui-heatmap-name"></span></span></span>
+   - small multiples: <div class="rkui-chart-multiples"><div><p class="rkui-chart-title">…</p><svg>…
+   - a sparkline in a line of text: <svg class="rkui-sparkline" viewBox="0 0 64 16">…</svg> */
+
+.rkui-chart {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+  overflow: visible;
+  color: var(--rkui-fg);
+  font-family: var(--rkui-font-body);
+  font-size: var(--rkui-step--1);
+}
+
+.rkui-chart-series-1 {
+  --rkui-series: var(--rkui-chart-1);
+}
+
+.rkui-chart-series-2 {
+  --rkui-series: var(--rkui-chart-2);
+}
+
+.rkui-chart-series-3 {
+  --rkui-series: var(--rkui-chart-3);
+}
+
+.rkui-chart-series-4 {
+  --rkui-series: var(--rkui-chart-4);
+}
+
+.rkui-chart-series-5 {
+  --rkui-series: var(--rkui-chart-5);
+}
+
+.rkui-chart-series-6 {
+  --rkui-series: var(--rkui-chart-6);
+}
+
+.rkui-chart-series-7 {
+  --rkui-series: var(--rkui-chart-7);
+}
+
+.rkui-chart-series-8 {
+  --rkui-series: var(--rkui-chart-8);
+}
+
+/* A series in the background, behind the one being shown */
+.rkui-chart-series-context {
+  --rkui-series: var(--rkui-chart-context);
+}
+
+.rkui-chart-grid {
+  stroke: var(--rkui-chart-grid);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.rkui-chart-axis {
+  stroke: var(--rkui-muted);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.rkui-chart-tick {
+  fill: var(--rkui-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A halo in the background colour keeps a direct label readable where it crosses marks. */
+.rkui-chart-label {
+  fill: var(--rkui-fg);
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: var(--rkui-chart-bg, var(--rkui-surface));
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.rkui-chart-line {
+  fill: none;
+  stroke: var(--rkui-series);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rkui-chart-bar,
+.rkui-chart-dot {
+  fill: var(--rkui-series);
+}
+
+/* The toon look: an ink edge on every mark, and the hard shadow under bars and heatmaps. */
+.rkui-chart-casing {
+  fill: none;
+  stroke: var(--rkui-line);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rkui-chart-line.rkui-chart-series-context {
+  stroke-width: 1.5;
+}
+
+.rkui-chart-bar,
+.rkui-chart-dot {
+  stroke: var(--rkui-line);
+  stroke-width: var(--rkui-outline-width);
+}
+
+/* As in --rkui-shadow, the shadow has a light edge in dark mode: the outer half of its stroke. */
+.rkui-chart-shadow {
+  fill: var(--rkui-shadow-color);
+  stroke: var(--rkui-shadow-edge);
+  stroke-width: calc(2 * var(--rkui-outline-width));
+  paint-order: stroke;
+  translate: var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y);
+}
+
+/* Heatmap cells have the ink outline. Side by side (A), the outlines of neighbouring cells
+   overlap into gutters as wide as one outline. */
+.rkui-chart-cell {
+  stroke: var(--rkui-line);
+  stroke-width: var(--rkui-outline-width);
+}
+
+/* Tiles (B): one filter for all of them, rather than one per tile. As in tooltip.css, the second
+   drop-shadow is the shadow's light edge in dark mode. */
+.rkui-chart--tiles .rkui-chart-cells {
+  filter: drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-shadow-depth) * 2px)
+        calc(var(--rkui-shadow-dy) * var(--rkui-shadow-depth) * 2px) 0 var(--rkui-shadow-color)
+    )
+    drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-outline-width))
+        calc(var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0 var(--rkui-shadow-edge)
+    );
+}
+
+.rkui-chart-title {
+  margin: 0 0 var(--rkui-space-1);
+  font-size: var(--rkui-step--1);
+  font-weight: 700;
+}
+
+/* Small multiples: equal panels that wrap to fit */
+.rkui-chart-multiples {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: var(--rkui-space-4);
+}
+
+/* A stepped colour scale's legend: the label at each end, and a block per step between them */
+.rkui-chart-scale {
+  display: flex;
+  align-items: center;
+  gap: var(--rkui-space-2);
+  margin: var(--rkui-space-2) 0 0;
+  color: var(--rkui-muted);
+  font-size: var(--rkui-step--1);
+  font-variant-numeric: tabular-nums;
+}
+
+.rkui-chart-scale-steps {
+  display: flex;
+}
+
+.rkui-chart-scale-steps > span {
+  inline-size: 2rem;
+  block-size: 0.75rem;
+}
+
+/* The steps joined by ink gutters, in an ink frame, like the cells. */
+.rkui-chart-scale-steps {
+  gap: var(--rkui-outline-width);
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: calc(var(--rkui-radius) / 2);
+  overflow: hidden;
+  background: var(--rkui-line);
+}
+
+/* <rkui-heatmap>: a raised copy of the hovered or focused cell pops up over it, and the tooltip
+   shows its value. Both stay a moment after the pointer leaves a cell, so crossing a gap between
+   tiles doesn't flicker them. */
+.rkui-heatmap {
+  position: relative;
+  display: block;
+}
+
+/* The popped copy draws the focus band in its place. */
+.rkui-heatmap .rkui-chart-cell:focus {
+  outline: none;
+}
+
+.rkui-heatmap-pop {
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s var(--rkui-duration-fast);
+}
+
+.rkui-heatmap:has(.rkui-chart-cell:is(:hover, :focus-visible)) .rkui-heatmap-pop {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.rkui-heatmap-pop-cell {
+  stroke: var(--rkui-line);
+  stroke-width: var(--rkui-outline-width);
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(
+      var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0 var(--rkui-shadow-color)
+    )
+    drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-outline-width))
+        calc(var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0 var(--rkui-shadow-edge)
+    );
+}
+
+/* The focus band: a stroke wide enough to show --rkui-focus-width of it outside the ink outline. */
+.rkui-heatmap-pop-band {
+  display: none;
+  fill: none;
+  stroke: var(--rkui-focus);
+  stroke-width: calc(var(--rkui-outline-width) + 2 * var(--rkui-focus-width));
+}
+
+.rkui-heatmap:has(.rkui-chart-cell:focus-visible) .rkui-heatmap-pop-band {
+  display: inline;
+}
+
+.rkui-heatmap:has(.rkui-chart-cell:focus-visible) .rkui-heatmap-pop-cell {
+  filter: none;
+}
+
+/* The tooltip's host is laid over the cell, so the bubble sits above it. */
+.rkui-heatmap-tip {
+  position: absolute;
+  pointer-events: none;
+}
+
+.rkui-heatmap:has(.rkui-chart-cell:is(:hover, :focus-visible))
+  .rkui-heatmap-tip:not([data-dismissed])
+  > .rkui-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+  translate: -50% 0;
+  transition-delay: 0s;
+}
+
+.rkui-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rkui-space-1) var(--rkui-space-4);
+  margin: 0 0 var(--rkui-space-2);
+  padding: 0;
+  font-size: var(--rkui-step--1);
+  list-style: none;
+}
+
+.rkui-chart-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rkui-space-2);
+}
+
+.rkui-chart-legend li::before {
+  content: '';
+  inline-size: 1.25em;
+  block-size: 0.25em;
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-series);
+}
+
+.rkui-sparkline {
+  display: inline-block;
+  inline-size: 4em;
+  block-size: 1em;
+  overflow: visible;
+  vertical-align: -0.1em;
+}
+
+.rkui-sparkline .rkui-chart-line {
+  stroke: var(--rkui-muted);
+  stroke-width: 1.5;
+}
+
+/* Charts on a widget's stage sit on its raised background. */
+.rkui-widget-frame-stage {
+  --rkui-chart-bg: var(--rkui-raised);
+}

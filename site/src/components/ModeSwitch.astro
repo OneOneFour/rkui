@@ -1,0 +1,55 @@
+---
+/**
+ * A docs-site switch for a mode on <html>: checking an option sets `data-<name>` and remembers it
+ * under `rkui-<name>`. DocsLayout restores the stored choice before first paint.
+ */
+import Segmented from '@oneonefour/rkui/components/segmented/Segmented.astro'
+import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.astro'
+
+interface Option {
+  value: string
+  label: string
+}
+
+interface Props {
+  /** The mode: `palette` or `shadow`. */
+  name: 'palette' | 'shadow'
+  /** What the switch is for, read out by screen readers. */
+  legend: string
+  /** The choices; the first is the default. */
+  options: Option[]
+}
+
+const { name, legend, options } = Astro.props
+// No radio starts checked: the script checks the stored choice, so the sliding pill starts there.
+---
+
+<Segmented legend={legend} name={`rkui-${name}`} data-mode={name}>
+  {options.map(({ value, label }) => (
+    <SegmentedOption value={value}>{label}</SegmentedOption>
+  ))}
+</Segmented>
+
+<script>
+  import { afterSlide } from '@oneonefour/rkui/shared/after-slide.js'
+
+  const root = document.documentElement
+
+  for (const fieldset of document.querySelectorAll<HTMLElement>('fieldset[data-mode]')) {
+    const name = fieldset.dataset.mode ?? ''
+    const radios = [...fieldset.querySelectorAll('input')]
+    const current = root.dataset[name] ?? radios[0]?.value
+
+    for (const radio of radios) {
+      radio.checked = radio.value === current
+      radio.addEventListener('change', () => {
+        afterSlide(radio, () => (root.dataset[name] = radio.value))
+        try {
+          localStorage.setItem(`rkui-${name}`, radio.value)
+        } catch {
+          // Storage is blocked, so the choice lasts only until the page is left.
+        }
+      })
+    }
+  }
+</script>

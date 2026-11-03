@@ -1,0 +1,70 @@
+/* Chart colours, for the styleguide's charts only: a vibe check, not part of rkui in this
+   version. Loaded after rkui's tokens, whose colours these mix. */
+
+:root {
+  /* Chart series: in a fixed order that keeps neighbours apart for colour-blind readers */
+  --rkui-chart-1: var(--rkui-teal);
+  --rkui-chart-2: var(--rkui-yellow);
+  --rkui-chart-3: var(--rkui-navy);
+  --rkui-chart-4: var(--rkui-green);
+  --rkui-chart-5: var(--rkui-sky);
+  --rkui-chart-6: var(--rkui-coral);
+  --rkui-chart-7: var(--rkui-grape);
+  --rkui-chart-8: var(--rkui-tangerine);
+  /* A series in the background, behind the one being shown, and the grid lines */
+  --rkui-chart-context: color-mix(in srgb, var(--rkui-muted) 45%, transparent);
+  --rkui-chart-grid: color-mix(in srgb, var(--rkui-fg) 12%, transparent);
+
+  /* Sequential scale: for magnitudes, from navy's tint to its text colour, so in both themes the
+     strongest step stands out most from the page */
+  --rkui-seq-1: color-mix(in oklab, var(--rkui-navy-deep) 27%, var(--rkui-navy-tint));
+  --rkui-seq-2: color-mix(in oklab, var(--rkui-navy-deep) 45%, var(--rkui-navy-tint));
+  --rkui-seq-3: color-mix(in oklab, var(--rkui-navy-deep) 63%, var(--rkui-navy-tint));
+  --rkui-seq-4: color-mix(in oklab, var(--rkui-navy-deep) 82%, var(--rkui-navy-tint));
+  --rkui-seq-5: var(--rkui-navy-deep);
+
+  /* Vivid sequential scale (an option beside the navy one): the fills from yellow through green and
+     teal to navy, in even steps of lightness. Light mode runs from yellow up to navy and dark mode
+     from navy up to yellow, so the strongest step stands out most from the page. */
+  --rkui-seq-vivid-1: light-dark(
+    var(--rkui-yellow),
+    color-mix(in oklab, var(--rkui-navy) 50%, var(--rkui-navy-tint))
+  );
+  --rkui-seq-vivid-2: light-dark(var(--rkui-green), var(--rkui-navy));
+  --rkui-seq-vivid-3: light-dark(
+    color-mix(in oklab, var(--rkui-teal) 75%, var(--rkui-navy)),
+    color-mix(in oklab, var(--rkui-navy) 50%, var(--rkui-teal))
+  );
+  --rkui-seq-vivid-4: light-dark(
+    color-mix(in oklab, var(--rkui-teal) 40%, var(--rkui-navy)),
+    var(--rkui-green)
+  );
+  --rkui-seq-vivid-5: light-dark(var(--rkui-navy), var(--rkui-yellow));
+
+  /* Diverging scale: for anomalies, navy below and coral above with a faint neutral between. The
+     coral end leans towards --rkui-fg so that both ends are about as light as each other. */
+  --rkui-div-cold-3: var(--rkui-navy-deep);
+  --rkui-div-cold-2: color-mix(in oklab, var(--rkui-navy-deep) 67%, var(--rkui-navy-tint));
+  --rkui-div-cold-1: color-mix(in oklab, var(--rkui-navy-deep) 33%, var(--rkui-navy-tint));
+  --rkui-div-mid: color-mix(in oklab, var(--rkui-muted) 12%, var(--rkui-surface));
+  --rkui-div-warm-1: color-mix(in oklab, var(--rkui-div-warm-3) 33%, var(--rkui-coral-tint));
+  --rkui-div-warm-2: color-mix(in oklab, var(--rkui-div-warm-3) 67%, var(--rkui-coral-tint));
+  --rkui-div-warm-3: color-mix(in oklab, var(--rkui-coral-deep) 70%, var(--rkui-fg));
+}
+
+/* --rkui-div-mid mixes in the page colour, so each palette re-declares it to mix its own */
+[data-palette] {
+  --rkui-div-mid: color-mix(in oklab, var(--rkui-muted) 12%, var(--rkui-surface));
+}
+
+/* Browsers without light-dark() get the light theme, as in rkui's tokens/fallback.css. */
+@supports not (color: light-dark(#000, #fff)) {
+  :root,
+  [data-palette] {
+    --rkui-seq-vivid-1: var(--rkui-yellow);
+    --rkui-seq-vivid-2: var(--rkui-green);
+    --rkui-seq-vivid-3: color-mix(in oklab, var(--rkui-teal) 75%, var(--rkui-navy));
+    --rkui-seq-vivid-4: color-mix(in oklab, var(--rkui-teal) 40%, var(--rkui-navy));
+    --rkui-seq-vivid-5: var(--rkui-navy);
+  }
+}

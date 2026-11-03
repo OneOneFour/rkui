@@ -1,0 +1,82 @@
+---
+/**
+ * An rkui button: a `<button>`, or an `<a>` styled as one when `href` is given. Put an icon before
+ * the label in the slot. `class`, `style` and other attributes go on the element (`<a>` ones for a
+ * link, `<button>` ones otherwise).
+ *
+ * @example
+ * <Button hue="teal">Save</Button>
+ * <Button busy>Saving…</Button>
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { styleVars } from '../../shared/style-vars'
+
+/** The hues button.css has a fill for; yellow is the default, so it needs no class. */
+type ButtonHue = 'yellow' | 'navy' | 'teal' | 'green' | 'coral' | 'grape' | 'tangerine'
+
+interface Props extends HTMLAttributes<'button'> {
+  /** The fill colour, or 'section' for the section's colour; yellow when left out. */
+  hue?: ButtonHue | 'section'
+  /** The outline-only secondary style; filled when left out. */
+  unfilled?: boolean
+  /** The small size; the regular size when left out. */
+  small?: boolean
+  /** Where a link goes; a <button> when left out. */
+  href?: string
+  /**
+   * Starts the button busy: `aria-busy` and `aria-disabled` (it stays focusable) and rising and
+   * falling water; not busy when left out. Say what is happening in the label.
+   */
+  busy?: boolean
+  /**
+   * Includes the water without starting busy, for a script that sets `aria-busy` later; only a busy
+   * button has it when left out.
+   */
+  water?: boolean
+  /** A fixed water level from 0 to 1; rising and falling when left out. */
+  level?: number
+  /** For a link: where to open it. */
+  target?: string
+  /** For a link: its relationship to the page, e.g. "noopener". */
+  rel?: string
+}
+
+const {
+  hue,
+  unfilled = false,
+  small = false,
+  busy = false,
+  water = false,
+  level,
+  type = 'button',
+  class: className,
+  style,
+  ...rest
+} = Astro.props
+const busyAttrs = busy ? { 'aria-busy': 'true' as const, 'aria-disabled': 'true' as const } : {}
+const attrs = {
+  ...rest,
+  ...busyAttrs,
+  style: styleVars({ '--rkui-water-level': level?.toString() }, style),
+}
+const hasWater = busy || water
+const waterClass = level === undefined ? 'rkui-water rkui-water--rise' : 'rkui-water'
+const classes = [
+  'rkui-button',
+  hue && `rkui-button--${hue}`,
+  { 'rkui-button--unfilled': unfilled, 'rkui-button--small': small },
+  className,
+]
+---
+
+{attrs.href === undefined ? (
+  <button {type} class:list={classes} {...attrs}>
+    {hasWater && <span class={waterClass} aria-hidden="true" />}
+    <slot />
+  </button>
+) : (
+  <a class:list={classes} {...attrs}>
+    {hasWater && <span class={waterClass} aria-hidden="true" />}
+    <slot />
+  </a>
+)}

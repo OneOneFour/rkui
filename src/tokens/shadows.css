@@ -1,0 +1,88 @@
+/* rkui shadow tokens: the light direction, shade, depth and the hard shadows. */
+
+:root {
+  /* The way shadows fall, as a multiple of each shadow length on each axis: 1 1 is down and to
+     the right. rkui-light-direction.js sets them on <html>. */
+  --rkui-shadow-dx: 1;
+  --rkui-shadow-dy: 1;
+}
+
+/* A fill's shade, a quarter of the way to the outline colour: the sticky note's fold and the colour
+   shadow mode's extrusions. Set --rkui-shade-of to the fill; declared on every element, so each one
+   mixes its own. */
+* {
+  --rkui-shade: color-mix(in oklab, var(--rkui-shade-of) 75%, var(--rkui-line));
+}
+
+/* Depth: data-depth="deep" on <html>, on any container or on one element makes every shadow,
+   inset and pop in it 1.5 times as deep. data-depth="normal" switches back inside it. */
+:root,
+[data-depth='normal'] {
+  --rkui-shadow-depth: 1;
+}
+
+[data-depth='deep'] {
+  --rkui-shadow-depth: 1.5;
+}
+
+/* Hard shadows and the pop's moves, built from the light, the depth and the shadow colours. A
+   custom property resolves its var()s on the element that declares it, so these are declared on
+   every element: each one builds them from its own inputs, wherever those were last set. */
+* {
+  --rkui-shadow-offset: calc(var(--rkui-shadow-depth) * 4px);
+  --rkui-shadow-offset-x: calc(var(--rkui-shadow-dx) * var(--rkui-shadow-offset));
+  --rkui-shadow-offset-y: calc(var(--rkui-shadow-dy) * var(--rkui-shadow-offset));
+  --rkui-shadow-offset-hover: calc(var(--rkui-shadow-depth) * 6px);
+  --rkui-shadow-offset-pressed: calc(var(--rkui-shadow-depth) * 2px);
+  /* Pressing moves an element onto --rkui-shadow-pressed; the move plus that shadow is
+     --rkui-shadow. */
+  --rkui-press-offset: calc(var(--rkui-shadow-depth) * 2px);
+  --rkui-press-offset-x: calc(var(--rkui-shadow-dx) * var(--rkui-press-offset));
+  --rkui-press-offset-y: calc(var(--rkui-shadow-dy) * var(--rkui-press-offset));
+  --rkui-lift-offset: calc(var(--rkui-shadow-depth) * 1px);
+  --rkui-lift-offset-x: calc(var(--rkui-shadow-dx) * var(--rkui-lift-offset));
+  --rkui-lift-offset-y: calc(var(--rkui-shadow-dy) * var(--rkui-lift-offset));
+  /* For gaps between raised neighbours: grows half as fast as the shadow (1.25 when deep). */
+  --rkui-depth-gap-scale: calc((1 + var(--rkui-shadow-depth)) / 2);
+
+  /* Each shadow is two layers: the shadow, on a copy widened by --rkui-outline-width in
+     --rkui-shadow-edge. */
+  --rkui-shadow:
+    var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0 var(--rkui-shadow-color),
+    var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
+  --rkui-shadow-hover:
+    calc(var(--rkui-shadow-dx) * var(--rkui-shadow-offset-hover))
+      calc(var(--rkui-shadow-dy) * var(--rkui-shadow-offset-hover)) 0 var(--rkui-shadow-color),
+    calc(var(--rkui-shadow-dx) * var(--rkui-shadow-offset-hover))
+      calc(var(--rkui-shadow-dy) * var(--rkui-shadow-offset-hover)) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
+  --rkui-shadow-pressed:
+    calc(var(--rkui-shadow-dx) * var(--rkui-shadow-offset-pressed))
+      calc(var(--rkui-shadow-dy) * var(--rkui-shadow-offset-pressed)) 0 var(--rkui-shadow-color),
+    calc(var(--rkui-shadow-dx) * var(--rkui-shadow-offset-pressed))
+      calc(var(--rkui-shadow-dy) * var(--rkui-shadow-offset-pressed)) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
+  --rkui-shadow-inset: inset calc(var(--rkui-shadow-dx) * var(--rkui-shadow-offset-pressed))
+    calc(var(--rkui-shadow-dy) * var(--rkui-shadow-offset-pressed)) 0 var(--rkui-line);
+  --rkui-shadow-code-inset: inset var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0
+    var(--rkui-stripe);
+}
+
+/* The shadow colours, the outlined slab. The edge is a light rim in dark mode, so the near-black
+   shadow shows on the page, and transparent in light mode. Set data-shadow="color" on <html> or
+   any container for the colour shadow mode (shadow-color.css), or "slab" to switch back inside
+   it. */
+:root,
+[data-shadow='slab'] {
+  --rkui-shadow-color: var(--rkui-line);
+  --rkui-shadow-edge: light-dark(transparent, var(--rkui-line-unfilled));
+}
+
+/* Nothing moves under reduced motion; shadows still change. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    --rkui-press-offset: 0px;
+    --rkui-lift-offset: 0px;
+  }
+}

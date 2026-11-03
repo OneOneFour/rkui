@@ -1,0 +1,210 @@
+/* Scroll region: content that scrolls sideways when it is too wide, such as a long code line, a
+   wide equation or table, or a strip of tabs. Put .rkui-scroll on the element that scrolls, with
+   tabindex="0" so the keyboard can scroll it (and, outside a component, a role and a label).
+
+   <div class="rkui-scroll" tabindex="0" role="region" aria-label="…">
+     <table>…</table>
+   </div>
+
+   Three dots in a narrow gutter at each edge show that there is more to see, on that side only
+   and never when everything fits. A toon scrollbar shows on hover and keyboard focus; its space
+   is kept while it is hidden, so the content doesn't move when it shows.
+
+   Opt-in modifier: .rkui-scroll--bar keeps the scrollbar visible, with no dots. Use it on an
+   element with side borders of its own, which the dots' gutters would replace.
+
+   The dots follow the scroll position with a scroll-driven animation. Browsers without one show
+   the scrollbar at all times instead. */
+
+/* The scrollbar's colours and size. A sidebar's scroller (sidebar.css) shares the scrollbar, stood
+   on end. */
+.rkui-scroll,
+.rkui-sidebar-scroll {
+  --rkui-scroll-bar-size: 0.875rem;
+  --rkui-scroll-track: var(--rkui-raised);
+  --rkui-scroll-track-edge: var(--rkui-line-unfilled);
+  --rkui-scroll-thumb: var(--rkui-selected);
+  --rkui-scroll-thumb-edge: var(--rkui-line);
+}
+
+.rkui-scroll {
+  overflow-x: auto;
+}
+
+.rkui-scroll:focus-visible {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-outline-width);
+  box-shadow: 0 0 0 var(--rkui-outline-width) var(--rkui-line-unfilled);
+}
+
+/* The scrollbar: a pill track with an outlined thumb, like the range slider. A styled WebKit
+   scrollbar is always drawn, even where the system hides scrollbars until you scroll (macOS).
+   Firefox can't style the parts, so it gets the colours only. The track stops short of the ends
+   along its own axis. */
+:is(.rkui-scroll, .rkui-sidebar-scroll)::-webkit-scrollbar {
+  width: var(--rkui-scroll-bar-size);
+  height: var(--rkui-scroll-bar-size);
+}
+
+:is(.rkui-scroll, .rkui-sidebar-scroll)::-webkit-scrollbar-track {
+  border: var(--rkui-outline-width) solid var(--rkui-scroll-track-edge);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-scroll-track);
+}
+
+.rkui-scroll::-webkit-scrollbar-track {
+  margin-inline: var(--rkui-radius);
+}
+
+.rkui-sidebar-scroll::-webkit-scrollbar-track {
+  margin-block: var(--rkui-radius);
+}
+
+:is(.rkui-scroll, .rkui-sidebar-scroll)::-webkit-scrollbar-thumb {
+  border: var(--rkui-outline-width) solid var(--rkui-scroll-thumb-edge);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-scroll-thumb);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .rkui-scroll,
+  .rkui-sidebar-scroll {
+    scrollbar-color: var(--rkui-scroll-thumb) var(--rkui-scroll-track);
+  }
+}
+
+/* The width of the dots' gutters, and 0 where there are none. Not inherited, so a region nested
+   in another doesn't take its gutters. */
+@property --rkui-scroll-gutter {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* The dots. The gutters are borders because content is clipped inside the border, so it never
+   runs under the dots. Each dot is a background layer; a scroll container's background stays put
+   while its content scrolls. */
+.rkui-scroll:not(.rkui-scroll--bar) {
+  --rkui-scroll-gutter: 0.75rem;
+  --rkui-dot-size: 0.3rem;
+  --rkui-dot-spacing: 0.55rem;
+  --rkui-dot-inset: calc((var(--rkui-scroll-gutter) - var(--rkui-dot-size)) / 2);
+  --rkui-dot-start: radial-gradient(
+    closest-side,
+    color-mix(
+        in srgb,
+        var(--rkui-line-unfilled) calc(var(--rkui-scroll-more-start) * 100%),
+        transparent
+      )
+      90%,
+    transparent
+  );
+  --rkui-dot-end: radial-gradient(
+    closest-side,
+    color-mix(
+        in srgb,
+        var(--rkui-line-unfilled) calc(var(--rkui-scroll-more-end) * 100%),
+        transparent
+      )
+      90%,
+    transparent
+  );
+
+  border-inline: var(--rkui-scroll-gutter) solid transparent;
+  background-image:
+    var(--rkui-dot-start), var(--rkui-dot-start), var(--rkui-dot-start), var(--rkui-dot-end),
+    var(--rkui-dot-end), var(--rkui-dot-end);
+  background-position:
+    left var(--rkui-dot-inset) top calc(50% - var(--rkui-dot-spacing)),
+    left var(--rkui-dot-inset) center,
+    left var(--rkui-dot-inset) top calc(50% + var(--rkui-dot-spacing)),
+    right var(--rkui-dot-inset) top calc(50% - var(--rkui-dot-spacing)),
+    right var(--rkui-dot-inset) center,
+    right var(--rkui-dot-inset) top calc(50% + var(--rkui-dot-spacing));
+  background-size: var(--rkui-dot-size) var(--rkui-dot-size);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+}
+
+/* 1 while there is more to scroll to on that side, and 0 at that end. Registered so that the
+   scroll-driven animation can fade them. */
+@property --rkui-scroll-more-start {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --rkui-scroll-more-end {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes rkui-scroll-more {
+  from {
+    --rkui-scroll-more-start: 0;
+    --rkui-scroll-more-end: 1;
+  }
+
+  5%,
+  95% {
+    --rkui-scroll-more-start: 1;
+    --rkui-scroll-more-end: 1;
+  }
+
+  to {
+    --rkui-scroll-more-start: 1;
+    --rkui-scroll-more-end: 0;
+  }
+}
+
+/* Forced colours drop gradients, so the dots become a system-colour edge instead. */
+@keyframes rkui-scroll-more-forced {
+  from {
+    border-inline-start-color: Canvas;
+    border-inline-end-color: CanvasText;
+  }
+
+  5%,
+  95% {
+    border-inline-color: CanvasText;
+  }
+
+  to {
+    border-inline-start-color: CanvasText;
+    border-inline-end-color: Canvas;
+  }
+}
+
+/* A scroll timeline is inactive when nothing overflows, so the animation has no effect and both
+   properties keep their initial 0. Longhands only: the minifier folds a shorthand and
+   animation-timeline into one shorthand, which some browsers reject whole. */
+@supports (animation-timeline: scroll()) {
+  .rkui-scroll {
+    animation-name: rkui-scroll-more;
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(self inline);
+  }
+
+  /* The dots show that there is more, so the scrollbar waits for hover or keyboard focus. Forced
+     colours keep it visible. */
+  @media (forced-colors: none) {
+    .rkui-scroll:not(.rkui-scroll--bar, :hover, :focus-visible, :has(:focus-visible)) {
+      --rkui-scroll-track: transparent;
+      --rkui-scroll-track-edge: transparent;
+      --rkui-scroll-thumb: transparent;
+      --rkui-scroll-thumb-edge: transparent;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .rkui-scroll:not(.rkui-scroll--bar) {
+      --rkui-scroll-gutter: var(--rkui-space-1);
+
+      border-inline-color: Canvas;
+      animation-name: rkui-scroll-more, rkui-scroll-more-forced;
+    }
+  }
+}

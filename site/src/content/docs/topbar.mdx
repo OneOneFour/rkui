@@ -1,0 +1,17 @@
+---
+title: Top bar
+description: Controls that stay at the top of the window as the page scrolls.
+group: Navigation
+order: 91
+---
+
+import Demo from '../../components/Demo.astro'
+import TopBar from '../../examples/topbar/default.astro'
+import topBarCode from '../../examples/topbar/default.astro?raw'
+
+The demo shows each bar in place, as it looks once the page has scrolled: the toast, then the
+`flush` bar, which runs the full width along the top edge with a rule and a shadow.
+
+<Demo code={topBarCode} label="Toast and flush top bars" stack>
+  <TopBar />
+</Demo>

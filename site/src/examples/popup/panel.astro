@@ -1,0 +1,12 @@
+---
+import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Popup from '@oneonefour/rkui/components/popup/Popup.astro'
+---
+
+<Button popovertarget="popup-panel">Open</Button>
+<Popup id="popup-panel">
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+  <Button small popovertarget="popup-panel" popovertargetaction="hide">
+    Close
+  </Button>
+</Popup>

@@ -1,0 +1,355 @@
+/* Exploded view: an illustration whose assemblies come apart while they are hovered or focused, so
+   their parts can be inspected. Each part is a small SVG placed on a grid of --rkui-columns ×
+   --rkui-rows units (--rkui-x, --rkui-y, --rkui-w, --rkui-h), and says how far it moves
+   (--rkui-explode-x, --rkui-explode-y, in units) and how many layers from the back it is
+   (--rkui-depth). At rest each assembly casts the UI's resting shadow; exploded, each part rises
+   towards the light and casts a shadow that is longer for each layer. Parts are drawn in order,
+   back to front, so a part's shadow falls on the parts behind it.
+
+   <div class="rkui-explode">
+     <div class="rkui-explode-stage"
+       style="--rkui-columns: 16; --rkui-rows: 38; --rkui-hatch: url(#…)" role="group"
+       aria-label="…">
+       <svg class="rkui-explode-ground" viewBox="0 0 16 38" aria-hidden="true">
+         <pattern id="…" …>                                 the hatching's diagonal stripes
+           <rect class="rkui-explode-hatch" … />
+         </pattern>
+         <path d="…" />                                      the ground line
+       </svg>
+       <svg class="rkui-explode-sticker" viewBox="0 0 16 38" aria-hidden="true">   sticker only
+         <g class="rkui-explode-sticker-edge">…every part's shape</g>
+         <g class="rkui-explode-sticker-backing">…every part's shape again</g>
+       </svg>
+       <div class="rkui-explode-assembly" tabindex="0" role="img" aria-label="Lamp: stem and shade">
+         <svg class="rkui-explode-rest" viewBox="0 0 16 38">…each part's shape</svg>
+         <svg class="rkui-explode-part" viewBox="7 20 2 10"
+           style="--rkui-x: 7; --rkui-y: 20; --rkui-w: 2; --rkui-h: 10;
+           --rkui-part-fill: var(--rkui-illustration-steel); --rkui-depth: 0;
+           --rkui-explode-x: 0; --rkui-explode-y: 1">
+           <clipPath id="…"><path d="…" /></clipPath>
+           <path class="rkui-explode-band" d="…" />       the focus band, then the outlined shape
+           <path class="rkui-explode-shape" d="…" />
+           <g clip-path="url(#…)">                       details, cut off at the shape's edge
+             <path class="rkui-explode-detail rkui-explode-detail--band" d="…"
+               style="--rkui-detail-fill: …" />
+             <path class="rkui-explode-detail rkui-explode-detail--stroke" d="…" />
+             …also --rkui-hatch (the stage's stripes) and --piece (an outlined, filled shape)
+           </g>
+         </svg>
+         …more parts
+         <span class="rkui-explode-label rkui-tooltip" style="…the same as its part…">
+           <span class="rkui-tooltip-bubble">Stem</span>
+         </span>
+         …a label for each part, after all the parts so that none covers them
+       </div>
+     </div>
+     <label class="rkui-check">                               optional: pulls every assembly apart
+       <input class="rkui-switch rkui-explode-all" type="checkbox" role="switch" /> Explode all
+     </label>
+   </div>
+
+   Styleguide only, like the diagrams. */
+
+.rkui-explode {
+  display: grid;
+  justify-items: start;
+  gap: var(--rkui-space-4);
+}
+
+/* The stage is the container, so a grid unit is a fraction of its width. Outlines and shadows
+   stay their usual size at any width. */
+.rkui-explode-stage {
+  --rkui-u: calc(100cqi / var(--rkui-columns));
+
+  position: relative;
+  container-type: inline-size;
+  inline-size: 100%;
+  aspect-ratio: var(--rkui-columns) / var(--rkui-rows);
+}
+
+/* Strokes are measured on the screen, not in grid units. */
+.rkui-explode-stage path {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rkui-explode-ground {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  stroke: var(--rkui-line-unfilled);
+  stroke-width: var(--rkui-illustration-outline);
+}
+
+/* An assembly covers the whole stage, so only its parts take the pointer. It comes in front of
+   the others while it is open, and goes back once its parts have snapped home. */
+.rkui-explode-assembly {
+  --rkui-explode: 0;
+  --rkui-explode-duration: var(--rkui-duration-spring);
+  --rkui-explode-ease: var(--rkui-ease-snap);
+
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: z-index 0s var(--rkui-duration-spring);
+}
+
+.rkui-explode-assembly:is(:hover, :focus),
+.rkui-explode:has(.rkui-explode-all:checked) .rkui-explode-assembly {
+  --rkui-explode: 1;
+  --rkui-explode-duration: var(--rkui-duration-slide);
+  --rkui-explode-ease: var(--rkui-ease-spring);
+}
+
+.rkui-explode-assembly:is(:hover, :focus) {
+  z-index: 1;
+  transition: none;
+}
+
+/* The band goes round each part instead (below). */
+.rkui-explode-assembly:focus-visible {
+  outline: none;
+}
+
+/* The parts' shapes where they sit at rest: a hit area that keeps the assembly open while the
+   pointer is where a part was. */
+.rkui-explode-rest {
+  position: absolute;
+  inset: 0;
+  fill: none;
+  pointer-events: none;
+}
+
+.rkui-explode-rest > path {
+  pointer-events: fill;
+}
+
+/* A label is a box the same as its part, so it moves with it. */
+.rkui-explode-assembly > :is(.rkui-explode-part, .rkui-explode-label) {
+  --rkui-lift: calc(var(--rkui-explode) * (1 + var(--rkui-depth)));
+  --rkui-move-x: calc(
+    var(--rkui-explode) * var(--rkui-explode-x) * var(--rkui-u) - var(--rkui-lift) *
+      var(--rkui-lift-offset-x)
+  );
+  --rkui-move-y: calc(
+    var(--rkui-explode) * var(--rkui-explode-y) * var(--rkui-u) - var(--rkui-lift) *
+      var(--rkui-lift-offset-y)
+  );
+
+  position: absolute;
+  inset-inline-start: calc(var(--rkui-x) * var(--rkui-u));
+  inset-block-start: calc(var(--rkui-y) * var(--rkui-u));
+  inline-size: calc(var(--rkui-w) * var(--rkui-u));
+  block-size: calc(var(--rkui-h) * var(--rkui-u));
+  translate: var(--rkui-move-x) var(--rkui-move-y);
+  transition:
+    translate var(--rkui-explode-duration) var(--rkui-explode-ease),
+    filter var(--rkui-explode-duration) var(--rkui-explode-ease);
+}
+
+/* The shadow is half the resting offset for each layer the part has risen, so a flat drawing has
+   none. It reads --rkui-shadow-color and --rkui-shadow-edge, so it follows the dark-mode shadow
+   modes, and --rkui-extrusion colours it in the colour mode. As in tooltip.css, the second
+   drop-shadow is the shadow's light edge in dark mode. */
+.rkui-explode-part {
+  --rkui-part-shadow: calc(var(--rkui-lift) * var(--rkui-shadow-offset) / 2);
+  --rkui-shade-of: var(--rkui-part-fill);
+  --rkui-extrusion: var(--rkui-shade);
+
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-part-shadow))
+        calc(var(--rkui-shadow-dy) * var(--rkui-part-shadow)) 0 var(--rkui-shadow-color)
+    )
+    drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-explode) * var(--rkui-outline-width))
+        calc(var(--rkui-shadow-dy) * var(--rkui-explode) * var(--rkui-outline-width)) 0
+        var(--rkui-shadow-edge)
+    );
+}
+
+/* The outline is a stroke twice its width under the fill, so only its outer half shows and
+   overlapping shapes, such as a puff of steam, are outlined as one. */
+.rkui-explode-shape {
+  fill: var(--rkui-part-fill);
+  stroke: var(--rkui-line);
+  stroke-width: calc(2 * var(--rkui-illustration-outline));
+  paint-order: stroke;
+  pointer-events: auto;
+}
+
+.rkui-explode-detail {
+  fill: var(--rkui-detail-fill, none);
+}
+
+.rkui-explode-detail:is(.rkui-explode-detail--piece, .rkui-explode-detail--stroke) {
+  stroke: var(--rkui-line);
+  stroke-width: var(--rkui-illustration-outline);
+}
+
+/* Hatching is the stage's stripe pattern (--rkui-hatch), drawn in each part's grid units. */
+.rkui-explode-detail--hatch {
+  fill: var(--rkui-hatch);
+}
+
+.rkui-explode-hatch {
+  fill: var(--rkui-illustration-stripe);
+  stroke: none;
+}
+
+/* Bands and hatching are drawn for light from the top left. They flip about the part's centre
+   (in grid units, where 1px is one unit) to face the light when it comes from the right or from
+   below. The light offsets come in steps of 0.001, so the nudge only makes a zero offset count as
+   the side they are drawn for. */
+.rkui-explode-detail:is(.rkui-explode-detail--band, .rkui-explode-detail--hatch) {
+  transform-origin: calc((var(--rkui-x) + var(--rkui-w) / 2) * 1px)
+    calc((var(--rkui-y) + var(--rkui-h) / 2) * 1px);
+  scale: sign(var(--rkui-shadow-dx) + 0.0001) sign(var(--rkui-shadow-dy) + 0.0001);
+}
+
+.rkui-explode-assembly > .rkui-explode-label {
+  --rkui-tooltip-gap: var(--rkui-space-1);
+
+  pointer-events: none;
+}
+
+.rkui-explode-assembly:is(:hover, :focus) .rkui-explode-label > .rkui-tooltip-bubble {
+  opacity: 1;
+  visibility: visible;
+  translate: -50% 0;
+  transition-delay: 0s;
+}
+
+/* The highlighter band hugs each part's outline. As elsewhere, the shadow goes while focused. */
+.rkui-explode-band {
+  display: none;
+  fill: none;
+  stroke: var(--rkui-focus);
+  stroke-width: calc(2 * (var(--rkui-illustration-outline) + var(--rkui-focus-width)));
+}
+
+.rkui-explode-assembly:focus-visible .rkui-explode-band {
+  display: inline;
+}
+
+.rkui-explode-assembly:focus-visible > .rkui-explode-part {
+  filter: none;
+}
+
+/* At rest each assembly sits on the page with the UI's resting shadow, which hands over to its
+   parts' own shadows while it is apart. */
+.rkui-explode .rkui-explode-assembly {
+  --rkui-rest-shadow: calc((1 - var(--rkui-explode)) * var(--rkui-shadow-offset));
+  --rkui-rest-edge: calc((1 - var(--rkui-explode)) * var(--rkui-outline-width));
+
+  filter: drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-rest-shadow))
+        calc(var(--rkui-shadow-dy) * var(--rkui-rest-shadow)) 0 var(--rkui-shadow-color)
+    )
+    drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-rest-edge))
+        calc(var(--rkui-shadow-dy) * var(--rkui-rest-edge)) 0 var(--rkui-shadow-edge)
+    );
+}
+
+/* The sticker look, a demo: the whole drawing is one die-cut sticker, a band of glint round every
+   part's resting shape with a thin edge round that, and the sticker casts the resting shadow in
+   place of the assemblies (coloured from glint in the colour mode, via --rkui-extrusion). Every
+   shape is stroked twice: wide in the edge colour, then narrower in glint on top, so the strokes
+   merge and only the outer edge shows. The sticker stays put while the parts come apart: the rest
+   of the drawing still sits on it, and it marks where each part goes home. */
+.rkui-explode--sticker {
+  --rkui-keyline: calc(2 * var(--rkui-outline-width));
+}
+
+.rkui-explode--sticker .rkui-explode-assembly {
+  filter: none;
+}
+
+.rkui-explode-sticker {
+  --rkui-shade-of: var(--rkui-glint);
+  --rkui-extrusion: var(--rkui-shade);
+
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+  fill: var(--rkui-glint);
+  filter: drop-shadow(
+      var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0 var(--rkui-shadow-color)
+    )
+    drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-outline-width))
+        calc(var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0 var(--rkui-shadow-edge)
+    );
+}
+
+.rkui-explode-sticker-edge {
+  stroke: var(--rkui-line-unfilled);
+  stroke-width: calc(
+    2 * (var(--rkui-illustration-outline) + var(--rkui-keyline) + var(--rkui-outline-width))
+  );
+}
+
+.rkui-explode-sticker-backing {
+  stroke: var(--rkui-glint);
+  stroke-width: calc(2 * (var(--rkui-illustration-outline) + var(--rkui-keyline)));
+}
+
+/* Reduced motion: nothing moves, but the open assembly's shadows still show, its labels show and
+   the other assemblies fade back. */
+@media (prefers-reduced-motion: reduce) {
+  .rkui-explode-assembly > :is(.rkui-explode-part, .rkui-explode-label) {
+    --rkui-move-x: 0px;
+    --rkui-move-y: 0px;
+  }
+
+  .rkui-explode-stage:has(.rkui-explode-assembly:is(:hover, :focus))
+    .rkui-explode-assembly:not(:hover, :focus) {
+    opacity: 0.35;
+  }
+}
+
+/* Forced colours: the drawing sets its own system colours, so its shapes are outlined in
+   CanvasText on Canvas, and the open assembly's in Highlight. */
+@media (forced-colors: active) {
+  :is(.rkui-explode-ground, .rkui-explode-sticker, .rkui-explode-rest, .rkui-explode-part) {
+    forced-color-adjust: none;
+  }
+
+  :is(.rkui-explode-ground, .rkui-explode-sticker-edge) {
+    stroke: CanvasText;
+  }
+
+  .rkui-explode-sticker {
+    fill: Canvas;
+  }
+
+  .rkui-explode-sticker-backing {
+    stroke: Canvas;
+  }
+
+  .rkui-explode-shape {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+
+  .rkui-explode-detail {
+    fill: Canvas;
+  }
+
+  .rkui-explode-detail:is(.rkui-explode-detail--piece, .rkui-explode-detail--stroke) {
+    stroke: CanvasText;
+  }
+
+  .rkui-explode-band {
+    stroke: CanvasText;
+  }
+
+  .rkui-explode-assembly:is(:hover, :focus) .rkui-explode-shape {
+    stroke: Highlight;
+  }
+}

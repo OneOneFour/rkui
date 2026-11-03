@@ -1,0 +1,110 @@
+---
+/**
+ * A live demo in folder tabs: Preview shows the slot rendered, Astro shows the demo's source, and
+ * HTML shows what a plain HTML page would write: the markup the slot renders to, formatted with
+ * Prettier, followed by the imports of the element scripts it uses.
+ *
+ * The Astro source comes in as `code`. Each demo is a small .astro file in src/examples/,
+ * imported twice: as a component for the slot, and with `?raw` for its source text. The source
+ * shown is then exactly the code that runs, with no build plugin: once MDX has compiled a page,
+ * Astro can't read back the source of a slot.
+ *
+ *   import Hues from '../../examples/button/hues.astro'
+ *   import huesCode from '../../examples/button/hues.astro?raw'
+ *
+ *   <Demo code={huesCode} label="Button hues"><Hues /></Demo>
+ *
+ * The preview lays its contents out in a wrapping row, or in a column with `stack`.
+ *
+ * @param code the demo's Astro source
+ * @param label what the demo shows, naming its tabs for screen readers
+ * @param stack lays the preview out in a column, for text and other wide things
+ */
+import { format } from 'prettier'
+import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.astro'
+import Tab from '@oneonefour/rkui/components/folder/Tab.astro'
+import Tabs from '@oneonefour/rkui/components/folder/Tabs.astro'
+import { scriptsFor } from '../lib/element-scripts.js'
+import { useSprite } from '../lib/icon-sprite.js'
+
+interface Props {
+  code: string
+  label: string
+  stack?: boolean
+}
+
+const { code, label, stack = false } = Astro.props
+const rendered = await Astro.slots.render('default')
+
+/**
+ * The rendered markup as a plain HTML page would write it: no Astro attributes (style ids, and the
+ * source locations dev mode adds) and no pre-drawn clock or dial faces (the element draws one
+ * itself; a clock's icons move back after its input). Inline icons point at the icon sprite, and
+ * Astro's bundled scripts are swapped for the imports of the element scripts the markup uses.
+ * Indented.
+ */
+async function readableHtml(html: string): Promise<string> {
+  const markup = useSprite(
+    html
+      .replace(/<script\b[\s\S]*?<\/script>/g, '')
+      .replace(/<style\b[\s\S]*?<\/style>/g, '')
+      .replace(/\s+data-astro-[\w-]+(="[^"]*")?/g, '')
+      .replace(/<div class="rkui-dial-face"[\s\S]*?<\/div>/g, '')
+      .replace(
+        /<div class="rkui-clock-face"([\s\S]*?)<\/div>(\s*<input[^>]*>)/g,
+        (_, face, input) =>
+          input + (face.match(/<svg[^>]*rkui-clock-\w+-icon[\s\S]*?<\/svg>/g) ?? []).join(''),
+      ),
+  )
+  const scripts = scriptsFor(markup)
+  const page = scripts.length
+    ? `${markup}\n<script type="module">\n${scripts.map((script) => `import '${script}'`).join('\n')}\n</script>`
+    : markup
+  try {
+    const formatted = await format(page, {
+      parser: 'html',
+      printWidth: 100,
+      htmlWhitespaceSensitivity: 'ignore',
+      semi: false,
+      singleQuote: true,
+    })
+    return formatted.trim()
+  } catch {
+    return page.trim()
+  }
+}
+---
+
+<Tabs label={label} class="demo">
+  <Tab label="Preview">
+    <div class:list={['preview', { 'preview--stack': stack }]}>
+      <Fragment set:html={rendered} />
+    </div>
+  </Tab>
+  <Tab label="Astro">
+    <CodeBlock code={code.trim()} lang="astro" />
+  </Tab>
+  <Tab label="HTML">
+    <CodeBlock code={await readableHtml(rendered)} lang="html" />
+  </Tab>
+</Tabs>
+
+<style>
+  .demo {
+    margin-block: var(--rkui-space-5);
+  }
+
+  /* With the sheet's own padding, 2rem above and below the preview and 1.5rem either side. */
+  .preview {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--rkui-space-4);
+    padding: var(--rkui-space-4) var(--rkui-space-2);
+  }
+
+  .preview--stack {
+    flex-direction: column;
+    align-items: stretch;
+  }
+</style>

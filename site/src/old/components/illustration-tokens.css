@@ -1,0 +1,33 @@
+/* Illustration colours, for the styleguide's drawings only (PLAN §5.3, "Illustration style").
+   Loaded after rkui's tokens: the hues are the UI's own fills, with one light or shade
+   step mixed from them. */
+
+:root {
+  /* A drawing's outline: a little heavier than the interface's */
+  --rkui-illustration-outline: calc(1.25 * var(--rkui-outline-width));
+  /* Hatching stripes: translucent ink, as on the striped progress bar */
+  --rkui-illustration-stripe: var(--rkui-stripe);
+
+  /* Hues: the UI's fills */
+  --rkui-illustration-red: var(--rkui-coral);
+  --rkui-illustration-ochre: var(--rkui-yellow);
+  --rkui-illustration-steel: var(--rkui-sky);
+  --rkui-illustration-navy: var(--rkui-navy);
+
+  /* One more step for the lighter hues, towards the glint, and a shade for red, towards ink */
+  --rkui-illustration-ochre-light: color-mix(
+    in oklab,
+    var(--rkui-illustration-ochre) 55%,
+    var(--rkui-glint)
+  );
+  --rkui-illustration-steel-light: color-mix(
+    in oklab,
+    var(--rkui-illustration-steel) 55%,
+    var(--rkui-glint)
+  );
+  --rkui-illustration-red-shade: color-mix(
+    in oklab,
+    var(--rkui-illustration-red) 80%,
+    var(--rkui-ink)
+  );
+}

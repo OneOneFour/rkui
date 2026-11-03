@@ -1,0 +1,32 @@
+---
+/**
+ * An rkui widget frame: a dashed `<figure>` with a title, a stage and a controls row. The default
+ * slot is the stage (a canvas or SVG); the `controls` slot holds buttons and sliders. `class`,
+ * `style` and other attributes go on the `<figure>`.
+ *
+ * @example
+ * <WidgetFrame title="Pendulum">
+ *   <canvas></canvas><Button slot="controls">Reset</Button>
+ * </WidgetFrame>
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'figure'> {
+  /** The widget's title, shown as the figure caption. */
+  title: string
+}
+
+const { title, class: className, ...attrs } = Astro.props
+---
+
+<figure class:list={['rkui-widget-frame', className]} {...attrs}>
+  <figcaption class="rkui-widget-frame-title">{title}</figcaption>
+  <div class="rkui-widget-frame-stage">
+    <slot />
+  </div>
+  {Astro.slots.has('controls') && (
+    <div class="rkui-widget-frame-controls">
+      <slot name="controls" />
+    </div>
+  )}
+</figure>

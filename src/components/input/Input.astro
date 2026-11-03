@@ -1,0 +1,38 @@
+---
+/**
+ * A text-like input: a native `<input>` in the `.rkui-input` frame, inside a Field. `class` and
+ * `style` go on the Field's div when there is a label, hint or error, otherwise on the input; other
+ * attributes (name, value, placeholder, disabled, required, ...) go on the input. Without a label,
+ * give it an `aria-label`. Search and file inputs have their own components: Search, File.
+ *
+ * @example
+ *   <Input label="Email" type="email" name="email" hint="We never share it" />
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Field from '../field/Field.astro'
+import { fieldAttrs } from '../../shared/field-attrs'
+import { uniqueId } from '../../shared/unique-id'
+
+interface Props extends HTMLAttributes<'input'> {
+  /** The visible label; none when left out. */
+  label?: string
+  /** A quiet line under the input; none when left out. */
+  hint?: string
+  /** An error line under the input; it also marks the input invalid. */
+  error?: string
+  /** The hover cue: 'ring', 'underline' or 'none'; the background sinks to the page colour when
+   * left out. */
+  hover?: 'ring' | 'underline' | 'none'
+}
+
+const { label, hint, error, hover, class: className, style, type = 'text', ...attrs } = Astro.props
+
+const framed = Boolean(label || hint || error)
+const id = attrs.id ?? uniqueId('rkui-input')
+const inputAttrs = framed ? fieldAttrs(id, { hint, error }, attrs) : attrs
+const inputClass = ['rkui-input', hover && `rkui-hover-${hover}`, !framed && className]
+---
+
+<Field {label} for={id} {hint} {error} class={className} {style}>
+  <input class:list={inputClass} {type} style={framed ? undefined : style} {...inputAttrs} />
+</Field>

@@ -1,0 +1,81 @@
+---
+/**
+ * Code blocks with live copy buttons: the default box in each language with a logo, the two
+ * fallbacks (file icon, extension text), the editor tab, the greige slate, and inline code in a
+ * sentence.
+ */
+import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.astro'
+import CppLogo from './languages/cplusplus.svg'
+import FortranLogo from './languages/fortran.svg'
+import JuliaLogo from './languages/julia.svg'
+import MarkdownLogo from './languages/markdown.svg'
+import PythonLogo from './languages/python.svg'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import { LORENZ_PYTHON } from './code-samples'
+---
+
+<SpecimenRow title="Code block">
+  <Specimen label="Python, with caption" wide>
+    <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python">
+      <PythonLogo slot="logo" class="rkui-icon rkui-icon--small" aria-hidden="true" />
+    </CodeBlock>
+  </Specimen>
+  <Specimen label="Julia" wide>
+    <CodeBlock code="σ, ρ, β = 10.0, 28.0, 8 / 3" lang="julia" label="Julia">
+      <JuliaLogo slot="logo" class="rkui-icon rkui-icon--small" aria-hidden="true" />
+    </CodeBlock>
+  </Specimen>
+  <Specimen label="Fortran" wide>
+    <CodeBlock code="real :: sigma = 10.0, rho = 28.0" lang="fortran-free-form" label="Fortran">
+      <FortranLogo slot="logo" class="rkui-icon rkui-icon--small" aria-hidden="true" />
+    </CodeBlock>
+  </Specimen>
+  <Specimen label="C++" wide>
+    <CodeBlock code="double sigma = 10.0, rho = 28.0;" lang="cpp" label="C++">
+      <CppLogo slot="logo" class="rkui-icon rkui-icon--small" aria-hidden="true" />
+    </CodeBlock>
+  </Specimen>
+  <Specimen label="Markdown (wide mark)" wide>
+    <CodeBlock code="**β ≈ 0.3** in the [paper](#)" lang="markdown" label="Markdown">
+      <MarkdownLogo slot="logo" class="rkui-icon rkui-icon--small" aria-hidden="true" />
+    </CodeBlock>
+  </Specimen>
+  <Specimen label="no logo: file icon (TypeScript)" wide>
+    <CodeBlock code="const sigma: number = 10" lang="typescript" label="TypeScript" />
+  </Specimen>
+  <Specimen label="no logo, no icon: extension text (LaTeX)" wide>
+    <CodeBlock code={'\\dot{x} = \\sigma (y - x)'} lang="latex" label="LaTeX" />
+  </Specimen>
+  <Specimen label="no logo, no icon, extension repeats the label (JSON)" wide>
+    <CodeBlock code={'{ "sigma": 10 }'} lang="json" label="JSON" />
+  </Specimen>
+  <Specimen label="no caption" wide>
+    <CodeBlock code="x = lorenz(1.0, 1.0, 1.0)" lang="python" />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Editor tab (.rkui-code--tab)">
+  <Specimen label="Python, with caption" wide>
+    <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python" class="rkui-code--tab">
+      <PythonLogo slot="logo" class="rkui-icon rkui-icon--small" aria-hidden="true" />
+    </CodeBlock>
+  </Specimen>
+  <Specimen label="no caption" wide>
+    <CodeBlock code="x = lorenz(1.0, 1.0, 1.0)" lang="python" class="rkui-code--tab" />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Greige slate (.rkui-slate-greige)">
+  <Specimen label="default box" wide>
+    <CodeBlock code={LORENZ_PYTHON} lang="python" label="Python" class="rkui-slate-greige">
+      <PythonLogo slot="logo" class="rkui-icon rkui-icon--small" aria-hidden="true" />
+    </CodeBlock>
+  </Specimen>
+  <Specimen label="inline code" wide>
+    <p class="rkui-slate-greige">
+      Call <code>lorenz(x, y, z)</code> for the derivatives, then <code>step(state, dt)</code> once
+      per frame with <code>Δt = 0.01</code>.
+    </p>
+  </Specimen>
+</SpecimenRow>

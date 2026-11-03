@@ -1,0 +1,189 @@
+/* Sticky notes: a card or a callout drawn as a sticky note, with the outline, the hard shadow and
+   a folded bottom-left corner. Yellow by default; a note callout is sky and a warning tangerine,
+   and the hue modifiers set any colour. Options: .rkui-sticky-note--tilt turns the note slightly
+   (--rkui-note-tilt sets the angle), and .rkui-sticky-note--tape or --pin holds it to the page. A
+   linked card's corner lifts as it pops.
+
+   <article class="rkui-card rkui-card--link rkui-sticky-note">…</article>
+   <div class="rkui-callout rkui-callout--warning rkui-sticky-note rkui-sticky-note--tape"
+     role="note">…</div>
+   <article class="rkui-card rkui-sticky-note rkui-sticky-note--tilt"
+     style="--rkui-note-tilt: 1.5deg">…</article> */
+
+.rkui-sticky-note {
+  --rkui-note-fill: var(--rkui-note-yellow);
+  --rkui-shade-of: var(--rkui-note-fill);
+  --rkui-note-fold: var(--rkui-space-4);
+  --rkui-note-pin: var(--rkui-coral);
+  --rkui-icon-fill: var(--rkui-shade);
+
+  position: relative;
+  overflow: visible;
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  background: var(--rkui-note-fill);
+  color: var(--rkui-on-fill);
+  box-shadow: var(--rkui-shadow);
+  /* Cuts the folded corner off along the fold, reaching far past the box elsewhere so the shadow,
+     the focus band and the tape aren't cut. The light falls along the fold by default, so the
+     shadow's own corner is cut on the same line. */
+  clip-path: polygon(
+    -100vmax -100vmax,
+    calc(100% + 100vmax) -100vmax,
+    calc(100% + 100vmax) calc(100% + 100vmax),
+    calc(var(--rkui-note-fold) + 100vmax) calc(100% + 100vmax),
+    -100vmax calc(100% - var(--rkui-note-fold) - 100vmax)
+  );
+}
+
+/* The fold's flap, the cut corner turned over onto the note. Its inner half is in the cut-off
+   corner, so only the flap shows: a hard-stop gradient draws the ink along the fold, and the
+   borders its two paper edges. Physical sides, like the clip. */
+.rkui-sticky-note::after {
+  content: '';
+  position: absolute;
+  bottom: calc(-1 * var(--rkui-outline-width));
+  left: calc(-1 * var(--rkui-outline-width));
+  box-sizing: border-box;
+  width: var(--rkui-note-fold);
+  height: var(--rkui-note-fold);
+  border: 0 solid var(--rkui-line);
+  border-top-width: var(--rkui-outline-width);
+  border-right-width: var(--rkui-outline-width);
+  background: linear-gradient(
+      to bottom left,
+      var(--rkui-shade) calc(50% - var(--rkui-outline-width)),
+      var(--rkui-line) 0
+    )
+    border-box;
+  pointer-events: none;
+}
+
+/* Ink text in both themes, so links and meta lines take it too. */
+:where(.rkui-sticky-note) a,
+.rkui-sticky-note .rkui-card-meta {
+  color: inherit;
+}
+
+.rkui-callout.rkui-sticky-note,
+.rkui-sticky-note .rkui-card-body {
+  padding: var(--rkui-space-5);
+}
+
+/* The note doesn't clip its content, so the card's image rounds its own top corners. */
+.rkui-sticky-note .rkui-card-image {
+  border-start-start-radius: calc(var(--rkui-radius) - var(--rkui-outline-width));
+  border-start-end-radius: calc(var(--rkui-radius) - var(--rkui-outline-width));
+  border-block-end: var(--rkui-outline-width) solid var(--rkui-line);
+}
+
+/* Prompts: callout kinds pick a colour; :where() lets a hue modifier override it. */
+.rkui-sticky-note:where(.rkui-callout--note) {
+  --rkui-note-fill: var(--rkui-note-sky);
+}
+
+.rkui-sticky-note:where(.rkui-callout--warning) {
+  --rkui-note-fill: var(--rkui-note-tangerine);
+}
+
+.rkui-sticky-note--yellow {
+  --rkui-note-fill: var(--rkui-note-yellow);
+}
+
+.rkui-sticky-note--sky {
+  --rkui-note-fill: var(--rkui-note-sky);
+}
+
+/* Tangerine focus bands vanish on tangerine, so focus inside uses the alternate. */
+.rkui-sticky-note--tangerine {
+  --rkui-note-fill: var(--rkui-note-tangerine);
+  --rkui-focus: var(--rkui-focus-alt);
+}
+
+.rkui-sticky-note--green {
+  --rkui-note-fill: var(--rkui-note-green);
+}
+
+.rkui-sticky-note--coral {
+  --rkui-note-fill: var(--rkui-note-coral);
+  --rkui-note-pin: var(--rkui-navy);
+}
+
+.rkui-sticky-note--grape {
+  --rkui-note-fill: var(--rkui-note-grape);
+}
+
+/* The tilt turns the note's shadow with it, so the shadow's offset is turned back by the same
+   angle and still falls away from the light. A linked note pops with the usual shadows, which
+   turn with it, by under a quarter pixel at a slight tilt. */
+.rkui-sticky-note--tilt {
+  --rkui-note-tilt: -2deg;
+  --rkui-note-shadow-x: calc(
+    var(--rkui-shadow-offset-x) * cos(var(--rkui-note-tilt)) + var(--rkui-shadow-offset-y) *
+      sin(var(--rkui-note-tilt))
+  );
+  --rkui-note-shadow-y: calc(
+    var(--rkui-shadow-offset-y) * cos(var(--rkui-note-tilt)) - var(--rkui-shadow-offset-x) *
+      sin(var(--rkui-note-tilt))
+  );
+
+  rotate: var(--rkui-note-tilt);
+  box-shadow:
+    var(--rkui-note-shadow-x) var(--rkui-note-shadow-y) 0 var(--rkui-shadow-color),
+    var(--rkui-note-shadow-x) var(--rkui-note-shadow-y) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
+}
+
+/* A strip of see-through tape across the top edge. */
+.rkui-sticky-note--tape::before {
+  content: '';
+  position: absolute;
+  inset-block-start: calc(var(--rkui-space-5) / -2);
+  inset-inline: 0;
+  inline-size: var(--rkui-space-7);
+  block-size: var(--rkui-space-5);
+  margin-inline: auto;
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  background: var(--rkui-note-tape);
+  pointer-events: none;
+}
+
+/* A pin's round head, just inside the top edge. */
+.rkui-sticky-note--pin::before {
+  content: '';
+  position: absolute;
+  inset-block-start: var(--rkui-space-2);
+  inset-inline: 0;
+  box-sizing: border-box;
+  inline-size: var(--rkui-space-4);
+  block-size: var(--rkui-space-4);
+  margin-inline: auto;
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-note-pin);
+  pointer-events: none;
+}
+
+/* A linked note's corner lifts with the pop and goes flat again when pressed. The transitions
+   repeat the pop's own from interactive.css, which this replaces. */
+.rkui-sticky-note.rkui-card--link {
+  transition:
+    translate var(--rkui-duration-fast) ease,
+    box-shadow var(--rkui-duration-fast) ease,
+    clip-path var(--rkui-duration-fast) ease;
+}
+
+.rkui-sticky-note.rkui-card--link::after {
+  transition:
+    width var(--rkui-duration-fast) ease,
+    height var(--rkui-duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .rkui-sticky-note.rkui-card--link:hover {
+    --rkui-note-fold: var(--rkui-space-5);
+  }
+}
+
+.rkui-sticky-note.rkui-card--link:active {
+  --rkui-note-fold: var(--rkui-space-4);
+}

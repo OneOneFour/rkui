@@ -1,0 +1,68 @@
+---
+title: Sidebar
+description: A column of links grouped under headings, which scrolls on its own.
+group: Navigation
+order: 94
+---
+
+import Demo from '../../components/Demo.astro'
+import Markup from '../../examples/sidebar/markup.astro'
+import markupCode from '../../examples/sidebar/markup.astro?raw'
+import Plain from '../../examples/sidebar/plain.astro'
+import plainCode from '../../examples/sidebar/plain.astro?raw'
+import Card from '../../examples/sidebar/card.astro'
+import cardCode from '../../examples/sidebar/card.astro?raw'
+import Folders from '../../examples/sidebar/folders.astro'
+import foldersCode from '../../examples/sidebar/folders.astro?raw'
+import Deck from '../../examples/sidebar/deck.astro'
+import deckCode from '../../examples/sidebar/deck.astro?raw'
+import Note from '../../examples/sidebar/note.astro'
+import noteCode from '../../examples/sidebar/note.astro?raw'
+
+Groups of links, each a child component. The page gives the sidebar its height; when its links
+don't fit, it scrolls, with hints at its edges and a scrollbar on hover and focus. `variant`
+picks the look.
+
+<Demo code={markupCode} label="A short sidebar" stack>
+  <Markup />
+</Demo>
+
+## A: Plain
+
+The page's own colour, with dots at the edges; the current page is a tinted pill on a slab.
+
+<Demo code={plainCode} label="Plain sidebar" stack>
+  <Plain />
+</Demo>
+
+## B: Card
+
+A raised card whose headings lift into slabs as they stick, with tabs on its edges.
+
+<Demo code={cardCode} label="Card sidebar" stack>
+  <Card />
+</Demo>
+
+## C: Folders
+
+Each group is a small folder whose tab sticks to the top while you scroll through it.
+
+<Demo code={foldersCode} label="Folders sidebar" stack>
+  <Folders />
+</Demo>
+
+## D: Deck
+
+Every link is a raised key that pops on hover; the current page is pushed in.
+
+<Demo code={deckCode} label="Deck sidebar" stack>
+  <Deck />
+</Demo>
+
+## E: Note
+
+A taped sticky note with sticking slab headings; the current page is an ink pill.
+
+<Demo code={noteCode} label="Note sidebar" stack>
+  <Note />
+</Demo>

@@ -1,0 +1,36 @@
+---
+title: Tabs
+description: Folder tabs that switch between panels.
+group: Containers
+order: 75
+---
+
+import Demo from '../../components/Demo.astro'
+import Default from '../../examples/tabs/default.astro'
+import defaultCode from '../../examples/tabs/default.astro?raw'
+import Tinted from '../../examples/tabs/tinted.astro'
+import tintedCode from '../../examples/tabs/tinted.astro?raw'
+import Narrow from '../../examples/tabs/narrow.astro'
+import narrowCode from '../../examples/tabs/narrow.astro?raw'
+
+Each `Tab` is one tab, and its slot is that tab's panel. Click a tab, or move between them with the
+arrow keys, Home and End. The first tab starts selected; mark another `selected` to start there.
+Without its script every panel shows.
+
+<Demo code={defaultCode} label="Tabs" stack>
+  <Default />
+</Demo>
+
+## Tinted
+
+<Demo code={tintedCode} label="Tinted tabs" stack>
+  <Tinted />
+</Demo>
+
+## Narrow
+
+The scrollbar for the strip sits above the tabs.
+
+<Demo code={narrowCode} label="Narrow tabs" stack>
+  <Narrow />
+</Demo>

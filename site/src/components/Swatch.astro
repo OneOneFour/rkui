@@ -1,0 +1,43 @@
+---
+/**
+ * One block of the colour palette: a button that shows a token's name and hex. The script in
+ * ColorPalette.astro fills in the hex and does the copying.
+ */
+import Button from '@oneonefour/rkui/components/button/Button.astro'
+
+interface Props {
+  /** The colour token to show, without `--rkui-`. */
+  token: string
+  /** The token its text is set in, without `--rkui-`. */
+  text: string
+}
+
+const { token, text } = Astro.props
+---
+
+<Button
+  class="swatch"
+  data-token={token}
+  style={`--rkui-button-fill: var(--rkui-${token}); --rkui-button-label: var(--rkui-${text})`}
+>
+  <span class="rkui-visually-hidden">Copy</span>
+  <span class="name">{token}</span>
+  <span class="value" />
+</Button>
+
+<style>
+  .swatch {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 0;
+    min-inline-size: 0;
+    padding: var(--rkui-space-2) var(--rkui-space-3);
+    text-align: start;
+    overflow-wrap: anywhere;
+  }
+
+  .value {
+    font-family: var(--rkui-font-mono);
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+title: Date and time
+description: Date and time inputs on the text input frame.
+group: Form controls
+order: 47
+---
+
+import Demo from '../../components/Demo.astro'
+import Types from '../../examples/date-time/types.astro'
+import typesCode from '../../examples/date-time/types.astro?raw'
+import Disabled from '../../examples/date-time/disabled.astro'
+import disabledCode from '../../examples/date-time/disabled.astro?raw'
+import Error from '../../examples/date-time/error.astro'
+import errorCode from '../../examples/date-time/error.astro?raw'
+
+<Demo code={typesCode} label="Date and time types" stack>
+  <Types />
+</Demo>
+
+## Disabled
+
+<Demo code={disabledCode} label="Disabled date input" stack>
+  <Disabled />
+</Demo>
+
+## Error
+
+<Demo code={errorCode} label="Date input with an error" stack>
+  <Error />
+</Demo>

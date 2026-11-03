@@ -1,0 +1,24 @@
+---
+title: Progress
+description: A progress bar on the native element.
+group: Loading
+order: 84
+---
+
+import Demo from '../../components/Demo.astro'
+import Striped from '../../examples/progress/striped.astro'
+import stripedCode from '../../examples/progress/striped.astro?raw'
+import Flat from '../../examples/progress/flat.astro'
+import flatCode from '../../examples/progress/flat.astro?raw'
+
+Without a value the bar is indeterminate.
+
+<Demo code={stripedCode} label="Striped progress bars" stack>
+  <Striped />
+</Demo>
+
+## Flat
+
+<Demo code={flatCode} label="Flat progress bars" stack>
+  <Flat />
+</Demo>

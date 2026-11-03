@@ -1,0 +1,24 @@
+---
+title: Scroll
+description: A region that scrolls sideways when its content is too wide.
+group: Navigation
+order: 92
+---
+
+import Demo from '../../components/Demo.astro'
+import Table from '../../examples/scroll/table.astro'
+import tableCode from '../../examples/scroll/table.astro?raw'
+import Bar from '../../examples/scroll/bar.astro'
+import barCode from '../../examples/scroll/bar.astro?raw'
+
+Three dots at each edge show there is more to see. The scrollbar shows on hover and focus.
+
+<Demo code={tableCode} label="Scroll region with dots" stack>
+  <Table />
+</Demo>
+
+## Always-on bar
+
+<Demo code={barCode} label="Scroll region with a bar" stack>
+  <Bar />
+</Demo>

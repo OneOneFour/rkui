@@ -1,0 +1,124 @@
+---
+/**
+ * Every package icon with its default fill, icons in context, both .rkui-icon sizes on a few icons,
+ * and one icon with other fills.
+ */
+import type { SvgComponent } from 'astro/types'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import Flask from '@oneonefour/rkui/icons/flask.svg'
+import Copy from '@oneonefour/rkui/icons/copy.svg'
+import Play from '@oneonefour/rkui/icons/play.svg'
+import Download from '@oneonefour/rkui/icons/download-simple.svg'
+import Code from '@oneonefour/rkui/icons/code.svg'
+import Reset from '@oneonefour/rkui/icons/arrow-counter-clockwise.svg'
+import ExternalLink from '@oneonefour/rkui/icons/arrow-square-out.svg'
+import Sun from '@oneonefour/rkui/icons/sun.svg'
+
+const iconModules = import.meta.glob<{ default: SvgComponent }>(
+  ['../../../../dist/icons/*.svg', '!../../../../dist/icons/sprite.svg'],
+  { eager: true },
+)
+const iconSources = import.meta.glob<string>(
+  ['../../../../dist/icons/*.svg', '!../../../../dist/icons/sprite.svg'],
+  {
+    eager: true,
+    query: '?raw',
+    import: 'default',
+  },
+)
+
+/** The token an icon's fill falls back to, read from its SVG: "yellow", "icon-fill-neutral"… */
+function defaultFillOf(svg: string) {
+  return svg.match(/var\(--rkui-icon-fill, var\(--rkui-([\w-]+)\)\)/)![1]
+}
+
+/** A fill token's short name for captions. */
+function fillLabel(token: string) {
+  return token === 'icon-fill-neutral' ? 'neutral' : token
+}
+
+const ICONS = Object.entries(iconModules).map(([path, module]) => ({
+  name: path.split('/').pop()!.replace('.svg', ''),
+  Icon: module.default,
+  defaultFill: defaultFillOf(iconSources[path]),
+}))
+
+const FILLS = ['teal', 'yellow', 'coral', 'grape', 'raised']
+const SIZE_SAMPLES = [Flask, Copy, Play, Download, Code, Reset, ExternalLink, Sun]
+---
+
+<SpecimenRow title="Default fills">
+  {ICONS.map(({ name, Icon, defaultFill }) => (
+    <Specimen label={`${name} · ${fillLabel(defaultFill)}`}>
+      <Icon class="rkui-icon large" />
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<SpecimenRow title="In context (icons in buttons take the button's fill: see Buttons)">
+  <Specimen label="neutral icon alone">
+    <Copy class="rkui-icon" />
+  </Specimen>
+  <Specimen label="sun set to neutral: --rkui-icon-fill overrides any icon's default">
+    <span class="fill" style="--rkui-icon-fill: var(--rkui-icon-fill-neutral)">
+      <Sun class="rkui-icon" />
+    </span>
+  </Specimen>
+  <Specimen label="inline in a sentence">
+    <p class="sentence">
+      Read the paper
+      <ExternalLink class="rkui-icon inline" /> for the full derivation.
+    </p>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Sizes">
+  <Specimen label=".rkui-icon (24px, stroke about 2px)">
+    {SIZE_SAMPLES.map((Icon) => (
+      <Icon class="rkui-icon" />
+    ))}
+  </Specimen>
+  <Specimen label=".rkui-icon--small (20px)">
+    {SIZE_SAMPLES.map((Icon) => (
+      <Icon class="rkui-icon rkui-icon--small" />
+    ))}
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="--rkui-icon-fill">
+  <Specimen label="default">
+    <Flask class="rkui-icon" />
+  </Specimen>
+  {FILLS.map((fill) => (
+    <Specimen label={fill}>
+      <span class="fill" style={`--rkui-icon-fill: var(--rkui-${fill})`}>
+        <Flask class="rkui-icon" />
+      </span>
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<style>
+  /* 13 in the 256-unit viewBox is about 2px at 40px. */
+  .large {
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    --rkui-icon-stroke: 13;
+  }
+
+  .inline {
+    inline-size: 1em;
+    block-size: 1em;
+    margin-inline-start: 0.2em;
+    vertical-align: -0.125em;
+  }
+
+  .sentence {
+    margin: 0;
+  }
+
+  .fill {
+    display: flex;
+  }
+</style>

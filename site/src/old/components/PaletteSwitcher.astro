@@ -1,0 +1,44 @@
+---
+import { paletteNames } from './color-tokens'
+
+/**
+ * The styleguide's page palette switch: sets data-palette on <html> and remembers the choice
+ * under `rkui-palette`. SpecimenLayout applies the stored choice before first paint.
+ */
+---
+
+<fieldset class="rkui-segmented palette-switcher">
+  <legend class="rkui-visually-hidden">Page palette</legend>
+  {paletteNames.map((palette) => (
+    <label>
+      <input type="radio" name="rkui-palette" value={palette} />
+      {palette}
+    </label>
+  ))}
+</fieldset>
+
+<style>
+  label {
+    text-transform: capitalize;
+  }
+</style>
+
+<script>
+  import { afterSlide } from '@oneonefour/rkui/shared/after-slide.js'
+
+  const STORAGE_KEY = 'rkui-palette'
+  const root = document.documentElement
+  const current = root.dataset.palette ?? 'cream'
+
+  for (const radio of document.querySelectorAll<HTMLInputElement>('.palette-switcher input')) {
+    radio.checked = radio.value === current
+    radio.addEventListener('change', () => {
+      afterSlide(radio, () => (root.dataset.palette = radio.value))
+      try {
+        localStorage.setItem(STORAGE_KEY, radio.value)
+      } catch {
+        // Storage is blocked, so the choice lasts only until the page is left.
+      }
+    })
+  }
+</script>

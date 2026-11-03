@@ -1,0 +1,175 @@
+/* Segmented control: a pill group of native radios, one per label, with an optional icon before
+   each label's text. The checked option, and its icon's fill, take --rkui-selected; where anchor
+   positioning is supported, that fill is a pill that slides to the newly checked option. When
+   checking an option restyles the whole page, delay that with afterSlide() (elements/shared/after-slide.js).
+
+   <fieldset class="rkui-segmented">
+     <legend class="rkui-visually-hidden">Theme</legend>
+     <label><input type="radio" name="theme" value="light"> Light</label>
+     …
+   </fieldset> */
+
+.rkui-segmented {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--rkui-space-1);
+  min-inline-size: 0;
+  margin: 0;
+  padding: var(--rkui-space-1);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-raised);
+}
+
+.rkui-segmented label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rkui-space-2);
+  padding: var(--rkui-space-1) var(--rkui-space-3);
+  border-radius: var(--rkui-radius-pill);
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow var(--rkui-duration-fast) ease;
+}
+
+.rkui-segmented input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rkui-segmented svg {
+  flex: none;
+  inline-size: 1.25em;
+  block-size: 1.25em;
+  color: inherit;
+  --rkui-icon-stroke: 24;
+}
+
+.rkui-segmented label:hover {
+  box-shadow: inset 0 0 0 var(--rkui-outline-width) var(--rkui-line-unfilled);
+}
+
+.rkui-segmented label:active {
+  box-shadow: var(--rkui-shadow-inset);
+}
+
+.rkui-segmented label:has(:checked) {
+  --rkui-icon-fill: var(--rkui-selected);
+
+  background: var(--rkui-selected);
+  color: var(--rkui-on-selected);
+}
+
+/* The newly checked option dips, then bounces as the pill lands on it. */
+.rkui-segmented:not(.rkui-segmented--deck) label:has(:checked) {
+  animation: rkui-segment-pop var(--rkui-duration-slide) ease-out;
+}
+
+@keyframes rkui-segment-pop {
+  35% {
+    scale: 0.94;
+  }
+
+  75% {
+    scale: 1.06;
+  }
+}
+
+/* The sliding pill is the group's ::before, anchored to the checked label. It comes before the
+   labels in tree order, so the labels (positioned too) paint over it. Forced colours keep the
+   per-option Highlight fill below. */
+@supports (anchor-name: --a) {
+  @media (forced-colors: none) {
+    .rkui-segmented:not(.rkui-segmented--deck) {
+      position: relative;
+      anchor-scope: --rkui-segmented-checked;
+    }
+
+    .rkui-segmented:not(.rkui-segmented--deck) label:has(:checked) {
+      anchor-name: --rkui-segmented-checked;
+      background: none;
+    }
+
+    .rkui-segmented:not(.rkui-segmented--deck)::before {
+      content: '';
+      position: absolute;
+      position-anchor: --rkui-segmented-checked;
+      inset: anchor(top) anchor(right) anchor(bottom) anchor(left);
+      border-radius: var(--rkui-radius-pill);
+      background: var(--rkui-selected);
+      transition: inset var(--rkui-duration-slide) var(--rkui-ease-snap);
+    }
+  }
+}
+
+/* Deck keys: add .rkui-segmented--deck for a row of raised keys, like a tape deck's. The checked
+   key is pushed in flush with the page (interactive.css), driving past that depth before it
+   settles; the key it replaces springs back up. */
+
+/* Every deck has a plate's frame, centred on where a pushed-in key sits (one shadow offset from
+   a raised key, the way shadows fall). It's invisible unless .rkui-segmented--plate shows it, so
+   the focus band always hugs a rounded frame. Its padding grows with the shadow's depth, so it
+   always has room for the offset. */
+.rkui-segmented--deck {
+  --rkui-key-overshoot: calc(var(--rkui-shadow-depth) * 2px);
+  --rkui-plate-padding: calc(var(--rkui-shadow-depth) * var(--rkui-space-2));
+
+  gap: calc(var(--rkui-depth-gap-scale) * var(--rkui-space-2));
+  padding: calc(var(--rkui-plate-padding) - var(--rkui-shadow-offset-y))
+    calc(var(--rkui-plate-padding) + var(--rkui-shadow-offset-x))
+    calc(var(--rkui-plate-padding) + var(--rkui-shadow-offset-y))
+    calc(var(--rkui-plate-padding) - var(--rkui-shadow-offset-x));
+  border: var(--rkui-outline-width) solid transparent;
+  border-radius: var(--rkui-radius);
+  background: none;
+}
+
+.rkui-segmented--deck label {
+  padding: var(--rkui-space-2) var(--rkui-space-4);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  box-shadow: var(--rkui-shadow);
+  transition:
+    translate var(--rkui-duration-spring) var(--rkui-ease-spring),
+    box-shadow var(--rkui-duration-fast) ease;
+}
+
+/* The keyframes move the checked key in, so its translate isn't transitioned as well. */
+.rkui-segmented--deck label:has(:checked) {
+  border-color: var(--rkui-line);
+  transition-property: box-shadow;
+  animation: rkui-deck-key-in var(--rkui-duration-spring) ease-out;
+}
+
+@keyframes rkui-deck-key-in {
+  from {
+    translate: var(--rkui-press-offset-x) var(--rkui-press-offset-y);
+  }
+
+  50% {
+    translate: calc(var(--rkui-shadow-offset-x) + var(--rkui-shadow-dx) * var(--rkui-key-overshoot))
+      calc(var(--rkui-shadow-offset-y) + var(--rkui-shadow-dy) * var(--rkui-key-overshoot));
+  }
+
+  to {
+    translate: var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y);
+  }
+}
+
+/* Add .rkui-segmented--plate to a deck to show its frame as a flat outlined plate. */
+.rkui-segmented--plate {
+  border-color: var(--rkui-line-unfilled);
+}
+
+/* Forced colours drop the checked fill, so the checked option uses system colours. Without
+   forced-color-adjust, the browser puts a Canvas backplate behind the HighlightText label. */
+@media (forced-colors: active) {
+  .rkui-segmented label:has(:checked) {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

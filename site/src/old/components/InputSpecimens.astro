@@ -1,0 +1,140 @@
+---
+/**
+ * Text input, textarea and select, each in every state, and the hover cue options.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const STATES = [
+  { label: 'rest', class: '' },
+  { label: 'focused', class: 'is-focus' },
+]
+const HOVER_OPTIONS = [
+  { label: 'default: background sinks', class: '' },
+  { label: '.rkui-hover-ring', class: 'rkui-hover-ring' },
+  { label: '.rkui-hover-underline', class: 'rkui-hover-underline' },
+  { label: '.rkui-hover-none', class: 'rkui-hover-none' },
+]
+const HOVER_MODES = [
+  { label: 'live, hover each', class: '' },
+  { label: 'static hover', class: 'is-hover' },
+]
+---
+
+<SpecimenRow title="Text input">
+  {STATES.map((state) => (
+    <Specimen label={state.label} wide>
+      <input
+        class:list={['rkui-input', state.class]}
+        type="text"
+        placeholder="Placeholder"
+        aria-label="Specimen"
+      />
+    </Specimen>
+  ))}
+  <Specimen label="disabled" wide>
+    <input class="rkui-input" type="text" value="Disabled" aria-label="Specimen" disabled />
+  </Specimen>
+  <Specimen label="error" wide>
+    <div class="rkui-field">
+      <label for={`${theme}-error-input`}>Label</label>
+      <input
+        class="rkui-input"
+        id={`${theme}-error-input`}
+        type="text"
+        value="Not valid"
+        aria-invalid="true"
+        aria-describedby={`${theme}-error-message`}
+      />
+      <span class="rkui-field-message rkui-field-message--error" id={`${theme}-error-message`}>
+        Error message
+      </span>
+    </div>
+  </Specimen>
+  <Specimen label="field with hint" wide>
+    <div class="rkui-field">
+      <label for={`${theme}-hint-input`}>Label</label>
+      <input
+        class="rkui-input"
+        id={`${theme}-hint-input`}
+        type="text"
+        aria-describedby={`${theme}-hint`}
+      />
+      <span class="rkui-field-message" id={`${theme}-hint`}>
+        Hint text
+      </span>
+    </div>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Textarea">
+  <Specimen label="rest" wide>
+    <textarea class="rkui-input" aria-label="Specimen" placeholder="Placeholder"></textarea>
+  </Specimen>
+  <Specimen label="error" wide>
+    <textarea class="rkui-input" aria-label="Specimen" aria-invalid="true">Not valid</textarea>
+  </Specimen>
+  <Specimen label="disabled" wide>
+    <textarea class="rkui-input" aria-label="Specimen" disabled>Disabled</textarea>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Select">
+  {STATES.map((state) => (
+    <Specimen label={state.label} wide>
+      <select class:list={['rkui-select', state.class]} aria-label="Specimen">
+        <option>Option one</option>
+        <option>Option two</option>
+      </select>
+    </Specimen>
+  ))}
+  <Specimen label="disabled" wide>
+    <select class="rkui-select" aria-label="Specimen" disabled>
+      <option>Option one</option>
+    </select>
+  </Specimen>
+  <Specimen label="error" wide>
+    <select class="rkui-select" aria-label="Specimen" aria-invalid="true">
+      <option>Option one</option>
+    </select>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Hover options">
+  {HOVER_OPTIONS.flatMap((option) =>
+    HOVER_MODES.map((mode) => (
+      <Specimen label={`${option.label}: ${mode.label}`} wide>
+        <div class:list={['hover-demo', option.class]}>
+          <input
+            class:list={['rkui-input', mode.class]}
+            type="text"
+            placeholder="Placeholder"
+            aria-label="Specimen"
+          />
+          <select class:list={['rkui-select', mode.class]} aria-label="Specimen">
+            <option>Option one</option>
+          </select>
+          <textarea
+            class:list={['rkui-input', mode.class]}
+            aria-label="Specimen"
+            placeholder="Placeholder"
+          ></textarea>
+        </div>
+      </Specimen>
+    )),
+  )}
+</SpecimenRow>
+
+<style>
+  .hover-demo {
+    display: grid;
+    gap: var(--rkui-space-2);
+  }
+</style>

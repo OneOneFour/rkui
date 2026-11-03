@@ -1,0 +1,203 @@
+/* Ballot: a column of options, each a tile (tiles.css) beside a bordered text box. Each row is one
+   label, so clicking anywhere on it votes. Use radios for one choice, checkboxes for several.
+   Hovering or pressing the row pops its tile; the checked row's tile is pushed in and its text box
+   takes --rkui-selected-tint. The checked tile lands with a kerchunk.
+
+   <fieldset class="rkui-ballot">
+     <legend class="rkui-visually-hidden">Vote</legend>
+     <label class="rkui-ballot-option">
+       <span class="rkui-tile"><input type="radio" name="vote" value="a"> A</span>
+       <span class="rkui-ballot-text"><strong>Title</strong> <span>Optional longer
+         text</span></span>
+     </label>
+     …
+   </fieldset>
+
+   The tile holds the input, so it can be left empty or hold a letter, a number, an icon
+   (<svg aria-hidden="true">) or a colour (.rkui-tile--color, color-picker.css). Its content is part
+   of the option's name; wrap it in <span aria-hidden="true"> if it shouldn't be.
+
+   The checked box's colour is --rkui-selected-tint. Set it on the group or on one option to match a
+   colour tile or an icon: <label class="rkui-ballot-option" style="--rkui-selected-tint:
+   var(--rkui-teal-tint)">.
+
+   Layout modifiers for the group, which combine freely:
+     .rkui-ballot--mark-end  the tiles on the right;
+     .rkui-ballot--overlap   each tile straddles its text box's edge;
+     .rkui-ballot--inside    each tile sits inside its text box;
+     .rkui-ballot--tight     no gap between rows, so the boxes read as one ruled list. */
+
+.rkui-ballot {
+  --rkui-tile-size: 2.5rem;
+  --rkui-tile-font-size: var(--rkui-step-1);
+
+  display: grid;
+  gap: var(--rkui-space-3);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rkui-ballot-option {
+  display: flex;
+  align-items: center;
+  gap: var(--rkui-space-3);
+  cursor: pointer;
+}
+
+/* The layouts place the checked tile, which is pushed in by the shadow offset. A tile at rest
+   sits back by that offset, so it's the checked tile that's centred on its row and edges. */
+.rkui-ballot .rkui-tile {
+  inset-block-start: calc(-1 * var(--rkui-shadow-offset-y));
+}
+
+.rkui-ballot--mark-end .rkui-ballot-option {
+  flex-direction: row-reverse;
+}
+
+.rkui-ballot--mark-end .rkui-tile {
+  margin-inline-end: var(--rkui-shadow-offset-x);
+}
+
+.rkui-ballot-option:has(:disabled) {
+  cursor: not-allowed;
+}
+
+.rkui-ballot-text {
+  display: grid;
+  flex: 1;
+  gap: var(--rkui-space-1);
+  min-inline-size: 0;
+  padding: var(--rkui-space-2) var(--rkui-space-3);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  transition: background-color var(--rkui-duration-spring) ease;
+}
+
+.rkui-ballot-option:has(:checked) > .rkui-ballot-text {
+  background: var(--rkui-selected-tint);
+}
+
+@media (forced-colors: active) {
+  .rkui-ballot-option:has(:checked) > .rkui-ballot-text {
+    border-color: Highlight;
+  }
+}
+
+/* Overlap: a negative margin pulls the text box half under the tile, and the box pads its text
+   clear of it. The tile is positioned (tiles.css), so it paints above the box. */
+.rkui-ballot--overlap .rkui-ballot-option {
+  gap: 0;
+}
+
+.rkui-ballot--overlap .rkui-tile {
+  margin-inline-end: calc(var(--rkui-shadow-offset-x) - var(--rkui-tile-size) / 2);
+}
+
+.rkui-ballot--overlap .rkui-ballot-text {
+  padding-inline-start: calc(var(--rkui-tile-size) / 2 + var(--rkui-space-3));
+}
+
+.rkui-ballot--overlap.rkui-ballot--mark-end .rkui-tile {
+  margin-inline: calc(-1 * (var(--rkui-shadow-offset-x) + var(--rkui-tile-size) / 2))
+    var(--rkui-shadow-offset-x);
+}
+
+.rkui-ballot--overlap.rkui-ballot--mark-end .rkui-ballot-text {
+  padding-inline: var(--rkui-space-3) calc(var(--rkui-tile-size) / 2 + var(--rkui-space-3));
+}
+
+/* Inside: the same pull, the whole tile's width plus --rkui-tile-inset, so the tile sits in the
+   box's padding. The tile is top-aligned and the box is at least a tile tall, so one-line text is
+   centred against the tile and longer text starts level with it. */
+.rkui-ballot--inside {
+  --rkui-tile-inset: calc(var(--rkui-outline-width) + var(--rkui-space-3));
+}
+
+.rkui-ballot--inside .rkui-ballot-option {
+  align-items: start;
+  gap: 0;
+}
+
+.rkui-ballot--inside .rkui-tile {
+  margin-block-start: calc(var(--rkui-outline-width) + var(--rkui-space-2));
+  margin-inline: calc(var(--rkui-tile-inset) - var(--rkui-shadow-offset-x))
+    calc(var(--rkui-shadow-offset-x) - var(--rkui-tile-size) - var(--rkui-tile-inset));
+}
+
+.rkui-ballot--inside .rkui-ballot-text {
+  align-content: center;
+  min-block-size: calc(
+    var(--rkui-tile-size) + 2 * (var(--rkui-space-2) + var(--rkui-outline-width))
+  );
+  padding-inline-start: calc(var(--rkui-tile-size) + 2 * var(--rkui-space-3));
+}
+
+.rkui-ballot--inside.rkui-ballot--mark-end .rkui-tile {
+  margin-inline: calc(
+      -1 * (var(--rkui-tile-size) + var(--rkui-tile-inset) + var(--rkui-shadow-offset-x))
+    )
+    calc(var(--rkui-tile-inset) + var(--rkui-shadow-offset-x));
+}
+
+.rkui-ballot--inside.rkui-ballot--mark-end .rkui-ballot-text {
+  padding-inline: var(--rkui-space-3) calc(var(--rkui-tile-size) + 2 * var(--rkui-space-3));
+}
+
+/* Tight: each row after the first moves up by a border's width, so neighbouring boxes share one
+   edge, and only the outer corners stay round. Each box fills its row's height. The checked row,
+   then the focused one, is raised so its border and the tile's focus band sit above its
+   neighbours. */
+.rkui-ballot--tight {
+  gap: 0;
+}
+
+.rkui-ballot--tight .rkui-ballot-option {
+  position: relative;
+}
+
+.rkui-ballot--tight .rkui-ballot-option + .rkui-ballot-option {
+  margin-block-start: calc(-1 * var(--rkui-outline-width));
+}
+
+.rkui-ballot--tight .rkui-ballot-option:has(:checked) {
+  z-index: 1;
+}
+
+.rkui-ballot--tight .rkui-ballot-option:has(:focus-visible) {
+  z-index: 2;
+}
+
+.rkui-ballot--tight .rkui-ballot-text {
+  align-self: stretch;
+  align-content: center;
+}
+
+.rkui-ballot--tight .rkui-ballot-option:not(:first-of-type) > .rkui-ballot-text {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
+.rkui-ballot--tight .rkui-ballot-option:not(:last-of-type) > .rkui-ballot-text {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+/* A tile that isn't inside its box keeps room above and below for its push-in, which makes the
+   row a little taller than one line of text. max(y, -y) is the size of the move whichever way
+   the light falls. */
+.rkui-ballot--tight:not(.rkui-ballot--inside) .rkui-tile {
+  margin-block: max(var(--rkui-shadow-offset-y), -1 * var(--rkui-shadow-offset-y));
+}
+
+/* A checked tile lands with the deck keys' kerchunk (segmented.css): it drives past its pushed-in
+   depth, then settles. The keyframes move it, so its translate isn't transitioned as well. CSS
+   can't tell a page load from a click, so a row checked on load plays it once. */
+.rkui-ballot .rkui-tile:has(:checked:enabled) {
+  --rkui-key-overshoot: calc(var(--rkui-shadow-depth) * 2px);
+
+  transition-property: box-shadow;
+  animation: rkui-deck-key-in var(--rkui-duration-spring) ease-out;
+}

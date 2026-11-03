@@ -1,0 +1,79 @@
+---
+/**
+ * A card or a callout drawn as a sticky note: it renders `Card` or `Callout` with the sticky-note
+ * classes added, so it takes their props and slots too (`title`, `href`, `meta`, `headingLevel` and
+ * the `image` slot for a card; `kind` and `title` for a callout). A separate component rather than
+ * a `note` prop on each, so Card and Callout stay free of it. `class`, `style` and other attributes
+ * go on the outer element.
+ *
+ * @example
+ * <StickyNote title="Remember" hue="grape" tilt hold="pin"><p>Bring the charger.</p></StickyNote>
+ * <StickyNote as="callout" kind="warning" hold="tape"><p>Back up first.</p></StickyNote>
+ * <StickyNote title="Steeper" tilt style="--rkui-note-tilt: 4deg"><p>A custom tilt.</p></StickyNote>
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Card from '../card/Card.astro'
+import Callout from '../callout/Callout.astro'
+
+/** The hues sticky-note.css has a paper colour for. */
+type NoteHue = 'yellow' | 'sky' | 'tangerine' | 'green' | 'coral' | 'grape'
+
+interface NoteStyle {
+  /** The note's colour: yellow, but sky for a note callout and tangerine for a warning one. */
+  hue?: NoteHue
+  /** Turns the note slightly, by -2deg; set `--rkui-note-tilt` in `style` for another angle. */
+  tilt?: boolean
+  /** How the note is held to the page: 'tape' or 'pin'; neither when left out. */
+  hold?: 'tape' | 'pin'
+}
+
+interface CardProps extends NoteStyle, HTMLAttributes<'article'> {
+  /** 'card' (a card; the default) or 'callout'. */
+  as?: 'card'
+  title: string
+  href?: string
+  meta?: string
+  headingLevel?: 2 | 3 | 4
+  kind?: never
+}
+
+interface CalloutProps extends NoteStyle, HTMLAttributes<'div'> {
+  as: 'callout'
+  title?: string
+  kind?: 'note' | 'warning'
+  href?: never
+  meta?: never
+  headingLevel?: never
+}
+
+type Props = CardProps | CalloutProps
+
+const {
+  as = 'card',
+  hue,
+  tilt = false,
+  hold,
+  class: className,
+  title,
+  kind,
+  ...attrs
+} = Astro.props
+const classes = [
+  'rkui-sticky-note',
+  hue && `rkui-sticky-note--${hue}`,
+  { 'rkui-sticky-note--tilt': tilt },
+  hold && `rkui-sticky-note--${hold}`,
+  className,
+]
+---
+
+{as === 'callout' ? (
+  <Callout class:list={classes} title={title} kind={kind} {...attrs}>
+    <slot />
+  </Callout>
+) : (
+  <Card class:list={classes} title={title!} {...attrs}>
+    <slot name="image" slot="image" />
+    <slot />
+  </Card>
+)}

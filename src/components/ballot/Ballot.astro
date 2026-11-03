@@ -1,0 +1,64 @@
+---
+/**
+ * A ballot: a column of options (BallotOption), each a tile beside a bordered text box. Each row is
+ * one label, so clicking anywhere on it votes. Radios for one choice, checkboxes for several.
+ * `class`, `style` and other attributes go on the fieldset.
+ *
+ * @example
+ * <Ballot legend="Vote">
+ *   <BallotOption value="a" mark="A" checked>First</BallotOption>
+ *   <BallotOption value="b" mark="B">Second</BallotOption>
+ * </Ballot>
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { fillOptions } from '../../shared/option-group'
+import { uniqueId } from '../../shared/unique-id'
+
+interface Props extends HTMLAttributes<'fieldset'> {
+  /** The group's name, visually hidden. */
+  legend: string
+  /** The inputs' name, filled into every option; a unique one is made when left out. */
+  name?: string
+  /** Checkboxes instead of radios. */
+  multiple?: boolean
+  /** The tiles on the right. */
+  markEnd?: boolean
+  /** Each tile straddles its text box's edge. */
+  overlap?: boolean
+  /** Each tile sits inside its text box. */
+  inside?: boolean
+  /** No gap between rows. */
+  tight?: boolean
+}
+
+const {
+  legend,
+  name = uniqueId('rkui-ballot'),
+  multiple = false,
+  markEnd = false,
+  overlap = false,
+  inside = false,
+  tight = false,
+  class: className,
+  ...attrs
+} = Astro.props
+
+const options = fillOptions(await Astro.slots.render('default'), name, multiple)
+---
+
+<fieldset
+  class:list={[
+    'rkui-ballot',
+    {
+      'rkui-ballot--mark-end': markEnd,
+      'rkui-ballot--overlap': overlap,
+      'rkui-ballot--inside': inside,
+      'rkui-ballot--tight': tight,
+    },
+    className,
+  ]}
+  {...attrs}
+>
+  <legend class="rkui-visually-hidden">{legend}</legend>
+  <Fragment set:html={options} />
+</fieldset>

@@ -1,0 +1,101 @@
+---
+/**
+ * The page frame for every docs page: the top bar (the logo, the version, search and the theme,
+ * palette and shadow switches), the sidebar of pages and the content column. Only the content
+ * column is indexed for search (`data-pagefind-body`).
+ *
+ * @param page the docs page being shown; its title and description head the content
+ */
+import '@oneonefour/rkui/styles.css'
+import '../styles/docs.css'
+import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'
+import ThemeToggle from '@oneonefour/rkui/components/theme-toggle/ThemeToggle.astro'
+import Badge from '@oneonefour/rkui/components/badge/Badge.astro'
+import Logo from '@oneonefour/rkui/components/logo/Logo.astro'
+import TopBar from '@oneonefour/rkui/components/topbar/TopBar.astro'
+import ModeSwitch from '../components/ModeSwitch.astro'
+import Search from '../components/Search.astro'
+import Sidebar from '../components/Sidebar.astro'
+import { link, type DocsPage } from '../lib/pages'
+import { version } from '../../../package.json'
+
+interface Props {
+  page: DocsPage
+}
+
+const { page } = Astro.props
+const { title, description } = page.data
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline set:html={themeInit} />
+    <script is:inline>
+      // Inline, like the theme, so a stored palette or shadow mode doesn't flash the default first.
+      try {
+        const palette = localStorage.getItem('rkui-palette')
+        if (palette) document.documentElement.dataset.palette = palette
+        const shadow = localStorage.getItem('rkui-shadow')
+        if (shadow) document.documentElement.dataset.shadow = shadow
+      } catch {
+        // Storage is blocked, so the page keeps the defaults.
+      }
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/x-icon" href={link('favicon.ico')} />
+    <title>{title} · rkui</title>
+  </head>
+  <body>
+    <TopBar flush class="docs-topbar">
+      <Logo href={link()} label="rkui home" variant="motifs" size="2.75rem" />
+      <Badge tint title="The version these docs describe">
+        v{version}
+      </Badge>
+      <Search />
+      <div class="docs-switches">
+        <ModeSwitch
+          name="shadow"
+          legend="Dark-mode shadows"
+          options={[
+            { value: 'slab', label: 'Slab' },
+            { value: 'color', label: 'Colour' },
+          ]}
+        />
+        <ModeSwitch
+          name="palette"
+          legend="Page palette"
+          options={[
+            { value: 'cream', label: 'Cream' },
+            { value: 'slate', label: 'Slate' },
+            { value: 'greige', label: 'Greige' },
+          ]}
+        />
+        <ThemeToggle />
+      </div>
+    </TopBar>
+
+    <div class="docs-frame">
+      <aside class="docs-sidebar">
+        <Sidebar current={page.id} label="Pages" />
+      </aside>
+
+      <main class="docs-main">
+        <!-- On narrow screens the sidebar folds into this menu above the content. -->
+        <details class="docs-menu">
+          <!-- Button's classes by hand: no component renders a <summary>. -->
+          <summary class="rkui-button rkui-button--small">Pages</summary>
+          <Sidebar current={page.id} label="Pages menu" />
+        </details>
+
+        <article data-pagefind-body>
+          <h1>{title}</h1>
+          <p class="docs-lede">{description}</p>
+          <slot />
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

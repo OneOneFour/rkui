@@ -1,0 +1,115 @@
+/* Number steppers: a number input with our own step buttons in place of the browser's
+   spinners. Both need rkui-stepper.js.
+
+   Split: − and + buttons either side of the field.
+   <rkui-stepper class="rkui-stepper rkui-stepper--split">
+     <button class="rkui-button" type="button" data-step="down" aria-label="Decrease">−</button>
+     <input class="rkui-input" type="number" aria-label="Label">
+     <button class="rkui-button" type="button" data-step="up" aria-label="Increase">+</button>
+   </rkui-stepper>
+
+   Stacked: up and down arrow buttons inside the field's end. The buttons skip the tab order
+   because the arrow keys already step the focused field, as with native spinners.
+   <rkui-stepper class="rkui-stepper rkui-stepper--stacked">
+     <input class="rkui-input" type="number" aria-label="Label">
+     <button type="button" tabindex="-1" data-step="up" aria-label="Increase"><svg>…</svg></button>
+     <button type="button" tabindex="-1" data-step="down"
+       aria-label="Decrease"><svg>…</svg></button>
+   </rkui-stepper> */
+
+.rkui-stepper .rkui-input {
+  inline-size: 8rem;
+  appearance: textfield;
+}
+
+.rkui-stepper .rkui-input::-webkit-inner-spin-button,
+.rkui-stepper .rkui-input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+/* Until rkui-stepper.js runs, the buttons would do nothing. */
+.rkui-stepper:not(:defined) button {
+  visibility: hidden;
+}
+
+/* Split */
+
+.rkui-stepper--split {
+  display: inline-flex;
+  align-items: stretch;
+  gap: var(--rkui-space-2);
+}
+
+.rkui-stepper--split .rkui-input {
+  text-align: center;
+}
+
+.rkui-stepper--split .rkui-button {
+  --rkui-button-padding-inline: 0;
+
+  justify-content: center;
+  inline-size: 2.75rem;
+}
+
+/* Stacked */
+
+.rkui-stepper--stacked {
+  --rkui-arrow-width: 1.75rem;
+
+  position: relative;
+  display: inline-grid;
+}
+
+.rkui-stepper--stacked .rkui-input {
+  padding-inline-end: calc(var(--rkui-arrow-width) + var(--rkui-space-2));
+}
+
+.rkui-stepper--stacked button {
+  position: absolute;
+  inset-inline-end: var(--rkui-outline-width);
+  display: grid;
+  place-items: center;
+  inline-size: var(--rkui-arrow-width);
+  block-size: calc(50% - var(--rkui-outline-width));
+  padding: 0;
+  border: 0;
+  border-inline-start: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  background: transparent;
+  color: var(--rkui-fg);
+  cursor: pointer;
+  transition: box-shadow var(--rkui-duration-fast) ease;
+}
+
+.rkui-stepper--stacked [data-step='up'] {
+  inset-block-start: var(--rkui-outline-width);
+  border-block-end: calc(var(--rkui-outline-width) / 2) solid var(--rkui-line-unfilled);
+  border-start-end-radius: calc(var(--rkui-radius) - var(--rkui-outline-width));
+}
+
+.rkui-stepper--stacked [data-step='down'] {
+  inset-block-end: var(--rkui-outline-width);
+  border-block-start: calc(var(--rkui-outline-width) / 2) solid var(--rkui-line-unfilled);
+  border-end-end-radius: calc(var(--rkui-radius) - var(--rkui-outline-width));
+}
+
+.rkui-stepper--stacked svg {
+  --rkui-icon-stroke: 28;
+
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.rkui-stepper--stacked button:enabled:hover {
+  background: var(--rkui-selected);
+  color: var(--rkui-on-selected);
+}
+
+.rkui-stepper--stacked button:enabled:active {
+  box-shadow: var(--rkui-shadow-inset);
+}
+
+.rkui-stepper--stacked button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

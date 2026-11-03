@@ -1,0 +1,39 @@
+---
+/**
+ * A group of filter chips: a fieldset with a visually hidden legend, holding Chips. `class`,
+ * `style` and other attributes go on the fieldset.
+ *
+ * @example
+ * <ChipGroup legend="Topics" multiple>
+ *   <Chip value="fruit" checked>Fruit</Chip>
+ *   <Chip value="veg">Veg</Chip>
+ * </ChipGroup>
+ */
+import type { HTMLAttributes } from 'astro/types'
+import { fillOptions } from '../../shared/option-group'
+import { uniqueId } from '../../shared/unique-id'
+
+interface Props extends HTMLAttributes<'fieldset'> {
+  /** The group's name for screen readers. */
+  legend: string
+  /** The inputs' name, filled into every chip; a unique one is made when left out. */
+  name?: string
+  /** Checkboxes instead of radios. */
+  multiple?: boolean
+}
+
+const {
+  legend,
+  name = uniqueId('rkui-chips'),
+  multiple = false,
+  class: className,
+  ...attrs
+} = Astro.props
+
+const chips = fillOptions(await Astro.slots.render('default'), name, multiple)
+---
+
+<fieldset class:list={['rkui-chip-group', className]} {...attrs}>
+  <legend class="rkui-visually-hidden">{legend}</legend>
+  <Fragment set:html={chips} />
+</fieldset>

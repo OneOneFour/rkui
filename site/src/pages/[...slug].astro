@@ -1,0 +1,27 @@
+---
+/** Renders every docs page in src/content/docs/ with the docs layout. */
+import { render } from 'astro:content'
+import CodeFence from '../components/CodeFence.astro'
+import DocsLayout from '../layouts/DocsLayout.astro'
+import { sortedPages, type DocsPage } from '../lib/pages'
+
+export async function getStaticPaths() {
+  const pages = await sortedPages()
+  return pages.map((page) => ({
+    // index.mdx has no slug, so it is the home page.
+    params: { slug: page.id === 'index' ? undefined : page.id },
+    props: { page },
+  }))
+}
+
+interface Props {
+  page: DocsPage
+}
+
+const { page } = Astro.props
+const { Content } = await render(page)
+---
+
+<DocsLayout page={page}>
+  <Content components={{ pre: CodeFence }} />
+</DocsLayout>

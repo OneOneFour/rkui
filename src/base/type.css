@@ -1,0 +1,17 @@
+/* Modular type scale: each step is the previous one times --rkui-type-ratio. */
+
+:root {
+  --rkui-type-ratio: 1.3;
+
+  /* Small text is fixed (1 / 1.25), since 1 / --rkui-type-ratio would be too small to read */
+  --rkui-step--1: 0.8rem;
+  --rkui-step-0: 1rem;
+  --rkui-step-1: calc(var(--rkui-step-0) * var(--rkui-type-ratio));
+  --rkui-step-2: calc(var(--rkui-step-1) * var(--rkui-type-ratio));
+  --rkui-step-3: calc(var(--rkui-step-2) * var(--rkui-type-ratio));
+  --rkui-step-4: calc(var(--rkui-step-3) * var(--rkui-type-ratio));
+  --rkui-step-5: calc(var(--rkui-step-4) * var(--rkui-type-ratio));
+
+  --rkui-line-height-body: 1.6;
+  --rkui-line-height-heading: 1.2;
+}

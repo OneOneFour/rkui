@@ -1,0 +1,222 @@
+/* Logo: rkui's mark as a home link, four outlined tiles (r, k, u, i) raised on the hard shadow.
+   It pops like a button (interactive.css). The tiles carry the library's motifs: the folded
+   corner, the water and the stripes. Logo.astro has the drawing.
+
+   <a class="rkui-logo rkui-logo--motifs" href="/"><svg viewBox="-11.5 -11.5 1175 1175"
+     aria-hidden="true">…</svg><span class="rkui-visually-hidden">Home</span></a>
+
+   Variants (open, DECISIONS "Logo"): with no modifier, the pop only; .rkui-logo--motifs plays each
+   tile's motif on hover and focus: the corner lifts, the wave rolls, the stripes march and the
+   dot hops. Nothing moves under reduced motion. */
+
+.rkui-logo {
+  --rkui-logo-size: 6rem;
+  /* The drawn outline is a 51st of the logo's width, and never thinner than the house outline. */
+  --rkui-logo-line: max(var(--rkui-outline-width), calc(var(--rkui-logo-size) / 51));
+
+  /* The layout places the pressed pose, as for every control resting in a row (DESIGN.md, "Pressed,
+     checked and busy"): at rest the logo sits back towards the light by the press offset, so
+     pressed it lines up with what's around it. */
+  position: relative;
+  inset-block-start: calc(-1 * var(--rkui-press-offset-y));
+  inset-inline-start: calc(-1 * var(--rkui-press-offset-x));
+  display: inline-block;
+  inline-size: var(--rkui-logo-size);
+  aspect-ratio: 1;
+  vertical-align: middle;
+  /* The drawing's corners, in its 1175 units: the folded corner cut 150 in, the rest rounded 125.
+     The shadow and the focus band follow them. Without corner-shape the folded corner is
+     square. */
+  border-radius: 12.8% 10.6% 10.6%;
+  corner-shape: bevel round round round;
+}
+
+/* Visible overflow, since at small sizes the outline grows a little past the drawing. */
+.rkui-logo svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+}
+
+/* The tiles' fills. */
+.rkui-logo-r > .rkui-logo-tile {
+  fill: var(--rkui-coral);
+}
+
+.rkui-logo-k > .rkui-logo-tile {
+  fill: var(--rkui-teal-tint);
+}
+
+.rkui-logo-u > .rkui-logo-tile {
+  fill: var(--rkui-yellow);
+}
+
+.rkui-logo-i > .rkui-logo-tile {
+  fill: var(--rkui-green);
+}
+
+.rkui-logo-letter {
+  fill: var(--rkui-on-fill);
+}
+
+.rkui-logo-stripes {
+  fill: var(--rkui-yellow-tint);
+}
+
+.rkui-logo-flap-fill {
+  fill: var(--rkui-coral-tint);
+}
+
+/* The wave line is drawn at about two thirds of the outline. */
+.rkui-logo-wave {
+  fill: var(--rkui-teal);
+  stroke: var(--rkui-teal-deep);
+  stroke-width: calc(var(--rkui-logo-line) * 0.64);
+  vector-effect: non-scaling-stroke;
+}
+
+/* The logo looks the same in both themes, in the drawing's colours: the tokens' light values,
+   except the coral, the green and the outline, which take their dark values. */
+.rkui-logo svg {
+  color-scheme: light;
+}
+
+.rkui-logo-r > .rkui-logo-tile,
+.rkui-logo-i > .rkui-logo-tile,
+.rkui-logo-edge {
+  color-scheme: dark;
+}
+
+.rkui-logo-edge {
+  fill: none;
+  stroke: var(--rkui-line);
+  stroke-width: var(--rkui-logo-line);
+  stroke-linejoin: round;
+}
+
+/* vector-effect isn't inherited, so the tile shapes that the edges reuse carry it themselves.
+   They are matched by class alone: a reused copy has no ancestors to match. */
+.rkui-logo-shape,
+.rkui-logo-edge {
+  vector-effect: non-scaling-stroke;
+}
+
+/* The folded corner folds across its crease: a squash along the crease's normal, made by turning
+   the axes to the crease and back, so the flap itself never turns. */
+.rkui-logo-flap {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(45deg) scaleX(1) rotate(-45deg);
+}
+
+/* The dot is pinned to its base, so a squash keeps it on the ground. */
+.rkui-logo-dot {
+  transform-box: fill-box;
+  transform-origin: bottom;
+}
+
+/* Motifs: the wave rolls like the water's, the stripes march like an indeterminate progress
+   bar's, the corner lifts and the dot hops. Hover only counts where there is a pointer, so a tap
+   doesn't start them. */
+@media (prefers-reduced-motion: no-preference) {
+  .rkui-logo--motifs:focus-visible .rkui-logo-wave {
+    animation: rkui-logo-roll var(--rkui-loop-long) linear infinite;
+  }
+
+  .rkui-logo--motifs:focus-visible .rkui-logo-stripes {
+    animation: rkui-logo-march var(--rkui-loop-short) linear infinite;
+  }
+
+  .rkui-logo--motifs:focus-visible .rkui-logo-flap {
+    animation: rkui-logo-lift var(--rkui-loop-medium) ease-in-out infinite;
+  }
+
+  .rkui-logo--motifs:focus-visible .rkui-logo-dot {
+    animation: rkui-logo-hop var(--rkui-loop-medium) infinite;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .rkui-logo--motifs:hover .rkui-logo-wave {
+    animation: rkui-logo-roll var(--rkui-loop-long) linear infinite;
+  }
+
+  .rkui-logo--motifs:hover .rkui-logo-stripes {
+    animation: rkui-logo-march var(--rkui-loop-short) linear infinite;
+  }
+
+  .rkui-logo--motifs:hover .rkui-logo-flap {
+    animation: rkui-logo-lift var(--rkui-loop-medium) ease-in-out infinite;
+  }
+
+  .rkui-logo--motifs:hover .rkui-logo-dot {
+    animation: rkui-logo-hop var(--rkui-loop-medium) infinite;
+  }
+}
+
+/* Forced colours keep the drawing's own colours; the link's focus outline still takes the
+   system's. */
+@media (forced-colors: active) {
+  .rkui-logo svg {
+    forced-color-adjust: none;
+  }
+}
+
+/* One wavelength of the wave, in the drawing's units. */
+@keyframes rkui-logo-roll {
+  to {
+    translate: -384px 0;
+  }
+}
+
+/* One pair of stripes. */
+@keyframes rkui-logo-march {
+  to {
+    translate: 110.9px 0;
+  }
+}
+
+/* The corner lifts towards the crease and lies back down. The functions match the rest pose's,
+   so only the scale blends. */
+@keyframes rkui-logo-lift {
+  0%,
+  50%,
+  100% {
+    transform: rotate(45deg) scaleX(1) rotate(-45deg);
+  }
+
+  25% {
+    transform: rotate(45deg) scaleX(0.3) rotate(-45deg);
+  }
+}
+
+/* A hop: squash, up stretched, land squashed, settle, then hold. */
+@keyframes rkui-logo-hop {
+  0%,
+  60%,
+  100% {
+    translate: 0 0;
+    scale: 1;
+  }
+
+  6% {
+    scale: 1.15 0.85;
+    animation-timing-function: ease-out;
+  }
+
+  24% {
+    translate: 0 -70px;
+    scale: 0.9 1.1;
+    animation-timing-function: ease-in;
+  }
+
+  42% {
+    translate: 0 0;
+    scale: 1.25 0.8;
+  }
+
+  50% {
+    scale: 0.95 1.05;
+  }
+}

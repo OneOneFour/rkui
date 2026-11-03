@@ -1,0 +1,24 @@
+---
+title: Clock
+description: A settable clock face over a time input.
+group: Dials and time
+order: 61
+---
+
+import Demo from '../../components/Demo.astro'
+import Default from '../../examples/clock/default.astro'
+import defaultCode from '../../examples/clock/default.astro?raw'
+import Disabled from '../../examples/clock/disabled.astro'
+import disabledCode from '../../examples/clock/disabled.astro?raw'
+
+A labelled time input with a clock face to set it by. Without its script it stays a time input.
+
+<Demo code={defaultCode} label="Clocks by day and by night">
+  <Default />
+</Demo>
+
+## Disabled
+
+<Demo code={disabledCode} label="Disabled clock">
+  <Disabled />
+</Demo>

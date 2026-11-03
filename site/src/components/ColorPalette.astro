@@ -1,0 +1,175 @@
+---
+/**
+ * The core colours as a palette picker: a tall column per hue with its -deep and -tint steps
+ * beneath, then a row of page colours. Each block is a button that copies its colour, as a hex or
+ * as `var(--rkui-…)`, chosen by the switch above. The hexes are read from what the browser
+ * paints, so they follow the theme, palette and shadow mode.
+ *
+ * Text on each block follows the on-colour rule: a fill's own label token; the page colour on a
+ * -deep step (a deep step is text on the page, so the page colour reads on it); body text on a
+ * tint. The fills' text is large, because bright coral passes with white only at that size.
+ */
+import Segmented from '@oneonefour/rkui/components/segmented/Segmented.astro'
+import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.astro'
+import Swatch from './Swatch.astro'
+
+/** A colour block: the token it shows and the token its text is set in, both without `--rkui-`. */
+interface Swatch {
+  token: string
+  text: string
+}
+
+const HUES = [
+  { name: 'navy', label: 'on-navy' },
+  { name: 'teal', label: 'on-fill' },
+  { name: 'coral', label: 'on-coral' },
+  { name: 'yellow', label: 'on-fill' },
+  { name: 'green', label: 'on-fill' },
+  { name: 'sky', label: 'on-fill' },
+]
+
+const columns: Swatch[][] = HUES.map(({ name, label }) => [
+  { token: name, text: label },
+  { token: `${name}-deep`, text: 'surface' },
+  { token: `${name}-tint`, text: 'fg' },
+])
+
+const NEUTRALS: Swatch[] = [
+  { token: 'surface', text: 'fg' },
+  { token: 'raised', text: 'fg' },
+  { token: 'fg', text: 'surface' },
+  { token: 'muted', text: 'surface' },
+  { token: 'line', text: 'on-ink' },
+]
+---
+
+<div class="color-palette">
+  <Segmented legend="Copy colours as" class="copy-as">
+    <SegmentedOption value="hex" checked>
+      Copy hex
+    </SegmentedOption>
+    <SegmentedOption value="var">Copy var(--rkui-…)</SegmentedOption>
+  </Segmented>
+
+  <div class="hues">
+    {columns.map((column) => (
+      <div class="column">
+        {column.map(({ token, text }) => (
+          <Swatch token={token} text={text} />
+        ))}
+      </div>
+    ))}
+  </div>
+
+  <div class="neutrals">
+    {NEUTRALS.map(({ token, text }) => (
+      <Swatch token={token} text={text} />
+    ))}
+  </div>
+
+  <p class="rkui-visually-hidden" aria-live="polite"></p>
+</div>
+
+<style>
+  .color-palette {
+    --palette-gap: calc(var(--rkui-depth-gap-scale) * var(--rkui-space-3));
+
+    display: grid;
+    gap: var(--rkui-space-5);
+    margin-block: var(--rkui-space-5);
+  }
+
+  .copy-as {
+    justify-self: start;
+  }
+
+  .hues {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    gap: var(--palette-gap);
+  }
+
+  .column {
+    display: grid;
+    grid-template-rows: 10rem 5rem 5rem;
+    gap: var(--palette-gap);
+  }
+
+  .neutrals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    grid-auto-rows: 5rem;
+    gap: var(--palette-gap);
+  }
+
+  .column > :global(.swatch:first-child) {
+    font-size: var(--rkui-step-1);
+  }
+</style>
+
+<script>
+  const ATTRIBUTES = ['data-theme', 'data-palette', 'data-shadow']
+  const COPIED_FOR = 1200
+
+  let context: OffscreenCanvasRenderingContext2D | null | undefined
+
+  /** Any colour the browser can paint, as `#rrggbb`: painted on a 1 by 1 canvas and read back. */
+  function toHex(cssColor: string): string {
+    context ??= new OffscreenCanvas(1, 1).getContext('2d', { willReadFrequently: true })
+    if (!context) return ''
+    context.clearRect(0, 0, 1, 1)
+    context.fillStyle = cssColor
+    context.fillRect(0, 0, 1, 1)
+    const [r, g, b] = context.getImageData(0, 0, 1, 1).data
+    return '#' + [r, g, b].map((byte) => byte.toString(16).padStart(2, '0')).join('')
+  }
+
+  /** The block's colour as the browser paints it now. */
+  function hexOf(swatch: HTMLElement): string {
+    return toHex(getComputedStyle(swatch).backgroundColor)
+  }
+
+  for (const palette of document.querySelectorAll<HTMLElement>('.color-palette')) {
+    const swatches = [...palette.querySelectorAll<HTMLButtonElement>('.swatch')]
+    const announcer = palette.querySelector('[aria-live]')
+    /** The timer that ends each block's "Copied" state. */
+    const copiedTimers = new Map<HTMLElement, number>()
+
+    /** Shows each block's hex, except on a block showing "Copied". */
+    const showHexes = () => {
+      for (const swatch of swatches) {
+        const value = swatch.querySelector('.value')
+        if (value && !copiedTimers.has(swatch)) value.textContent = hexOf(swatch)
+      }
+    }
+
+    const copy = async (swatch: HTMLButtonElement) => {
+      const asVar = palette.querySelector<HTMLInputElement>('input[value="var"]')?.checked
+      const text = asVar ? `var(--rkui-${swatch.dataset.token})` : hexOf(swatch)
+      try {
+        await navigator.clipboard.writeText(text)
+      } catch {
+        if (announcer) announcer.textContent = `Couldn't copy ${text}`
+        return
+      }
+      if (announcer) announcer.textContent = `Copied ${text}`
+
+      const value = swatch.querySelector('.value')
+      if (value) value.textContent = 'Copied'
+      clearTimeout(copiedTimers.get(swatch))
+      const timer = setTimeout(() => {
+        copiedTimers.delete(swatch)
+        showHexes()
+      }, COPIED_FOR)
+      copiedTimers.set(swatch, timer)
+    }
+
+    for (const swatch of swatches) swatch.addEventListener('click', () => copy(swatch))
+    showHexes()
+    new MutationObserver(showHexes).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ATTRIBUTES,
+    })
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', showHexes)
+  }
+</script>

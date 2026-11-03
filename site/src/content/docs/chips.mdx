@@ -1,0 +1,40 @@
+---
+title: Chips
+description: Pill-shaped filters that pick one choice or several.
+group: Form controls
+order: 34
+---
+
+import Demo from '../../components/Demo.astro'
+import Default from '../../examples/chips/default.astro'
+import defaultCode from '../../examples/chips/default.astro?raw'
+import Single from '../../examples/chips/single.astro'
+import singleCode from '../../examples/chips/single.astro?raw'
+import Icons from '../../examples/chips/icons.astro'
+import iconsCode from '../../examples/chips/icons.astro?raw'
+import Disabled from '../../examples/chips/disabled.astro'
+import disabledCode from '../../examples/chips/disabled.astro?raw'
+
+<Demo code={defaultCode} label="Chips, several choices">
+  <Default />
+</Demo>
+
+## One choice
+
+Without `multiple` the group's chips are radios.
+
+<Demo code={singleCode} label="Chips, one choice">
+  <Single />
+</Demo>
+
+## With icons
+
+<Demo code={iconsCode} label="Chips with icons">
+  <Icons />
+</Demo>
+
+## A disabled chip
+
+<Demo code={disabledCode} label="Chips with a disabled chip">
+  <Disabled />
+</Demo>

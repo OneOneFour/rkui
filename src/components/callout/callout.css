@@ -1,0 +1,39 @@
+/* Callouts: a static tint panel with an icon, as a note or a warning.
+
+   <div class="rkui-callout rkui-callout--note" role="note">
+     <svg class="rkui-icon">…</svg>
+     <div class="rkui-callout-body"><p class="rkui-callout-title">Title</p><p>Text</p></div>
+   </div> */
+
+.rkui-callout {
+  display: flex;
+  align-items: start;
+  gap: var(--rkui-space-3);
+  padding: var(--rkui-space-4);
+  border-radius: var(--rkui-radius);
+  color: var(--rkui-fg);
+}
+
+.rkui-callout-body > * {
+  margin-block: 0 var(--rkui-space-2);
+}
+
+.rkui-callout-body > :last-child {
+  margin-block-end: 0;
+}
+
+.rkui-callout-title {
+  font-weight: 700;
+}
+
+.rkui-callout--note {
+  --rkui-icon-fill: var(--rkui-teal);
+  background: var(--rkui-sky-tint);
+}
+
+/* Tangerine focus bands vanish on apricot, so focus inside a warning uses the alternate. */
+.rkui-callout--warning {
+  --rkui-focus: var(--rkui-focus-alt);
+  --rkui-icon-fill: var(--rkui-tangerine);
+  background: var(--rkui-apricot-tint);
+}

@@ -1,0 +1,61 @@
+---
+/** JetBrains Mono: code with ligatures, a widget readout, maths symbols and look-alikes. */
+import { LORENZ_PYTHON } from './code-samples'
+
+const READOUT = 'σ = 10.00  ρ = 28.00  β = 2.667'
+---
+
+<div class="mono">
+  <pre><code>{LORENZ_PYTHON}</code></pre>
+  <p class="lookalikes">0O 1lI rn m {'{}'} [] () =&gt; -&gt; != == &lt;= &gt;=</p>
+  <p class="readout">{READOUT}</p>
+  <p class="symbols">≈ ≠ ≤ ≥ ± × ÷ − → ← ∞ ∂ ∇ ∑ ∫ √ ∝ ° ′ ″</p>
+  <p>
+    <em># italic: σ, ρ and β stay fixed while Δt varies</em>
+  </p>
+</div>
+
+<style>
+  .mono {
+    font-family: var(--rkui-font-mono);
+  }
+
+  p {
+    margin-block: var(--rkui-space-3) 0;
+  }
+
+  pre {
+    margin: 0;
+    padding: var(--rkui-space-4);
+    overflow-x: auto;
+    border-radius: var(--rkui-radius);
+    background: var(--rkui-slate);
+    color: var(--rkui-fg);
+    font-size: var(--rkui-step--1);
+    line-height: var(--rkui-line-height-body);
+  }
+
+  /* Monospace elements get the browser's monospace by default; take --rkui-font-mono instead. */
+  pre,
+  code {
+    font-family: inherit;
+  }
+
+  .readout {
+    padding: var(--rkui-space-2) var(--rkui-space-4);
+    border-radius: var(--rkui-radius);
+    background: var(--rkui-raised);
+    font-size: var(--rkui-step-1);
+    white-space: pre-wrap;
+  }
+
+  .symbols {
+    font-size: var(--rkui-step-1);
+    word-spacing: 0.2em;
+  }
+
+  .lookalikes {
+    font-size: var(--rkui-step-3);
+    word-spacing: 0.3em;
+  }
+</style>

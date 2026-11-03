@@ -1,0 +1,119 @@
+---
+/**
+ * Draws an exploded illustration (explode.css) from its data: each assembly is focusable, named
+ * after its parts, and comes apart on hover or focus. With more than one assembly, an "Explode
+ * all" switch pulls them all apart.
+ *
+ * @param illustration the parts, in assemblies, on a grid of units
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ * @param sticker a demo look: at rest the whole drawing is one die-cut sticker, with one keyline
+ */
+import type { ExplodedAssembly, ExplodedIllustration, ExplodedPart } from './exploded-view'
+import ExplodedViewPart from './ExplodedViewPart.astro'
+import { sectionId } from './section-id'
+import './illustration-tokens.css'
+import './explode.css'
+
+interface Props {
+  illustration: ExplodedIllustration
+  theme: 'light' | 'dark'
+  sticker?: boolean
+}
+
+const { illustration, theme, sticker = false } = Astro.props
+const { title, description, columns, rows, ground, assemblies } = illustration
+const idPrefix = `${theme}-${sticker ? 'sticker' : 'plain'}-${sectionId(title)}`
+const viewBox = `0 0 ${columns} ${rows}`
+const groundPath = ground.dashes.map(([start, end]) => `M${start} ${ground.y}H${end}`).join('')
+const restingShapes = assemblies.flatMap((assembly) => assembly.parts.map((part) => part.shape.d))
+const listFormat = new Intl.ListFormat('en-GB', { type: 'conjunction' })
+const hatchId = `${idPrefix}-hatch`
+/**
+ * A hatching stripe and its gap, across the stripes, in grid units. The striped progress bar's
+ * 1rem tile is about 1.6 units with the train at full width, and its stripes repeat every
+ * tile ÷ √2.
+ */
+const HATCH_PITCH = 1.6 / Math.SQRT2
+
+/** "Cab: cab, roof and window" */
+function assemblyLabel({ name, parts }: ExplodedAssembly) {
+  return `${name}: ${listFormat.format(parts.map((part) => part.name.toLowerCase()))}`
+}
+
+/** The custom properties that place a part and its label. */
+function partStyle({ shape: { box }, fill, depth, explode }: ExplodedPart) {
+  return [
+    `--rkui-x: ${box.x}; --rkui-y: ${box.y}; --rkui-w: ${box.w}; --rkui-h: ${box.h}`,
+    `--rkui-part-fill: var(--rkui-illustration-${fill}); --rkui-depth: ${depth}`,
+    `--rkui-explode-x: ${explode[0]}; --rkui-explode-y: ${explode[1]}`,
+  ].join('; ')
+}
+---
+
+<div class:list={['rkui-explode', { 'rkui-explode--sticker': sticker }]}>
+  <div
+    class="rkui-explode-stage"
+    style={`--rkui-columns: ${columns}; --rkui-rows: ${rows}; --rkui-hatch: url(#${hatchId})`}
+    role="group"
+    aria-label={title}
+    aria-describedby={`${idPrefix}-desc`}
+  >
+    <svg class="rkui-explode-ground" viewBox={viewBox} aria-hidden="true">
+      <pattern
+        id={hatchId}
+        patternUnits="userSpaceOnUse"
+        width={HATCH_PITCH}
+        height={HATCH_PITCH}
+        patternTransform="rotate(-45)"
+      >
+        <rect class="rkui-explode-hatch" width={HATCH_PITCH / 2} height={HATCH_PITCH} />
+      </pattern>
+      <path d={groundPath} />
+    </svg>
+    {sticker && (
+      <svg class="rkui-explode-sticker" viewBox={viewBox} aria-hidden="true">
+        <g class="rkui-explode-sticker-edge">
+          {restingShapes.map((d) => (
+            <path d={d} />
+          ))}
+        </g>
+        <g class="rkui-explode-sticker-backing">
+          {restingShapes.map((d) => (
+            <path d={d} />
+          ))}
+        </g>
+      </svg>
+    )}
+    {assemblies.map((assembly, a) => (
+      <div
+        class="rkui-explode-assembly"
+        tabindex="0"
+        role="img"
+        aria-label={assemblyLabel(assembly)}
+      >
+        <svg class="rkui-explode-rest" viewBox={viewBox}>
+          {assembly.parts.map((part) => (
+            <path d={part.shape.d} />
+          ))}
+        </svg>
+        {assembly.parts.map((part, p) => (
+          <ExplodedViewPart part={part} id={`${idPrefix}-${a}-${p}`} style={partStyle(part)} />
+        ))}
+        {assembly.parts.map((part) => (
+          <span class="rkui-explode-label rkui-tooltip" style={partStyle(part)}>
+            <span class="rkui-tooltip-bubble">{part.name}</span>
+          </span>
+        ))}
+      </div>
+    ))}
+  </div>
+  <p class="rkui-visually-hidden" id={`${idPrefix}-desc`}>
+    {description}
+  </p>
+  {assemblies.length > 1 && (
+    <label class="rkui-check">
+      <input class="rkui-switch rkui-explode-all" type="checkbox" role="switch" />
+      Explode all
+    </label>
+  )}
+</div>

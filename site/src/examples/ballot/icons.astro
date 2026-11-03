@@ -1,0 +1,22 @@
+---
+import Ballot from '@oneonefour/rkui/components/ballot/Ballot.astro'
+import BallotOption from '@oneonefour/rkui/components/ballot/BallotOption.astro'
+import Sun from '@oneonefour/rkui/icons/sun.svg'
+import Moon from '@oneonefour/rkui/icons/moon.svg'
+import Leaf from '@oneonefour/rkui/icons/leaf.svg'
+---
+
+<Ballot legend="Weather" multiple>
+  <BallotOption value="sun" hue="yellow" tint checked>
+    <Sun slot="icon" />
+    Sun
+  </BallotOption>
+  <BallotOption value="moon" hue="lilac" tint>
+    <Moon slot="icon" />
+    Moon
+  </BallotOption>
+  <BallotOption value="leaf" hue="green" tint checked>
+    <Leaf slot="icon" />
+    Leaf
+  </BallotOption>
+</Ballot>

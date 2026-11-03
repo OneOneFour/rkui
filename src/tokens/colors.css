@@ -1,0 +1,110 @@
+/* rkui colour tokens. Colours are light-dark() pairs that follow color-scheme. */
+
+:root {
+  color-scheme: light dark;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+:root {
+  /* Text, lines and focus */
+  --rkui-fg: light-dark(#1d232f, #f2eee2);
+  --rkui-muted: light-dark(#5b6070, #a3a8b6);
+  --rkui-line: light-dark(#1d232f, #05070b);
+  --rkui-line-unfilled: var(--rkui-fg);
+  --rkui-focus: var(--rkui-tangerine);
+  /* Where tangerine surrounds the focused element, set --rkui-focus: var(--rkui-focus-alt) */
+  --rkui-focus-alt: var(--rkui-yellow);
+  /* The colour shadow mode's shadow for things without a fill: lighter than the page in dark
+     mode */
+  --rkui-shadow-lit: light-dark(var(--rkui-line), #6e7891);
+
+  /* Fills: vivid in both themes */
+  --rkui-ink: #1d232f;
+  --rkui-navy: light-dark(#2c4d6e, #4a78ad);
+  --rkui-teal: light-dark(#2ea6b1, #3bb4bf);
+  --rkui-coral: light-dark(#de4d45, #e8625a);
+  /* Coral for fills with small text: --rkui-coral is too light for white text in light mode */
+  --rkui-coral-solid: light-dark(var(--rkui-coral-deep), var(--rkui-coral));
+  --rkui-yellow: #f4bc38;
+  --rkui-green: light-dark(#7bba3d, #86c44a);
+  --rkui-sky: #8fd3f7;
+  --rkui-grape: light-dark(#7b4fc9, #a584e6);
+  --rkui-lilac: #d4c4f5;
+  --rkui-tangerine: light-dark(#f58a2a, #f5923a);
+  --rkui-apricot: #ffd2a6;
+  /* Glint: a highlight on toon fills, near-white in both themes */
+  --rkui-glint: var(--rkui-on-ink);
+
+  /* Text on fills */
+  --rkui-on-fill: var(--rkui-ink);
+  --rkui-on-ink: light-dark(#f7f3e5, #f2eee2);
+  --rkui-on-navy: #ffffff;
+  --rkui-on-coral: light-dark(#ffffff, var(--rkui-ink));
+  --rkui-on-grape: light-dark(#ffffff, var(--rkui-ink));
+
+  /* Hue text: for text and links on --rkui-surface and --rkui-raised */
+  --rkui-navy-deep: light-dark(#2c4d6e, #8fb3e0);
+  --rkui-teal-deep: light-dark(#176f78, #6fcfd7);
+  --rkui-coral-deep: light-dark(#c8322a, #f08a83);
+  --rkui-yellow-deep: light-dark(#856000, #f7d27a);
+  --rkui-green-deep: light-dark(#3a7016, #a3d977);
+  --rkui-sky-deep: light-dark(#216b9a, #8fd3f7);
+  --rkui-grape-deep: light-dark(#7b4fc9, #b89cf0);
+  --rkui-tangerine-deep: light-dark(#a14c0a, #f8a65c);
+
+  /* Tints: panels that carry --rkui-fg text */
+  --rkui-navy-tint: light-dark(#c7d5e6, #25364f);
+  --rkui-teal-tint: light-dark(#a6dfe3, #173f44);
+  --rkui-coral-tint: light-dark(#f6c1bb, #4d2623);
+  --rkui-yellow-tint: light-dark(#fbdf94, #4a3e18);
+  --rkui-green-tint: light-dark(#c8e5a8, #2a4220);
+  --rkui-sky-tint: light-dark(#8fd3f7, #1e3a50);
+  --rkui-lilac-tint: light-dark(#d4c4f5, #342c55);
+  --rkui-apricot-tint: light-dark(#ffd2a6, #4a3324);
+
+  /* Sticky notes: a tint in light mode and the vivid fill in dark, both carrying --rkui-on-fill
+     text. The tape that holds one is a see-through wash of the glint. */
+  --rkui-note-yellow: light-dark(var(--rkui-yellow-tint), var(--rkui-yellow));
+  --rkui-note-sky: var(--rkui-sky);
+  --rkui-note-tangerine: light-dark(var(--rkui-apricot-tint), var(--rkui-tangerine));
+  --rkui-note-green: light-dark(var(--rkui-green-tint), var(--rkui-green));
+  --rkui-note-coral: light-dark(var(--rkui-coral-tint), var(--rkui-coral));
+  --rkui-note-grape: light-dark(var(--rkui-lilac-tint), var(--rkui-grape));
+  --rkui-note-tape: color-mix(in srgb, var(--rkui-glint) 60%, transparent);
+
+  /* Shading: hatching stripes, the outline colour at a quarter strength over whatever they cross.
+     A fill's shade is the --rkui-shade recipe below. */
+  --rkui-stripe: color-mix(in srgb, var(--rkui-line) 25%, transparent);
+
+  /* Icon fills: the quiet default for interface icons, a pale wash of the outline colour */
+  --rkui-icon-fill-neutral: color-mix(in srgb, currentColor 20%, transparent);
+
+  /* Selected: checked and selected controls */
+  --rkui-selected: var(--rkui-yellow);
+  --rkui-on-selected: var(--rkui-on-fill);
+  /* A panel that carries --rkui-fg text, for the selected option's surroundings */
+  --rkui-selected-tint: var(--rkui-yellow-tint);
+
+  /* Section hooks */
+  --rkui-section: var(--rkui-ink);
+  --rkui-on-section: var(--rkui-on-ink);
+
+  /* Code: slate panels and syntax colours. The tab is the code block's editor-tab strip, and
+     .rkui-slate-greige (code.css) swaps in the greige pair. */
+  --rkui-slate: light-dark(#e7ebf3, #2c323d);
+  --rkui-slate-tab: light-dark(#dbe0ea, #333946);
+  --rkui-slate-greige: light-dark(#eae7e2, #35332e);
+  --rkui-slate-greige-tab: light-dark(#e0dcd6, #3d3a34);
+  --rkui-code-keyword: var(--rkui-navy-deep);
+  --rkui-code-function: var(--rkui-teal-deep);
+  --rkui-code-string: var(--rkui-green-deep);
+  --rkui-code-number: var(--rkui-tangerine-deep);
+  --rkui-code-comment: var(--rkui-muted);
+}

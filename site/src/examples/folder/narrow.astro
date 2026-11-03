@@ -1,0 +1,18 @@
+---
+import Folder from '@oneonefour/rkui/components/folder/Folder.astro'
+import Tab from '@oneonefour/rkui/components/folder/Tab.astro'
+---
+
+<Folder label="Narrow" class="narrow">
+  <Tab label="Tab one" />
+  <Tab label="Tab two" selected />
+  <Tab label="Tab three" />
+  <Tab label="Tab four" />
+  <p>Too narrow for its tabs, so a scrollbar sits above them.</p>
+</Folder>
+
+<style>
+  :global(.narrow) {
+    max-inline-size: 16rem;
+  }
+</style>

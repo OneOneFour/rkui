@@ -1,0 +1,22 @@
+---
+import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Tooltip from '@oneonefour/rkui/components/tooltip/Tooltip.astro'
+import CopyIcon from '@oneonefour/rkui/icons/copy.svg'
+---
+
+<div class="room-above">
+  <Tooltip id="tooltip-copy" text="Copy to the clipboard">
+    <Button hue="teal" aria-describedby="tooltip-copy">
+      <CopyIcon class="rkui-icon" />
+      <span class="rkui-visually-hidden">Copy</span>
+    </Button>
+  </Tooltip>
+</div>
+
+<style>
+  /* The bubble opens above its button, so leave room for it. */
+  .room-above {
+    padding-block-start: var(--rkui-space-7);
+    min-inline-size: 12rem;
+  }
+</style>

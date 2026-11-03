@@ -1,0 +1,22 @@
+---
+title: Loader
+description: A ball hopping along a line, a busy indicator.
+group: Loading
+order: 83
+---
+
+import Demo from '../../components/Demo.astro'
+import Colours from '../../examples/loader/colours.astro'
+import coloursCode from '../../examples/loader/colours.astro?raw'
+import Icons from '../../examples/loader/icons.astro'
+import iconsCode from '../../examples/loader/icons.astro?raw'
+
+<Demo code={coloursCode} label="Hop loaders" stack>
+  <Colours />
+</Demo>
+
+## With an icon
+
+<Demo code={iconsCode} label="Hop loaders with an icon" stack>
+  <Icons />
+</Demo>

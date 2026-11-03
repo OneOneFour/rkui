@@ -1,0 +1,12 @@
+dist/
+site/dist/
+.astro/
+node_modules/
+.claude/
+pptx/
+src/fonts/
+package-lock.json
+docs/**/*.md
+README.md
+THIRD_PARTY_NOTICES.md
+CLAUDE.md

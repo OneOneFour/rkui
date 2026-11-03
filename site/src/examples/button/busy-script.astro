@@ -1,0 +1,17 @@
+---
+import Button from '@oneonefour/rkui/components/button/Button.astro'
+---
+
+<Button water hue="teal" data-busy-toggle>
+  Save
+</Button>
+
+<script>
+  for (const button of document.querySelectorAll<HTMLElement>('[data-busy-toggle]')) {
+    button.addEventListener('click', () => {
+      const busy = button.getAttribute('aria-busy') === 'true'
+      button.setAttribute('aria-busy', String(!busy))
+      button.setAttribute('aria-disabled', String(!busy))
+    })
+  }
+</script>

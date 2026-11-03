@@ -1,0 +1,41 @@
+---
+import BackToTop from '@oneonefour/rkui/components/topbar/BackToTop.astro'
+import Button from '@oneonefour/rkui/components/button/Button.astro'
+import TopBar from '@oneonefour/rkui/components/topbar/TopBar.astro'
+---
+
+<div class="page">
+  <TopBar>
+    <Button>Button</Button>
+    <BackToTop />
+  </TopBar>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+</div>
+<div class="page">
+  <TopBar flush>
+    <Button>Button</Button>
+    <BackToTop />
+  </TopBar>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+</div>
+
+<style>
+  .page {
+    overflow: clip;
+    border: 1px solid var(--rkui-muted);
+    border-radius: var(--rkui-radius);
+  }
+
+  .page :global(.rkui-topbar) {
+    position: static;
+  }
+
+  .page :global(.rkui-topbar),
+  .page :global(.rkui-back-to-top) {
+    animation: none;
+  }
+
+  p {
+    margin: var(--rkui-space-4);
+  }
+</style>

@@ -1,0 +1,56 @@
+---
+title: Badge
+description: A small pill for a status or a count.
+group: Containers
+order: 71
+---
+
+import Demo from '../../components/Demo.astro'
+import Inline from '../../examples/badge/inline.astro'
+import inlineCode from '../../examples/badge/inline.astro?raw'
+import Tint from '../../examples/badge/tint.astro'
+import tintCode from '../../examples/badge/tint.astro?raw'
+import Icon from '../../examples/badge/icon.astro'
+import iconCode from '../../examples/badge/icon.astro?raw'
+import Corner from '../../examples/badge/corner.astro'
+import cornerCode from '../../examples/badge/corner.astro?raw'
+import Edges from '../../examples/badge/edges.astro'
+import edgesCode from '../../examples/badge/edges.astro?raw'
+import Dots from '../../examples/badge/dots.astro'
+import dotsCode from '../../examples/badge/dots.astro?raw'
+
+<Demo code={inlineCode} label="Solid badges in every hue">
+  <Inline />
+</Demo>
+
+## Tint
+
+<Demo code={tintCode} label="Tint badges in every hue">
+  <Tint />
+</Demo>
+
+## With an icon
+
+<Demo code={iconCode} label="Badges with an icon, in text" stack>
+  <Icon />
+</Demo>
+
+## On a corner
+
+`BadgeHost` wraps the picture and the badge. A `Button` can be its own host.
+
+<Demo code={cornerCode} label="Corner badges on a picture and a button">
+  <Corner />
+</Demo>
+
+## Corner edge
+
+<Demo code={edgesCode} label="Corner badge edges: outline, ring and sticker">
+  <Edges />
+</Demo>
+
+## Dots and long counts
+
+<Demo code={dotsCode} label="Status dots and a long count">
+  <Dots />
+</Demo>

@@ -1,0 +1,98 @@
+---
+/**
+ * Filter chips: multi-select and single-select groups, a group given another hue, and every state.
+ *
+ * @param theme the panel's theme, used to keep input names unique across the two panels
+ */
+import Chip from '@oneonefour/rkui/components/chip/Chip.astro'
+import ChipGroup from '@oneonefour/rkui/components/chip/ChipGroup.astro'
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+import FlaskIcon from '@oneonefour/rkui/icons/flask.svg'
+import CodeIcon from '@oneonefour/rkui/icons/code.svg'
+import WindIcon from '@oneonefour/rkui/icons/wind.svg'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const STATES = [
+  { label: 'hover', class: 'is-hover', checked: false },
+  { label: 'pressed', class: 'is-active', checked: true },
+  { label: 'focused', class: 'is-focus', checked: false },
+]
+---
+
+<SpecimenRow title="Groups">
+  <Specimen label="multi-select (checkboxes), default --rkui-section">
+    <ChipGroup legend="Specimen">
+      <Chip name={`${theme}-multi`} value="one" checked>
+        One
+      </Chip>
+      <Chip name={`${theme}-multi`} value="two">
+        Two
+      </Chip>
+      <Chip name={`${theme}-multi`} value="three" checked>
+        Three
+      </Chip>
+    </ChipGroup>
+  </Specimen>
+  <Specimen label="single select (radios), --rkui-section set to teal, with icons">
+    <ChipGroup
+      legend="Specimen"
+      style="--rkui-section: var(--rkui-teal); --rkui-on-section: var(--rkui-on-fill)"
+    >
+      <Chip type="radio" name={`${theme}-single`} value="one" checked>
+        <FlaskIcon class="rkui-icon rkui-icon--small" />
+        One
+      </Chip>
+      <Chip type="radio" name={`${theme}-single`} value="two">
+        <CodeIcon class="rkui-icon rkui-icon--small" />
+        Two
+      </Chip>
+      <Chip type="radio" name={`${theme}-single`} value="three">
+        <WindIcon class="rkui-icon rkui-icon--small" />
+        Three
+      </Chip>
+    </ChipGroup>
+  </Specimen>
+  <Specimen label="--rkui-section set to coral">
+    <ChipGroup
+      legend="Specimen"
+      style="--rkui-section: var(--rkui-coral-solid); --rkui-on-section: var(--rkui-on-coral)"
+    >
+      <Chip name={`${theme}-coral`} value="one" checked>
+        One
+      </Chip>
+      <Chip name={`${theme}-coral`} value="two">
+        Two
+      </Chip>
+    </ChipGroup>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="States">
+  <Specimen label="off">
+    <Chip name={`${theme}-off`} value="x">
+      Chip
+    </Chip>
+  </Specimen>
+  <Specimen label="on">
+    <Chip name={`${theme}-on`} value="x" checked>
+      Chip
+    </Chip>
+  </Specimen>
+  {STATES.map((state) => (
+    <Specimen label={state.label}>
+      <Chip name={`${theme}-${state.label}`} value="x" checked={state.checked} class={state.class}>
+        Chip
+      </Chip>
+    </Specimen>
+  ))}
+  <Specimen label="disabled">
+    <Chip name={`${theme}-disabled`} value="x" disabled>
+      Chip
+    </Chip>
+  </Specimen>
+</SpecimenRow>

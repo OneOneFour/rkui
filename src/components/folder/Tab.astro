@@ -1,0 +1,24 @@
+---
+/**
+ * One tab of a `Tabs` or a `Folder`, directly inside it. In Tabs the slot is the tab's panel; in a
+ * Folder a tab has no slot. The group builds the tab and its panel from what this hands it (see
+ * tab-items.ts).
+ *
+ * @example
+ * <Tab label="Two" selected><p>Panel two.</p></Tab>
+ */
+import { tabData } from './tab-items'
+
+interface Props {
+  /** The tab's text. */
+  label: string
+  /** The tab that starts selected; the group's first tab when none is. */
+  selected?: boolean
+}
+
+const { label, selected = false } = Astro.props
+---
+
+<rkui-tab-item data-tab={tabData(label, selected)}>
+  <slot />
+</rkui-tab-item>

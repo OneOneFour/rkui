@@ -1,0 +1,129 @@
+---
+/**
+ * The range slider with an output readout, in every state, and the tick mark variants.
+ *
+ * @param theme the panel's theme, used to keep ids unique across the two panels
+ */
+import Specimen from './Specimen.astro'
+import SpecimenRow from './SpecimenRow.astro'
+
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
+const id = `${theme}-range`
+const STATES = [
+  { label: 'rest', class: '' },
+  { label: 'hover', class: 'is-hover' },
+  { label: 'pressed', class: 'is-active' },
+  { label: 'focused', class: 'is-focus' },
+]
+const TICKS = [0, 25, 50, 75, 100]
+const TICK_STATES = [
+  { label: 'rest', class: '' },
+  { label: 'focused', class: 'is-focus' },
+  { label: 'disabled', class: '', disabled: true },
+]
+---
+
+<SpecimenRow title="With readout">
+  <Specimen label="live: the inline oninput updates the output" wide>
+    <form
+      class="rkui-field"
+      oninput={`this.elements['${id}-out'].value = this.elements['${id}'].value`}
+    >
+      <label for={id}>Label</label>
+      <div class="rkui-range-row">
+        <input
+          class="rkui-range"
+          type="range"
+          id={id}
+          name={id}
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.28"
+        />
+        <output class="rkui-output" name={`${id}-out`} for={id}>
+          0.28
+        </output>
+      </div>
+    </form>
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="States">
+  {STATES.map((state) => (
+    <Specimen label={state.label} wide>
+      <input class:list={['rkui-range', state.class]} type="range" aria-label="Specimen" />
+    </Specimen>
+  ))}
+  <Specimen label="disabled" wide>
+    <input class="rkui-range" type="range" aria-label="Specimen" disabled />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Ticks A: native (.rkui-range-native)">
+  <Specimen label="rest (drawn by the browser, where it supports them)" wide>
+    <input
+      class="rkui-range-native"
+      type="range"
+      list={`${theme}-ticks-a`}
+      step="25"
+      aria-label="Specimen"
+    />
+    <datalist id={`${theme}-ticks-a`}>
+      {TICKS.map((tick) => (
+        <option value={tick} />
+      ))}
+    </datalist>
+  </Specimen>
+  <Specimen label="disabled" wide>
+    <input
+      class="rkui-range-native"
+      type="range"
+      list={`${theme}-ticks-a`}
+      step="25"
+      aria-label="Specimen"
+      disabled
+    />
+  </Specimen>
+</SpecimenRow>
+
+<SpecimenRow title="Ticks B: tick row with labels (.rkui-range-scale)">
+  {TICK_STATES.map((state, index) => (
+    <Specimen label={state.label} wide>
+      <div class="rkui-field">
+        <input
+          class:list={['rkui-range', state.class]}
+          type="range"
+          list={`${theme}-ticks-b-${index}`}
+          step="25"
+          aria-label="Specimen"
+          disabled={state.disabled}
+        />
+        <datalist class="rkui-range-scale" id={`${theme}-ticks-b-${index}`}>
+          {TICKS.map((tick) => (
+            <option value={tick}>{tick}</option>
+          ))}
+        </datalist>
+      </div>
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<SpecimenRow title="Ticks C: dots on the track (.rkui-range--dots)">
+  {TICK_STATES.map((state) => (
+    <Specimen label={state.label} wide>
+      <input
+        class:list={['rkui-range rkui-range--dots', state.class]}
+        type="range"
+        step="25"
+        style={`--rkui-ticks: ${TICKS.length}`}
+        aria-label="Specimen"
+        disabled={state.disabled}
+      />
+    </Specimen>
+  ))}
+</SpecimenRow>

@@ -1,0 +1,38 @@
+---
+title: Folder
+description: Tabs standing on a sheet, like a folder's index tabs.
+group: Containers
+order: 74
+---
+
+import Demo from '../../components/Demo.astro'
+import Default from '../../examples/folder/default.astro'
+import defaultCode from '../../examples/folder/default.astro?raw'
+import Tinted from '../../examples/folder/tinted.astro'
+import tintedCode from '../../examples/folder/tinted.astro?raw'
+import Narrow from '../../examples/folder/narrow.astro'
+import narrowCode from '../../examples/folder/narrow.astro?raw'
+
+Each `Tab` is one tab, and the rest of the slot is the sheet. Mark the tab that's showing
+`selected`; the first is when none is. For tabs that switch panels, see Tabs.
+
+<Demo code={defaultCode} label="Folder" stack>
+  <Default />
+</Demo>
+
+## Tinted
+
+Add `tinted` for a sheet in the selected tint.
+
+<Demo code={tintedCode} label="Tinted folder" stack>
+  <Tinted />
+</Demo>
+
+## Narrow
+
+When the tabs don't fit, the strip scrolls. Its scrollbar sits above the tabs, where a normal one
+would come between the tabs and the sheet.
+
+<Demo code={narrowCode} label="Narrow folder" stack>
+  <Narrow />
+</Demo>

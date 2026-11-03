@@ -1,0 +1,65 @@
+/* Filter chips: pill labels around a native checkbox (multi-select) or radio (single select),
+   with an optional .rkui-icon before the text. Checked chips, and their icons' fills, take
+   --rkui-section, with --rkui-on-section text; set those on the chip or its group to pass in
+   another hue. A chip can also be a link (<a class="rkui-chip">), with aria-current="page" filling
+   it like a checked one.
+
+   <fieldset class="rkui-chip-group">
+     <legend class="rkui-visually-hidden">Topic</legend>
+     <label class="rkui-chip"><input type="checkbox" name="topic" value="a"> Label</label>
+     …
+   </fieldset> */
+
+.rkui-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rkui-space-3);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rkui-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rkui-space-1);
+  padding: var(--rkui-space-1) var(--rkui-space-3);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.rkui-chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rkui-chip .rkui-icon {
+  color: inherit;
+}
+
+.rkui-chip:is(:has(:checked), [aria-current='page']) {
+  --rkui-icon-fill: var(--rkui-section);
+
+  border-color: var(--rkui-line);
+  background: var(--rkui-section);
+  color: var(--rkui-on-section);
+}
+
+/* Forced colours drop the checked fill, so the checked chip uses system colours. Without
+   forced-color-adjust, the browser puts a Canvas backplate behind the HighlightText label. */
+@media (forced-colors: active) {
+  .rkui-chip:is(:has(:checked), [aria-current='page']) {
+    forced-color-adjust: none;
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

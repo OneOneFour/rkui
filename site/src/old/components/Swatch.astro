@@ -1,0 +1,80 @@
+---
+import { swatchPairs } from './color-tokens'
+
+/**
+ * One colour token: a sample of each pair it is used in, its hex and the contrast of each pair.
+ * The theme is the panel it sits in; the hex and ratios are read from the browser (show-colors.js).
+ *
+ * @param name the token, e.g. `--rkui-teal`
+ */
+interface Props {
+  name: string
+}
+
+const { name } = Astro.props
+const pairs = swatchPairs(name)
+// The token is the sample's background in the first pair if it is that pair's bg, else its text.
+const hexOf = pairs[0]?.bg === name ? 'hex-background' : 'hex-color'
+---
+
+<figure class="swatch" data-readout>
+  <div class="samples">
+    {pairs.map((pair, i) => (
+      <span
+        class="sample"
+        data-sample={i}
+        style={`background: var(${pair.bg}); color: var(${pair.fg})`}
+      >
+        Aa
+      </span>
+    ))}
+  </div>
+  <figcaption>
+    <strong>{name}</strong>
+    <output data-show={hexOf} data-of="0"></output>
+    {pairs.map((pair, i) => (
+      <span>
+        {pair.fg === name ? `on ${pair.bg}` : pair.fg} <output data-show="ratio" data-of={i} />
+      </span>
+    ))}
+  </figcaption>
+</figure>
+
+<script>
+  import './show-colors'
+</script>
+
+<style>
+  .swatch {
+    display: grid;
+    align-content: start;
+    gap: var(--rkui-space-2);
+    margin: 0;
+  }
+
+  .samples {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border: 1px solid var(--rkui-muted);
+    border-radius: var(--rkui-radius);
+  }
+
+  .sample {
+    display: grid;
+    flex: 1 1 3rem;
+    place-items: center;
+    min-height: 4rem;
+    font-family: var(--rkui-font-display);
+    font-size: var(--rkui-step-2);
+    font-weight: 800;
+  }
+
+  figcaption {
+    display: grid;
+    font-size: var(--rkui-step--1);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--rkui-line-height-heading);
+    gap: var(--rkui-space-1);
+  }
+</style>

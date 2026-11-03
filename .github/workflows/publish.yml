@@ -1,0 +1,30 @@
+# Publishes the package to npm when a version tag (e.g. v0.1.0) is pushed. `npm publish` runs
+# `prepack`, which builds dist/ here on the runner; nothing built is committed.
+#
+# Uses npm trusted publishing: no token is stored. Set it up once on npmjs.com (the package's
+# Settings → Trusted publishing → GitHub Actions, repository OneOneFour/rkui, workflow
+# publish.yml). Trusted publishing is configured on npmjs.com for an existing package, so the very
+# first release may need a one-off manual `npm publish` (or npm's staged publish) before this
+# workflow can take over.
+name: Publish to npm
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm publish --access public

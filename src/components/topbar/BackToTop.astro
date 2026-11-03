@@ -1,0 +1,16 @@
+---
+/**
+ * The back-to-top link: an icon `Button` for the end of a `TopBar`, with a visually hidden label.
+ * It takes no props.
+ *
+ * @example
+ * <TopBar><BackToTop /></TopBar>
+ */
+import ArrowUp from '@oneonefour/rkui/icons/arrow-up.svg'
+import Button from '../button/Button.astro'
+---
+
+<Button href="#top" class="rkui-back-to-top">
+  <ArrowUp class="rkui-icon" aria-hidden="true" />
+  <span class="rkui-visually-hidden">Back to top</span>
+</Button>

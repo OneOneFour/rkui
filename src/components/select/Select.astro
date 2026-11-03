@@ -1,0 +1,76 @@
+---
+/**
+ * A select: a native `<select>` in the `.rkui-select` frame, with `<option>`s in the slot, inside a
+ * Field. `class` and `style` go on the Field's div when there is a label, hint or error, otherwise
+ * on the select; other attributes (name, required, disabled, ...) go on the select. Without a
+ * label, give it an `aria-label`.
+ *
+ * With `picker` the open list is a raised panel in the toon look, where the browser supports it,
+ * and options can hold icons (`<Icon class="rkui-icon rkui-icon--small" aria-hidden="true" />`
+ * before the text). Add `showSelected` to show the chosen option's icon in the closed select too.
+ *
+ * @example
+ *   <Select label="Size" name="size">
+ *     <option>Small</option>
+ *     <option>Large</option>
+ *   </Select>
+ */
+import type { HTMLAttributes } from 'astro/types'
+import Field from '../field/Field.astro'
+import { fieldAttrs } from '../../shared/field-attrs'
+import { uniqueId } from '../../shared/unique-id'
+
+interface Props extends HTMLAttributes<'select'> {
+  /** The visible label; none when left out. */
+  label?: string
+  /** A quiet line under the select; none when left out. */
+  hint?: string
+  /** An error line under the select; it also marks the select invalid. */
+  error?: string
+  /** The hover cue: 'ring', 'underline' or 'none'; the background sinks to the page colour when
+   * left out. */
+  hover?: 'ring' | 'underline' | 'none'
+  /** Use the custom open list; the browser's own list when left out. */
+  picker?: boolean
+  /** With `picker`, show the checked option tinted instead of filled; filled when left out. Open,
+   * see DECISIONS ("Custom select list"). */
+  tint?: boolean
+  /** With `picker`, show the chosen option's content in the closed select; off when left out. */
+  showSelected?: boolean
+}
+
+const {
+  label,
+  hint,
+  error,
+  hover,
+  picker = false,
+  tint = false,
+  showSelected = false,
+  class: className,
+  style,
+  ...attrs
+} = Astro.props
+
+const framed = Boolean(label || hint || error)
+const id = attrs.id ?? uniqueId('rkui-select')
+const selectAttrs = framed ? fieldAttrs(id, { hint, error }, attrs) : attrs
+const selectClass = [
+  'rkui-select',
+  picker && 'rkui-select--picker',
+  picker && tint && 'rkui-select--tint',
+  hover && `rkui-hover-${hover}`,
+  !framed && className,
+]
+---
+
+<Field {label} for={id} {hint} {error} class={className} {style}>
+  <select class:list={selectClass} style={framed ? undefined : style} {...selectAttrs}>
+    {picker && showSelected && (
+      <button>
+        <selectedcontent />
+      </button>
+    )}
+    <slot />
+  </select>
+</Field>

@@ -1,0 +1,178 @@
+/* Diagrams: nodes and links in inline SVG, in the toon look. Nodes are flat fills with the ink
+   outline, on the hard shadow; links are lines in the outline colour. Set --rkui-node-fill on a
+   node to a fill that carries ink labels (teal, yellow, green, sky, lilac, tangerine or apricot).
+
+   <svg class="rkui-diagram" viewBox="…" role="img" aria-labelledby="…">
+     <path class="rkui-diagram-edge" d="…" />                 a link; --quiet for a thin muted one
+     <g class="rkui-diagram-pulse">                           a dot that can travel along a link
+       <path class="rkui-diagram-pulse-casing" pathLength="1" d="…" />
+       <path class="rkui-diagram-pulse-dot" pathLength="1" d="…" />
+     </g>
+     <g class="rkui-diagram-node" style="--rkui-node-fill: var(--rkui-sky)">
+       <rect class="rkui-diagram-focus" … />                  the focus band, on nodes with tabindex
+       <rect class="rkui-diagram-shape" … />
+       <circle class="rkui-diagram-glint" r="3" … />          optional highlight on the light's side
+       <text class="rkui-diagram-label" …>Label</text>
+     </g>
+     <text class="rkui-diagram-note" …>yes</text>             a small note beside a link
+   </svg>
+
+   A pulse is hidden at rest. Animate stroke-dashoffset on it from 0 (at the start of its path) to
+   -1 (at the end) to move it along.
+   In <rkui-diagram> (diagram.js), hovering or focusing a node (data-node="id") lights the links
+   whose data-from or data-to is its id, and dims the rest.
+   Styleguide only for now, like the charts. */
+
+rkui-diagram,
+.rkui-diagram {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+  overflow: visible;
+  color: var(--rkui-fg);
+  font-family: var(--rkui-font-body);
+  font-size: var(--rkui-step--1);
+}
+
+.rkui-diagram-edge {
+  fill: none;
+  stroke: var(--rkui-line-unfilled);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  transition:
+    stroke var(--rkui-duration-fast) ease,
+    stroke-width var(--rkui-duration-fast) ease;
+}
+
+.rkui-diagram-edge--quiet {
+  stroke: var(--rkui-muted);
+  stroke-width: 1.5;
+}
+
+.rkui-diagram-arrowhead {
+  fill: var(--rkui-line-unfilled);
+}
+
+/* A dash of almost no length with round caps is a dot. Its pattern repeats every two path
+   lengths, so only one dot is ever on the path; the resting offset puts it off both ends. */
+.rkui-diagram-pulse {
+  fill: none;
+  stroke-dasharray: 0.001 2;
+  stroke-dashoffset: 0.5;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.rkui-diagram-pulse-casing {
+  stroke: var(--rkui-line);
+  stroke-width: 10;
+}
+
+.rkui-diagram-pulse-dot {
+  stroke: var(--rkui-pulse-fill, var(--rkui-selected));
+  stroke-width: 6;
+}
+
+/* As in tooltip.css, the second drop-shadow is the shadow's light edge in dark mode. */
+.rkui-diagram-node {
+  --rkui-node-fill: var(--rkui-raised);
+
+  filter: drop-shadow(
+      var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0 var(--rkui-shadow-color)
+    )
+    drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-outline-width))
+        calc(var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0 var(--rkui-shadow-edge)
+    );
+}
+
+.rkui-diagram-shape {
+  fill: var(--rkui-node-fill);
+  stroke: var(--rkui-line);
+  stroke-width: var(--rkui-outline-width);
+}
+
+.rkui-diagram-glint {
+  fill: var(--rkui-glint);
+  translate: calc(var(--rkui-shadow-dx) * -5px) calc(var(--rkui-shadow-dy) * -5px);
+}
+
+.rkui-diagram-label {
+  fill: var(--rkui-on-fill);
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.rkui-diagram-note {
+  fill: var(--rkui-muted);
+  font-style: italic;
+}
+
+/* The band is a copy of the shape under it, with a stroke wide enough to show --rkui-focus-width of
+   it outside the ink outline. As elsewhere, the shadow goes while focused. */
+.rkui-diagram-focus {
+  display: none;
+  fill: none;
+  stroke: var(--rkui-focus);
+  stroke-width: calc(var(--rkui-outline-width) + 2 * var(--rkui-focus-width));
+}
+
+.rkui-diagram-node:focus-visible {
+  outline: none;
+  filter: none;
+}
+
+.rkui-diagram-node:focus-visible .rkui-diagram-focus {
+  display: inline;
+}
+
+rkui-diagram :is([data-from], [data-to]) {
+  transition: opacity var(--rkui-duration-fast) ease;
+}
+
+rkui-diagram[data-highlight] :is([data-from], [data-to]):not([data-lit]) {
+  opacity: 0.2;
+}
+
+rkui-diagram[data-highlight] [data-lit] .rkui-diagram-edge {
+  stroke: var(--rkui-fg);
+  stroke-width: 3;
+}
+
+/* Forced colours: system colours throughout, with the moving and lit parts in Highlight. */
+@media (forced-colors: active) {
+  .rkui-diagram {
+    forced-color-adjust: none;
+  }
+
+  .rkui-diagram-node {
+    filter: none;
+  }
+
+  .rkui-diagram-shape {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+
+  .rkui-diagram-label,
+  .rkui-diagram-note,
+  .rkui-diagram-arrowhead {
+    fill: CanvasText;
+  }
+
+  .rkui-diagram-edge,
+  .rkui-diagram-pulse-casing {
+    stroke: CanvasText;
+  }
+
+  .rkui-diagram-pulse-dot,
+  .rkui-diagram-focus,
+  rkui-diagram[data-highlight] [data-lit] .rkui-diagram-edge {
+    stroke: Highlight;
+  }
+
+  .rkui-diagram-glint {
+    display: none;
+  }
+}

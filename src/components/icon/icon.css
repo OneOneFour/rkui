@@ -1,0 +1,20 @@
+/* Inline SVG icons from icons/. --rkui-icon-stroke is in the icons' 256-unit viewBox, so 21 is
+   about 2px at 24px. --rkui-icon-fill inherits: set it on the icon or any container. When nothing
+   sets it, each icon uses its own default fill, written into the SVG. The globes' ocean has its own
+   hook, --rkui-icon-ocean. */
+
+.rkui-icon {
+  --rkui-icon-stroke: 21;
+
+  flex: none;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  color: var(--rkui-fg);
+}
+
+.rkui-icon--small {
+  --rkui-icon-stroke: 24;
+
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+}

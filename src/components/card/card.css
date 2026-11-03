@@ -1,0 +1,76 @@
+/* Cards: a raised panel with optional image, title, meta and body. .rkui-card alone is static.
+   .rkui-card--link makes the whole card one link: its title link stretches over the card, so there
+   is a single tab stop and the link text is the card's accessible name.
+
+   <article class="rkui-card rkui-card--link">
+     <img class="rkui-card-image" src="…" alt="">
+     <div class="rkui-card-body">
+       <h3 class="rkui-card-title"><a class="rkui-card-link" href="…">Title</a></h3>
+       <p class="rkui-card-meta">Meta</p>
+       <p>Body</p>
+     </div>
+   </article> */
+
+.rkui-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+}
+
+.rkui-card-image {
+  inline-size: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.rkui-card-body {
+  display: grid;
+  gap: var(--rkui-space-2);
+  padding: var(--rkui-space-4);
+}
+
+.rkui-card-body > * {
+  margin: 0;
+}
+
+.rkui-card-title {
+  font-size: var(--rkui-step-1);
+}
+
+.rkui-card-meta {
+  color: var(--rkui-muted);
+  font-size: var(--rkui-step--1);
+}
+
+.rkui-card--link {
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+}
+
+.rkui-card--link .rkui-card-image {
+  border-block-end: var(--rkui-outline-width) solid var(--rkui-line);
+}
+
+.rkui-card-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.rkui-card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.rkui-card--link:hover .rkui-card-link {
+  text-decoration: underline;
+}
+
+/* The card shows the focus band, so the link drops its own marker-pen focus. */
+.rkui-card-link:focus-visible {
+  background: none;
+  color: inherit;
+}
