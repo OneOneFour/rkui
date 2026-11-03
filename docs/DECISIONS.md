@@ -56,6 +56,8 @@ second look it went gentler again, to the current curve (DESIGN §5).
   removed.
 - Loader: the hopping ball stays; the others were removed.
 - Progress: striped by default.
+- Range ticks: B, the datalist tick row with labels. A (the browser's own ticks) and C (dots on
+  the track) were removed.
 - Water and pending: the filling panel stays; the slosh was removed.
 
 **Illustration style.** From a flat cartoon locomotive Rob shared as a reference (not copied). Rob
@@ -169,8 +171,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Custom select list, checked option: A filled, or B tinted (`--tint`). ("Custom select list")
 - [ ] File input: A framed button and filename, or B drop panel. ("Special inputs")
 - [ ] Search: A icon inside, or B attached button. ("Special inputs")
-- [ ] Range ticks: A native, B datalist tick row with labels, or C dots on the track. ("Range
-  slider")
 - [ ] Dial: A knob, or B arc. ("Dial")
 - [ ] Dial ramp: blocks lit up to the value (as built), or all lit. ("Dial")
 - [ ] Clock: the hour hand stays longer than the minute hand (as built), or not. ("Clock")

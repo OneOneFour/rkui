@@ -427,7 +427,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Select | `.rkui-select`; list `.rkui-select--picker` (`--tint`) | picker opt-in, needs `appearance: base-select`; checked option open |
 | Checkbox, radio, switch | `.rkui-checkbox`, `.rkui-radio`, `.rkui-switch` | |
 | Range | `.rkui-range`, `.rkui-output` | |
-| Range ticks | A `.rkui-range-native`, B `.rkui-range-scale`, C `.rkui-range--dots` | open |
+| Range ticks | `.rkui-range-scale` (`ticks`) | |
 | Segmented | `.rkui-segmented`; `--deck`, `--plate` | deck keys opt-in; pill or deck open |
 | Tiles | `.rkui-tiles`, `.rkui-tile` (`--compact`, `--vertical`) | |
 | Colour picker | `.rkui-tile--color`, `--custom-color`, `.rkui-color-input`, `<rkui-color-picker>` | flair open (none, A `--brush`, B `--drops`, C `--stroke`) |

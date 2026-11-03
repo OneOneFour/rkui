@@ -1,30 +1,11 @@
-/* Range sliders with tick marks, in three variants (A, B, C). Match the ticks to min, max and
-   step so the thumb lands on them.
+/* Range ticks: the slider's datalist shown as a row of tick marks and value labels under an
+   .rkui-range. Browsers draw their own datalist ticks only on an unstyled slider, so the row is
+   drawn here. Match the ticks to min, max and step so the thumb lands on them.
 
-   Ticks A: the browser's own slider and ticks. Browsers draw datalist ticks only on an unstyled
-   slider, so this one has no toon thumb, and not every browser draws them.
-   <input class="rkui-range-native" type="range" list="ticks">
-   <datalist id="ticks"><option value="0"></option>…</datalist>
-
-   Ticks B: the datalist shown as a row of ticks and value labels under an .rkui-range.
    <div class="rkui-field">
      <input class="rkui-range" type="range" list="ticks">
      <datalist class="rkui-range-scale" id="ticks"><option value="0">0</option>…</datalist>
-   </div>
-
-   Ticks C: dots on the track itself. Set --rkui-ticks to the number of positions.
-   <input class="rkui-range rkui-range--dots" type="range" style="--rkui-ticks: 5"> */
-
-/* Ticks A */
-
-.rkui-range-native {
-  inline-size: 100%;
-  margin: 0;
-  accent-color: var(--rkui-fg);
-  cursor: pointer;
-}
-
-/* Ticks B */
+   </div> */
 
 .rkui-range-scale {
   display: flex;
@@ -46,40 +27,4 @@
   font-size: var(--rkui-step--1);
   font-variant-numeric: tabular-nums;
   text-align: center;
-}
-
-/* Ticks C */
-
-/* Each tile has a half dot at both edges, so a dot sits on every tile boundary. The tiles start
-   at the thumb's first stop and are one step wide. */
-.rkui-range--dots {
-  --rkui-dot-radius: 3px;
-  --rkui-dot-edge: calc(var(--rkui-dot-radius) + 0.5px);
-  --rkui-dots:
-    radial-gradient(
-      circle at 0 50%,
-      var(--rkui-fg) var(--rkui-dot-radius),
-      transparent var(--rkui-dot-edge)
-    ),
-    radial-gradient(
-      circle at 100% 50%,
-      var(--rkui-fg) var(--rkui-dot-radius),
-      transparent var(--rkui-dot-edge)
-    );
-  --rkui-dots-size: calc((100% - var(--rkui-thumb-size)) / (var(--rkui-ticks) - 1)) 100%;
-  --rkui-dots-position: calc(var(--rkui-thumb-size) / 2) center;
-}
-
-.rkui-range--dots::-webkit-slider-runnable-track {
-  background-image: var(--rkui-dots);
-  background-size: var(--rkui-dots-size);
-  background-position: var(--rkui-dots-position);
-  background-repeat: repeat-x;
-}
-
-.rkui-range--dots::-moz-range-track {
-  background-image: var(--rkui-dots);
-  background-size: var(--rkui-dots-size);
-  background-position: var(--rkui-dots-position);
-  background-repeat: repeat-x;
 }

@@ -12,12 +12,8 @@ import Readout from '../../examples/range/readout.astro'
 import readoutCode from '../../examples/range/readout.astro?raw'
 import Disabled from '../../examples/range/disabled.astro'
 import disabledCode from '../../examples/range/disabled.astro?raw'
-import TicksNative from '../../examples/range/ticks-native.astro'
-import ticksNativeCode from '../../examples/range/ticks-native.astro?raw'
-import TicksScale from '../../examples/range/ticks-scale.astro'
-import ticksScaleCode from '../../examples/range/ticks-scale.astro?raw'
-import TicksDots from '../../examples/range/ticks-dots.astro'
-import ticksDotsCode from '../../examples/range/ticks-dots.astro?raw'
+import Ticks from '../../examples/range/ticks.astro'
+import ticksCode from '../../examples/range/ticks.astro?raw'
 
 <Demo code={defaultCode} label="Default range">
   <Default />
@@ -35,26 +31,10 @@ import ticksDotsCode from '../../examples/range/ticks-dots.astro?raw'
   <Disabled />
 </Demo>
 
-## Ticks A: native
+## Ticks
 
-Open, see DECISIONS. The browser draws the ticks, where it supports them.
+`ticks` lists the values to mark, as a row of ticks and labels under the slider.
 
-<Demo code={ticksNativeCode} label="Range with native ticks">
-  <TicksNative />
-</Demo>
-
-## Ticks B: tick row with labels
-
-Open, see DECISIONS.
-
-<Demo code={ticksScaleCode} label="Range with a tick row" stack>
-  <TicksScale />
-</Demo>
-
-## Ticks C: dots on the track
-
-Open, see DECISIONS.
-
-<Demo code={ticksDotsCode} label="Range with dots on the track">
-  <TicksDots />
+<Demo code={ticksCode} label="Range with ticks" stack>
+  <Ticks />
 </Demo>
