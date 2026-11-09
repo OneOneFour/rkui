@@ -138,11 +138,12 @@ const CONTENTS = [
       <p>The light turns every shadow and pop on the page.</p>
       <LightDirection />
       <p>
-        Dark mode has four shadow modes, set by data-shadow on &lt;html&gt; or any container: the
-        slab by default, "color", where each fill casts its own shade, "block", the slab without its
-        light rim, where things with no fill take the near-black outline too, and "block-color", the
-        colour mode's shadows with block's near-black outlines. The switch at the top sets it for
-        the whole page, so every component can be seen in each. Light mode is the same in all four.
+        Dark mode has two settings, each set on &lt;html&gt; or any container. data-shadow is the
+        shadow: "outline" by default, the near-black shadow on a rim; "block", with no rim; or
+        "color", where each fill casts its own shade. data-highlight is the colour of the rim and of
+        the outlines on things with no fill: "cream" by default, or "dark", near-black. The switches
+        at the top set them for the whole page, so every component can be seen in each. Light mode
+        is the same in all of them.
       </p>
       <p>
         With data-depth="deep" on &lt;html&gt;, any container or one element, its shadows, insets
@@ -427,7 +428,7 @@ const CONTENTS = [
       <p>
         Illustrations made only of flat toon shapes, whose assemblies come apart on hover or focus.
         Each part says how far it moves and how many layers from the back it is. Try the light, the
-        palettes and the shadow modes.
+        palettes, the shadows and the highlights.
       </p>
       <OpenDecision>
         The train without a sticker (A) or with the single-outline sticker demo (B,

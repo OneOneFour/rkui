@@ -151,7 +151,7 @@
 
 /* The shadow is half the resting offset for each layer the part has risen, so a flat drawing has
    none. It reads --rkui-shadow-color and --rkui-shadow-edge, so it follows the dark-mode shadow
-   modes, and --rkui-extrusion colours it in the colour mode. As in tooltip.css, the second
+   and highlight, and --rkui-extrusion colours it with the colour shadow. As in tooltip.css, the second
    drop-shadow is the shadow's light edge in dark mode. */
 .rkui-explode-part {
   --rkui-part-shadow: calc(var(--rkui-lift) * var(--rkui-shadow-offset) / 2);
@@ -257,7 +257,7 @@
 
 /* The sticker look, a demo: the whole drawing is one die-cut sticker, a band of glint round every
    part's resting shape with a thin edge round that, and the sticker casts the resting shadow in
-   place of the assemblies (coloured from glint in the colour mode, via --rkui-extrusion). Every
+   place of the assemblies (coloured from glint with the colour shadow, via --rkui-extrusion). Every
    shape is stroked twice: wide in the edge colour, then narrower in glint on top, so the strokes
    merge and only the outer edge shows. The sticker stays put while the parts come apart: the rest
    of the drawing still sits on it, and it marks where each part goes home. */

@@ -21,12 +21,13 @@ const { title } = Astro.props
     <meta charset="utf-8" />
     <script is:inline set:html={themeInit} />
     <script is:inline>
-      // Inline, like the theme, so a stored palette or shadow mode doesn't flash the default first.
+      // Inline, like the theme, so a stored palette, shadow or highlight doesn't flash the default
+      // first.
       try {
-        const palette = localStorage.getItem('rkui-palette')
-        if (palette) document.documentElement.dataset.palette = palette
-        const shadow = localStorage.getItem('rkui-shadow')
-        if (shadow) document.documentElement.dataset.shadow = shadow
+        for (const name of ['palette', 'shadow', 'highlight']) {
+          const value = localStorage.getItem(`rkui-${name}`)
+          if (value) document.documentElement.dataset[name] = value
+        }
       } catch {
         // Storage is blocked, so the page keeps the defaults.
       }

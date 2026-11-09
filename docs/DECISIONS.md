@@ -12,6 +12,16 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-08
 
+**Shadow and highlight, two settings** (Rob). The four dark-mode shadow modes become two settings
+that work on their own. Shadow (`data-shadow`) is `outline` (the default, the near-black shadow on
+a rim), `block` (no rim) or `color` (each fill casts its own shade). Highlight (`data-highlight`)
+is `cream` (the default) or `dark`: the colour of the rim and of the outlines on things with no
+fill. The old modes map across: slab is outline and cream, color is color and cream, block is
+block and dark, and block-color, the mode to try, is color and dark. Block with cream and outline
+with dark are new; outline with dark draws a near-black rim, which looks like block. `slab` and
+`block-color` are gone. The docs site's settings drawer under the top bar holds both, with the
+palette.
+
 **Tooltip** (Rob). The toon bubble, raised with the outline and hard shadow, is the default;
 `variant="flat"` gives the bubble in the page's colours swapped.
 
@@ -268,9 +278,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
   1.21em (KaTeX's default). ("Maths in text")
 - [ ] Number stepper: split, or stacked. No pick recorded; both may stay as opt-ins.
 - [ ] Segmented control: pill, or deck. No pick recorded; both may stay as opt-ins.
-- [ ] Block colour shadow mode (`data-shadow="block-color"`, Rob's, to try): the colour mode's
-  shadows with block's near-black outlines instead of cream; stays, or goes. ("Shape, shadow and
-  depth" in the old styleguide, or the header switch)
 
 **Docs site only**
 - [ ] Heatmap layout: A side by side with ink gutters, or B tiles. ("Charts")

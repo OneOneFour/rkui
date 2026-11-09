@@ -1,8 +1,8 @@
 ---
 /**
- * The four dark-mode shadow modes, the default slab, color, block and block-color, each on a few
- * raised things: fills that cast their own shade in color and block-color, and things that cast the
- * lit shadow instead.
+ * The dark-mode shadows (outline, the default, block and color) with each highlight (cream, the
+ * default, and dark), each on a few raised things: fills that cast their own shade in color, and
+ * things that cast the lit shadow instead.
  *
  * @param theme the panel's theme, used to keep ids and names unique across the two panels
  */
@@ -20,12 +20,13 @@ interface Props {
 }
 
 const { theme } = Astro.props
-const MODES = [
-  { mode: 'slab', title: 'data-shadow="slab" (the default)' },
-  { mode: 'color', title: 'data-shadow="color"' },
-  { mode: 'block', title: 'data-shadow="block"' },
-  { mode: 'block-color', title: 'data-shadow="block-color"' },
-]
+const MODES = ['outline', 'block', 'color'].flatMap((shadow) =>
+  ['cream', 'dark'].map((highlight) => ({
+    shadow,
+    highlight,
+    title: `data-shadow="${shadow}" data-highlight="${highlight}"`,
+  })),
+)
 const FILLS = ['navy', 'coral', 'grape', 'teal'] as const
 const KEYS = ['One', 'Two', 'Three']
 const TILES = ['1', '2', '3'].map((number) => ({ value: number, label: number }))
@@ -37,10 +38,10 @@ const BALLOT = ['teal', 'green'].map((color) => ({
 }))
 ---
 
-{MODES.map(({ mode, title }) => {
-  const prefix = `${theme}-shadow-${mode}`
+{MODES.map(({ shadow, highlight, title }) => {
+  const prefix = `${theme}-shadow-${shadow}-${highlight}`
   return (
-    <div data-shadow={mode}>
+    <div data-shadow={shadow} data-highlight={highlight}>
       <SpecimenRow title={title}>
         <Specimen label="buttons: yellow, navy, coral, grape, teal">
           <Button>Button</Button>

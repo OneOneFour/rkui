@@ -79,7 +79,7 @@ function hueRow(hue: string): SummaryRow {
   const variants = HUE_SHADES.filter((suffix) => tokenNames.has(`${name}${suffix}`)).map((suffix) =>
     color(`${name}${suffix}`, { label: suffix }),
   )
-  // Navy casts --rkui-shadow-lit in the color shadow mode, so it has no shade.
+  // Navy casts --rkui-shadow-lit with the colour shadow, so it has no shade.
   const shade =
     hue === 'navy' ? [] : [color('--rkui-shade', { inputs: { '--rkui-shade-of': name } })]
   return {
@@ -124,7 +124,7 @@ export const SUMMARY: SummaryGroup[] = [
   {
     title: 'Hues',
     caption:
-      '-deep is for text on the page, -tint for panels, and --rkui-shade (75% fill, 25% --rkui-line) for the colour shadow mode and the sticky-note fold.',
+      '-deep is for text on the page, -tint for panels, and --rkui-shade (75% fill, 25% --rkui-line) for the colour shadow and the sticky-note fold.',
     rows: HUES.map(hueRow),
   },
   {
@@ -139,7 +139,7 @@ export const SUMMARY: SummaryGroup[] = [
   {
     title: 'Shading',
     caption:
-      "Hard shadows: the slab's colour and rim, and the colour mode's shadow for things without a fill. Hatching stripes and tape are translucent.",
+      "Hard shadows: the outline shadow's colour and rim, and the colour shadow's shadow for things without a fill. Hatching stripes and tape are translucent.",
     rows: [
       { color: color('--rkui-shadow-color'), shades: [] },
       { color: color('--rkui-shadow-edge'), shades: [] },

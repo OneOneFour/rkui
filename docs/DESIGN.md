@@ -57,10 +57,10 @@ All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`,
 | `--rkui-fg` | `#1d232f` | `#f2eee2` | body text |
 | `--rkui-muted` | `#5b6070` | `#a3a8b6` | captions, meta |
 | `--rkui-line` | `#1d232f` | `#05070b` | outlines and hard shadows |
-| `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` (= `--rkui-line` in the block and block colour modes) | outlines of things with no fill |
+| `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` (= `--rkui-line` with the dark highlight) | outlines of things with no fill; the outline shadow's rim |
 | `--rkui-ink` | `#1d232f` | `#1d232f` | ink, same in both themes |
 | `--rkui-on-ink`, `--rkui-glint` | `#f7f3e5` | `#f2eee2` | text on ink; highlights on fills |
-| `--rkui-shadow-lit` | = `--rkui-line` | `#6e7891` | colour and block colour modes: shadow of things without a fill |
+| `--rkui-shadow-lit` | = `--rkui-line` | `#6e7891` | colour shadow: shadow of things without a fill |
 | `--rkui-focus` / `--rkui-focus-alt` | `--rkui-tangerine` / `--rkui-yellow` | same | focus band; where tangerine surrounds it |
 
 ### 2.2 Hues
@@ -181,7 +181,7 @@ container, and `"cream"` switches back inside one.
 
 Built on every element (`*`) from the light (`--rkui-shadow-dx`/`-dy`), the depth (`--rkui-shadow-depth`) and
 the shadow colours (`--rkui-shadow-color`, `--rkui-shadow-edge`). Declared once on `:root` they would freeze,
-and depth, light and shadow mode couldn't change inside a container.
+and depth, light, shadow and highlight couldn't change inside a container.
 
 | Token | Normal | Deep |
 |---|---|---|
@@ -209,7 +209,8 @@ back inside it.
 |---|---|---|---|
 | Theme | `data-theme` on `<html>` | `light`, `dark`, none = system | sets `color-scheme`; any container can set `color-scheme` itself |
 | Palette | `data-palette` | `cream`, `slate`, `greige` | redeclares page colours and their mixes |
-| Shadow | `data-shadow` | `slab`, `color`, `block`, `block-color` | `tokens/shadows.css` for `slab`, `block` and `block-color`'s outlines; `tokens/shadow-color.css`: `@scope` from `color` or `block-color` to `slab` or `block` |
+| Shadow | `data-shadow` | `outline`, `block`, `color` | dark mode only. `tokens/shadows.css`: the rim (`--rkui-shadow-rim`, unset for `outline` and `color`, transparent for `block`); `tokens/shadow-color.css`: `@scope` from `color` to `outline` or `block` |
+| Highlight | `data-highlight` | `cream`, `dark` | dark mode only. `tokens/colors.css`: `--rkui-line-unfilled` is `--rkui-fg` or `--rkui-line` |
 | Depth | `data-depth` | `normal`, `deep` | `--rkui-shadow-depth` 1 or 1.5 |
 | Light | `style` on `<html>` | `--rkui-shadow-dx`/`-dy`, default 1, 1 | `<rkui-light-direction>` |
 | Scroll dots | `data-rkui-dots`; a component's `dots` writes it on its outer element | `plain`, `pill` | `@scope` from `pill` to `plain` (`overflow.css`) |
@@ -225,7 +226,8 @@ back inside it.
   gives dx = dy = 1: shadows fall down-right. `<rkui-light-direction>`
   (`src/components/light-direction/light-direction.js`) sets it from a range, or follows the sun (rises left
   at 6:00, overhead at noon, sets right at 18:00, default at night).
-- `rkui-palette` and `rkui-shadow` are the docs site's own switch keys, not part of the theme contract.
+- `rkui-palette`, `rkui-shadow` and `rkui-highlight` are the docs site's own storage keys for its
+  settings drawer, not part of the theme contract.
 
 ## 3. Typography and maths
 
@@ -300,18 +302,23 @@ is an optional peer dependency, installed by the sites that use them.
   (`shaded`), or pushed in like a drawer's tray (`inset`: `--rkui-folder-back` with a
   `--rkui-recess` inner shadow, a resting offset deep).
 
-### 4.2 Dark-mode shadows: slab, colour, block and block colour
+### 4.2 Dark-mode shadows and highlight
 
-A near-black shadow is hard to see on night blue, so dark mode has four shadow modes.
-- **The outlined slab is the default:** the shadow sits on a copy widened by the outline in
-  `--rkui-shadow-edge`, cream in dark mode, transparent in light.
-- **Own-colour extrusion is a supported mode** (`data-shadow="color"`). In dark mode a raised
-  thing with a fill casts `--rkui-shade` of it, with no rim; light mode is unchanged.
+A near-black shadow is hard to see on night blue, so dark mode has two settings, each on `<html>`
+or any container. Light mode is the same in every combination.
+
+**Shadow** (`data-shadow`) sets how the hard shadow is drawn:
+- **Outline is the default** (`outline`): the near-black shadow sits on a copy widened by the
+  outline in `--rkui-shadow-edge`, a rim in the highlight colour, transparent in light mode.
+- **Block** (`block`): the near-black shadow with no rim, sitting straight on the page, as in the
+  first mockup.
+- **Colour** (`color`): in dark mode a raised thing with a fill casts `--rkui-shade` of it, with
+  no rim.
   - Wired up: buttons, checked checkboxes, radios and switches, the arc dial's face, the clock's
     hour tag, the range thumb, the file button, colour tiles, badges (a table's stickers too),
     the three-dot spinners, the blind's pull, the scroll and sidebar pills, sticky notes.
   - A linked or raised card casts the shade of its `hue`, such as a colour from its image; without
-    one it casts `--rkui-shadow-lit`. The hue changes nothing in the other modes.
+    one it casts `--rkui-shadow-lit`. The hue changes nothing with the other shadows.
   - A tinted folder's sheet and selected tab cast the shade of `--rkui-selected`, the solid colour
     of their tint, since the tint's own shade sits too close to the page.
   - Checked chips and section buttons take `--rkui-section` where it is set.
@@ -320,16 +327,15 @@ A near-black shadow is hard to see on night blue, so dark mode has four shadow m
     `--rkui-shadow-lit`: their darkened fills sit too close to the page.
   - An element's extrusion is its own (`--rkui-extrusion` doesn't inherit), so the controls on a
     sticky note cast their own shadows, not the note's.
-  - Without `@scope` or `light-dark()`, browsers keep the slab.
-- **Block is a rarely used mode** (`data-shadow="block"`): the slab with no rim, so the near-black
-  shadow sits straight on the page, as in the first mockup. `--rkui-shadow-edge` is transparent,
-  and `--rkui-line-unfilled` is `--rkui-line`, so things with no fill (inputs, chips, tiles, folder
-  tabs, unchecked controls) take the near-black outline too, like the mockup's Surface card. Their
-  edges are hard to see on the dark page; that is accepted. Light mode is unchanged.
-- **Block colour is a mode to try** (`data-shadow="block-color"`): the colour mode's shadows, with
-  block's near-black outline on things with no fill (`--rkui-line-unfilled` is `--rkui-line`)
-  instead of cream. Things without a fill still cast `--rkui-shadow-lit`. Without `@scope` or
-  `light-dark()`, browsers show it as block. Light mode is unchanged.
+  - Without `@scope` or `light-dark()`, browsers draw the outline shadow.
+
+**Highlight** (`data-highlight`) sets the colour of the outline shadow's rim and of the outlines on
+things with no fill (`--rkui-line-unfilled`: inputs, chips, tiles, folder tabs, unchecked
+controls):
+- **Cream is the default** (`cream`): `--rkui-fg`, so those edges show on the dark page.
+- **Dark** (`dark`): the near-black `--rkui-line`, like the mockup's Surface card. Those edges are
+  hard to see on the dark page; that is accepted. With the outline shadow it draws a near-black
+  rim, which looks like block.
 
 ### 4.3 Depth
 
@@ -477,7 +483,7 @@ gets its own compositor layer, which snaps to whole pixels and can open a hairli
 
 ## 7. Components
 
-`src/index.css` imports the tokens, fonts, type, base and the colour shadow mode, then
+`src/index.css` imports the tokens, fonts, type, base and the colour shadow, then
 every component, then `interactive.css` last so the shared states win. "Open" means the options are
 built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 
@@ -606,16 +612,16 @@ tokens in `site/src/old/components/chart-tokens.css`.
 
 - **Contrast targets, checked by hand on the docs page** (it prints each ratio as painted):
   - text 4.5:1 on surfaces, tints, fills and notes; code 7:1;
-  - 3:1 for the focus band against the outline, unfilled outlines, fill edges, and the colour-mode
-    shades against the page;
+  - 3:1 for the focus band against the outline, unfilled outlines, fill edges, and the colour
+    shadow's shades against the page;
   - every palette, both themes, and the fallback.
 - **Dark outline gap:** near-black `--rkui-line` on the dark page is about 1.2–1.4:1. Filled components
-  get their 3:1 edge from the fill; outline-only ones use `--rkui-line-unfilled`, except in the block
-  shadow mode, where they take the near-black outline (§4.2). It is a known gap.
+  get their 3:1 edge from the fill; outline-only ones use `--rkui-line-unfilled`, except with the dark
+  highlight, where they take the near-black outline (§4.2). It is a known gap.
 - **`--rkui-section` in dark mode** defaults to ink, nearly the page colour. Sites set their own hues.
 - **Accepted shortfalls** (Rob's reasons are in DECISIONS.md):
   - ink icon lines on the coral note's fold in dark mode, 2.8:1 against 3;
-  - colour mode: coral's shade on the dark page (2.4–2.9:1) and grape's on `--rkui-raised` (2.6–2.8:1),
+  - colour shadow: coral's shade on the dark page (2.4–2.9:1) and grape's on `--rkui-raised` (2.6–2.8:1),
     as the ink outline marks the edge.
 - **A busy `--rkui-section` button's** empty part keeps 70% of the fill, so its label stays at
   6.0–6.2:1.
