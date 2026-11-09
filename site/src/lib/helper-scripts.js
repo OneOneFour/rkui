@@ -38,6 +38,8 @@ const HELPERS = {
     label: 'Scroll dots in older browsers',
     serves: ['CodeBlock', 'Folder', 'Pagination', 'Scroll', 'Table'],
   },
+  // Sets a quote under three lines a step larger.
+  'quote-enhance.js': { label: 'Short quotes larger', serves: ['Quote'] },
   // Opens a sidebar scrolled to its current page, without scroll-initial-target (Safari and
   // Firefox).
   'sidebar-enhance.js': { label: 'Scrolls to the current page', serves: ['Sidebar'] },

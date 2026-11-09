@@ -24,9 +24,31 @@ and below. With `by`, the attribution goes under the quote in a `<figcaption>`.
   </Quote>
 </Demo>
 
+## Short quotes
+
+A quote whose text is under three lines long is set a step larger (`--rkui-step-1`), by the helper
+script `quote-enhance.js`. It measures each quote at the normal size, in the column it sits in, so
+the same quote can be larger in a wide column and normal on a phone, where it wraps to three lines
+or more. Its padding and the space around it stay the same. Without the script, every quote keeps
+the normal size.
+
+<Demo label="A short quote and a long one" stack>
+  <Quote by="Short">
+    <p>How vexingly quick daft zebras jump.</p>
+  </Quote>
+  <Quote by="Long">
+    <p>
+      Pack my box with five dozen liquor jugs. The five boxing wizards jump quickly. Sphinx of black
+      quartz, judge my vow. Jackdaws love my big sphinx of quartz. The quick onyx goblin jumps over
+      the lazy dwarf. Five quacking zephyrs jolt my wax bed.
+    </p>
+  </Quote>
+</Demo>
+
 ## Try it
 
-Type a quote and an attribution to see them render. A blank line starts a new paragraph.
+Type a quote and an attribution to see them render. A blank line starts a new paragraph. The quote
+turns larger while it is under three lines, and back as it grows.
 
 <Demo vue={tryItCode} label="Quote that renders as you type" stack widget>
   <TryIt client:visible />

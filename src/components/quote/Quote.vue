@@ -3,7 +3,8 @@
   in, its edges in line with the text around it. The slot is the quoted text. With `by` it is a
   `<figure>` with the attribution in a `<figcaption>` under the quote, since an attribution belongs
   outside the `<blockquote>`. `class`, `style` and other attributes go on the outer element. It
-  needs no JavaScript. A Markdown `>` quote renders as one where the page maps it:
+  needs no JavaScript; with the helper script quote-enhance.js, a quote whose text is under three
+  lines long in its column is set a step larger. A Markdown `>` quote renders as one where the page maps it:
   `<Content components={{ blockquote: Quote }} />` in Astro, or `export const components =
   { blockquote: Quote }` in an MDX file.
 

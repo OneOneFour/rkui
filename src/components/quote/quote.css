@@ -12,7 +12,10 @@
    </figure>
 
    Opt-in modifier: .rkui-quote--italic slants the quote. Roboto Slab has no italic, so the browser
-   slants the upright letters; emphasis inside turns upright. */
+   slants the upright letters; emphasis inside turns upright.
+
+   quote-enhance.js marks a quote whose text is under three lines at this size with
+   data-rkui-short, and it is set a step larger. */
 
 .rkui-quote {
   margin: var(--rkui-space-5) 0;
@@ -33,6 +36,11 @@
 .rkui-quote > :last-child,
 .rkui-quote > blockquote > :last-child {
   margin-block-end: 0;
+}
+
+/* Its padding and margins are in rem, so a short quote keeps the same space around it. */
+.rkui-quote[data-rkui-short] {
+  font-size: var(--rkui-step-1);
 }
 
 .rkui-quote .rkui-quote {
