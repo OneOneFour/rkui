@@ -194,11 +194,15 @@
 }
 
 /* A checked tile lands with the deck keys' kerchunk (segmented.css): it drives past its pushed-in
-   depth, then settles. The keyframes move it, so its translate isn't transitioned as well. CSS
-   can't tell a page load from a click, so a row checked on load plays it once. */
+   depth, then settles. The keyframes move it, so its translate isn't transitioned as well.
+   :user-valid only matches once the reader has changed the input, so a row checked when the page
+   loads, or by a script, doesn't play it. */
 .rkui-ballot .rkui-tile:has(:checked:enabled) {
+  transition-property: box-shadow;
+}
+
+.rkui-ballot .rkui-tile:has(:checked:user-valid) {
   --rkui-key-overshoot: calc(var(--rkui-shadow-depth) * 2px);
 
-  transition-property: box-shadow;
   animation: rkui-deck-key-in var(--rkui-duration-spring) ease-out;
 }

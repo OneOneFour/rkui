@@ -1,7 +1,7 @@
 /* Segmented control: a pill group of native radios, one per label, with an optional icon before
    each label's text. The checked option, and its icon's fill, take --rkui-selected; where anchor
    positioning is supported, that fill is a pill that slides to the newly checked option. When
-   checking an option restyles the whole page, delay that with afterSlide() (elements/shared/after-slide.js).
+   checking an option restyles the whole page, delay that with afterSlide() (shared/after-slide.js).
 
    <fieldset class="rkui-segmented">
      <legend class="rkui-visually-hidden">Theme</legend>
@@ -62,8 +62,10 @@
   color: var(--rkui-on-selected);
 }
 
-/* The newly checked option dips, then bounces as the pill lands on it. */
-.rkui-segmented:not(.rkui-segmented--deck) label:has(:checked) {
+/* The newly checked option dips, then bounces as the pill lands on it. :user-valid only matches
+   once the reader has changed the radio, so an option checked when the page loads, or by a
+   script, doesn't pop. */
+.rkui-segmented:not(.rkui-segmented--deck) label:has(:checked:user-valid) {
   animation: rkui-segment-pop var(--rkui-duration-slide) ease-out;
 }
 
@@ -137,10 +139,14 @@
     box-shadow var(--rkui-duration-fast) ease;
 }
 
-/* The keyframes move the checked key in, so its translate isn't transitioned as well. */
+/* The keyframes move the checked key in, so its translate isn't transitioned as well. They only
+   play when the reader checks it (:user-valid, as for the pop above). */
 .rkui-segmented--deck label:has(:checked) {
   border-color: var(--rkui-line);
   transition-property: box-shadow;
+}
+
+.rkui-segmented--deck label:has(:checked:user-valid) {
   animation: rkui-deck-key-in var(--rkui-duration-spring) ease-out;
 }
 
