@@ -239,20 +239,10 @@
   padding: var(--rkui-sidebar-pad) var(--rkui-sidebar-pad) 0;
   container-type: scroll-state;
   background: var(--rkui-sidebar-panel);
-}
-
-/* At a fractional zoom or screen scale the browser rounds the scroller's top edge and the stuck
-   heading differently, and a row of what scrolls under the heading shows above it. A strip of the
-   panel's colour across that edge, fixed to the sidebar, covers it (card and folders; the note's
-   own pseudo-elements are taken). */
-:is(.rkui-sidebar--card, .rkui-sidebar--folders)::after {
-  content: '';
-  position: absolute;
-  z-index: 1;
-  inset: calc(var(--rkui-sidebar-gutter) - var(--rkui-outline-width)) 0 auto;
-  block-size: calc(2 * var(--rkui-outline-width));
-  background: var(--rkui-sidebar-panel);
-  pointer-events: none;
+  /* At a fractional zoom or screen scale the scroller's top edge and the stuck heading can round
+     apart, leaving a thin row of what scrolls under the heading showing above it. This shadow in
+     the panel's colour fills that row; the scroller clips it everywhere else. */
+  box-shadow: 0 calc(-1 * var(--rkui-outline-width)) var(--rkui-sidebar-panel);
 }
 
 /* Their labels are in sentence case at body size. */

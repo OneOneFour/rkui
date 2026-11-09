@@ -142,11 +142,14 @@ table.rkui-table {
   font-weight: 700;
 }
 
-/* The header row's cells stick to the top, above the first column's. */
+/* The header row's cells stick to the top, above the first column's. At a fractional zoom or
+   screen scale the scroller's top edge and the stuck header can round apart, leaving a thin row of
+   body cells showing above the header; the shadow in the sheet's colour fills it. */
 .rkui-table thead th {
   position: sticky;
   inset-block-start: 0;
   z-index: 3;
+  box-shadow: 0 calc(-1 * var(--rkui-outline-width)) var(--rkui-raised);
 }
 
 .rkui-table thead th:first-child {
