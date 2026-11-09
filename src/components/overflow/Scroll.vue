@@ -10,9 +10,9 @@
 -->
 <script setup lang="ts">
 interface Props {
-  /** The region's accessible name; or `labelledby`. */
+  /** The region's accessible name; give it or `labelledby`; none when left out. */
   label?: string
-  /** The id of the element that names the region, in place of `label`. */
+  /** The id of the element that names the region, in place of `label`; none when left out. */
   labelledby?: string
   /**
    * Keeps the scrollbar visible with no dots, for an element with side borders of its own; dots and

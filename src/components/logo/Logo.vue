@@ -11,7 +11,10 @@ import { computed } from 'vue'
 import { useComponentId } from '../../shared/component-id'
 
 interface Props {
-  /** Where the link goes: the site's home page. A logo with no link is only shown, and animated. */
+  /**
+   * Where the link goes: the site's home page; a plain `<span>`, only shown and animated, when
+   * left out.
+   */
   href?: string
   /** The link's accessible name; "Home" when left out. */
   label?: string

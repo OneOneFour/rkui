@@ -29,7 +29,10 @@ interface Props {
    * hard shadow); 'outline' when left out. Open, see DECISIONS ("Badges").
    */
   edge?: 'outline' | 'ring' | 'sticker'
-  /** Text for screen readers only, after the visible text; the whole accessible name for a dot. */
+  /**
+   * Text for screen readers only, after the visible text; the whole accessible name for a dot;
+   * none when left out.
+   */
   hiddenLabel?: string
 }
 

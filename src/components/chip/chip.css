@@ -1,8 +1,9 @@
 /* Filter chips: pill labels around a native checkbox (multi-select) or radio (single select),
    with an optional .rkui-icon before the text. Checked chips, and their icons' fills, take
    --rkui-section, with --rkui-on-section text; set those on the chip or its group to pass in
-   a hue. With no section they invert: an ink fill in light mode, the light foreground in dark. A chip can also be a link (<a class="rkui-chip">), with aria-current="page" filling
-   it like a checked one.
+   a hue. With no section they invert: an ink fill in light mode, the light foreground in dark.
+   A chip can also be a link (<a class="rkui-chip">), with aria-current="page" filling it like a
+   checked one.
 
    <fieldset class="rkui-chip-group">
      <legend class="rkui-visually-hidden">Topic</legend>
