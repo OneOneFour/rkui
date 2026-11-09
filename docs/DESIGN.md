@@ -323,8 +323,9 @@ light.
 Defined once in `interactive.css` for every clickable component. **Hover** (only under
 `(hover: hover)`) lifts by `--rkui-lift-offset` towards the light and grows the shadow; **press** moves
 by `--rkui-press-offset` onto `--rkui-shadow-pressed`. 120ms, plain `ease`, no springy overshoot. Only
-clickable things lift and sink (whether this stays is open: DECISIONS), with one opt-in exception:
-a Table's `lift` option, where the hovered row lifts though it isn't clickable. Something static
+clickable things lift and sink (whether this stays is open: DECISIONS), with two opt-in exceptions:
+a Table's `lift` option, where the hovered row lifts though it isn't clickable, and a StickyNote's
+`animated` option, where the fold lifts on hover on a note that isn't a link. Something static
 shows emphasis with its fill and a small pop in place (scale 1.08 on `--rkui-ease-snap`).
 
 ### 4.5 Pressed, checked and busy
