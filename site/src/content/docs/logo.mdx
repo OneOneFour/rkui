@@ -33,8 +33,9 @@ the wave rolls, the stripes march and the dot of the i hops.
 
 ## Without a link
 
-Leave out `href` and the logo is a plain `<span>`: it doesn't pop, and it plays its motifs all the
-time (not under reduced motion).
+Leave out `href` and the logo is a plain `<span>` named "rkui". It doesn't pop, since it can't be
+clicked. It plays every motif once as the page loads, then again while the pointer is over it.
+Under reduced motion it stays still.
 
 <Demo vue={staticCode} label="Logo without a link">
   <Static />

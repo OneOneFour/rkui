@@ -1,7 +1,8 @@
 <!--
   The rkui logo as a home link: four outlined tiles, r k u i, raised on the hard shadow, that pop
-  like a button. Without `href` it is a plain `<span>` that doesn't pop and plays its motifs all
-  the time. `class`, `style` and other attributes go on the `<a>` or `<span>`.
+  like a button. Without `href` it is a plain `<span>` that doesn't pop: it plays every motif once
+  when the page loads, then again while the pointer is over it. `class`, `style` and other
+  attributes go on the `<a>` or `<span>`.
 
   @example
   <Logo href="/" label="rkui home" variant="motifs" size="3rem" />
@@ -12,23 +13,26 @@ import { useComponentId } from '../../shared/component-id'
 
 interface Props {
   /**
-   * Where the link goes: the site's home page; a plain `<span>`, only shown and animated, when
-   * left out.
+   * Where the link goes: the site's home page; a plain `<span>`, only shown, when left out.
    */
   href?: string
-  /** The link's accessible name; "Home" when left out. */
+  /** The logo's accessible name; "Home" when left out, or "rkui" for a logo with no link. */
   label?: string
   /**
    * 'motifs': on hover and focus the corner lifts, the wave rolls, the stripes march and the dot
-   * hops; 'lift' (the pop only) when left out. Open, see DECISIONS ("Logo").
+   * hops; 'lift' (the pop only) when left out. A logo with no link ignores it and plays every
+   * motif. Open, see DECISIONS ("Logo").
    */
   variant?: 'lift' | 'motifs'
   /** The logo's width as a CSS length; 6rem when left out. */
   size?: string
 }
 
-const { href, label = 'Home', variant = 'lift', size } = defineProps<Props>()
+const { href, label, variant = 'lift', size } = defineProps<Props>()
 const id = useComponentId('logo')
+
+/** The accessible name: a link goes home, a logo on its own is just the name. */
+const name = computed(() => label ?? (href ? 'Home' : 'rkui'))
 
 /** The size as a custom property, when it is set. */
 const vars = computed(() => (size ? { '--rkui-logo-size': size } : {}))
@@ -119,6 +123,6 @@ const vars = computed(() => (size ? { '--rkui-logo-size': size } : {}))
         <use class="rkui-logo-edge" :href="`#${id}-i`" />
       </g>
     </svg>
-    <span class="rkui-visually-hidden">{{ label }}</span>
+    <span class="rkui-visually-hidden">{{ name }}</span>
   </component>
 </template>
