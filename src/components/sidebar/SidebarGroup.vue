@@ -1,7 +1,7 @@
 <!--
   One group of a Sidebar: a heading over a list of SidebarLinks, or just the list when it has no
-  heading, as in a site's one list of sections. `class`, `style` and other attributes go on the
-  `<section>`.
+  heading, as in a site's one list of sections. The slot holds its SidebarLinks. `class`, `style`
+  and other attributes go on the `<section>`.
 
   @example
   <SidebarGroup heading="Form controls">

@@ -1,9 +1,9 @@
 <!--
   An rkui card: an `<article>` with a title and a body. With `href` the whole card is one link (its
   title), outlined, with the hard shadow and the pop; without, it is a static panel that never
-  lifts, its edge set by `variant`. Slots: `image` (an <img class="rkui-card-image"> or similar;
-  `slot="image"` in Astro, `<template #image>` in Vue) and the default slot for the body. `class`,
-  `style` and other attributes go on the `<article>`.
+  lifts, its edge set by `variant`. The slot is the body; the `image` slot holds an
+  `<img class="rkui-card-image">` or similar (`slot="image"` in Astro, `<template #image>` in Vue).
+  `class`, `style` and other attributes go on the `<article>`.
 
   @example
   <Card title="Field notes" href="/notes/" meta="Updated today" hue="teal"><p>Recent entries.</p></Card>

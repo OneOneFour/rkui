@@ -38,7 +38,7 @@ interface Props {
   label?: string
   /** A quiet line under the field; none when left out. */
   hint?: string
-  /** An error line under the field; it also marks the input invalid. */
+  /** An error line under the field; it also marks the input invalid; none when left out. */
   error?: string
 }
 

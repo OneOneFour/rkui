@@ -1,10 +1,10 @@
 <!--
   A sidebar: links grouped under headings, built from SidebarGroups of SidebarLinks, with no
-  JavaScript. It scrolls on its own when it is taller than its box, so give it a height or a max
-  height from the page. Hints at the top and bottom edges show when there is more to scroll to.
-  `class`, `style` and other attributes go on the `<nav>`. The hints need Safari 26 or Firefox
-  159. Only Chrome gives the card's and the note's stuck headings their stuck look; elsewhere they
-  stick as they are. The `header` slot (`slot="header"` in Astro, `<template #header>` in Vue)
+  JavaScript. The slot holds the SidebarGroups. It scrolls on its own when it is taller than its
+  box, so give it a height or a max height from the page. Hints at the top and bottom edges show
+  when there is more to scroll to. `class`, `style` and other attributes go on the `<nav>`. The
+  hints need Safari 26 or Firefox 159. Only Chrome gives the card's and the note's stuck headings
+  their stuck look; elsewhere they stick as they are. The `header` slot (`slot="header"` in Astro, `<template #header>` in Vue)
   sits above the links and doesn't scroll, for a site's name and tagline. `--rkui-sidebar-panel`
   in `style` sets the panel's colour.
 

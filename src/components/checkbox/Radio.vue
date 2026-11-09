@@ -1,5 +1,5 @@
 <!--
-  A radio button: a native radio inside a `label.rkui-check`, with the label text in the slot.
+  A radio button: a native radio inside a `label.rkui-check`. The slot is the label text.
   Radios with the same `name` form a group. `class` and `style` go on the label; other attributes
   (name, disabled, required, aria-invalid, ...) go on the input. In a `.vue` file, give each radio
   in a group the same `v-model`: it holds the chosen radio's `value`. With `v-model`, the parent's

@@ -1,8 +1,8 @@
 <!--
-  A folder: tabs standing on a sheet, each with its own panel, with no JavaScript. Each `Tab` in
-  the slot is one tab, and its slot is that tab's panel. Each tab is a label around a native
-  radio, so clicking a tab or the arrow keys choose it, and CSS shows the chosen tab's panel. The
-  first tab marked `selected` starts chosen, or the first tab when none is. A Folder takes up to
+  A folder: tabs standing on a sheet, each with its own panel, with no JavaScript. The slot holds
+  its Tabs: each `Tab` is one tab, and its slot is that tab's panel. Each tab is a label around a
+  native radio, so clicking a tab or the arrow keys choose it, and CSS shows the chosen tab's panel.
+  The first tab marked `selected` starts chosen, or the first tab when none is. A Folder takes up to
   20 tabs. `class`, `style` and other attributes go on the outer div.
 
   The tabs stand on any side of the sheet (`placement`); on the left and right they stack down

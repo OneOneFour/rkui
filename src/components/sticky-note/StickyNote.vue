@@ -2,7 +2,9 @@
   A card or a callout drawn as a sticky note: it renders `Card` or `Callout` with the sticky-note
   classes added, so it takes their props and slots too (`title`, `href`, `meta`, `headingLevel` and
   the `image` slot for a card; `kind` and `title` for a callout). A separate component rather than
-  a `note` prop on each, so Card and Callout stay free of it. `class`, `style` and other attributes
+  a `note` prop on each, so Card and Callout stay free of it. The slot is the card's body or the
+  callout's text; the `image` slot is a card's image (`slot="image"` in Astro, `<template #image>`
+  in Vue). `class`, `style` and other attributes
   go on the outer element.
 
   @example

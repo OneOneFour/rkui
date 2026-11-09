@@ -1,6 +1,6 @@
 <!--
-  A filter chip: a pill label around a native checkbox or radio. Put an optional icon and the label
-  text in the slot. Put chips in a ChipGroup, which fills in their `name` and input type, and holds
+  A filter chip: a pill label around a native checkbox or radio. The slot is the label text, after
+  an optional icon. Put chips in a ChipGroup, which fills in their `name` and input type, and holds
   their `v-model`. `class` and `style` go on the label; other attributes go on the input.
 
   @example

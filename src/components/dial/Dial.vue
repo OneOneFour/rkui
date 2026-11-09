@@ -40,7 +40,10 @@ defineOptions({ inheritAttrs: false })
 interface Props {
   /** The dial's visible label, which is also its accessible name. */
   label: string
-  /** 'arc'; 'knob' when left out. Open, see DECISIONS ("Dial"). */
+  /**
+   * The look: 'arc', a track that fills to the value, with a thumb riding it; 'knob', a raised knob
+   * with a turning notch inside a ring of ticks, when left out. Open, see DECISIONS ("Dial").
+   */
   variant?: 'knob' | 'arc'
   /**
    * A ring of blocks that light up to the value: 'cool' (cool to warm) or 'heat' (yellow to coral);
@@ -58,8 +61,8 @@ function limits() {
 }
 
 /**
- * The range's value (`v-model`), a number; the page's `value` attribute when left out, or the
- * middle of the range.
+ * The range's value (`v-model`), a number; the page's `value` attribute, or the middle of the
+ * range, when left out.
  */
 const model = defineModel<number>()
 if (model.value === undefined) {

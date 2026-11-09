@@ -25,8 +25,8 @@ interface Props {
   /** With `corner`, a status dot with no visible text; a pill when left out. */
   dot?: boolean
   /**
-   * A corner badge's edge: 'ring' or 'sticker'; 'outline' when left out. Open, see DECISIONS
-   * ("Badges").
+   * A corner badge's edge: 'ring' (a ring in the page colour) or 'sticker' (the outline and a small
+   * hard shadow); 'outline' when left out. Open, see DECISIONS ("Badges").
    */
   edge?: 'outline' | 'ring' | 'sticker'
   /** Text for screen readers only, after the visible text; the whole accessible name for a dot. */

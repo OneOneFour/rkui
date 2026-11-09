@@ -1,5 +1,5 @@
 <!--
-  The wrapper a corner `Badge` sits on: put the picture and the badge in the slot. (A `Button` can
+  The wrapper a corner `Badge` sits on. The slot holds the picture and the badge. (A `Button` can
   be its own host with `class="rkui-badge-host"`.) `class`, `style` and other attributes go on the
   `<span>`.
 

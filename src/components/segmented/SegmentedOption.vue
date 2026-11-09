@@ -1,6 +1,7 @@
 <!--
-  One option of a Segmented control: a label around a native radio. Put an optional icon
-  (`slot="icon"` in Astro, `<template #icon>` in Vue) and the label text in the slot. `class` and
+  One option of a Segmented control: a label around a native radio. The slot is the label text;
+  the `icon` slot (`slot="icon"` in Astro, `<template #icon>` in Vue) holds an optional icon
+  before it. `class` and
   `style` go on the label; other attributes go on the input.
 
   @example

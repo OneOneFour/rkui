@@ -27,7 +27,7 @@ interface Props {
   label?: string
   /** A quiet line under the input; none when left out. */
   hint?: string
-  /** An error line under the input; it also marks the input invalid. */
+  /** An error line under the input; it also marks the input invalid; none when left out. */
   error?: string
   /**
    * The hover cue: 'ring', 'underline' or 'none'; the background sinks to the page colour when

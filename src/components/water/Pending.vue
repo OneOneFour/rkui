@@ -1,5 +1,5 @@
 <!--
-  The pending panel: a dashed panel that fills with water while content loads, with the slot as its
+  The pending panel: a dashed panel that fills with water while content loads. The slot is its
   text. The water rises and falls, or sits at `level`, rising or falling to a new one. A busy
   indicator with `role="status"`. `class` and other attributes go on the `<div>`.
 

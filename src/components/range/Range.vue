@@ -33,7 +33,7 @@ interface Props {
   label?: string
   /** A quiet line under the slider; none when left out. */
   hint?: string
-  /** An error line under the slider; it also marks the input invalid. */
+  /** An error line under the slider; it also marks the input invalid; none when left out. */
   error?: string
   /** The values to mark with a tick and a label under the slider; no ticks when left out. */
   ticks?: number[]

@@ -1,7 +1,8 @@
 <!--
-  A form field: a label, a control in the slot and an optional hint or error message, stacked in
-  `div.rkui-field`. `class`, `style` and other attributes go on the div. With no `label`, `hint`
-  or `error` it renders just its slot, and those attributes have nothing to go on.
+  A form field: a label, a control and an optional hint or error message, stacked in
+  `div.rkui-field`. The slot is the control. `class`, `style` and other attributes go on the div.
+  With no `label`, `hint` or `error` it renders just its slot, and those attributes have nothing to
+  go on.
 
   Input, Textarea, Select, Stepper, Search, File and Range wrap themselves in a Field and take its
   `label`, `hint` and `error` props, so a labelled form field is one tag. They also set the
@@ -22,7 +23,10 @@ interface Props {
   for?: string
   /** A quiet line under the control; none when left out. */
   hint?: string
-  /** An error line under the control, in the error colour; it replaces the hint. */
+  /**
+   * An error line under the control, in the error colour; it replaces the hint; none when left
+   * out.
+   */
   error?: string
 }
 

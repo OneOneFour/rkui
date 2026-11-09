@@ -1,7 +1,7 @@
 <!--
   A tile picker: a group of equal round tiles (Tile), radios for one choice or checkboxes for
-  several, each holding a number, a letter or an icon. `class`, `style` and other attributes go on
-  the fieldset (`disabled` disables the whole group).
+  several, each holding a number, a letter or an icon. The slot holds the Tiles. `class`, `style`
+  and other attributes go on the fieldset (`disabled` disables the whole group).
 
   For colour tiles, see ColorPicker.
 

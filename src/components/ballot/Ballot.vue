@@ -1,10 +1,10 @@
 <!--
-  A ballot: a column of options (BallotOption), each a tile beside a bordered text box. Each row is
-  one label, so clicking anywhere on it votes. Radios for one choice, checkboxes with `multiple`.
-  `class`, `style` and other attributes go on the fieldset. In a `.vue` file, `v-model` is the
-  chosen option's value (a list of values with `multiple`). With `v-model`, the parent's value is
-  the starting value unless it is undefined; then `checked` applies and is handed to the parent
-  (for one choice, the first option marked wins).
+  A ballot: a column of options, each a tile beside a bordered text box. The slot holds the
+  BallotOptions. Each row is one label, so clicking anywhere on it votes. Radios for one choice,
+  checkboxes with `multiple`. `class`, `style` and other attributes go on the fieldset. In a `.vue`
+  file, `v-model` is the chosen option's value (a list of values with `multiple`). With `v-model`,
+  the parent's value is the starting value unless it is undefined; then `checked` applies and is
+  handed to the parent (for one choice, the first option marked wins).
 
   @example
   <Ballot legend="Vote">

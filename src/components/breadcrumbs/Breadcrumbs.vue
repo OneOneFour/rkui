@@ -16,8 +16,8 @@ interface Props {
   /** The trail, each a label and the link's href. */
   items: Item[]
   /**
-   * 'chips' or 'path' (a path bar with slashes); 'plain' links when left out. Open, see DECISIONS
-   * ("Breadcrumbs").
+   * The look: 'chips' (each link a chip) or 'path' (one pill frame with slashes between the
+   * links); 'plain' links when left out. Open, see DECISIONS ("Breadcrumbs").
    */
   variant?: 'plain' | 'chips' | 'path'
   /** The nav's accessible name; "Breadcrumb" when left out. */

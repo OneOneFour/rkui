@@ -1,12 +1,12 @@
 <!--
-  A select: a native `<select>` in the `.rkui-select` frame, with `<option>`s in the slot, inside a
-  Field. `class` and `style` go on the Field's div when there is a label, hint or error, otherwise
-  on the select; other attributes (name, required, disabled, multiple, ...) go on the select.
-  Without a label, give it an `aria-label`. In a `.vue` file, `v-model` is the chosen option's
-  value (a list of values with `multiple`). With `v-model`, the parent's value is the starting
-  value unless it is undefined; then `selected` applies and is handed to the parent. The server's HTML doesn't show the
-  model's choice, as the options come through the slot: the browser shows it once the component
-  runs, and until then the options marked `selected`.
+  A select: a native `<select>` in the `.rkui-select` frame, inside a Field. The slot holds its
+  `<option>`s. `class` and `style` go on the Field's div when there is a label, hint or error,
+  otherwise on the select; other attributes (name, required, disabled, multiple, ...) go on the
+  select. Without a label, give it an `aria-label`. In a `.vue` file, `v-model` is the chosen
+  option's value (a list of values with `multiple`). With `v-model`, the parent's value is the
+  starting value unless it is undefined; then `selected` applies and is handed to the parent. The
+  server's HTML doesn't show the model's choice, as the options come through the slot: the browser
+  shows it once the component runs, and until then the options marked `selected`.
 
   Where the browser supports it, the open list is a raised panel in the toon look, and options can
   hold icons (`<Icon class="rkui-icon rkui-icon--small" aria-hidden="true" />` before the text);
@@ -37,7 +37,7 @@ interface Props {
   label?: string
   /** A quiet line under the select; none when left out. */
   hint?: string
-  /** An error line under the select; it also marks the select invalid. */
+  /** An error line under the select; it also marks the select invalid; none when left out. */
   error?: string
   /**
    * The hover cue: 'ring', 'underline' or 'none'; the background sinks to the page colour when

@@ -1,8 +1,8 @@
 <!--
-  One round tile: a native radio or checkbox in a label, holding the slot's number or letter. With
-  an icon (`slot="icon"` in Astro, `<template #icon>` in Vue) or a `hue`, the slot becomes hidden
-  text that names the tile. Put tiles in Tiles, which fills in their `name` and input type. `class`
-  and `style` go on the label; other attributes go on the input.
+  One round tile: a native radio or checkbox in a label. The slot is its number or letter, or, with
+  an icon or a `hue`, hidden text that names the tile; the `icon` slot (`slot="icon"` in Astro,
+  `<template #icon>` in Vue) holds the icon. Put tiles in Tiles, which fills in their `name` and
+  input type. `class` and `style` go on the label; other attributes go on the input.
 
   @example
   <Tile value="a" checked>A</Tile>

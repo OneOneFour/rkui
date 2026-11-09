@@ -1,16 +1,17 @@
 <!--
   A highlighted code block: rkui's code-block markup around Shiki's highlighting, with the syntax
-  colours taken from the --rkui-code-* tokens. The code is the default slot's text, trimmed,
-  highlighted when the page is built, on the server. Vue, Astro and MDX all tidy the white space
-  in text written between the tags, so code longer than a line goes in as a string, which they
-  leave alone: `{{ code }}` in a `.vue` file, `{code}` or {`…`} in Astro and MDX. `class`, `style` and
-  other attributes go on the `<figure>`. With no `label`
-  there is no title area: the copy button sits in the code's top-right corner. The copy button
-  needs `client:visible` in an Astro page; without it the button stays hidden.
+  colours taken from the --rkui-code-* tokens. The default slot is the code, as text, trimmed and
+  highlighted when the page is built, on the server. Vue, Astro and MDX all tidy the white space in
+  text written between the tags, so code longer than a line goes in as a string, which they leave
+  alone: `{{ code }}` in a `.vue` file, `{code}` or {`…`} in Astro and MDX. `class`, `style` and
+  other attributes go on the `<figure>`. With no `label` there is no title area: the copy button
+  sits in the code's top-right corner. The copy button needs `client:visible` in an Astro page;
+  without it the button stays hidden.
 
   The caption starts with a mark for the language, the first of these that exists:
-    1. the site's logo, in the "logo" slot (an inline SVG with class="rkui-icon rkui-icon--small"
-       and aria-hidden="true"), e.g. <PythonLogo slot="logo" class="…" /> in Astro, or
+    1. the `logo` slot: the site's logo for the language (an inline SVG with
+       class="rkui-icon rkui-icon--small" and aria-hidden="true"), e.g.
+       <PythonLogo slot="logo" class="…" /> in Astro, or
        <template #logo><PythonLogo class="…" /></template> in Vue
     2. the library's Phosphor file-type icon for the language (FILE_ICONS below)
     3. the file extension as grey text, e.g. "JS" (FILE_EXTENSIONS below), unless it would

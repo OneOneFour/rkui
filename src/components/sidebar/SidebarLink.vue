@@ -1,7 +1,7 @@
 <!--
-  One link in a SidebarGroup, in its own list item. The slot is the link text; an optional icon
-  (`slot="icon"` in Astro, `<template #icon>` in Vue) sits before it. `class`, `style` and other
-  attributes go on the `<li>`.
+  One link in a SidebarGroup, in its own list item. The slot is the link text; the `icon` slot
+  (`slot="icon"` in Astro, `<template #icon>` in Vue) holds an optional icon before it. `class`,
+  `style` and other attributes go on the `<li>`.
 
   @example
   <SidebarLink href="/notes/" hue="coral" current><PenNib slot="icon" />Notes</SidebarLink>
@@ -17,8 +17,8 @@ interface Props {
   current?: boolean
   /**
    * The link's own colour, a hue or a hex code, such as the section colour of the page it leads
-   * to. It fills the link's icon, and the link itself when it is the current page, in any look.
-   * The look's own colours when left out.
+   * to. It fills the link's icon, and the link itself when it is the current page, in any look;
+   * the look's own colours when left out.
    */
   hue?: HueOrHex
 }

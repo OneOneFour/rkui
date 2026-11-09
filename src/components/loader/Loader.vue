@@ -1,8 +1,8 @@
 <!--
   The hop loader: a ball hops back and forth along a line, squashing as it lands. Each hop covers
   about the same distance (`--rkui-loader-hop-length`), so a wider loader takes more hops. Give it a
-  `hue`, or an icon to ride in a bigger ball (the slot: an icon with class "rkui-icon"). A busy
-  indicator with `role="status"`; the label is read out, not shown. `class`, `style` and other
+  `hue`, or an icon to ride in a bigger ball. The slot holds that icon, with class "rkui-icon". A
+  busy indicator with `role="status"`; the label is read out, not shown. `class`, `style` and other
   attributes go on the `<div>`.
 
   @example

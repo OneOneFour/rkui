@@ -1,9 +1,9 @@
 <!--
-  A data table on a toon sheet: the page's own `<thead>`, `<tbody>`, rows and cells, so a cell can
-  hold anything, with a caption above them. The table scrolls sideways inside the sheet when it is
-  too wide, with the Scroll region's edge dots, or with `bar` a scrollbar that stays in view. Needs
-  no JavaScript. `class` and `style` go on the
-  outer `<div>`, the sheet; other attributes go on the `<table>`.
+  A data table on a toon sheet, with a caption above it. The slot holds the page's own `<thead>`,
+  `<tbody>`, rows and cells, so a cell can hold anything. The table scrolls sideways inside the
+  sheet when it is too wide, with the Scroll region's edge dots, or with `bar` a scrollbar that
+  stays in view. Needs no JavaScript. `class` and `style` go on the outer `<div>`, the sheet; other
+  attributes go on the `<table>`.
 
   The header row and the first column stay in view while the table scrolls inside the sheet: the
   first column whenever the table is wider than the sheet, and the header row once the sheet has a

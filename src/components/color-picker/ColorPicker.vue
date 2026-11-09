@@ -1,9 +1,10 @@
 <!--
-  A colour picker: a tile group of colour tiles (ColorTile), radios for one choice, with every hue
-  of the palette when it has no tiles. `class`, `style` and other attributes go on the fieldset
-  (`disabled` disables the whole group). In a `.vue` file, `v-model` is the chosen tile's value,
-  or 'custom'. With `v-model`, the parent's value is the starting value unless it is undefined;
-  then `value`, or else the first tile marked `checked`, applies and is handed to the parent.
+  A colour picker: a tile group of colour tiles, radios for one choice. The slot holds its
+  ColorTiles; with none, it shows every hue of the palette. `class`, `style` and other attributes go
+  on the fieldset (`disabled` disables the whole group). In a `.vue` file, `v-model` is the chosen
+  tile's value, or 'custom'. With `v-model`, the parent's value is the starting value unless it is
+  undefined; then `value`, or else the first tile marked `checked`, applies and is handed to the
+  parent.
 
   Without `custom` it works with no JavaScript, in any page; a plain HTML page writes its HTML.
 

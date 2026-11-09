@@ -1,6 +1,7 @@
 <!--
-  One option of a Ballot: a tile beside a bordered text box, in one label. Put the title in the
-  slot, and optionally an icon for the tile (`slot="icon"` in Astro, `<template #icon>` in Vue).
+  One option of a Ballot: a tile beside a bordered text box, in one label. The slot is the title;
+  the `icon` slot (`slot="icon"` in Astro, `<template #icon>` in Vue) holds an optional icon for
+  the tile.
   `class` and `style` go on the label; other attributes go on the input.
 
   @example

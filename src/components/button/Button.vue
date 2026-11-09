@@ -1,7 +1,7 @@
 <!--
-  An rkui button: a `<button>`, or an `<a>` styled as one when `href` is given. Put an icon before
-  the label in the slot. `class`, `style` and other attributes go on the element (`<a>` ones for a
-  link, `<button>` ones otherwise).
+  An rkui button: a `<button>`, or an `<a>` styled as one when `href` is given. The slot is the
+  label, after an optional icon. `class`, `style` and other attributes go on the element (`<a>` ones
+  for a link, `<button>` ones otherwise).
 
   With `toggle` it is a button that stays pushed in while it is on: a `<label>` styled as a button,
   holding a visually hidden checkbox, so it works with no JavaScript. Screen readers hear a
@@ -69,9 +69,9 @@ const {
 } = defineProps<Props>()
 
 /**
- * With `toggle`, whether it is on (`v-model`); `checked` when left out. The undefined default stops
- * Vue reading a missing model as false.
+ * With `toggle`, whether it is on (`v-model`); `checked` when left out.
  */
+// The undefined default stops Vue reading a missing model as false.
 const on = defineModel<boolean | undefined>({ default: undefined })
 if (on.value === undefined) on.value = checked
 const attrs = useAttrs()

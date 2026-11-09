@@ -1,10 +1,11 @@
 <!--
   An urgent message in a box in the middle of the window, like a script's `alert()`: a native
   `<dialog>` opened as a modal, so the page behind it is blurred, held still and can't be used,
-  focus moves into it, and focus goes back to the opening button when it closes. A band in its
-  `hue` holds an icon and the title; the slot is the message, and the `actions` slot its buttons
-  (`slot="actions"` in Astro, or `<Fragment slot="actions">` around several; `<template #actions>`
-  in Vue). `class`, `style` and other attributes go on the `<dialog>`.
+  focus moves into it, and focus goes back to the opening button when it closes. A band in its `hue`
+  holds an icon and the title. The slot is the message; the `icon` slot replaces the band's warning
+  icon; the `actions` slot holds its buttons (`slot="actions"` in Astro, or
+  `<Fragment slot="actions">` around several; `<template #actions>` in Vue). `class`, `style` and
+  other attributes go on the `<dialog>`.
 
   Needs no JavaScript. A button opens it with `command="show-modal"` and `commandfor` set to this
   `id`, and one inside closes it with `command="close"`; its `value` becomes the dialog's

@@ -1,8 +1,8 @@
 <!--
   A segmented control: a pill group of native radios, built from SegmentedOptions, which can each
-  have an icon before the label. With `deck` it is a row of raised keys, like a tape deck's.
-  `class`, `style` and other attributes go on the fieldset. In Safari before 26 the checked fill
-  doesn't slide between options; each option fills on its own.
+  have an icon before the label. The slot holds the SegmentedOptions. With `deck` it is a row of
+  raised keys, like a tape deck's. `class`, `style` and other attributes go on the fieldset. In
+  Safari before 26 the checked fill doesn't slide between options; each option fills on its own.
 
   @example
   <Segmented legend="View">

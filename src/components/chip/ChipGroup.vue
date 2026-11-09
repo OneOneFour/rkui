@@ -1,9 +1,9 @@
 <!--
-  A group of filter chips: a fieldset with a visually hidden legend, holding Chips. Radios for one
-  choice, checkboxes with `multiple`. `class`, `style` and other attributes go on the fieldset. In
-  a `.vue` file, `v-model` is the chosen chip's value (a list of values with `multiple`). With
-  `v-model`, the parent's value is the starting value unless it is undefined; then `checked`
-  applies and is handed to the parent (for one choice, the first chip marked wins).
+  A group of filter chips: a fieldset with a visually hidden legend. The slot holds the Chips.
+  Radios for one choice, checkboxes with `multiple`. `class`, `style` and other attributes go on the
+  fieldset. In a `.vue` file, `v-model` is the chosen chip's value (a list of values with
+  `multiple`). With `v-model`, the parent's value is the starting value unless it is undefined; then
+  `checked` applies and is handed to the parent (for one choice, the first chip marked wins).
 
   @example
   <ChipGroup legend="Topics" multiple>
