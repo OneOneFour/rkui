@@ -544,7 +544,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Figure | `.rkui-figure` | |
 | Quote | `.rkui-quote` (panel, slab serif; `--italic`) | upright by default; `slant="italic"` slants it; one line, two steps larger; two lines, one step (`quote-enhance.js`); `--short` always two steps |
 | Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
-| Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`), `--top`, `--left`, `--right`, `--remote` (a `<div>` that a button's `popovertarget` opens), `--overlay` (hangs over the page beyond its parent); `.rkui-cabinet` | drawer by default, pulling out from the bottom |
+| Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`), `--top`, `--left`, `--right`, `--remote` (a `<div>` that a button's `popovertarget` opens), `--overlay` (hangs over the page beyond its parent, as `--left` and `--right` always do); `.rkui-cabinet` | drawer by default, pulling out from the bottom |
 | Equations | `.rkui-equation` (`--panel`, `--rule`, `--key`), `.rkui-eqref` | bare by default; §3.3 |
 | Table | `.rkui-table` (`--ledger`, `--small`, `--messy`, `--still`, `--lift`) | sheet by default; sheet or ledger open |
 | Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on; its colours (`--rkui-scroll-*`, `--rkui-pill-*`) pass down from wherever they are set; every other scrollbar takes the page's |

@@ -3,9 +3,10 @@
   panel, a plain sheet), for extra content or buttons. It is a `<details>` with its handle in the
   `<summary>`, so it needs no JavaScript and is never hydrated. It pulls out from the bottom edge,
   or the one `placement` names: put it last in its parent, or first for the top. On the left and
-  right it stands beside the parent's other content, so the parent lays its children out in a row
-  (`display: flex`), and it opens as wide as its contents, up to `--rkui-drawer-width`; in a
-  right-to-left page left and right swap, as the row does. Drawers in a `Cabinet` stack as one,
+  right it hangs beyond the parent's side, as `overlay` does, so the parent's content stays put:
+  leave room beside the parent for it. It opens as wide as its contents, up to
+  `--rkui-drawer-width` (`min(12rem, 35vw)`), and a card holding one doesn't clip it; in a
+  right-to-left page left and right swap. Drawers in a `Cabinet` stack as one,
   pulling out from the bottom. The slot is the drawer's contents; the `handle` slot puts an icon
   before the label (`slot="handle"` in Astro, `<template #handle>` in Vue). A drawer's pull shows
   its label; a blind's is a ring holding the caret, with the label there for screen readers,
@@ -23,11 +24,12 @@
   A remote drawer starts shut, and drawers sharing a name don't close it. With its helper script
   (`drawer-enhance.js`), Escape inside it shuts it, and focus goes back to the button as it shuts.
 
-  With `overlay`, the drawer hangs over the page beyond its parent's edge instead of pushing the
-  page away: it is placed against the edge of its containing block (give the parent `position:
-  relative`) and as wide as it, or as tall on the left and right, and has its own fill, outline
-  and shadow. Its parent mustn't clip it (no `overflow: hidden`), so it suits a bar or panel
-  rather than a card; set its `inset` to place it elsewhere.
+  With `overlay`, a drawer on the top or bottom hangs over the page beyond its parent's edge
+  instead of pushing the page away, as one on the left or right always does: it is placed against
+  the edge of its containing block (give the parent `position: relative`) and as wide as it, or as
+  tall on the left and right, and has its own fill, outline and shadow. Its parent mustn't clip it
+  (no `overflow: hidden`), so on the top or bottom it suits a bar or panel rather than a card; set
+  its `inset` to place it elsewhere.
 
   @example
   <Card title="Field notes">
@@ -52,8 +54,9 @@ interface Props {
   /** Opened by a button elsewhere that names its `id`; by its own handle when left out. */
   remote?: boolean
   /**
-   * Hangs over what lies beyond its parent's edge instead of pushing it away, with its own fill,
-   * outline and shadow; in the flow when left out.
+   * On the top or bottom, hangs over what lies beyond its parent's edge instead of pushing it
+   * away, with its own fill, outline and shadow; in the flow when left out. On the left and right
+   * it always hangs over.
    */
   overlay?: boolean
   /**

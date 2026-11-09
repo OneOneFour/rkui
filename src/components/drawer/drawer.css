@@ -33,15 +33,15 @@
 
    An overlay drawer, .rkui-drawer--overlay, hangs over the page beyond its parent's edge rather
    than pushing it away: it is placed absolutely against that edge of its containing block (give
-   the parent position: relative, and don't clip it), and the page may set its inset.
+   the parent position: relative, and don't clip it), and the page may set its inset. A drawer on
+   the left or right always does.
 
    Where it pulls out: from the bottom edge by default, or .rkui-drawer--top, --left or --right.
    The rules below are written down the page, from the parent's edge towards the handle; the
    sections near the end turn them round for the top, and sideways for the left and right. On the
-   left and right the drawer stands beside its parent's other content, so the parent lays out its
-   children in a row (display: flex), and its tray opens to its contents' width, at most
-   --rkui-drawer-width (min(12rem, 40vw) when left out). In a right-to-left page left and right
-   swap, as the row does.
+   left and right it hangs beyond its parent's side, as tall as the parent, and its tray opens to
+   its contents' width, at most --rkui-drawer-width (min(12rem, 35vw) when left out). A card
+   holding one doesn't clip it. In a right-to-left page left and right swap.
 
    The default is a drawer. Its tray, in the colour behind folder tabs, is sunk into the parent
    by an inner shadow in --rkui-recess, and its front (the summary) sits beyond it. It slides out
@@ -60,8 +60,8 @@
 
    In a card's body it reaches the card's sides, and the last one its bottom edge. In another
    parent, set --rkui-drawer-bleed to the parent's padding for the same, and clip the parent's
-   corners (overflow: hidden) as a card does. A drawer on the left or right always reaches its
-   side of the parent, and a drawer on top the parent's top edge when it comes first.
+   corners (overflow: hidden) as a card does. A drawer on top reaches the parent's top edge when
+   it comes first.
 
    The parent that jolts is a card holding a drawer in its body, or a cabinet. Any other parent
    jolts with the class rkui-drawer-host: it moves by its top and inline-start offsets, so it is
@@ -221,32 +221,59 @@
   cursor: default;
 }
 
-/* An overlay drawer hangs over what lies beyond its parent's edge instead of pushing it away: it
-   is placed against that edge of its containing block, as wide as it (as tall on the left and
-   right), above the page that follows. A drawer has its own fill, outline and shadow, with no
-   outline along the parent's edge, so the parent seems to bulge out; a blind already hangs in
-   front with its own. */
-.rkui-drawer--overlay {
+/* An overlay drawer, and every drawer on the left or right, hangs over what lies beyond its
+   parent's edge instead of pushing it away: it is placed against that edge of its containing
+   block, as wide as it (as tall on the left and right), above the page that follows. A drawer has
+   its own fill, outline and shadow, with no outline along the parent's edge, so the parent seems
+   to bulge out; a blind already hangs in front with its own. */
+:is(.rkui-drawer--overlay, .rkui-drawer--left, .rkui-drawer--right) {
   position: absolute;
   z-index: 1;
   inset: 100% 0 auto;
+  margin: 0;
 }
 
 .rkui-drawer--overlay.rkui-drawer--top {
   inset: auto 0 100%;
 }
 
-.rkui-drawer--overlay.rkui-drawer--left {
-  inset-block: 0;
+/* On the sides it covers the parent's outline, so its own lines up with it, and it is as wide as
+   its open tray, though it starts at the parent's edge with no room before it. */
+.rkui-drawer--left {
+  inset-block: calc(-1 * var(--rkui-outline-width));
   inset-inline: auto 100%;
+  inline-size: max-content;
 }
 
-.rkui-drawer--overlay.rkui-drawer--right {
-  inset-block: 0;
+.rkui-drawer--right {
+  inset-block: calc(-1 * var(--rkui-outline-width));
   inset-inline: 100% auto;
+  inline-size: max-content;
 }
 
-.rkui-drawer--overlay:not(.rkui-drawer--blind) {
+/* A card holding one on its side doesn't clip it, so its image rounds its own top corners, and
+   a drawer there squares the corners it joins. */
+.rkui-card:has(> .rkui-card-body > :is(.rkui-drawer--left, .rkui-drawer--right)) {
+  overflow: visible;
+}
+
+.rkui-card:has(> .rkui-card-body > .rkui-drawer--left:not(.rkui-drawer--blind)) {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+
+.rkui-card:has(> .rkui-card-body > .rkui-drawer--right:not(.rkui-drawer--blind)) {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.rkui-card:has(> .rkui-card-body > :is(.rkui-drawer--left, .rkui-drawer--right))
+  > .rkui-card-image {
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+}
+
+:is(.rkui-drawer--overlay, .rkui-drawer--left, .rkui-drawer--right):not(.rkui-drawer--blind) {
   overflow: clip;
   border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
   border-block-start: none;
@@ -263,18 +290,18 @@
   border-radius: var(--rkui-radius) var(--rkui-radius) 0 0;
 }
 
-.rkui-drawer--overlay:is(.rkui-drawer--left, .rkui-drawer--right):not(.rkui-drawer--blind) {
+:is(.rkui-drawer--left, .rkui-drawer--right):not(.rkui-drawer--blind) {
   border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
   border-radius: 0;
 }
 
-.rkui-drawer--overlay.rkui-drawer--left:not(.rkui-drawer--blind) {
+.rkui-drawer--left:not(.rkui-drawer--blind) {
   border-inline-end: none;
   border-start-start-radius: var(--rkui-radius);
   border-end-start-radius: var(--rkui-radius);
 }
 
-.rkui-drawer--overlay.rkui-drawer--right:not(.rkui-drawer--blind) {
+.rkui-drawer--right:not(.rkui-drawer--blind) {
   border-inline-start: none;
   border-start-end-radius: var(--rkui-radius);
   border-end-end-radius: var(--rkui-radius);
@@ -499,26 +526,16 @@
   inset-block: calc(100% + var(--rkui-outline-width)) auto;
 }
 
-/* On the left and right the parts stand side by side, reaching the parent's top and bottom and
-   its side, and the drawer stands beside the parent's other content in a row. It keeps its width
-   there, and the content beside it narrows. Its tray opens sideways, to its contents' width up to
-   --rkui-drawer-width. The pull's label turns on end, with the foot of its letters towards the
-   parent, as folder tabs on the sides do. In a right-to-left page the sides swap, as the row
-   does. */
-.rkui-drawer--left,
-.rkui-drawer--right {
-  flex: none;
-  margin: calc(-1 * var(--rkui-drawer-bleed, 0px));
-}
-
+/* On the left and right the parts stand side by side, as tall as the parent, hanging beyond its
+   side (above). The tray opens sideways, to its contents' width up to --rkui-drawer-width. The
+   pull's label turns on end, with the foot of its letters towards the parent, as folder tabs on
+   the sides do. In a right-to-left page the sides swap. */
 .rkui-drawer--left {
   grid-template-areas: 'handle tray roller';
-  margin-inline-end: 0;
 }
 
 .rkui-drawer--right {
   grid-template-areas: 'roller tray handle';
-  margin-inline-start: 0;
 }
 
 /* The side of the screen it is on: the label's writing mode, the caret's turn and the way the
@@ -605,7 +622,7 @@
 :is(.rkui-drawer--left, .rkui-drawer--right) > .rkui-drawer-tray > .rkui-drawer-body {
   align-self: stretch;
   inline-size: max-content;
-  max-inline-size: var(--rkui-drawer-width, min(12rem, 40vw));
+  max-inline-size: var(--rkui-drawer-width, min(12rem, 35vw));
 }
 
 .rkui-drawer--left > .rkui-drawer-body,
@@ -747,16 +764,18 @@
   transition: --rkui-drawer-jolt var(--rkui-duration-spring) ease-out var(--rkui-duration-spring);
 }
 
-.rkui-card:has(> .rkui-card-body > .rkui-drawer--top),
+.rkui-card:has(> .rkui-card-body > .rkui-drawer--top:not(.rkui-drawer--blind)),
 :is(.rkui-cabinet, .rkui-drawer-host):has(> .rkui-drawer--top) {
   --rkui-drawer-jolt-y: 1;
 }
 
+.rkui-card:has(> .rkui-card-body > .rkui-drawer--left:not(.rkui-drawer--blind)),
 .rkui-drawer-host:has(> .rkui-drawer--left) {
   --rkui-drawer-jolt-x: 1;
   --rkui-drawer-jolt-y: 0;
 }
 
+.rkui-card:has(> .rkui-card-body > .rkui-drawer--right:not(.rkui-drawer--blind)),
 .rkui-drawer-host:has(> .rkui-drawer--right) {
   --rkui-drawer-jolt-x: -1;
   --rkui-drawer-jolt-y: 0;
