@@ -483,7 +483,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 
 | Component | Class | Default and options |
 |---|---|---|
-| Chips | `.rkui-chip`, `.rkui-chip-group` | checked takes `--rkui-section` |
+| Chips | `.rkui-chip`, `.rkui-chip-group` | checked takes `--rkui-section`, or inverts the page colours |
 | Breadcrumbs | `.rkui-breadcrumbs` (chips; `--path`) | open |
 | Pagination | `.rkui-pagination`; folder-tab version in `folder.css` | open |
 | Folder tabs | `.rkui-folder`, `<rkui-tabs>` (`--tinted`) | bar above the tabs; flat scrollbar |
