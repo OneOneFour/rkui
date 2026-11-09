@@ -141,10 +141,14 @@ article > .rkui-logo {
     position: relative;
   }
 
+  /* The closed settings drawer's front hangs below the bar here, so the page starts below it: the
+     front is its padding and small caret (1.25rem), with an outline above and below. */
   .docs-frame {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--rkui-space-4);
-    padding-block-start: var(--rkui-space-4);
+    padding-block-start: calc(
+      var(--rkui-space-4) + 2 * var(--rkui-space-2) + 1.25rem + 2 * var(--rkui-outline-width)
+    );
   }
 
   .docs-sidebar {
