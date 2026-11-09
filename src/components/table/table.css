@@ -66,7 +66,7 @@
     var(--rkui-stripe),
     color-mix(in srgb, var(--rkui-line-unfilled) 40%, transparent)
   );
-  --rkui-table-rule-width: var(--rkui-outline-width);
+  --rkui-table-rule-width: var(--rkui-stroke-width, var(--rkui-outline-width));
   --rkui-table-column-rule: var(--rkui-table-rule);
   --rkui-table-column-rule-width: var(--rkui-table-rule-width);
   --rkui-table-row: var(--rkui-raised);
@@ -268,8 +268,8 @@ table.rkui-table {
 
   --rkui-table-sticker-shadow:
     var(--rkui-table-sticker-x) var(--rkui-table-sticker-y) 0 var(--rkui-shadow-color),
-    var(--rkui-table-sticker-x) var(--rkui-table-sticker-y) 0 var(--rkui-outline-width)
-      var(--rkui-shadow-edge);
+    var(--rkui-table-sticker-x) var(--rkui-table-sticker-y) 0
+      var(--rkui-stroke-width, var(--rkui-outline-width)) var(--rkui-shadow-edge);
 
   border: var(--rkui-outline-width) solid var(--rkui-line);
   rotate: var(--rkui-table-tilt);
@@ -309,7 +309,7 @@ table.rkui-table {
     color-mix(in srgb, var(--rkui-coral) 85%, transparent)
   );
   --rkui-table-column-rule: var(--rkui-table-margin-rule);
-  --rkui-table-column-rule-width: var(--rkui-outline-width);
+  --rkui-table-column-rule-width: var(--rkui-stroke-width, var(--rkui-outline-width));
   --rkui-table-row-alt: color-mix(in oklab, var(--rkui-raised), var(--rkui-line) 5%);
   --rkui-table-hole-margin: var(--rkui-space-6);
   --rkui-table-hole-size: 0.875rem;
@@ -391,8 +391,9 @@ table.rkui-table--ledger {
         var(--rkui-table-lift-x) var(--rkui-table-lift-y) 0 var(--rkui-shadow-color)
       )
       drop-shadow(
-        calc(var(--rkui-shadow-dx) * var(--rkui-outline-width))
-          calc(var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0 var(--rkui-shadow-edge)
+        calc(var(--rkui-shadow-dx) * var(--rkui-stroke-width, var(--rkui-outline-width)))
+          calc(var(--rkui-shadow-dy) * var(--rkui-stroke-width, var(--rkui-outline-width))) 0
+          var(--rkui-shadow-edge)
       );
     transition-timing-function: ease, ease, ease, step-start;
   }

@@ -60,8 +60,9 @@
       var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0 var(--rkui-shadow-color)
     )
     drop-shadow(
-      calc(var(--rkui-shadow-dx) * var(--rkui-outline-width))
-        calc(var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0 var(--rkui-shadow-edge)
+      calc(var(--rkui-shadow-dx) * var(--rkui-stroke-width, var(--rkui-outline-width)))
+        calc(var(--rkui-shadow-dy) * var(--rkui-stroke-width, var(--rkui-outline-width))) 0
+        var(--rkui-shadow-edge)
     );
 }
 

@@ -59,7 +59,7 @@
 }
 
 .rkui-breadcrumbs--path li + li::before {
-  inline-size: var(--rkui-outline-width);
+  inline-size: var(--rkui-stroke-width, var(--rkui-outline-width));
   block-size: 1em;
   clip-path: none;
   rotate: 20deg;

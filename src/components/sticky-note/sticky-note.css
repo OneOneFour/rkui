@@ -141,8 +141,8 @@
   rotate: var(--rkui-note-tilt);
   box-shadow:
     var(--rkui-note-shadow-x) var(--rkui-note-shadow-y) 0 var(--rkui-shadow-color),
-    var(--rkui-note-shadow-x) var(--rkui-note-shadow-y) 0 var(--rkui-outline-width)
-      var(--rkui-shadow-edge);
+    var(--rkui-note-shadow-x) var(--rkui-note-shadow-y) 0
+      var(--rkui-stroke-width, var(--rkui-outline-width)) var(--rkui-shadow-edge);
 }
 
 /* A strip of see-through tape across the top edge. */

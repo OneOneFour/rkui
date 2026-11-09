@@ -70,7 +70,7 @@ a {
 }
 
 a:hover {
-  text-decoration-thickness: var(--rkui-outline-width);
+  text-decoration-thickness: var(--rkui-stroke-width, var(--rkui-outline-width));
 }
 
 /* Marker-pen focus: a link has no outline for the band to hug, so the band goes behind the text.

@@ -58,7 +58,8 @@
   border-block-end-width: var(--rkui-outline-width);
   box-shadow:
     0 var(--rkui-shadow-offset) 0 var(--rkui-shadow-color),
-    0 var(--rkui-shadow-offset) 0 var(--rkui-outline-width) var(--rkui-shadow-edge);
+    0 var(--rkui-shadow-offset) 0 var(--rkui-stroke-width, var(--rkui-outline-width))
+      var(--rkui-shadow-edge);
 }
 
 /* Anchor jumps, such as a table of contents' links, land below the bar rather than under it.

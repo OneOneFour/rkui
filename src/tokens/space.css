@@ -18,3 +18,13 @@
   --rkui-focus-width: 6px;
   --rkui-focus-offset: 0;
 }
+
+/* EXPERIMENT for Rob, not a decided change: data-outline="none" on <html> or any container drops
+   the outline around components. Lines that aren't outlines (shadow rims, link underlines, table
+   rules) keep their width through --rkui-stroke-width. To remove the experiment, delete this rule
+   and replace each var(--rkui-stroke-width, var(--rkui-outline-width)) with
+   var(--rkui-outline-width). */
+[data-outline='none'] {
+  --rkui-outline-width: 0px;
+  --rkui-stroke-width: 2px;
+}
