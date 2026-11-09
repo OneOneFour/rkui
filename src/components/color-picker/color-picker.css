@@ -89,6 +89,17 @@
   border-radius: var(--rkui-picker-radius);
 }
 
+/* The native input covers the tile and its inset shadow, so a chosen custom tile draws the same
+   shadow again over the input. */
+.rkui-tile--custom-color:has(> input[type='radio']:checked)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--rkui-shadow-inset);
+  pointer-events: none;
+}
+
 /* The paint brush sits on a neutral disc in the corner, so it reads on any picked colour. Clicks
    pass through it to the input. */
 :is(.rkui-tile--custom-color, .rkui-color-input) > svg {
@@ -106,6 +117,7 @@
   color: var(--rkui-fg);
   forced-color-adjust: auto;
   pointer-events: none;
+  z-index: 1;
 }
 
 /* Flair options for colour tiles. With none, the tiles are plain (flair none). Each
