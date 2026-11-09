@@ -51,10 +51,8 @@ const NEUTRALS: Swatch[] = [
 
 /** The panel and shading colours, each with what uses it. */
 const PANELS: { token: string; job: string }[] = [
-  { token: 'slate', job: 'Code blocks, quotes, nested quotes' },
-  { token: 'slate-tab', job: "The code block's editor-tab strip" },
-  { token: 'slate-greige', job: 'The greige alternative to slate' },
-  { token: 'slate-greige-tab', job: 'The greige alternative to the tab strip' },
+  { token: 'panel', job: 'Code blocks, quotes, shaded cards, inline code' },
+  { token: 'panel-tab', job: "The code block's editor-tab strip, a quote in a quote" },
   { token: 'folder-back', job: "Unselected folder tabs, a drawer's tray, an inset card" },
   { token: 'recess', job: "The shadow inside a drawer's tray and an inset card (translucent)" },
   { token: 'stripe', job: "The code panel's inset, hatching (translucent)" },
@@ -111,8 +109,8 @@ const CODE: { token: string; job: string }[] = [
   <div class="auxiliary">
     <h2>Panels and shading</h2>
     <p class="note">
-      Recess and stripe are translucent recipes, the outline colour over whatever they cross. They
-      are shown over the page colour.
+      The panel and its tab follow the page palette. Recess and stripe are translucent recipes, the
+      outline colour over whatever they cross. They are shown over the page colour.
     </p>
     <div class="hues">
       {PANELS.map(({ token, job }) => (
@@ -134,10 +132,7 @@ const CODE: { token: string; job: string }[] = [
         </div>
       ))}
     </div>
-    <div class="samples">
-      <pre class="sample slate"><code><span class="kw">const</span> total = <span class="fn">add</span>(<span class="num">2</span>, <span class="str">'3'</span>) <span class="cm">// slate</span></code></pre>
-      <pre class="sample greige"><code><span class="kw">const</span> total = <span class="fn">add</span>(<span class="num">2</span>, <span class="str">'3'</span>) <span class="cm">// slate-greige</span></code></pre>
-    </div>
+    <pre class="sample"><code><span class="kw">const</span> total = <span class="fn">add</span>(<span class="num">2</span>, <span class="str">'3'</span>) <span class="cm">// on the panel</span></code></pre>
   </div>
 
   <p class="rkui-visually-hidden" aria-live="polite"></p>
@@ -180,28 +175,14 @@ const CODE: { token: string; job: string }[] = [
     margin: 0 0 var(--palette-gap);
   }
 
-  .samples {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: var(--palette-gap);
-    margin-block-start: var(--palette-gap);
-  }
-
   .sample {
-    margin: 0;
+    margin: var(--palette-gap) 0 0;
     padding: var(--rkui-space-3);
     overflow-x: auto;
+    background: var(--rkui-panel);
     color: var(--rkui-fg);
     font-family: var(--rkui-font-mono);
     font-size: var(--rkui-step--1);
-  }
-
-  .sample.slate {
-    background: var(--rkui-slate);
-  }
-
-  .sample.greige {
-    background: var(--rkui-slate-greige);
   }
 
   .kw {
