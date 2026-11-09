@@ -14,10 +14,151 @@
   inherits: false;
 }
 
+/* Each raised thing with a colour of its own: the fill its shade is mixed from, and that shade as
+   its extrusion. Set whatever the shadow look; only the colour shadow below reads them. */
+.rkui-button {
+  --rkui-shade-of: var(--rkui-button-fill);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+:is(.rkui-checkbox, .rkui-radio, .rkui-switch):checked,
+.rkui-dial-face,
+.rkui-clock-hand--hour .rkui-clock-tag,
+.rkui-drawer--blind > .rkui-drawer-handle .rkui-drawer-pull {
+  --rkui-shade-of: var(--rkui-selected);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* In error they fill with coral, on or off. */
+:is(.rkui-checkbox, .rkui-radio, .rkui-switch)[aria-invalid='true'] {
+  --rkui-shade-of: var(--rkui-coral-solid);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* The range's native thumb and the file button are pseudo-elements, so their inputs carry the
+   colour. */
+.rkui-range,
+.rkui-range-thumb {
+  --rkui-shade-of: var(--rkui-selected);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+.rkui-input[type='file'] {
+  --rkui-shade-of: var(--rkui-yellow);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+.rkui-tile--color {
+  --rkui-shade-of: var(--rkui-swatch);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* Every badge, so a table's stickers take it as well as .rkui-badge--sticker. */
+.rkui-badge {
+  --rkui-shade-of: var(--rkui-badge-fill);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+.rkui-spinner-dot {
+  --rkui-shade-of: var(--rkui-spinner-dot-fill);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* The ring's wedge and the flask's water. */
+:is(.rkui-spinner--ring, .rkui-spinner--water) {
+  --rkui-shade-of: var(--rkui-spinner-fill);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* The band's hue. */
+.rkui-alert {
+  --rkui-shade-of: var(--rkui-alert-hue);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* The band's hue, and the lifted row's too: the table's hue, or the section's. With neither,
+   --rkui-shade-of is left without a value and they cast --rkui-shadow-lit. */
+.rkui-table,
+.rkui-table--lift tbody tr {
+  --rkui-shade-of: var(--rkui-table-hue, var(--rkui-section));
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* Its button's fill. */
+.rkui-search-bar {
+  --rkui-shade-of: var(--rkui-yellow);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+.rkui-sidebar-more {
+  --rkui-shade-of: var(--rkui-pill-fill);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* Checked chips and section buttons take --rkui-section where it is set. Where it isn't, their
+   fill is ink, --rkui-shade-of is left without a value and they cast --rkui-shadow-lit. */
+.rkui-chip:is(:has(:checked), [aria-current='page']),
+.rkui-button--section {
+  --rkui-shade-of: var(--rkui-section);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* A card's hue, where it has one; without, it casts --rkui-shadow-lit. :where() keeps this
+   below a sticky note's own colour. */
+:where(.rkui-card--link, .rkui-card--raised) {
+  --rkui-shade-of: var(--rkui-card-hue);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* Tints take the solid colour of their tint, as the tint's own shade is too close to the page:
+   a tinted folder's sheet and the selected tab that joins it, a sidebar's current page and the
+   key equation's panel. */
+.rkui-folder--tinted > .rkui-folder-sheet,
+.rkui-folder--tinted
+  > .rkui-folder-strip
+  .rkui-folder-tab:is(:has(:checked), [aria-current='page']),
+.rkui-sidebar-link[aria-current='page'] {
+  --rkui-shade-of: var(--rkui-selected);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* A coloured drawer or blind: its own shadow, its handle's, its remote tray's and its pull's.
+   The tray's inset, the roller, the screen and the hem are pseudo-elements, which take their
+   element's shadow colour. */
+.rkui-drawer--hue,
+.rkui-drawer--hue > :is(.rkui-drawer-handle, .rkui-drawer-tray),
+.rkui-drawer--hue > .rkui-drawer-handle .rkui-drawer-pull {
+  --rkui-shade-of: var(--rkui-drawer-hue);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+.rkui-equation--key {
+  --rkui-shade-of: var(--rkui-yellow);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* A sidebar's current page filled with its link's own colour (sidebar.css). */
+.rkui-sidebar-link--hue[aria-current='page'] {
+  --rkui-shade-of: var(--rkui-sidebar-hue);
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* sticky-note.css sets the note's --rkui-shade-of, for its fold. */
+.rkui-sticky-note {
+  --rkui-extrusion: var(--rkui-shade);
+}
+
+/* Darkened, these fills are too close to the page to read as a shadow. */
+:is(.rkui-button--navy, .rkui-badge--navy) {
+  --rkui-extrusion: initial;
+}
+
 @supports (color: light-dark(black, white)) {
   @scope ([data-shadow='color']) to ([data-shadow='outline'], [data-shadow='block']) {
-    /* Declared on every element, so each one resolves its own --rkui-extrusion. The shadow tokens
-       are built on every element too (shadows.css), from these. */
+    /* Declared on every element, the data-shadow one included, so each one resolves its own
+       --rkui-extrusion. The shadow tokens are built on every element too (shadows.css), from
+       these. */
+    :scope,
     * {
       --rkui-shadow-edge: transparent;
       --rkui-shadow-color: light-dark(
@@ -26,148 +167,12 @@
       );
     }
 
-    .rkui-button {
-      --rkui-shade-of: var(--rkui-button-fill);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    :is(.rkui-checkbox, .rkui-radio, .rkui-switch):checked,
-    .rkui-dial-face,
-    .rkui-clock-hand--hour .rkui-clock-tag,
-    .rkui-drawer--blind > .rkui-drawer-handle .rkui-drawer-pull {
-      --rkui-shade-of: var(--rkui-selected);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* In error they fill with coral, on or off. */
-    :is(.rkui-checkbox, .rkui-radio, .rkui-switch)[aria-invalid='true'] {
-      --rkui-shade-of: var(--rkui-coral-solid);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* The range's native thumb and the file button are pseudo-elements, so their inputs carry the
-       colour. */
-    .rkui-range,
-    .rkui-range-thumb {
-      --rkui-shade-of: var(--rkui-selected);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    .rkui-input[type='file'] {
-      --rkui-shade-of: var(--rkui-yellow);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    .rkui-tile--color {
-      --rkui-shade-of: var(--rkui-swatch);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* Every badge, so a table's stickers take it as well as .rkui-badge--sticker. */
-    .rkui-badge {
-      --rkui-shade-of: var(--rkui-badge-fill);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    .rkui-spinner-dot {
-      --rkui-shade-of: var(--rkui-spinner-dot-fill);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* The ring's wedge and the flask's water. */
-    :is(.rkui-spinner--ring, .rkui-spinner--water) {
-      --rkui-shade-of: var(--rkui-spinner-fill);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* The band's hue. */
-    .rkui-alert {
-      --rkui-shade-of: var(--rkui-alert-hue);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* The band's hue, and the lifted row's too: the table's hue, or the section's. With neither,
-       --rkui-shade-of is left without a value and they cast --rkui-shadow-lit. */
-    .rkui-table,
-    .rkui-table--lift tbody tr {
-      --rkui-shade-of: var(--rkui-table-hue, var(--rkui-section));
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* Its button's fill. */
-    .rkui-search-bar {
-      --rkui-shade-of: var(--rkui-yellow);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    .rkui-sidebar-more {
-      --rkui-shade-of: var(--rkui-pill-fill);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
     /* A scroll region's pills are drawn in its background, so they take their own colour
        (overflow.css). */
+    :scope.rkui-scroll,
     .rkui-scroll {
       --rkui-shade-of: var(--rkui-pill-fill);
       --rkui-pill-shadow-color: light-dark(var(--rkui-line), var(--rkui-shade));
-    }
-
-    /* Checked chips and section buttons take --rkui-section where it is set. Where it isn't, their
-       fill is ink, --rkui-shade-of is left without a value and they cast --rkui-shadow-lit. */
-    .rkui-chip:is(:has(:checked), [aria-current='page']),
-    .rkui-button--section {
-      --rkui-shade-of: var(--rkui-section);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* A card's hue, where it has one; without, it casts --rkui-shadow-lit. :where() keeps this
-       below a sticky note's own colour. */
-    :where(.rkui-card--link, .rkui-card--raised) {
-      --rkui-shade-of: var(--rkui-card-hue);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* Tints take the solid colour of their tint, as the tint's own shade is too close to the page:
-       a tinted folder's sheet and the selected tab that joins it, a sidebar's current page and the
-       key equation's panel. */
-    .rkui-folder--tinted > .rkui-folder-sheet,
-    .rkui-folder--tinted
-      > .rkui-folder-strip
-      .rkui-folder-tab:is(:has(:checked), [aria-current='page']),
-    .rkui-sidebar-link[aria-current='page'] {
-      --rkui-shade-of: var(--rkui-selected);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* A coloured drawer or blind: its own shadow, its handle's, its remote tray's and its pull's.
-       The tray's inset, the roller, the screen and the hem are pseudo-elements, which take their
-       element's shadow colour. */
-    .rkui-drawer--hue,
-    .rkui-drawer--hue > :is(.rkui-drawer-handle, .rkui-drawer-tray),
-    .rkui-drawer--hue > .rkui-drawer-handle .rkui-drawer-pull {
-      --rkui-shade-of: var(--rkui-drawer-hue);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    .rkui-equation--key {
-      --rkui-shade-of: var(--rkui-yellow);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* A sidebar's current page filled with its link's own colour (sidebar.css). */
-    .rkui-sidebar-link--hue[aria-current='page'] {
-      --rkui-shade-of: var(--rkui-sidebar-hue);
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* sticky-note.css sets the note's --rkui-shade-of, for its fold. */
-    .rkui-sticky-note {
-      --rkui-extrusion: var(--rkui-shade);
-    }
-
-    /* Darkened, these fills are too close to the page to read as a shadow. */
-    :is(.rkui-button--navy, .rkui-badge--navy) {
-      --rkui-extrusion: initial;
     }
   }
 }

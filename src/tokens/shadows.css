@@ -74,9 +74,11 @@
    - "block": the near-black shadow with no rim;
    - "color": each raised thing with a fill casts its shadow in that fill, darkened
      (shadow-color.css). Browsers without @scope draw the outline instead.
-   The near-black shadow is set again on each data-shadow, so one inside "color" switches back. */
+   The near-black shadow is set again on each data-shadow, so one inside "color" switches back.
+   :where() keeps it below the "color" rule, so data-shadow="color" on a button or card itself
+   works too. */
 :root,
-[data-shadow] {
+:where([data-shadow]) {
   --rkui-shadow-color: var(--rkui-line);
 }
 
