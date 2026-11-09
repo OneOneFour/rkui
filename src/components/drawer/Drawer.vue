@@ -22,7 +22,8 @@
   step. Its front is no button: a drawer shows only an arrow, a blind's cord ends in an empty
   ring (the `handle` slot and `showLabel` do nothing), and its label names it for screen readers.
   A remote drawer starts shut, and drawers sharing a name don't close it. With its helper script
-  (`drawer-enhance.js`), Escape inside it shuts it, and focus goes back to the button as it shuts.
+  (`drawer-enhance.js`), Escape shuts it wherever the focus is, and focus inside it goes back to
+  the button as it shuts.
 
   With `overlay`, a drawer on the top or bottom hangs over the page beyond its parent's edge
   instead of pushing the page away, as one on the left or right always does: it is placed against

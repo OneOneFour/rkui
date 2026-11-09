@@ -16,7 +16,7 @@ import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
 
 <Demo label="Drawer in a card">
   <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
-    <Card title="Field notes" meta="Updated today" style="inline-size: 20rem">
+    <Card title="Field notes" meta="Updated today" style="inline-size: min(20rem, 100%)">
       <p>Pack my box with five dozen liquor jugs.</p>
       <Drawer label="Tools">
         <SlidersIcon slot="handle" class="rkui-icon rkui-icon--small" />
@@ -37,8 +37,8 @@ import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
 ## Cabinet
 
 <Demo label="Cabinet of drawers">
-  <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
-    <Cabinet style="inline-size: 18rem">
+  <div style="min-inline-size: 0; padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <Cabinet style="inline-size: 18rem; max-inline-size: 100%">
       <Drawer label="Pens">
         <p>Pack my box with five dozen liquor jugs.</p>
       </Drawer>
@@ -55,8 +55,8 @@ import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
 ## Exclusive cabinet
 
 <Demo label="Cabinet with one drawer open at a time">
-  <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
-    <Cabinet exclusive style="inline-size: 18rem">
+  <div style="min-inline-size: 0; padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <Cabinet exclusive style="inline-size: 18rem; max-inline-size: 100%">
       <Drawer label="Pens">
         <p>Pack my box with five dozen liquor jugs.</p>
       </Drawer>
@@ -74,7 +74,7 @@ import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
 
 <Demo label="Blind on a panel">
   <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
-    <div style="--rkui-drawer-bleed: var(--rkui-space-4); display: grid; gap: var(--rkui-space-3); inline-size: 20rem; padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)">
+    <div style="--rkui-drawer-bleed: var(--rkui-space-4); display: grid; gap: var(--rkui-space-3); inline-size: min(20rem, 100%); padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)">
       <p style="margin: 0">Pack my box with five dozen liquor jugs.</p>
       <Drawer label="Screen" variant="blind">
         <p>How vexingly quick daft zebras jump.</p>
@@ -88,7 +88,7 @@ import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
 
 <Demo label="Blind with its label in the pull">
   <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
-    <Card title="Field notes" style="inline-size: 20rem">
+    <Card title="Field notes" style="inline-size: min(20rem, 100%)">
       <p>Pack my box with five dozen liquor jugs.</p>
       <Drawer label="Notes" variant="blind" showLabel>
         <p>How vexingly quick daft zebras jump.</p>
@@ -103,28 +103,46 @@ With `hue`, a palette hue or a hex code, the drawer's tray, or the blind's scree
 
 <Demo label="Drawers and blinds in colour">
   <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
-    <Card title="Teal" style="inline-size: 14rem">
+    <Card title="No colour" style="inline-size: min(14rem, 100%)">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Tools" open>
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+    </Card>
+    <Card title="Teal" style="inline-size: min(14rem, 100%)">
       <p>Pack my box with five dozen liquor jugs.</p>
       <Drawer label="Tools" hue="teal" open>
         <p>How vexingly quick daft zebras jump.</p>
       </Drawer>
     </Card>
-    <Card title="Coral" style="inline-size: 14rem">
+    <Card title="Coral" style="inline-size: min(14rem, 100%)">
       <p>Pack my box with five dozen liquor jugs.</p>
       <Drawer label="Tools" hue="coral" open>
         <SlidersIcon slot="handle" class="rkui-icon rkui-icon--small" />
         <p>How vexingly quick daft zebras jump.</p>
       </Drawer>
     </Card>
-    <Card title="Grape" style="inline-size: 14rem">
+    <Card title="Navy" style="inline-size: min(14rem, 100%)">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Tools" hue="navy" open>
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+    </Card>
+    <Card title="Blind, no colour" style="inline-size: min(14rem, 100%)">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Screen" variant="blind" showLabel open>
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+    </Card>
+    <Card title="Grape" style="inline-size: min(14rem, 100%)">
       <p>Pack my box with five dozen liquor jugs.</p>
       <Drawer label="Screen" variant="blind" hue="grape" showLabel open>
         <p>How vexingly quick daft zebras jump.</p>
       </Drawer>
     </Card>
-    <Card title="A hex code" style="inline-size: 14rem">
+    <Card title="A hex code" style="inline-size: min(14rem, 100%)">
       <p>Pack my box with five dozen liquor jugs.</p>
-      <Drawer label="Screen" variant="blind" hue="#2e8b57" open>
+      <Drawer label="Screen" variant="blind" hue="#ff7eb6" open>
         <p>How vexingly quick daft zebras jump.</p>
       </Drawer>
     </Card>
@@ -136,10 +154,10 @@ With `hue`, a palette hue or a hex code, the drawer's tray, or the blind's scree
 A drawer pulls out from the edge `placement` names. On top it comes first in its parent. On the left and right it hangs beyond the parent's side, as tall as the parent, so the parent's content stays put: leave room beside the parent for its handle and its tray. The tray opens as wide as its contents, up to `--rkui-drawer-width` (`min(12rem, 35vw)` when left out). A card holding one doesn't clip it; another parent needs `position: relative`, and mustn't clip it either.
 
 <Demo label="Drawers on the top, left and right">
-  <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+  <div style="overflow-x: auto; display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
     <div
       class="rkui-drawer-host"
-      style="--rkui-drawer-bleed: var(--rkui-space-4); display: grid; gap: var(--rkui-space-3); inline-size: 16rem; padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)"
+      style="--rkui-drawer-bleed: var(--rkui-space-4); display: grid; gap: var(--rkui-space-3); inline-size: min(16rem, 100%); padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)"
     >
       <Drawer label="Tools" placement="top">
         <Button small>Export</Button>
@@ -163,8 +181,8 @@ A drawer pulls out from the edge `placement` names. On top it comes first in its
 </Demo>
 
 <Demo label="Blinds on the top, left and right">
-  <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
-    <div style="--rkui-drawer-bleed: var(--rkui-space-4); display: grid; gap: var(--rkui-space-3); inline-size: 16rem; padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)">
+  <div style="overflow-x: auto; display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <div style="--rkui-drawer-bleed: var(--rkui-space-4); display: grid; gap: var(--rkui-space-3); inline-size: min(16rem, 100%); padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)">
       <Drawer label="Screen" variant="blind" placement="top">
         <p>How vexingly quick daft zebras jump.</p>
       </Drawer>
@@ -187,7 +205,7 @@ A drawer pulls out from the edge `placement` names. On top it comes first in its
 
 ## Remote
 
-A remote drawer is opened by a button elsewhere on the page, with no JavaScript: the button's `popovertarget` names the drawer's `id`, and the browser tells screen readers whether it is open. The drawer's own front is no button: it shows only an arrow, and a blind's cord ends in an empty ring. A remote drawer always starts shut; a button inside it can shut it with `popovertargetaction="hide"`. With the helper script, Escape inside it shuts it too, and when it shuts with the focus inside, the focus goes back to the button that opens it.
+A remote drawer is opened by a button elsewhere on the page, with no JavaScript: the button's `popovertarget` names the drawer's `id`, and the browser tells screen readers whether it is open. The drawer's own front is no button: it shows only an arrow, and a blind's cord ends in an empty ring. A remote drawer always starts shut; a button inside it can shut it with `popovertargetaction="hide"`. With the helper script, Escape shuts it too, wherever the focus is, and when it shuts with the focus inside, the focus goes back to the button that opens it.
 
 <Demo label="Drawer and blind opened by buttons elsewhere">
   <div style="display: grid; gap: var(--rkui-space-4); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
@@ -198,13 +216,13 @@ A remote drawer is opened by a button elsewhere on the page, with no JavaScript:
       </Button>
     </div>
     <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6)">
-      <Card title="Field notes" style="inline-size: 18rem">
+      <Card title="Field notes" style="inline-size: min(18rem, 100%)">
         <p>Pack my box with five dozen liquor jugs.</p>
         <Drawer label="Tools" remote id="drawer-remote-tools">
           <Button small>Export</Button>
         </Drawer>
       </Card>
-      <Card title="Field notes" style="inline-size: 18rem">
+      <Card title="Field notes" style="inline-size: min(18rem, 100%)">
         <p>Pack my box with five dozen liquor jugs.</p>
         <Drawer label="Notes" variant="blind" remote id="drawer-remote-notes">
           <p>How vexingly quick daft zebras jump.</p>
@@ -215,7 +233,7 @@ A remote drawer is opened by a button elsewhere on the page, with no JavaScript:
 </Demo>
 
 <Demo label="Remote drawer and blind on the right">
-  <div style="display: grid; gap: var(--rkui-space-4); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+  <div style="overflow-x: auto; display: grid; gap: var(--rkui-space-4); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
     <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-3)">
       <Button popovertarget="drawer-remote-side">Tools</Button>
       <Button hue="teal" popovertarget="blind-remote-side">
@@ -266,13 +284,13 @@ With `overlay` a drawer on the top or bottom hangs over what lies beyond its par
 
 <Demo label="Drawer and blind starting open">
   <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
-    <Card title="Drawer" style="inline-size: 18rem">
+    <Card title="Drawer" style="inline-size: min(18rem, 100%)">
       <p>Pack my box with five dozen liquor jugs.</p>
       <Drawer label="Tools" open>
         <Button small>Export</Button>
       </Drawer>
     </Card>
-    <Card title="Blind" style="inline-size: 18rem">
+    <Card title="Blind" style="inline-size: min(18rem, 100%)">
       <p>Pack my box with five dozen liquor jugs.</p>
       <Drawer label="Screen" variant="blind" open>
         <p>How vexingly quick daft zebras jump.</p>

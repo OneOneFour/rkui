@@ -40,8 +40,8 @@ function nameTopDrawers(html: string): string {
       return tag
     }
     depth++
-    const ownDrawer = depth === 1 && /^<details class="rkui-drawer[ "]/.test(tag)
-    if (!ownDrawer || tag.includes(' name="')) return tag
+    const ownDrawer = depth === 1 && /\sclass="([^"]*\s)?rkui-drawer[\s"]/.test(tag)
+    if (!ownDrawer || /\sname="/.test(tag)) return tag
     return tag.replace('<details', `<details name="${generatedName}"`)
   })
 }

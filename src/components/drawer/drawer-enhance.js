@@ -6,8 +6,8 @@
 // while it closes, so the browser doesn't shut it at once. One listener serves every drawer on
 // the page, including drawers added later. Enter and Space on a summary are clicks too.
 //
-// It also lets a remote drawer behave like a popover from the keyboard: Escape inside it shuts it,
-// and when it shuts with focus inside, focus goes back to the button that opens it.
+// It also lets a remote drawer behave like a popover from the keyboard: Escape shuts it wherever
+// the focus is, and when it shuts with focus inside, focus goes back to the button that opens it.
 
 const CLOSING = 'data-rkui-closing'
 /** @type {WeakMap<HTMLDetailsElement, { timer: number, name: string }>} each closing drawer */
@@ -95,19 +95,23 @@ function opener(drawer, id) {
   return [...buttons].find((button) => !drawer.contains(button))
 }
 
-// A remote drawer shuts on Escape while focus is inside it, as a popover does.
+// Escape shuts the remote drawer the focus is in, or else every open one, as it would a popover:
+// the focus may be on the button that opened it, or, in Safari, never have left the page.
 document.addEventListener('keydown', (event) => {
   if (event.key !== 'Escape' || event.defaultPrevented) return
-  const drawer = event.target instanceof Element && event.target.closest('.rkui-drawer--remote')
-  const toggle = drawer && drawer.querySelector(':scope > .rkui-drawer-switch:popover-open')
-  if (toggle) toggle.hidePopover()
+  const focused = event.target instanceof Element && event.target.closest('.rkui-drawer--remote')
+  const drawers = focused ? [focused] : document.querySelectorAll('.rkui-drawer--remote')
+  for (const drawer of drawers) {
+    drawer.querySelector(':scope > .rkui-drawer-switch:popover-open')?.hidePopover()
+  }
 })
 
 // A remote drawer that shuts with focus inside it hands focus back to its button, as a popover
-// does, so the focus isn't lost as the tray hides. The toggle event doesn't bubble, so this
-// listens as it passes down to the switch.
+// does, so the focus isn't lost as the tray hides. It listens just before the switch hides, while
+// the focus is still inside. The event doesn't bubble, so this listens as it passes down to the
+// switch.
 document.addEventListener(
-  'toggle',
+  'beforetoggle',
   (event) => {
     const toggle = event.target
     if (event.newState !== 'closed' || !(toggle instanceof Element)) return

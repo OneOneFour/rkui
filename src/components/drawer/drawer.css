@@ -576,14 +576,26 @@
 }
 
 /* The side of the screen it is on: the label's writing mode, the caret's turn, the way the
-   roller's stripes move and the side the cut is on. On the left the label is turned round to read upwards, from the icon
-   to the caret. */
+   roller's stripes move and the side the cut is on. On the left the label is turned round to read
+   upwards, from the icon to the caret. Beside the parent, above and below the drawer, the cut
+   moves away from the parent by the shadow's offset towards it, so the end of the shadow's rim
+   doesn't show at the join. */
 .rkui-drawer--left:dir(ltr),
 .rkui-drawer--right:dir(rtl) {
   --rkui-drawer-caret-turn: 0.25turn;
   --rkui-drawer-turned: vertical-rl;
   --rkui-drawer-roll: calc(-4 * var(--rkui-drawer-stripe-gap)) 0;
-  --rkui-drawer-cut: inset(-100vmax 0 -100vmax -100vmax);
+  --rkui-drawer-join: calc(100% - max(0px, -1 * var(--rkui-shadow-offset-x)));
+  --rkui-drawer-cut: polygon(
+    -100vmax -100vmax,
+    var(--rkui-drawer-join) -100vmax,
+    var(--rkui-drawer-join) 0,
+    100% 0,
+    100% 100%,
+    var(--rkui-drawer-join) 100%,
+    var(--rkui-drawer-join) calc(100% + 100vmax),
+    -100vmax calc(100% + 100vmax)
+  );
 }
 
 .rkui-drawer--right:dir(ltr),
@@ -591,7 +603,17 @@
   --rkui-drawer-caret-turn: -0.25turn;
   --rkui-drawer-turned: vertical-lr;
   --rkui-drawer-roll: calc(4 * var(--rkui-drawer-stripe-gap)) 0;
-  --rkui-drawer-cut: inset(-100vmax -100vmax -100vmax 0);
+  --rkui-drawer-join: max(0px, var(--rkui-shadow-offset-x));
+  --rkui-drawer-cut: polygon(
+    calc(100% + 100vmax) -100vmax,
+    var(--rkui-drawer-join) -100vmax,
+    var(--rkui-drawer-join) 0,
+    0 0,
+    0 100%,
+    var(--rkui-drawer-join) 100%,
+    var(--rkui-drawer-join) calc(100% + 100vmax),
+    calc(100% + 100vmax) calc(100% + 100vmax)
+  );
 }
 
 :is(.rkui-drawer--left, .rkui-drawer--right) > .rkui-drawer-handle .rkui-drawer-pull {
