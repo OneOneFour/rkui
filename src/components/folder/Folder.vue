@@ -5,15 +5,15 @@
   The first tab marked `selected` starts chosen, or the first tab when none is. A Folder takes up to
   20 tabs. `class`, `style` and other attributes go on the outer div.
 
-  The tabs stand on any side of the sheet (`placement`); on the left and right they stack down
-  its edge, as long as the sheet, with the foot of their letters towards it. They never wrap: when
-  they don't fit, the strip scrolls (`overflow="scroll"`), and folder-enhance.js shows a thin bar
-  on its outer side. With `overflow="collapse"`, folder-enhance.js shows as many tabs as fit: the
-  first and last, the chosen one and its neighbours, and more around it as there is room. On a
-  narrow screen the tabs go to their small size, then leave out the first and last: the chosen
-  one between the ‹ › step tabs (`steps`), or with its neighbours when there are none, and as
-  many around it as fit. They scroll only if even that doesn't fit. Without the script the strip scrolls. Hidden tabs are reached with the arrow keys or
-  the step tabs, which choose the tab before or after.
+  The tabs stand on any side of the sheet (`placement`); on the left and right they stack down its
+  edge, as long as the sheet, with the foot of their letters towards it. They never wrap: when they
+  don't fit, the strip scrolls (`overflow="scroll"`), and folder-enhance.js shows a thin bar on its
+  outer side. With `overflow="collapse"`, folder-enhance.js shows as many tabs as fit: the first and
+  last, the chosen one and its neighbours, and more around it as there is room. On a narrow screen
+  the tabs go to their small size, then leave out the first and last: the chosen one between the ‹ ›
+  step tabs (`steps`), or with its neighbours when there are none, and as many around it as fit.
+  They scroll only if even that doesn't fit. Without the script the strip scrolls. Hidden tabs are
+  reached with the arrow keys or the step tabs, which choose the tab before or after.
 
   In a `.vue` file, `v-model` is the chosen tab's index, counting from 0, so the widget can read
   and switch the tab; an index past either end chooses the nearest tab. With `v-model`, the

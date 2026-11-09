@@ -102,7 +102,10 @@ const vars = computed(() =>
   hueVars(hue, { fill: '--rkui-table-hue', text: '--rkui-table-on-hue', solid: true }),
 )
 
-/** The page's attributes: `class` and `style` for the outer div (`outer`), the rest for the `<table>`. */
+/**
+ * The page's attributes: `class` and `style` for the outer div (`outer`), the rest for the
+ * `<table>`.
+ */
 function pageAttrs() {
   return splitAttrs(attrs)
 }

@@ -7,13 +7,13 @@
   (`placement`); on the left and right they stack down its edge, upright. As tiles, round page
   tiles sit between Previous and Next buttons, above or below the content.
 
-  The links never wrap. With `overflow="collapse"` (the default), folder-enhance.js shows as many
-  as fit: the first and last pages, the current one and its neighbours, and more pages around it
-  as there is room, with "…" for the rest. On a narrow screen the links go to their small size,
-  then leave out the first and last pages, showing ‹ current › and as many pages around it as fit,
-  and scroll only if even ‹ current › doesn't fit. Without the script they
-  scroll. With `overflow="scroll"` the strip links the pages near the current one and scrolls;
-  folder-enhance.js puts a thin bar on its outer side while it doesn't fit.
+  The links never wrap. With `overflow="collapse"` (the default), folder-enhance.js shows as many as
+  fit: the first and last pages, the current one and its neighbours, and more pages around it as
+  there is room, with "…" for the rest. On a narrow screen the links go to their small size, then
+  leave out the first and last pages, showing ‹ current › and as many pages around it as fit, and
+  scroll only if even ‹ current › doesn't fit. Without the script they scroll. With
+  `overflow="scroll"` the strip links the pages near the current one and scrolls; folder-enhance.js
+  puts a thin bar on its outer side while it doesn't fit.
 
   @example
   <Pagination :current="2" :total="9" :href="(page) => `/posts/${page}/`">
@@ -82,7 +82,10 @@ if (variant === 'tiles' && (placement === 'left' || placement === 'right')) {
 /** How many pages either side of the current one a scrolling strip links. */
 const SCROLL_REACH = 3
 
-/** One entry in the strip: a page, with whether a "…" may show beside it, or a gap of left-out pages. */
+/**
+ * One entry in the strip: a page, with whether a "…" may show beside it, or a gap of left-out
+ * pages.
+ */
 interface Entry {
   page: number | null
   gapBefore?: boolean

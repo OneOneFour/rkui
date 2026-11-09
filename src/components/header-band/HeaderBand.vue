@@ -1,10 +1,11 @@
 <!--
-  A header band: a full-width block of colour at the top of a page or a section, with a small
-  kicker line over the page's heading, and a hard rule along its foot. Its colour is the page's
-  section hue unless `hue` picks one, so it tells the reader which part of the site they are in.
-  The slot holds the heading, at whatever level fits the page, and an optional line under it.
-  `kicker` is a string, or a list of strings joined with " · ": `:kicker="['Section', 'kicker']"`
-  in Vue, `kicker={['Section', 'kicker']}` in Astro and MDX. Needs no JavaScript. `class`, `style` and other attributes go on the `<header>`.
+  A header band: a full-width block of colour at the top of a page or a section, with a small kicker
+  line over the page's heading, and a hard rule along its foot. Its colour is the page's section hue
+  unless `hue` picks one, so it tells the reader which part of the site they are in. The slot holds
+  the heading, at whatever level fits the page, and an optional line under it. `kicker` is a string,
+  or a list of strings joined with " · ": `:kicker="['Section', 'kicker']"` in Vue,
+  `kicker={['Section', 'kicker']}` in Astro and MDX. Needs no JavaScript. `class`, `style` and other
+  attributes go on the `<header>`.
 
   @example
   <HeaderBand :kicker="['Section', 'kicker']">
