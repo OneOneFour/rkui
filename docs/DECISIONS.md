@@ -232,6 +232,8 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Corner badge edge: A outline, B ring, or C sticker. ("Badges")
 - [ ] Breadcrumbs: A plain links, B chips, or C path bar. ("Breadcrumbs")
 - [ ] Pagination: A folder tabs, or B tiles between buttons. ("Pagination")
+- [ ] Static card edge: A outline, B outline and hard shadow, C slate fill (the default), or D
+  pushed in. ("Card")
 - [ ] Logo: lift (the pop only), or motifs (each tile's motif plays on hover). ("Logo")
 - [ ] Sidebar: A plain (the default), B card, C folders, D deck, E note, or F sections. ("Sidebar")
 - [ ] Header band, built as a prototype with the sections sidebar: stays, changes, or goes. A

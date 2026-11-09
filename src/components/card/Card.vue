@@ -1,13 +1,17 @@
 <!--
   An rkui card: an `<article>` with a title and a body. With `href` the whole card is one link (its
-  title); without, it is a static panel. Slots: `image` (an <img class="rkui-card-image"> or
-  similar; `slot="image"` in Astro, `<template #image>` in Vue) and the default slot for the body.
-  `class`, `style` and other attributes go on the `<article>`.
+  title), outlined, with the hard shadow and the pop; without, it is a static panel that never
+  lifts, its edge set by `variant`. Slots: `image` (an <img class="rkui-card-image"> or similar;
+  `slot="image"` in Astro, `<template #image>` in Vue) and the default slot for the body. `class`,
+  `style` and other attributes go on the `<article>`.
 
   @example
-  <Card title="Field notes" href="/notes/" meta="Updated today"><p>Recent entries.</p></Card>
+  <Card title="Field notes" href="/notes/" meta="Updated today" hue="teal"><p>Recent entries.</p></Card>
 -->
 <script setup lang="ts">
+import { computed } from 'vue'
+import { hueVars, type HueOrHex } from '../../shared/hues'
+
 interface Props {
   /** The card's title, and the link text when linked. */
   title: string
@@ -17,13 +21,31 @@ interface Props {
   meta?: string
   /** The title's heading level, to fit the page outline; 3 when left out. */
   headingLevel?: 2 | 3 | 4
+  /**
+   * A static card's edge: 'outline' (A), 'raised' (B, the outline and a hard shadow that doesn't
+   * lift) or 'inset' (D, pushed into the page); 'shaded' (C, a slate fill) when left out. A linked
+   * card ignores it. Open, see DECISIONS ("Card").
+   */
+  variant?: 'outline' | 'raised' | 'shaded' | 'inset'
+  /**
+   * The colour its hard shadow takes in the dark colour shadow mode, such as one from its image:
+   * a palette hue or a hex code. Only a linked or raised card has a hard shadow, and other modes
+   * keep theirs; `--rkui-shadow-lit` when left out.
+   */
+  hue?: HueOrHex
 }
 
-const { title, href, meta, headingLevel = 3 } = defineProps<Props>()
+const { title, href, meta, headingLevel = 3, variant = 'shaded', hue } = defineProps<Props>()
+
+/** The card's modifier: the link, or a static card's variant. */
+const look = computed(() => (href ? 'rkui-card--link' : `rkui-card--${variant}`))
+
+/** The hue its colour-mode shadow is mixed from. */
+const vars = computed(() => hueVars(hue, { fill: '--rkui-card-hue' }))
 </script>
 
 <template>
-  <article :class="['rkui-card', { 'rkui-card--link': href }]">
+  <article :class="['rkui-card', look]" :style="vars">
     <slot name="image" />
     <div class="rkui-card-body">
       <component :is="`h${headingLevel}`" class="rkui-card-title">

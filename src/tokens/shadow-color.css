@@ -91,6 +91,13 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
+    /* A card's hue, where it has one; without, it casts --rkui-shadow-lit. :where() keeps this
+       below a sticky note's own colour. */
+    :where(.rkui-card--link, .rkui-card--raised) {
+      --rkui-shade-of: var(--rkui-card-hue);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
     /* A tinted folder's sheet, and the selected tab that joins it, take the solid colour of their
        tint: the tint's own shade is too close to the page. */
     .rkui-folder--tinted > .rkui-folder-sheet,

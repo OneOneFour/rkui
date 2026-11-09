@@ -23,7 +23,8 @@ ink, not white. It draws on neo-brutalist graphics
   small text on the page: use the `-deep` step.
 - **Every interactive thing has the 2px outline and the pop**, from one shared rule set
   (`src/interactive.css`), never per component. Static panels (callouts, code,
-  equations) have no outline; text inputs are outlined but flat.
+  equations) have no outline; text inputs are outlined but flat. A static card's edge is open
+  (§4.1).
 - **Hard shadows only:** zero blur, opaque, offsets always from `--rkui-shadow-dx`/`--rkui-shadow-dy`.
 - **Focus is the tangerine highlighter band** hugging the outline, shadow off. Never removed.
 - **Things move but never turn.** A shadowed thing only translates; parts that turn carry no
@@ -51,7 +52,7 @@ All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`,
 | Token | Light | Dark | Use |
 |---|---|---|---|
 | `--rkui-surface` | `#f7f3e5` | `#1a1f2b` | page (cream palette) |
-| `--rkui-raised` | `#fffaf0` | `#232a39` | cards, chips, tracks, unfilled press |
+| `--rkui-raised` | `#fffaf0` | `#232a39` | linked cards, chips, tracks, unfilled press |
 | `--rkui-fg` | `#1d232f` | `#f2eee2` | body text |
 | `--rkui-muted` | `#5b6070` | `#a3a8b6` | captions, meta |
 | `--rkui-line` | `#1d232f` | `#05070b` | outlines and hard shadows |
@@ -112,7 +113,7 @@ vivid partner's tint is a stronger wash than the pale fill.
 | `--rkui-note-<hue>` | tint light, vivid fill dark | sticky notes (every hue but navy and teal); sky, lilac and apricot are their fill in both themes |
 | `--rkui-note-tape` | `--rkui-glint` 60% | sticky-note tape |
 | `--rkui-icon-fill-neutral` | `currentColor` 20% | quiet default fill for interface icons |
-| `--rkui-slate` / `--rkui-slate-tab` | `#e7ebf3` / `#dbe0ea`; dark `#2c323d` / `#333946` | code panels, editor-tab strip |
+| `--rkui-slate` / `--rkui-slate-tab` | `#e7ebf3` / `#dbe0ea`; dark `#2c323d` / `#333946` | code panels, shaded static cards, editor-tab strip |
 | `--rkui-slate-greige` / `-tab` | `#eae7e2` / `#e0dcd6`; dark `#35332e` / `#3d3a34` | greige code, opt-in |
 
 Syntax colours are deep steps: keyword `--rkui-navy-deep`, function `--rkui-teal-deep`, string
@@ -133,13 +134,14 @@ panel under every palette; `.rkui-slate-greige` opts in to greige.
 Repeated mixes are named, so the docs page can show them:
 - `--rkui-stripe`: `--rkui-line` at 25% over whatever it crosses. Progress stripes, illustration hatching,
   the code panel's sunken edge.
-- `--rkui-recess`: `--rkui-line` at 45% over whatever it crosses. The shadow inside a drawer's tray, a
-  deeper recess than the code panel's.
+- `--rkui-recess`: `--rkui-line` at 45% over whatever it crosses. The shadow inside a drawer's tray
+  and an inset card, a deeper recess than the code panel's.
 - `--rkui-scrim`: `--rkui-line` at 50% over the page behind a modal (an Alert's backdrop).
 - `--rkui-shade`: `color-mix(in oklab, var(--rkui-shade-of) 75%, var(--rkui-line))`; set `--rkui-shade-of` to a fill.
   The sticky-note fold and every colour-mode extrusion. Declared on `*`, so each element mixes its
   own.
-- `--rkui-folder-back`: the page 8% towards `--rkui-line`, behind unselected folder tabs.
+- `--rkui-folder-back`: the page 8% towards `--rkui-line`, behind unselected folder tabs, in a
+  drawer's tray and an inset card.
 - A hex code's label: `--rkui-on-fill` (ink), unless `--rkui-on-ink` has more contrast on it in
   both themes, worked out from the hex's WCAG luminance (`hueVars()`). It is the better of the
   two, not always AA: a mid-tone can fall short with both.
@@ -291,6 +293,11 @@ is an optional peer dependency, installed by the sites that use them.
 - Hard shadow at 4px, zero blur, away from the light: the single biggest toon signal. One light
   drives every shadow and pop; glints sit opposite. SVG uses `drop-shadow()` from the same tokens,
   plus a second in `--rkui-shadow-edge`.
+- A static card never lifts, and needs an edge so it doesn't vanish on the raised surface. Which
+  one is open (DECISIONS, "Card"): A the folder sheet's `--rkui-line-unfilled` outline, B that
+  outline and the hard shadow, C a `--rkui-slate` fill (the default, like the quote and the code
+  panel), or D pushed in like a drawer's tray (`--rkui-folder-back` with a `--rkui-recess` inner
+  shadow, a resting offset deep).
 
 ### 4.2 Dark-mode shadows: slab, colour and block
 
@@ -302,6 +309,8 @@ A near-black shadow is hard to see on night blue, so dark mode has three shadow 
   - Wired up: buttons, checked checkboxes, radios and switches, the arc dial's face, the clock's
     hour tag, the range thumb, the file button, colour tiles, badges (a table's stickers too),
     the three-dot spinners, the blind's pull, the scroll and sidebar pills, sticky notes.
+  - A linked or raised card casts the shade of its `hue`, such as a colour from its image; without
+    one it casts `--rkui-shadow-lit`. The hue changes nothing in the other modes.
   - A tinted folder's sheet and selected tab cast the shade of `--rkui-selected`, the solid colour
     of their tint, since the tint's own shade sits too close to the page.
   - Checked chips and section buttons take `--rkui-section` where it is set.
@@ -501,7 +510,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Popup | `.rkui-popup` (Popover API) | |
 | Alert | `.rkui-alert` (modal `<dialog>`, `--blur`) | coral band; darken or blur open |
 | Tooltip | `<rkui-tooltip>` A inverted, B `--toon` | A by default; open |
-| Card | `.rkui-card`, `--link` | content variants proposed (DECISIONS) |
+| Card | `.rkui-card`, `--link`; static A `--outline`, B `--raised`, C `--shaded`, D `--inset` | C by default; static edge open; content variants proposed (DECISIONS) |
 | Callout | `.rkui-callout--note` (sky tint), `--warning` (apricot tint) | |
 | Sticky note | `.rkui-sticky-note` (hues, `--tilt`, `--tape`, `--pin`) | |
 | Widget frame | `.rkui-widget-frame` (dashed, lilac tint) | |

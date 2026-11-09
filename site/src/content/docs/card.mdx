@@ -17,6 +17,41 @@ import Card from '@oneonefour/rkui/components/card/Card.vue'
   </Card>
 </Demo>
 
+## Static edges
+
+A static card never lifts, but it needs an edge, or it vanishes on a raised surface such as this demo's. Which edge is still open, so `variant` offers four: A `outline`, B `raised` (the outline and a hard shadow that doesn't lift), C `shaded` (a slate fill, the default) and D `inset` (pushed into the page). Each is shown here in light and in dark, on the page colour.
+
+<Demo label="Static card edges" stack>
+  <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-4); padding: var(--rkui-space-5); color-scheme: light; background: var(--rkui-surface); color: var(--rkui-fg)">
+    <Card title="A outline" variant="outline" style="inline-size: 9rem">
+      <p>Outline only.</p>
+    </Card>
+    <Card title="B raised" variant="raised" style="inline-size: 9rem">
+      <p>Outline and shadow.</p>
+    </Card>
+    <Card title="C shaded" meta="The default" style="inline-size: 9rem">
+      <p>A slate fill.</p>
+    </Card>
+    <Card title="D inset" variant="inset" style="inline-size: 9rem">
+      <p>Pushed in.</p>
+    </Card>
+  </div>
+  <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-4); padding: var(--rkui-space-5); color-scheme: dark; background: var(--rkui-surface); color: var(--rkui-fg)">
+    <Card title="A outline" variant="outline" style="inline-size: 9rem">
+      <p>Outline only.</p>
+    </Card>
+    <Card title="B raised" variant="raised" style="inline-size: 9rem">
+      <p>Outline and shadow.</p>
+    </Card>
+    <Card title="C shaded" meta="The default" style="inline-size: 9rem">
+      <p>A slate fill.</p>
+    </Card>
+    <Card title="D inset" variant="inset" style="inline-size: 9rem">
+      <p>Pushed in.</p>
+    </Card>
+  </div>
+</Demo>
+
 ## Linked
 
 <Demo label="A linked card">
@@ -38,6 +73,30 @@ The `image` slot sits above the body. Give it an `<img class="rkui-card-image">`
     <Card title="Linked" href="#image" meta="Updated today" style="inline-size: 20rem">
       <div slot="image" class="rkui-card-image" style="background: var(--rkui-teal-tint)"></div>
       <p>How vexingly quick daft zebras jump.</p>
+    </Card>
+  </div>
+</Demo>
+
+## Shadow colour
+
+`hue` takes a palette hue or a hex code, such as a colour from the card's image. In the dark colour shadow mode a linked or raised card casts that colour's shade instead of the lighter grey; light mode and the other shadow modes are unchanged. This demo is always in that mode.
+
+<Demo label="Cards with a shadow colour">
+  <div
+    data-shadow="color"
+    style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-6); padding: var(--rkui-space-5); color-scheme: dark; background: var(--rkui-surface); color: var(--rkui-fg)"
+  >
+    <Card title="Coral" href="#shadow-colour" hue="coral" meta="Linked" style="inline-size: 12rem">
+      <div slot="image" class="rkui-card-image" style="background: var(--rkui-coral)"></div>
+      <p>Coral, from its image.</p>
+    </Card>
+    <Card title="Grape" variant="raised" hue="grape" meta="Raised" style="inline-size: 12rem">
+      <div slot="image" class="rkui-card-image" style="background: var(--rkui-grape)"></div>
+      <p>Static, so it never lifts.</p>
+    </Card>
+    <Card title="No hue" href="#shadow-colour" meta="Linked" style="inline-size: 12rem">
+      <div slot="image" class="rkui-card-image" style="background: var(--rkui-teal-tint)"></div>
+      <p>The lighter grey.</p>
     </Card>
   </div>
 </Demo>
