@@ -1,0 +1,32 @@
+---
+title: Icons
+description: Every icon in the library, searchable, in light and dark.
+group: Foundations
+order: 12
+---
+
+import IconList from '../../examples/icons/IconList.vue'
+
+Each icon is shown twice, as it looks in light mode (left) and in dark mode (right), whatever the
+theme at the top is set to. The list is searchable by name.
+
+<IconList client:visible />
+
+## Using an icon
+
+An icon is a Vue component with no script. Import it by name from `@oneonefour/rkui/icons/` and
+give it the `rkui-icon` class (`rkui-icon--small` for the small size):
+
+```vue
+<script setup>
+import CopyIcon from '@oneonefour/rkui/icons/copy.vue'
+</script>
+
+<template>
+  <CopyIcon class="rkui-icon" />
+</template>
+```
+
+The same icon is also an SVG file, `@oneonefour/rkui/icons/copy.svg`, and a symbol of the same name
+in `sprite.svg`, for plain HTML pages. Each icon has a default fill; set `--rkui-icon-fill` on the
+icon or any container to change it.
