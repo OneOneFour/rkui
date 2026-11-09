@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { computed, useAttrs, useSlots } from 'vue'
 import Tile from '../tiles/Tile.vue'
-import { colorVars, type Color } from '../../shared/hues'
+import { hueVars, type HueOrHex } from '../../shared/hues'
 import { splitAttrs } from '../../shared/split-attrs'
 
 defineOptions({ inheritAttrs: false })
@@ -25,7 +25,7 @@ interface Props {
    * A hue or hex code: the tile is filled with it when it holds no mark or icon, and `tint` uses
    * it; none when left out.
    */
-  color?: Color
+  hue?: HueOrHex
   /** Fill the box with the colour's tint when checked; the usual tint when left out. */
   tint?: boolean
   /** The input's name; its group's name when left out. */
@@ -36,18 +36,18 @@ interface Props {
   disabled?: boolean
 }
 
-const { value, text, mark, color, tint, name, checked, disabled } = defineProps<Props>()
+const { value, text, mark, hue, tint, name, checked, disabled } = defineProps<Props>()
 
 const attrs = useAttrs()
 const slots = useSlots()
 
 /** Whether the tile is a plain colour: a colour with no mark or icon. */
 function swatch() {
-  return color !== undefined && !mark && !slots.icon
+  return hue !== undefined && !mark && !slots.icon
 }
 
 /** The colour's tint as a custom property, with `tint` and a colour. */
-const vars = computed(() => (tint ? colorVars(color, { tint: '--rkui-selected-tint' }) : {}))
+const vars = computed(() => (tint ? hueVars(hue, { tint: '--rkui-selected-tint' }) : {}))
 
 /**
  * The page's attributes: `class` and `style` for the label (`outer`), the rest for the Tile, which
@@ -67,7 +67,7 @@ function pageAttrs() {
       :name
       :checked
       :disabled
-      :color="swatch() ? color : undefined"
+      :hue="swatch() ? hue : undefined"
       v-bind="pageAttrs().inner"
     >
       <template v-if="!swatch()" #default>

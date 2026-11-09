@@ -20,7 +20,7 @@ interface Props {
   label: string
   /**
    * The look: 'card', 'folders', 'deck', 'note' or 'sections', a sky panel whose links each wear
-   * their own section hue (SidebarLink's `color`); 'plain' when left out. Open, see DECISIONS
+   * their own section hue (SidebarLink's `hue`); 'plain' when left out. Open, see DECISIONS
    * ("Sidebar").
    */
   variant?: 'plain' | 'card' | 'folders' | 'deck' | 'note' | 'sections'

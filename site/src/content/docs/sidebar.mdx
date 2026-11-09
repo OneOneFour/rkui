@@ -86,7 +86,7 @@ A taped sticky note with sticking slab headings; the current page is an ink pill
 
 ## F: Sections
 
-A sky panel for a site's own navigation. Each link takes `color`, the section hue of the page it
+A sky panel for a site's own navigation. Each link takes `hue`, the section hue of the page it
 leads to: it fills the link's icon, and the link itself when it is the current page. The `header`
 slot stays above the links, for the site's name and tagline. A group needs no heading. When the
 panel is wide, the links flow into columns. The [header band](../header-band/) page shows it in a
@@ -99,16 +99,16 @@ site frame.
       <span>A short tagline</span>
     </Fragment>
     <SidebarGroup>
-      <SidebarLink href="#" color="sky">
+      <SidebarLink href="#" hue="sky">
         <House class="rkui-icon" /> Home
       </SidebarLink>
-      <SidebarLink href="#" color="coral" current>
+      <SidebarLink href="#" hue="coral" current>
         <PenNib class="rkui-icon" /> Notes
       </SidebarLink>
-      <SidebarLink href="#" color="navy">
+      <SidebarLink href="#" hue="navy">
         <Flask class="rkui-icon" /> Papers
       </SidebarLink>
-      <SidebarLink href="#" color="teal">
+      <SidebarLink href="#" hue="teal">
         <Rocket class="rkui-icon" /> Projects
       </SidebarLink>
     </SidebarGroup>

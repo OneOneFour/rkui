@@ -11,12 +11,12 @@ import EnvelopeIcon from '@oneonefour/rkui/icons/envelope-simple.vue'
     <span class="picture" role="img" aria-label="Picture">
       <ImageIcon class="rkui-icon" />
     </span>
-    <Badge color="coral" corner hiddenLabel="new">3</Badge>
+    <Badge hue="coral" corner hiddenLabel="new">3</Badge>
   </BadgeHost>
-  <Button color="teal" class="rkui-badge-host">
+  <Button hue="teal" class="rkui-badge-host">
     <EnvelopeIcon class="rkui-icon" />
     <span class="rkui-visually-hidden">Messages</span>
-    <Badge color="coral" corner hiddenLabel="new">12</Badge>
+    <Badge hue="coral" corner hiddenLabel="new">12</Badge>
   </Button>
 </template>
 

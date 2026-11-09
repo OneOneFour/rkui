@@ -33,20 +33,20 @@ const STATES = [
   </Specimen>
   {FILLS.map((fill) => (
     <Specimen label={fill}>
-      <Button color={fill}>Button</Button>
+      <Button hue={fill}>Button</Button>
     </Specimen>
   ))}
 </SpecimenRow>
 
 <SpecimenRow title="Sizes, icons and styles">
   <Specimen label="icon + label">
-    <Button color="coral">
+    <Button hue="coral">
       <PlayIcon class="rkui-icon" />
       Start
     </Button>
   </Specimen>
   <Specimen label="small">
-    <Button small color="teal">
+    <Button small hue="teal">
       <PlayIcon class="rkui-icon rkui-icon--small" />
       Start
     </Button>
@@ -63,7 +63,7 @@ const STATES = [
     </Button>
   </Specimen>
   <Specimen label="link (href)">
-    <Button href="#buttons" color="navy">
+    <Button href="#buttons" hue="navy">
       <DownloadIcon class="rkui-icon" />
       Download
     </Button>
@@ -73,18 +73,18 @@ const STATES = [
 <SpecimenRow title="Filled states">
   {STATES.map((state) => (
     <Specimen label={state.label}>
-      <Button color="teal" class={state.class}>
+      <Button hue="teal" class={state.class}>
         Button
       </Button>
     </Specimen>
   ))}
   <Specimen label="disabled">
-    <Button color="teal" disabled>
+    <Button hue="teal" disabled>
       Button
     </Button>
   </Specimen>
   <Specimen label="focused, tangerine fill">
-    <Button color="tangerine" class="is-focus">
+    <Button hue="tangerine" class="is-focus">
       Button
     </Button>
   </Specimen>

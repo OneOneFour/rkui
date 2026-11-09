@@ -456,7 +456,7 @@
 }
 
 /* Sections: a sky panel for a site's own navigation, as in the palette board's mockup. Each link
-   wears the section hue of the page it leads to (SidebarLink's `color`, as --rkui-section): its
+   wears the section hue of the page it leads to (SidebarLink's `hue`, as --rkui-section): its
    icon is filled with it, and the current page is an outlined pill filled with it, its icon a glint
    sticker. Headings are in the panel's text colour, which muted text would fail on the tint. When
    the panel is wide, as when it stacks above the page on a phone, the links flow into columns. */

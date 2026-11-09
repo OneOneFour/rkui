@@ -4,11 +4,11 @@
   attributes go on the `<span>`.
 
   @example
-  <Spinner label="Loading results…" size="3rem" color="teal" />
+  <Spinner label="Loading results…" size="3rem" hue="teal" />
 -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import { colorVars, type Color } from '../../shared/hues'
+import { hueVars, type HueOrHex } from '../../shared/hues'
 
 interface Props {
   /** What is happening, for screen readers; "Loading…" when left out. */
@@ -16,14 +16,14 @@ interface Props {
   /** The spinner's size as a CSS length; 2rem when left out. */
   size?: string
   /** The wedge's colour, a hue or a hex code; the selected colour when left out. */
-  color?: Color
+  hue?: HueOrHex
 }
 
-const { label = 'Loading…', size, color } = defineProps<Props>()
+const { label = 'Loading…', size, hue } = defineProps<Props>()
 
 /** The custom properties for the props that are set. */
 const vars = computed(() => {
-  const style: Record<string, string | number> = colorVars(color, { fill: '--rkui-spinner-fill' })
+  const style: Record<string, string | number> = hueVars(hue, { fill: '--rkui-spinner-fill' })
   if (size) style['--rkui-spinner-size'] = size
   return style
 })

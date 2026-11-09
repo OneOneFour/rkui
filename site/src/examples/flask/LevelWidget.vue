@@ -8,5 +8,5 @@ const level = ref(0.4)
 
 <template>
   <Range v-model="level" label="Level" style="inline-size: 20rem" min="0" max="1" step="0.05" />
-  <Flask size="3rem" color="teal" label="Filling" :level="level" />
+  <Flask size="3rem" hue="teal" label="Filling" :level="level" />
 </template>

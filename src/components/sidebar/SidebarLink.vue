@@ -7,7 +7,7 @@
 -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import { colorVars, type Color } from '../../shared/hues'
+import { hueVars, type HueOrHex } from '../../shared/hues'
 
 interface Props {
   /** Where the link goes. */
@@ -19,14 +19,14 @@ interface Props {
    * the link's icon with it, and the link itself when it is the current page; other looks don't
    * show it. The page's section hue (`--rkui-section`) when left out.
    */
-  color?: Color
+  hue?: HueOrHex
 }
 
-const { href, current, color } = defineProps<Props>()
+const { href, current, hue } = defineProps<Props>()
 
-/** The link's section colour and its text as custom properties, when `color` is set. */
+/** The link's section colour and its text as custom properties, when `hue` is set. */
 const vars = computed(() =>
-  colorVars(color, { fill: '--rkui-section', text: '--rkui-on-section', solid: true }),
+  hueVars(hue, { fill: '--rkui-section', text: '--rkui-on-section', solid: true }),
 )
 </script>
 

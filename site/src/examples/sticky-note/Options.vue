@@ -16,7 +16,7 @@ import StickyNote from '@oneonefour/rkui/components/sticky-note/StickyNote.vue'
     <StickyNote title="Tape" hold="tape">
       <p>The quick brown fox jumps over the lazy dog.</p>
     </StickyNote>
-    <StickyNote title="Pin" color="coral" hold="pin">
+    <StickyNote title="Pin" hue="coral" hold="pin">
       <p>The quick brown fox jumps over the lazy dog.</p>
     </StickyNote>
     <StickyNote as="callout" kind="warning" title="Tilt and tape" tilt hold="tape">

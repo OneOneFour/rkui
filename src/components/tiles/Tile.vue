@@ -1,6 +1,6 @@
 <!--
   One round tile: a native radio or checkbox in a label, holding the slot's number or letter. With
-  an icon (`slot="icon"` in Astro, `<template #icon>` in Vue) or a `color`, the slot becomes hidden
+  an icon (`slot="icon"` in Astro, `<template #icon>` in Vue) or a `hue`, the slot becomes hidden
   text that names the tile. Put tiles in Tiles, which fills in their `name` and input type. `class`
   and `style` go on the label; other attributes go on the input.
 
@@ -9,7 +9,7 @@
 -->
 <script setup lang="ts">
 import { computed, inject, useAttrs } from 'vue'
-import { colorVars, type Color } from '../../shared/hues'
+import { hueVars, type HueOrHex } from '../../shared/hues'
 import { vLiveChecked } from '../../shared/live-value'
 import { NAME_PLACEHOLDER } from '../../shared/option-group'
 import { OPTION_GROUP, useOptionModel } from '../../shared/option-slot'
@@ -27,7 +27,7 @@ interface Props {
   /** Can't be chosen; enabled when left out. */
   disabled?: boolean
   /** Fill the tile with this hue or hex code, as a colour tile; an ordinary tile when left out. */
-  color?: Color
+  hue?: HueOrHex
   /**
    * 'checkbox' or 'radio', for a tile on its own; its group's type, or a checkbox on its own, when
    * left out.
@@ -42,7 +42,7 @@ const {
   name,
   checked,
   disabled,
-  color,
+  hue,
   type = 'checkbox',
   tag = 'label',
 } = defineProps<Props>()
@@ -56,8 +56,8 @@ const inputType = computed(() => (group ? (group.value.multiple ? 'checkbox' : '
 const selection = useOptionModel(group, { type: inputType.value, value, checked })
 const attrs = useAttrs()
 
-/** The colour tile's fill and text colour as custom properties, when `color` is set. */
-const vars = computed(() => colorVars(color, { fill: '--rkui-swatch', text: '--rkui-swatch-on' }))
+/** The colour tile's fill and text colour as custom properties, when `hue` is set. */
+const vars = computed(() => hueVars(hue, { fill: '--rkui-swatch', text: '--rkui-swatch-on' }))
 
 /** The page's attributes: `class` and `style` for the label (`outer`), the rest for the input. */
 function pageAttrs() {
@@ -68,7 +68,7 @@ function pageAttrs() {
 <template>
   <component
     :is="tag"
-    :class="['rkui-tile', { 'rkui-tile--color': color }]"
+    :class="['rkui-tile', { 'rkui-tile--color': hue }]"
     :style="vars"
     v-bind="pageAttrs().outer"
   >
@@ -82,7 +82,7 @@ function pageAttrs() {
       v-bind="pageAttrs().inner"
     />
     <slot name="icon" />
-    <span v-if="$slots.default && (color || $slots.icon)" class="rkui-visually-hidden">
+    <span v-if="$slots.default && (hue || $slots.icon)" class="rkui-visually-hidden">
       <slot />
     </span>
     <slot v-else />

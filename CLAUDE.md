@@ -106,12 +106,12 @@ Three rules decide how a component is built:
    before it is scrolled to).
 
 Every component follows these, so a site author learns them once:
-- **Colour:** one prop, `color`, typed `Color` from `src/shared/hues.ts`: a palette hue (`Hue`) or a
-  hex code (a component with fewer hues takes a subset of them, and hex). `colorVars()` there turns
+- **Colour:** one prop, `hue`, typed `HueOrHex` from `src/shared/hues.ts`: a palette hue (`Hue`) or
+  a hex code (a component with fewer hues takes a subset of them, and hex). `hueVars()` there turns
   it into the component's custom properties (fill, text on it, tint) for its `vars`. A component
-  whose hues are modifier classes (Button, Badge, StickyNote) keeps the class for a hue and uses
-  `colorVars()` only when `isHex()`. Never a local list of hues, and never a page recolouring a
-  component through `style` where `color` covers it.
+  whose hues are modifier classes (Button, Badge, StickyNote) keeps the class for a palette hue and
+  uses `hueVars()` only when `isHex()`. Never a local list of hues, and never a page recolouring a
+  component through `style` where `hue` covers it.
 - **Size:** `small` (boolean) for the small variant; `size` only ever takes a CSS length.
 - **Open design choices:** a string prop named after the choice (`variant` if there's one), with
   "Open, see DECISIONS ("<section>")" in its comment only while DECISIONS lists it as open.

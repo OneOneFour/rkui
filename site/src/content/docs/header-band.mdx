@@ -13,18 +13,18 @@ import siteFrameCode from '../../examples/header-band/SiteFrame.vue?raw'
 
 A full-width band that opens a page: a kicker line over the page's heading, and a hard rule along
 its foot. It takes the page's section hue, so it shows which part of the site the reader is in;
-`color` picks a colour instead. The slot holds the heading, at the level that fits the page, and an
+`hue` picks a colour instead. The slot holds the heading, at the level that fits the page, and an
 optional line under it.
 
 <Demo label="Header bands" stack>
   <HeaderBand kicker="Kicker · a short line">
     <h2>A heading in a band</h2>
   </HeaderBand>
-  <HeaderBand kicker="Colour · navy" color="navy">
+  <HeaderBand kicker="Colour · navy" hue="navy">
     <h2>A heading in a navy band</h2>
     <p>An optional line under the heading.</p>
   </HeaderBand>
-  <HeaderBand kicker="Colour · yellow" color="yellow">
+  <HeaderBand kicker="Colour · yellow" hue="yellow">
     <h2>A heading in a yellow band</h2>
   </HeaderBand>
 </Demo>

@@ -9,19 +9,19 @@ import ImageIcon from '@oneonefour/rkui/icons/image.vue'
     <span class="picture" role="img" aria-label="Picture">
       <ImageIcon class="rkui-icon" />
     </span>
-    <Badge color="coral" corner hiddenLabel="new">3</Badge>
+    <Badge hue="coral" corner hiddenLabel="new">3</Badge>
   </BadgeHost>
   <BadgeHost round>
     <span class="picture" role="img" aria-label="Picture">
       <ImageIcon class="rkui-icon" />
     </span>
-    <Badge color="coral" corner edge="ring" hiddenLabel="new">3</Badge>
+    <Badge hue="coral" corner edge="ring" hiddenLabel="new">3</Badge>
   </BadgeHost>
   <BadgeHost round>
     <span class="picture" role="img" aria-label="Picture">
       <ImageIcon class="rkui-icon" />
     </span>
-    <Badge color="coral" corner edge="sticker" hiddenLabel="new">3</Badge>
+    <Badge hue="coral" corner edge="sticker" hiddenLabel="new">3</Badge>
   </BadgeHost>
 </template>
 

@@ -44,7 +44,7 @@ function checkClientVisible(node) {
   }
 }
 
-/** One attribute written for Vue: `color="navy"` as it is, `level={0.5}` as `:level="0.5"`. */
+/** One attribute written for Vue: `hue="navy"` as it is, `level={0.5}` as `:level="0.5"`. */
 function printAttribute(attribute) {
   const { name, value } = attribute
   if (attribute.type !== 'mdxJsxAttribute') throw new Error(`{${value}} has no Vue form`)

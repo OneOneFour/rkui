@@ -25,14 +25,14 @@ import Rocket from '@oneonefour/rkui/icons/rocket.vue'
           <span>A short tagline</span>
         </template>
         <SidebarGroup>
-          <SidebarLink href="#" color="sky"><House class="rkui-icon" /> Home</SidebarLink>
-          <SidebarLink href="#" color="coral" current>
+          <SidebarLink href="#" hue="sky"><House class="rkui-icon" /> Home</SidebarLink>
+          <SidebarLink href="#" hue="coral" current>
             <PenNib class="rkui-icon" /> Notes
           </SidebarLink>
-          <SidebarLink href="#" color="navy"><Flask class="rkui-icon" /> Papers</SidebarLink>
-          <SidebarLink href="#" color="teal"><Rocket class="rkui-icon" /> Projects</SidebarLink>
-          <SidebarLink href="#" color="yellow"><Camera class="rkui-icon" /> Photos</SidebarLink>
-          <SidebarLink href="#" color="green"><IdCard class="rkui-icon" /> About</SidebarLink>
+          <SidebarLink href="#" hue="navy"><Flask class="rkui-icon" /> Papers</SidebarLink>
+          <SidebarLink href="#" hue="teal"><Rocket class="rkui-icon" /> Projects</SidebarLink>
+          <SidebarLink href="#" hue="yellow"><Camera class="rkui-icon" /> Photos</SidebarLink>
+          <SidebarLink href="#" hue="green"><IdCard class="rkui-icon" /> About</SidebarLink>
         </SidebarGroup>
       </Sidebar>
       <div class="page">

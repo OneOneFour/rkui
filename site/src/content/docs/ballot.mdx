@@ -57,17 +57,17 @@ Ballot works with no JavaScript. The small helper script only mends one thing in
 
 ## Icons, several choices
 
-Add `multiple` for checkboxes. Give an option a `color` and `tint` to colour its checked box.
+Add `multiple` for checkboxes. Give an option a `hue` and `tint` to colour its checked box.
 
 <Demo label="Ballot with icons" stack>
   <Ballot legend="Weather" multiple>
-    <BallotOption value="sun" color="yellow" tint checked>
+    <BallotOption value="sun" hue="yellow" tint checked>
       <Sun slot="icon" /> Sun
     </BallotOption>
-    <BallotOption value="moon" color="lilac" tint>
+    <BallotOption value="moon" hue="lilac" tint>
       <Moon slot="icon" /> Moon
     </BallotOption>
-    <BallotOption value="leaf" color="green" tint checked>
+    <BallotOption value="leaf" hue="green" tint checked>
       <Leaf slot="icon" /> Leaf
     </BallotOption>
   </Ballot>
@@ -75,20 +75,20 @@ Add `multiple` for checkboxes. Give an option a `color` and `tint` to colour its
 
 ## Colours
 
-A `color` on an option with no icon or mark fills its tile with that colour.
+A `hue` on an option with no icon or mark fills its tile with that colour.
 
 <Demo label="Ballot with colour tiles" stack>
   <Ballot legend="Colour">
-    <BallotOption value="teal" color="teal" tint checked>
+    <BallotOption value="teal" hue="teal" tint checked>
       Teal
     </BallotOption>
-    <BallotOption value="green" color="green" tint>
+    <BallotOption value="green" hue="green" tint>
       Green
     </BallotOption>
-    <BallotOption value="sky" color="sky" tint>
+    <BallotOption value="sky" hue="sky" tint>
       Sky
     </BallotOption>
-    <BallotOption value="coral" color="coral" tint>
+    <BallotOption value="coral" hue="coral" tint>
       Coral
     </BallotOption>
   </Ballot>

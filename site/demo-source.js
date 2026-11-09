@@ -4,7 +4,7 @@
  *
  *   <Demo label="Button hues">
  *     <Button>Yellow</Button>
- *     <Button color="navy">Navy</Button>
+ *     <Button hue="navy">Navy</Button>
  *   </Demo>
  *
  * The plugin copies the text between `<Demo …>` and `</Demo>` from the page, dedented, into the

@@ -10,12 +10,12 @@
     <Chip value="fruit" checked>Fruit</Chip>
     <Chip value="veg">Veg</Chip>
   </ChipGroup>
-  <ChipGroup v-model="topics" legend="Topics" color="teal">…</ChipGroup>
+  <ChipGroup v-model="topics" legend="Topics" hue="teal">…</ChipGroup>
 -->
 <script setup lang="ts">
 import { computed, provide, useSlots } from 'vue'
 import { useComponentId } from '../../shared/component-id'
-import { colorVars, type Color } from '../../shared/hues'
+import { hueVars, type HueOrHex } from '../../shared/hues'
 import { modelWithStart } from '../../shared/model-start'
 import { checkedValue, fillSlot, OPTION_GROUP } from '../../shared/option-slot'
 
@@ -30,10 +30,10 @@ interface Props {
    * The checked chips' fill, a hue or a hex code; the page's section hue (`--rkui-section`), or
    * ink, when left out.
    */
-  color?: Color
+  hue?: HueOrHex
 }
 
-const { legend, name, multiple, color } = defineProps<Props>()
+const { legend, name, multiple, hue } = defineProps<Props>()
 
 /**
  * The chosen value, or values with `multiple` (`v-model`); the `checked` chips' when left out.
@@ -45,9 +45,9 @@ const generatedName = useComponentId('chips')
 const group = computed(() => ({ name: name ?? generatedName, multiple, model: selection }))
 provide(OPTION_GROUP, group)
 
-/** The checked chips' fill and text as custom properties, when `color` is set. */
+/** The checked chips' fill and text as custom properties, when `hue` is set. */
 const vars = computed(() =>
-  colorVars(color, { fill: '--rkui-section', text: '--rkui-on-section', solid: true }),
+  hueVars(hue, { fill: '--rkui-section', text: '--rkui-on-section', solid: true }),
 )
 </script>
 

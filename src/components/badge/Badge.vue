@@ -5,17 +5,17 @@
   attributes go on the `<span>`.
 
   @example
-  <Badge color="grape">New</Badge>
-  <Badge color="#ff8800" tint>Custom</Badge>
-  <BadgeHost><img src="avatar.png" alt="Ada" /><Badge color="coral" corner>3</Badge></BadgeHost>
+  <Badge hue="grape">New</Badge>
+  <Badge hue="#ff8800" tint>Custom</Badge>
+  <BadgeHost><img src="avatar.png" alt="Ada" /><Badge hue="coral" corner>3</Badge></BadgeHost>
 -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import { colorVars, isHex, type Color } from '../../shared/hues'
+import { hueVars, isHex, type HueOrHex } from '../../shared/hues'
 
 interface Props {
   /** The colour: a palette hue or a hex code; yellow when left out. */
-  color?: Color
+  hue?: HueOrHex
   /** The quiet version, a tint panel with ordinary text; solid when left out. */
   tint?: boolean
   /** Pins the badge to its host's top corner; inline when left out. */
@@ -33,12 +33,12 @@ interface Props {
   hiddenLabel?: string
 }
 
-const { color, tint, corner, bottom, dot, edge = 'outline', hiddenLabel } = defineProps<Props>()
+const { hue, tint, corner, bottom, dot, edge = 'outline', hiddenLabel } = defineProps<Props>()
 
 /** A hex colour's fill, label and tint as custom properties; a hue sets them by its class. */
 const vars = computed(() =>
-  isHex(color)
-    ? colorVars(color, {
+  isHex(hue)
+    ? hueVars(hue, {
         fill: '--rkui-badge-fill',
         text: '--rkui-badge-label',
         tint: '--rkui-badge-tint',
@@ -51,7 +51,7 @@ const vars = computed(() =>
   <span
     :class="[
       'rkui-badge',
-      color && !isHex(color) && `rkui-badge--${color}`,
+      hue && !isHex(hue) && `rkui-badge--${hue}`,
       {
         'rkui-badge--tint': tint,
         'rkui-badge--corner': corner,

@@ -1,7 +1,7 @@
 <!--
   An urgent message in a box in the middle of the window, like a script's `alert()`: a native
   `<dialog>` opened as a modal, so the page behind it is shaded and can't be used, focus moves into
-  it, and focus goes back to the opening button when it closes. A band in `color` holds an icon and
+  it, and focus goes back to the opening button when it closes. A band in its `hue` holds an icon and
   the title; the slot is the message, and the `actions` slot its buttons (`slot="actions"` in
   Astro, or `<Fragment slot="actions">` around several; `<template #actions>` in Vue). `class`, `style` and other attributes go on the `<dialog>`.
 
@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import WarningIcon from '@oneonefour/rkui/icons/warning.vue'
-import { colorVars, type Color } from '../../shared/hues'
+import { hueVars, type HueOrHex } from '../../shared/hues'
 
 interface Props {
   /** The dialog's id, which the opening button's `commandfor` names. */
@@ -30,7 +30,7 @@ interface Props {
   /** The title in the band, which names the dialog. */
   title: string
   /** The band's fill, a hue or a hex code; coral when left out. */
-  color?: Color
+  hue?: HueOrHex
   /**
    * What happens to the page behind: 'blur' blurs it; 'darken' when left out, which shades it.
    * Open, see DECISIONS ("Alert").
@@ -38,11 +38,11 @@ interface Props {
   backdrop?: 'darken' | 'blur'
 }
 
-const { id, title, color, backdrop = 'darken' } = defineProps<Props>()
+const { id, title, hue, backdrop = 'darken' } = defineProps<Props>()
 
-/** The band's fill and text as custom properties, when `color` is set. */
+/** The band's fill and text as custom properties, when `hue` is set. */
 const vars = computed(() =>
-  colorVars(color, { fill: '--rkui-alert-hue', text: '--rkui-alert-on-hue', solid: true }),
+  hueVars(hue, { fill: '--rkui-alert-hue', text: '--rkui-alert-on-hue', solid: true }),
 )
 </script>
 

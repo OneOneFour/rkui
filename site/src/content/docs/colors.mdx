@@ -22,24 +22,24 @@ palette, and a hex doesn't.
 A fill carries its label token (`--rkui-on-fill`, `--rkui-on-navy`, `--rkui-on-coral`), a `-tint`
 carries `--rkui-fg`, and a `-deep` step is for text and links on the page.
 
-Every component that takes a `color` takes the auxiliary hues too. They come in pairs, one vivid
+Every component that takes a `hue` takes the auxiliary hues too. They come in pairs, one vivid
 and one pale, that share steps: grape's tint is lilac's, tangerine's is apricot's, and lilac and
 apricot take the deep steps of grape and tangerine.
 
 ## Recolouring a component
 
-Every component that has a colour takes it in one prop, `color`: a hue's name from the palette
+Every component that has a colour takes it in one prop, `hue`: a hue's name from the palette
 above, or a hex code for a colour outside it. A hue brings its label, its tint and its dark-mode
 values with it. A hex code is the same colour in both themes, so it has no dark-mode value and no
 `-deep` step: the component picks ink or cream for the label, whichever stands out more, and mixes
 the tint from the hex. Check its contrast yourself, as a mid-tone can fall short with both.
 
 <Demo label="Hues and hex codes">
-  <Button color="teal">Teal</Button>
-  <Button color="#ff7eb6">Pink</Button>
-  <Button color="#5b3a29">Brown</Button>
-  <Badge color="#5b3a29">Brown</Badge>
-  <Badge color="#ff7eb6" tint>
+  <Button hue="teal">Teal</Button>
+  <Button hue="#ff7eb6">Pink</Button>
+  <Button hue="#5b3a29">Brown</Button>
+  <Badge hue="#5b3a29">Brown</Badge>
+  <Badge hue="#ff7eb6" tint>
     Pink tint
   </Badge>
 </Demo>

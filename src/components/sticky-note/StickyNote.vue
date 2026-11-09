@@ -6,7 +6,7 @@
   go on the outer element.
 
   @example
-  <StickyNote title="Remember" color="grape" tilt hold="pin"><p>Bring the charger.</p></StickyNote>
+  <StickyNote title="Remember" hue="grape" tilt hold="pin"><p>Bring the charger.</p></StickyNote>
   <StickyNote as="callout" kind="warning" hold="tape"><p>Back up first.</p></StickyNote>
   <StickyNote title="Lively" animated><p>The corner lifts on hover.</p></StickyNote>
   <StickyNote title="Steeper" tilt style="--rkui-note-tilt: 4deg"><p>A custom tilt.</p></StickyNote>
@@ -15,13 +15,13 @@
 import { computed } from 'vue'
 import Callout from '../callout/Callout.vue'
 import Card from '../card/Card.vue'
-import { colorVars, isHex } from '../../shared/hues'
+import { hueVars, isHex } from '../../shared/hues'
 
 /**
  * The colours a note comes in: the hues sticky-note.css has a paper colour for (every hue but
  * navy and teal), or a hex code.
  */
-type NoteColor =
+type NoteHue =
   'yellow' | 'sky' | 'tangerine' | 'green' | 'coral' | 'grape' | 'lilac' | 'apricot' | `#${string}`
 
 interface Props {
@@ -31,7 +31,7 @@ interface Props {
    * The note's colour, a hue or a hex code: yellow when left out, but sky for a note callout and
    * tangerine for a warning one.
    */
-  color?: NoteColor
+  hue?: NoteHue
   /** Turns the note slightly, by -2deg; set `--rkui-note-tilt` in `style` for another angle; upright when left out. */
   tilt?: boolean
   /** Lifts the folded corner on hover, as a linked note's does; a linked note always does; still when left out. */
@@ -52,7 +52,7 @@ interface Props {
 
 const {
   as = 'card',
-  color,
+  hue,
   tilt,
   animated,
   hold,
@@ -66,14 +66,14 @@ const {
 /** The sticky-note classes, for whichever of Card or Callout is drawn. */
 const noteClasses = computed(() => [
   'rkui-sticky-note',
-  color && !isHex(color) && `rkui-sticky-note--${color}`,
+  hue && !isHex(hue) && `rkui-sticky-note--${hue}`,
   hold && `rkui-sticky-note--${hold}`,
   { 'rkui-sticky-note--tilt': tilt, 'rkui-sticky-note--animated': animated },
 ])
 
 /** A hex colour's paper and text as custom properties; a hue sets them by its class. */
 const vars = computed(() =>
-  isHex(color) ? colorVars(color, { fill: '--rkui-note-fill', text: '--rkui-note-text' }) : {},
+  isHex(hue) ? hueVars(hue, { fill: '--rkui-note-fill', text: '--rkui-note-text' }) : {},
 )
 
 /** Throws, so the build stops, when a card has no title. */

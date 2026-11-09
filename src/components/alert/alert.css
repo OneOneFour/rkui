@@ -3,7 +3,7 @@
    it on Escape. The page behind is shaded with --rkui-scrim, or blurred with --blur. It pops in
    with one overshoot; it closes at once.
 
-   --rkui-alert-hue and --rkui-alert-on-hue set the band's fill and text (Alert.vue's `color`);
+   --rkui-alert-hue and --rkui-alert-on-hue set the band's fill and text (Alert.vue's `hue`);
    coral (--rkui-coral-solid) when left alone.
 
    <button class="rkui-button" commandfor="unsaved" command="show-modal">Leave</button>

@@ -26,7 +26,7 @@
   sheet without the scrolling.
 
   @example
-  <Table caption="Runs" color="teal">
+  <Table caption="Runs" hue="teal">
     <thead><tr><th scope="col">Run</th><th scope="col">σ</th></tr></thead>
     <tbody><tr><th scope="row">a</th><td>10</td></tr></tbody>
   </Table>
@@ -35,7 +35,7 @@
 import { computed, useAttrs, useSlots } from 'vue'
 import Scroll from '../overflow/Scroll.vue'
 import { useComponentId } from '../../shared/component-id'
-import { colorVars, type Color } from '../../shared/hues'
+import { hueVars, type HueOrHex } from '../../shared/hues'
 import { unwrappedSlot } from '../../shared/slot-html'
 import { splitAttrs } from '../../shared/split-attrs'
 
@@ -49,7 +49,7 @@ interface Props {
    * hue (`--rkui-section`); with none, ink in light mode, and the sheet's colour with a line under
    * it in dark mode.
    */
-  color?: Color
+  hue?: HueOrHex
   /**
    * The look: 'ledger', a ruled notebook page; 'sheet' when left out, a raised panel with a header
    * band. Open, see DECISIONS ("Table").
@@ -68,7 +68,7 @@ interface Props {
   lift?: boolean
 }
 
-const { caption, color, variant = 'sheet', small, messy, still, lift } = defineProps<Props>()
+const { caption, hue, variant = 'sheet', small, messy, still, lift } = defineProps<Props>()
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -77,7 +77,7 @@ const captionId = `${useComponentId('table')}-caption`
 
 /** The header band's colours. The band carries small text, so coral takes `--rkui-coral-solid`. */
 const vars = computed(() =>
-  colorVars(color, { fill: '--rkui-table-hue', text: '--rkui-table-on-hue', solid: true }),
+  hueVars(hue, { fill: '--rkui-table-hue', text: '--rkui-table-on-hue', solid: true }),
 )
 
 /** The page's attributes: `class` and `style` for the outer div (`outer`), the rest for the `<table>`. */

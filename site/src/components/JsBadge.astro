@@ -17,6 +17,6 @@ const { component } = Astro.props
 const usesJavaScript = needsClientVisible(component, {})
 ---
 
-<Badge color={usesJavaScript ? 'grape' : 'teal'}>
+<Badge hue={usesJavaScript ? 'grape' : 'teal'}>
   {usesJavaScript ? 'Uses JavaScript' : 'No JavaScript'}
 </Badge>

@@ -188,7 +188,7 @@ const BALLS = [
 <SpecimenRow title="Filling buttons (aria-busy, with an .rkui-water child)">
   <Specimen label="filling: yellow, teal, navy, coral, grape">
     {FILLS.map((fill) => (
-      <Button color={fill} aria-busy="true" aria-disabled="true">
+      <Button hue={fill} aria-busy="true" aria-disabled="true">
         <span class="rkui-water rkui-water--rise" aria-hidden="true" />
         Saving…
       </Button>
@@ -197,7 +197,7 @@ const BALLS = [
   <Specimen label="set by --rkui-water-level: 0.25, 0.5, 0.85">
     {LEVELS.map((level) => (
       <Button
-        color="teal"
+        hue="teal"
         aria-busy="true"
         aria-disabled="true"
         style={`--rkui-water-level: ${level}`}
@@ -208,7 +208,7 @@ const BALLS = [
     ))}
   </Specimen>
   <Specimen label="not busy: the water is hidden">
-    <Button color="teal">
+    <Button hue="teal">
       <span class="rkui-water" aria-hidden="true"></span>
       Upload
     </Button>

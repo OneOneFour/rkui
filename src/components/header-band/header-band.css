@@ -8,7 +8,7 @@
    </header>
 
    --rkui-header-band-hue and --rkui-header-band-on-hue set the fill and the text (HeaderBand.vue's
-   `color`). Left alone, the band is the page's section hue (--rkui-section) if it sets one; with
+   `hue`). Left alone, the band is the page's section hue (--rkui-section) if it sets one; with
    none, it is ink in light mode, and in dark mode it lets the page's colour show, with a line
    along its foot in the colour of an outline without a fill, which any fill covers. That is the
    Table's header band rule (DECISIONS, "Table header band in dark mode"). */
