@@ -53,7 +53,7 @@
         (100% + var(--rkui-outline-width) + 0.75 * var(--rkui-wave-height)) +
         var(--rkui-water-level) * 0.25 * var(--rkui-wave-height)
     );
-  transition: translate var(--rkui-duration-slide) var(--rkui-ease-spring);
+  transition: translate var(--rkui-duration-slide) var(--rkui-ease-snap);
   pointer-events: none;
 }
 

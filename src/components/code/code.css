@@ -145,7 +145,7 @@
       translate var(--rkui-duration-fast) ease,
       box-shadow var(--rkui-duration-fast) ease,
       opacity var(--rkui-duration-fast) ease,
-      transform var(--rkui-duration-spring) var(--rkui-ease-spring);
+      transform var(--rkui-duration-spring) var(--rkui-ease-snap);
   }
 
   .rkui-code--copy-hover:is(:hover, :focus-within) > .rkui-code-copy {

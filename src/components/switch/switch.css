@@ -34,7 +34,7 @@
   block-size: var(--rkui-thumb-size);
   border-radius: 50%;
   background: var(--rkui-fg);
-  transition: translate var(--rkui-duration-fast) ease;
+  transition: translate var(--rkui-duration-spring) ease;
 }
 
 .rkui-switch:checked {
