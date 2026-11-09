@@ -4,32 +4,35 @@
 .docs-topbar {
   --rkui-topbar-inset: var(--rkui-space-4);
 
-  /* The settings drawer is last, so the bottom padding is its bleed. */
-  padding-block: var(--rkui-space-3) var(--rkui-topbar-inset);
+  padding-block: var(--rkui-space-3);
 
   justify-content: flex-start;
 }
 
+/* The theme toggle and the Settings button, with the settings drawer hanging out of the bar's
+   bottom edge under the toggle. The drawer sits in the toggle's grid column, so it takes the
+   toggle's width, less a space at each side, with nothing measured. The group fills the bar's
+   row, so the column's bottom is the bar's, short of its padding. */
 .docs-switches {
-  display: flex;
-  flex-wrap: wrap;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  align-self: stretch;
   gap: var(--rkui-space-2);
   margin-inline-start: auto;
 }
 
-/* The settings drawer takes a row of its own along the bar's bottom edge, reaching its sides. */
 .docs-settings {
-  --rkui-drawer-bleed: var(--rkui-topbar-inset);
-
-  flex-basis: calc(100% + 2 * var(--rkui-drawer-bleed));
+  grid-area: 1 / 1 / 2 / 2;
+  inset-block-start: calc(100% + var(--rkui-space-3));
+  inset-inline: var(--rkui-space-2);
 }
 
 .docs-settings-body {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
-  justify-content: flex-end;
-  gap: var(--rkui-space-4) var(--rkui-space-6);
+  display: grid;
+  justify-items: start;
+  gap: var(--rkui-space-3);
 }
 
 .docs-mode-name {
@@ -52,20 +55,15 @@
   padding: var(--rkui-space-6) var(--rkui-space-4) var(--rkui-space-8);
 }
 
-/* Anchor jumps land below the top bar, which is two rows high with the settings drawer's front. */
-:root:has(.docs-topbar) {
-  scroll-padding-block-start: 8rem;
-}
-
 /* The sidebar stays in view below the top bar. It shrinks to fit, so its own scroller scrolls it
    when it is long. */
 .docs-sidebar {
   position: sticky;
-  inset-block-start: 8rem;
+  inset-block-start: 6rem;
   display: flex;
   flex-direction: column;
   align-self: start;
-  max-block-size: calc(100dvh - 9rem);
+  max-block-size: calc(100dvh - 7rem);
 }
 
 .docs-main {
@@ -153,8 +151,13 @@ article > .rkui-logo {
     display: none;
   }
 
-  .docs-settings-body {
-    justify-content: flex-start;
+  /* The Settings button is just its gear, square, so it fits beside the theme toggle. */
+  .docs-settings-button {
+    --rkui-button-padding-inline: var(--rkui-button-padding-block);
+  }
+
+  .docs-settings-word {
+    display: none;
   }
 
   .docs-menu {
