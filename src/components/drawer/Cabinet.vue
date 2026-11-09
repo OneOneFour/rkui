@@ -2,7 +2,8 @@
   A cabinet: Drawers stacked as one, on a raised panel, each front the cabinet's width. With
   `exclusive`, opening a drawer closes the others: the cabinet gives them one generated `name`
   (native `<details name>`), and a drawer's own `name` wins. Without it, each drawer opens and
-  closes on its own. Needs no JavaScript. `class`, `style` and other attributes go on the `<div>`.
+  closes on its own. Its drawers pull out from the bottom (leave their `placement` out). Needs no
+  JavaScript. `class`, `style` and other attributes go on the `<div>`.
 
   @example
   <Cabinet exclusive>

@@ -118,6 +118,123 @@ import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
   </div>
 </Demo>
 
+## On other sides
+
+A drawer pulls out from the edge `placement` names. On top it comes first in its parent. On the left and right it stands beside the parent's other content, so the parent lays out its children in a row (`display: flex`), and its tray opens as wide as its contents, up to `--rkui-drawer-width`.
+
+<Demo label="Drawers on the top, left and right">
+  <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <div
+      class="rkui-drawer-host"
+      style="--rkui-drawer-bleed: var(--rkui-space-4); display: grid; gap: var(--rkui-space-3); inline-size: 16rem; padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)"
+    >
+      <Drawer label="Tools" placement="top">
+        <Button small>Export</Button>
+      </Drawer>
+      <p style="margin: 0">Pack my box with five dozen liquor jugs.</p>
+    </div>
+    <div
+      class="rkui-drawer-host"
+      style="--rkui-drawer-bleed: var(--rkui-space-4); display: flex; gap: var(--rkui-space-3); inline-size: min(22rem, 100%); padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)"
+    >
+      <Drawer label="Tools" placement="left">
+        <Button small>Export</Button>
+      </Drawer>
+      <p style="flex: 1; margin: 0">Pack my box with five dozen liquor jugs.</p>
+    </div>
+    <div
+      class="rkui-drawer-host"
+      style="--rkui-drawer-bleed: var(--rkui-space-4); display: flex; gap: var(--rkui-space-3); inline-size: min(22rem, 100%); padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)"
+    >
+      <p style="flex: 1; margin: 0">Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Tools" placement="right">
+        <SlidersIcon slot="handle" class="rkui-icon rkui-icon--small" />
+        <Button small>Export</Button>
+      </Drawer>
+    </div>
+  </div>
+</Demo>
+
+<Demo label="Blinds on the top, left and right">
+  <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <div style="--rkui-drawer-bleed: var(--rkui-space-4); display: grid; gap: var(--rkui-space-3); inline-size: 16rem; padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)">
+      <Drawer label="Screen" variant="blind" placement="top">
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+      <p style="margin: 0">Pack my box with five dozen liquor jugs.</p>
+    </div>
+    <div style="--rkui-drawer-bleed: var(--rkui-space-4); display: flex; gap: var(--rkui-space-3); inline-size: min(22rem, 100%); padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)">
+      <Drawer label="Screen" variant="blind" placement="left">
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+      <p style="flex: 1; margin: 0">Pack my box with five dozen liquor jugs.</p>
+    </div>
+    <div style="--rkui-drawer-bleed: var(--rkui-space-4); display: flex; gap: var(--rkui-space-3); inline-size: min(22rem, 100%); padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)">
+      <p style="flex: 1; margin: 0">Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Screen" variant="blind" placement="right" showLabel>
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+    </div>
+  </div>
+</Demo>
+
+## Remote
+
+A remote drawer is opened by a button elsewhere on the page, with no JavaScript: the button's `popovertarget` names the drawer's `id`, and the browser tells screen readers whether it is open. The drawer's own front is no button: it shows only an arrow, and a blind's cord ends in an empty ring. A remote drawer always starts shut; a button inside it can shut it with `popovertargetaction="hide"`.
+
+<Demo label="Drawer and blind opened by buttons elsewhere">
+  <div style="display: grid; gap: var(--rkui-space-4); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-3)">
+      <Button popovertarget="drawer-remote-tools">Tools</Button>
+      <Button hue="teal" popovertarget="drawer-remote-notes">
+        Notes
+      </Button>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6)">
+      <Card title="Field notes" style="inline-size: 18rem">
+        <p>Pack my box with five dozen liquor jugs.</p>
+        <Drawer label="Tools" remote id="drawer-remote-tools">
+          <Button small>Export</Button>
+        </Drawer>
+      </Card>
+      <Card title="Field notes" style="inline-size: 18rem">
+        <p>Pack my box with five dozen liquor jugs.</p>
+        <Drawer label="Notes" variant="blind" remote id="drawer-remote-notes">
+          <p>How vexingly quick daft zebras jump.</p>
+        </Drawer>
+      </Card>
+    </div>
+  </div>
+</Demo>
+
+<Demo label="Remote drawer and blind on the right">
+  <div style="display: grid; gap: var(--rkui-space-4); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-3)">
+      <Button popovertarget="drawer-remote-side">Tools</Button>
+      <Button hue="teal" popovertarget="blind-remote-side">
+        Screen
+      </Button>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6)">
+      <div
+        class="rkui-drawer-host"
+        style="--rkui-drawer-bleed: var(--rkui-space-4); display: flex; gap: var(--rkui-space-3); inline-size: min(22rem, 100%); padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)"
+      >
+        <p style="flex: 1; margin: 0">Pack my box with five dozen liquor jugs.</p>
+        <Drawer label="Tools" placement="right" remote id="drawer-remote-side">
+          <Button small>Export</Button>
+        </Drawer>
+      </div>
+      <div style="--rkui-drawer-bleed: var(--rkui-space-4); display: flex; gap: var(--rkui-space-3); inline-size: min(22rem, 100%); padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)">
+        <p style="flex: 1; margin: 0">Pack my box with five dozen liquor jugs.</p>
+        <Drawer label="Screen" variant="blind" placement="right" remote id="blind-remote-side">
+          <p>How vexingly quick daft zebras jump.</p>
+        </Drawer>
+      </div>
+    </div>
+  </div>
+</Demo>
+
 ## Starting open
 
 <Demo label="Drawer and blind starting open">
