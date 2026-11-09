@@ -1,8 +1,8 @@
 /* Pagination's strip of tabs hides its own scrollbar, which would come between the tabs and the
    sheet (folder.css). This puts a thin bar above the tabs instead, in the room folder.css keeps
-   for it, like WidgetTabs' bar: it shows while the tabs don't fit and stays scrolled to the same
-   place as the strip. Without it, the strip still scrolls by touch, trackpad, wheel and keyboard.
-   It handles Paginations added after the page loads too. */
+   for it: it shows while the tabs don't fit and stays scrolled to the same place as the strip.
+   Without it, the strip still scrolls by touch, trackpad, wheel and keyboard. It handles
+   Paginations added after the page loads too. */
 import { eachElement } from '../../shared/each-element.js'
 
 /** Each strip's bar, and each bar's strip. */

@@ -2,7 +2,7 @@
  * The library components that run in the browser, so an Astro page gives them `client:visible`.
  * Each one's header comment says so. Keep this list in step with them.
  */
-const INTERACTIVE = new Set(['Clock', 'CodeBlock', 'Dial', 'Stepper', 'ThemeToggle', 'WidgetTabs'])
+const INTERACTIVE = new Set(['Clock', 'CodeBlock', 'Dial', 'Stepper', 'ThemeToggle'])
 
 /**
  * Whether an Astro page gives a library component `client:visible`. A Range needs it only with

@@ -10,6 +10,7 @@ import Card from '@oneonefour/rkui/components/card/Card.vue'
 import Ballot from './Ballot.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
+import StateFolder from './StateFolder.astro'
 import TilePicker from './TilePicker.astro'
 
 interface Props {
@@ -83,24 +84,12 @@ const BALLOT = ['teal', 'green'].map((color) => ({
           <input class="rkui-range is-active" type="range" aria-label="Specimen" />
         </Specimen>
         <Specimen label="folder tabs: selected, hover" wide>
-          <div class="rkui-folder">
-            <ul class="rkui-folder-tabs rkui-scroll" aria-label="Specimen" tabindex="0">
-              <li>
-                <span class="rkui-folder-tab" aria-current="true">
-                  One
-                </span>
-              </li>
-              <li>
-                <span class="rkui-folder-tab is-hover">Two</span>
-              </li>
-              <li>
-                <span class="rkui-folder-tab">Three</span>
-              </li>
-            </ul>
-            <div class="rkui-folder-sheet">
-              <p>Panel.</p>
-            </div>
-          </div>
+          <StateFolder
+            name={`${prefix}-folder`}
+            tabs={KEYS}
+            selected={0}
+            state={{ tab: 1, class: 'is-hover' }}
+          />
         </Specimen>
       </SpecimenRow>
     </div>
@@ -113,9 +102,3 @@ const BALLOT = ['teal', 'green'].map((color) => ({
     <Button data-depth="deep">Button</Button>
   </Specimen>
 </SpecimenRow>
-
-<style>
-  .rkui-folder-sheet p {
-    margin: 0;
-  }
-</style>

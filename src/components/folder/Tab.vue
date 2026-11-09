@@ -1,7 +1,7 @@
 <!--
-  One tab of a `Tabs` or a `Folder`, directly inside it. In Tabs the slot is the tab's panel; in a
-  Folder a tab has no slot. The group builds the tab and its panel from this tab's props and slot
-  (see tab-slot.ts), so a Tab takes no other attributes: `class`, `id` and the rest are dropped.
+  One tab of a `Folder`, directly inside it. Its slot is the tab's panel. The Folder builds the tab
+  and its panel from this tab's props and slot (see tab-slot.ts), so a Tab takes no other
+  attributes: `class`, `id` and the rest are dropped.
 
   @example
   <Tab label="Two" selected><p>Panel two.</p></Tab>

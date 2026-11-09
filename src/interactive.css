@@ -140,12 +140,7 @@
 /* The selected folder tab is joined to the sheet and doesn't pop; its shadow is on ::before
    (folder.css). It takes the selected state at once, so the press it was clicked with doesn't
    ease back across the join. */
-.rkui-folder-tab:is(
-  :has(:checked),
-  [aria-selected='true'],
-  [aria-current='page'],
-  [aria-current='true']
-) {
+.rkui-folder-tab:is(:has(:checked), [aria-current='page']) {
   --rkui-folder-tab-x: 0px;
   --rkui-folder-tab-y: 0px;
 
@@ -185,21 +180,17 @@
 
 /* The selected folder tab's band is drawn by its ::before in place of its shadow, and stops at
    the sheet's edge like the tab's outline does. */
-.rkui-folder-tab:is(
-    :has(:checked),
-    [aria-selected='true'],
-    [aria-current='page'],
-    [aria-current='true']
-  ):is(:focus-visible, :has(:focus-visible, :where([data-rkui-focus-visible]):focus)) {
+.rkui-folder-tab:is(:has(:checked), [aria-current='page']):is(
+    :focus-visible,
+    :has(:focus-visible, :where([data-rkui-focus-visible]):focus)
+  ) {
   outline: none;
 }
 
-.rkui-folder-tab:is(
-    :has(:checked),
-    [aria-selected='true'],
-    [aria-current='page'],
-    [aria-current='true']
-  ):is(:focus-visible, :has(:focus-visible, :where([data-rkui-focus-visible]):focus))::before {
+.rkui-folder-tab:is(:has(:checked), [aria-current='page']):is(
+    :focus-visible,
+    :has(:focus-visible, :where([data-rkui-focus-visible]):focus)
+  )::before {
   outline: var(--rkui-focus-width) solid var(--rkui-focus);
   outline-offset: var(--rkui-focus-offset);
   box-shadow: none;
@@ -212,8 +203,7 @@
   z-index: 3;
 }
 
-.rkui-folder:has(> .rkui-folder-sheet:focus-visible) > .rkui-folder-tab::before,
-.rkui-folder:has(> .rkui-folder-sheet:focus-visible) > .rkui-folder-tabs .rkui-folder-tab::before {
+.rkui-folder:has(> .rkui-folder-sheet:focus-visible) > .rkui-folder-tab::before {
   box-shadow: none;
 }
 

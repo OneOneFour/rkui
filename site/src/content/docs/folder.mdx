@@ -1,51 +1,75 @@
 ---
 title: Folder
-description: Tabs standing on a sheet, like a folder's index tabs.
+description: Folder tabs that switch between panels.
 group: Containers
-order: 74
+order: 75
 component: Folder
 ---
 
 import Demo from '../../components/Demo.astro'
 import Folder from '@oneonefour/rkui/components/folder/Folder.vue'
 import Tab from '@oneonefour/rkui/components/folder/Tab.vue'
+import StepFolder from '../../examples/folder/StepFolder.vue'
+import stepCode from '../../examples/folder/StepFolder.vue?raw'
 
-Each `Tab` is one tab, and the rest of the slot is the sheet. Mark the tab that's showing
-`selected`; the first is when none is. For tabs that switch panels, see Tabs.
+Each `Tab` is one tab, and its slot is that tab's panel. Click a tab, or move between them with the
+arrow keys. The first tab starts selected; mark another `selected` to start there. Each tab is a
+native radio, so Folder needs no JavaScript.
 
 <Demo label="Folder" stack>
-  <Folder label="Example">
-    <Tab label="One" />
-    <Tab label="Two" />
-    <Tab label="Three" />
-    <p>The sheet.</p>
+  <Folder label="Topics">
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
   </Folder>
 </Demo>
 
 ## Tinted
 
-Add `tinted` for a sheet in the selected tint.
-
 <Demo label="Tinted folder" stack>
   <Folder label="Tinted" tinted>
-    <Tab label="One" />
-    <Tab label="Two" />
-    <Tab label="Three" selected />
-    <p>The sheet in the selected tint.</p>
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
   </Folder>
 </Demo>
 
 ## Narrow
 
-When the tabs don't fit, the strip scrolls, with dots at the edge that has more. It has no
-scrollbar, which would come between the tabs and the sheet.
+Tabs that don't fit wrap onto another row.
 
 <Demo label="Narrow folder" stack>
   <Folder label="Narrow" style="max-inline-size: 16rem">
-    <Tab label="Tab one" />
-    <Tab label="Tab two" selected />
-    <Tab label="Tab three" />
-    <Tab label="Tab four" />
-    <p>Too narrow for its tabs, so the strip scrolls.</p>
+    <Tab label="Tab one">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Tab two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Tab three">
+      <p>Panel three.</p>
+    </Tab>
+    <Tab label="Tab four">
+      <p>Panel four.</p>
+    </Tab>
   </Folder>
+</Demo>
+
+## With v-model
+
+In a `.vue` file, `v-model` is the selected tab's index, so the widget can read and set it.
+
+The widget below is rendered with `client:visible`.
+
+<Demo vue={stepCode} label="Folder with v-model" stack widget>
+  <StepFolder client:visible />
 </Demo>

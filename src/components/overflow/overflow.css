@@ -142,7 +142,7 @@
 
 /* The pill's size across and along it (shorter in a scroll region, to sit on a strip of tabs
    clear of the sheet), and the width of a scroll region's dot gutters in each look. Inherited,
-   so the nearest data-rkui-dots wins; a code block's caption and Tabs line up with them. */
+   so the nearest data-rkui-dots wins; a code block's caption and Folder's tabs line up with them. */
 :root {
   --rkui-pill-width: var(--rkui-space-4);
   --rkui-pill-length: var(--rkui-space-7);

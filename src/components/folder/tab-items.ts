@@ -1,5 +1,5 @@
 /**
- * How a `Tab` hands its label and content to the `Tabs` or `Folder` around it. A Tab renders its
+ * How a `Tab` hands its label and content to the `Folder` around it. A Tab renders its
  * slot inside an `<rkui-tab-item>` that carries its label and whether it is selected. The group
  * renders its slot, finds those items with `readTabs`, and builds the tab strip and panels itself,
  * so all the tab markup is written in one place. Everything is copied through exactly as rendered;
@@ -10,7 +10,7 @@
 interface TabItem {
   label: string
   selected: boolean
-  /** The tab's rendered slot: its panel in Tabs. */
+  /** The tab's rendered slot: its panel. */
   content: string
 }
 
@@ -24,13 +24,10 @@ export function tabData(label: string, selected: boolean): string {
 const TAB_TAG = /<rkui-tab-item data-tab="([^"]*)"[^>]*>|<\/rkui-tab-item>/g
 
 /**
- * Reads the tabs out of a group's rendered slot, in order, and everything outside them. Stops the
- * build with a clear message when a Tab sits inside another Tab rather than directly in the group.
+ * Reads the tabs out of a Folder's rendered slot, in order, and everything outside them. Stops the
+ * build with a clear message when a Tab sits inside another Tab rather than directly in the Folder.
  */
-export function readTabs(
-  html: string | undefined,
-  group: string,
-): { tabs: TabItem[]; outside: string } {
+export function readTabs(html: string | undefined): { tabs: TabItem[]; outside: string } {
   const slot = html ?? ''
   const tabs: TabItem[] = []
   let outside = ''
@@ -40,7 +37,7 @@ export function readTabs(
   for (const match of slot.matchAll(TAB_TAG)) {
     const isOpening = match[1] !== undefined
     if (isOpening && tab) {
-      throw new Error(`${group}: a Tab goes directly inside ${group}, not inside another Tab.`)
+      throw new Error('Folder: a Tab goes directly inside Folder, not inside another Tab.')
     }
     if (isOpening) {
       outside += slot.slice(afterLastTab, match.index)

@@ -36,8 +36,8 @@ Rob King's toon component library. Rob reviews every diff by hand.
 - **Library boundary.**
   - No `.css` or `.js` file under `src/` imports a framework (a `.astro` or `.vue` file, `astro` or
     `vue`). Components import the CSS classes and scripts beside them, never the other way round.
-  - The `.ts` helpers that work with Vue (`tab-slot.ts`, `widget-tab-slot.ts`, `option-slot.ts`,
-    `slot-html.ts`, `model-start.ts`, `component-id.ts`, `define-element.ts`) and the
+  - The `.ts` helpers that work with Vue (`tab-slot.ts`, `option-slot.ts`, `slot-html.ts`,
+    `model-start.ts`, `component-id.ts`, `define-element.ts`) and the
     `*-element.ts` registrations may import Vue; no other `.ts` file in `src/` does, and none
     imports Astro. A new helper that needs Vue joins the list in `build/check-boundary.js`, which
     enforces all of this.
@@ -89,18 +89,19 @@ Rob King's toon component library. Rob reviews every diff by hand.
 Three rules decide how a component is built:
 1. **One file.** Every component is one `.vue` file beside its CSS. Astro pages, MDX and other
    `.vue` files all use the same file. No custom tags in library components or pages, except:
-   - `<rkui-tab-item>`, the marker a Tab rendered by Astro writes for its Tabs or Folder to read
+   - `<rkui-tab-item>`, the marker a Tab rendered by Astro writes for its Folder to read
      (`tab-items.ts`). It is server-only: the group replaces it, so it never reaches a page;
    - the custom elements for plain HTML pages (below).
 2. **A component that wraps the page's content works with no JavaScript,** using the platform:
-   radios for Tabs, CSS hover and focus for Tooltip. It is never hydrated (no `client:`), because
+   radios for Folder, CSS hover and focus for Tooltip. It is never hydrated (no `client:`), because
    Vue waking up over the page's own HTML rebuilds it: page scripts lose their elements and
-   nested islands restart.
+   nested islands restart. Inside a `.vue` widget its slot is Vue content, so it may take a
+   `v-model` there (Folder's chosen tab).
 3. **An interactive component is Vue with JavaScript, and draws its own markup,** with its
    behaviour in `<script setup>`. Its children, if any, are Vue components, never page HTML.
-   `WidgetTabs` is the example: its `WidgetTab`s are written in a `.vue` file. A group enforces
-   this with a guard that throws when its slot is page HTML from Astro (`slotHtml()` in
-   `src/shared/slot-html.ts`), naming the page component to use instead. In an Astro page the
+   `ColorPicker` with `custom` is the example: its `ColorTile`s are written in a `.vue` file. A
+   group enforces this with a guard that throws when its slot is page HTML from Astro (`slotHtml()`
+   in `src/shared/slot-html.ts`), saying what to write instead. In an Astro page the
    component, or the widget around it, gets `client:visible` (`client:load` only if it must run
    before it is scrolled to).
 
@@ -148,17 +149,17 @@ Every component follows these, so a site author learns them once:
     too, as it wakes up inside an interactive widget. It goes first because it must read the
     control before Vue's `v-model` writes to it, which for a radio is as soon as it is created.
 - **Lists of things are child components, never an array prop.** Options and tabs are each one
-  tag inside their group: `<Tabs label="Topics"><Tab label="One">…</Tab></Tabs>`, the same in MDX,
+  tag inside their group: `<Folder label="Topics"><Tab label="One">…</Tab></Folder>`, the same in MDX,
   `.astro` and `.vue`. A child marks its own state (`checked`, `selected`); where only one can
   be, the first one marked wins, and the group's header comment says so.
-  - A child that only carries data for its group (Tab, WidgetTab) takes no other attributes: the
+  - A child that only carries data for its group (Tab) takes no other attributes: the
     group builds its markup, so `class`, `id` and the rest are dropped. Its header comment says so.
   - A group's slot comes in two shapes. From a `.vue` file it is vnodes. From MDX or `.astro` it is
     one vnode holding the slot's rendered HTML (`slot-html.ts`), because Astro renders each
     component on its own. The group reads both through a helper beside it: `tab-slot.ts` (over
     `tab-items.ts`) for tabs, `option-slot.ts` (over `option-group.ts`) for options.
-  - An interactive group takes only vnodes (rule 3): `widget-tab-slot.ts` reads WidgetTabs' slot
-    and throws on the HTML shape.
+  - An interactive group takes only vnodes (rule 3): ColorPicker's `tiles()` throws on the HTML
+    shape when it has `custom`.
   - The group reads its slot while rendering (in the template or a `computed`), never in setup:
     Vue warns about a slot invoked there. A starting value read from the slot (Textarea's text,
     Select's and ChipGroup's choice) goes through `modelWithStart()` (`model-start.ts`).
@@ -187,7 +188,7 @@ Every component follows these, so a site author learns them once:
     the component's own element that holds those controls, which its CSS selects by class, not on
     whatever happens to be outermost: CodeBlock's `<figure class="rkui-code">`, and Stepper's
     `.rkui-stepper` div, which sits inside the Field's frame when there is one;
-  - an error it throws (a Tabs with no Tab) stops the build: the docs site sets
+  - an error it throws (a Folder with no Tab) stops the build: the docs site sets
     `throwUnhandledErrorInProduction` (`site/src/vue-app.js`).
 - **Using one from Astro:** a component with behaviour gets `client:visible`; every other one gets
   no directive and ships no JavaScript. No inline event handlers.
@@ -200,11 +201,11 @@ Every component follows these, so a site author learns them once:
   cases are decided in a `computed` (`computed<'split' | 'stacked' | …>(() => …)`), or in a
   function when they read the attributes or slots (CodeBlock's `mark()`), and the template has
   one line per case.
-- **Reuse:** build composites from components (`Button`, `Field`, `FolderStrip`), not by repeating
+- **Reuse:** build composites from components (`Button`, `Field`), not by repeating
   their classes. Icons are template-only components: `import CopyIcon from
   '@oneonefour/rkui/icons/copy.vue'`.
 - **One style in pages:** docs pages, examples and the site's own components use the library's
-  components (`<Tabs>`, `<CodeBlock>`, `<Button>`), never a component's markup written by hand.
+  components (`<Folder>`, `<CodeBlock>`, `<Button>`), never a component's markup written by hand.
   Native elements with a utility class (`<span class="rkui-visually-hidden">`) are fine.
 - **Demos in the docs:** written inline in the MDX page, inside `<Demo>`, as an Astro page writes
   them, with one import per component at the top of the page and `client:visible` on each
@@ -229,8 +230,8 @@ Every component follows these, so a site author learns them once:
     first starts: changing one later does nothing, and an element moved elsewhere keeps the ones it
     started with. `build/js.js` bundles the elements, with the Vue runtime, into `dist/rkui.js`. A
     plain page has no other way to say "put a Stepper here", so this is where custom tags belong.
-  - a component whose children are Vue components (WidgetTabs) has no plain HTML form; a plain
-    page uses the page component (Tabs).
+  - children that must be Vue components have no plain HTML form: a plain page writes
+    `<rkui-color-picker custom>`, which draws every hue, rather than its own ColorTiles.
 
 ## Working with subagents
 

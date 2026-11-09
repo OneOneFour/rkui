@@ -29,7 +29,7 @@ function isBlank(vnode: VNode): boolean {
 }
 
 /** A slot's vnodes in order, with fragments (`v-for`) opened up and blank ones left out. */
-export function slotVnodes(vnodes: VNode[]): VNode[] {
+function slotVnodes(vnodes: VNode[]): VNode[] {
   return vnodes.flatMap((vnode) => {
     if (vnode.type === Fragment && Array.isArray(vnode.children)) {
       return slotVnodes(vnode.children as VNode[])
@@ -38,8 +38,8 @@ export function slotVnodes(vnodes: VNode[]): VNode[] {
   })
 }
 
-/** A Tab or WidgetTab read from its vnode's props and slot. `selected` alone arrives as ''. */
-export function vnodeTab(vnode: VNode): SlotTab {
+/** A Tab read from its vnode's props and slot. `selected` alone arrives as ''. */
+function vnodeTab(vnode: VNode): SlotTab {
   const selected = vnode.props?.selected
   const children = vnode.children as { default?: () => VNode[] } | null
   return {
@@ -50,19 +50,19 @@ export function vnodeTab(vnode: VNode): SlotTab {
 }
 
 /**
- * Reads the tabs out of a Tabs or Folder slot, in order, and everything outside them. A slot
+ * Reads the tabs out of a Folder slot, in order, and everything outside them. A slot
  * written in MDX or .astro arrives as HTML (slot-html.ts) and is read with tab-items.ts; Tab vnodes
  * from a .vue file are read from their props. The first tab marked `selected` is the selected
  * one, or the first tab when none is. Stops with a clear message when there are no tabs.
  */
-export function readSlotTabs(vnodes: VNode[], group: 'Tabs' | 'Folder'): SlotParts {
+export function readSlotTabs(vnodes: VNode[]): SlotParts {
   const parts: SlotParts = { tabs: [], outside: [], outsideHtml: '' }
   for (const vnode of slotVnodes(vnodes)) {
     const html = slotHtml(vnode)
     if (vnode.type === Tab) {
       parts.tabs.push(vnodeTab(vnode))
     } else if (html !== undefined) {
-      const { tabs, outside } = readTabs(html, group)
+      const { tabs, outside } = readTabs(html)
       parts.tabs.push(
         ...tabs.map(({ label, selected, content }) => ({ label, selected, html: content })),
       )
@@ -71,7 +71,7 @@ export function readSlotTabs(vnodes: VNode[], group: 'Tabs' | 'Folder'): SlotPar
       parts.outside.push(vnode)
     }
   }
-  if (parts.tabs.length === 0) throw new Error(`${group} needs at least one Tab.`)
+  if (parts.tabs.length === 0) throw new Error('Folder needs at least one Tab.')
   // The first tab marked selected wins, or the first tab when none is marked.
   const marked = parts.tabs.findIndex((tab) => tab.selected)
   const first = marked === -1 ? 0 : marked

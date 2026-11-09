@@ -15,7 +15,6 @@ const CSS_FRAMEWORK_IMPORT = /@import\s+['"][^'"]*\.(?:astro|vue)['"]/
 /** The .ts files, under src/, that may import Vue. */
 const VUE_HELPERS = new Set([
   'components/folder/tab-slot.ts',
-  'components/folder/widget-tab-slot.ts',
   'shared/component-id.ts',
   'shared/define-element.ts',
   'shared/model-start.ts',

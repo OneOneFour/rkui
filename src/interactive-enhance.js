@@ -1,5 +1,5 @@
 /* Safari drops :focus-visible from a radio that an arrow key moves focus to, so the focus band
-   on Tabs, Segmented, Tiles and the other radio groups (interactive.css) disappears. This marks
+   on Folder, Segmented, Tiles and the other radio groups (interactive.css) disappears. This marks
    such a radio with data-rkui-focus-visible, and the CSS shows the band for a marked radio that
    has focus. Where the radio still matches :focus-visible, nothing is marked. */
 const MARK = 'data-rkui-focus-visible'

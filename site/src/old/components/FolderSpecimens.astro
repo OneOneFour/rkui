@@ -1,13 +1,21 @@
 ---
 /**
- * Folder tabs: live tabbed panels on a plain and a tinted sheet, the join with each tab selected,
+ * Folder: live tabbed panels on a plain and a tinted sheet, the join with each tab selected,
  * and a tab's states.
+ *
+ * @param theme the panel's theme, used to keep the radios' names unique across the two panels
  */
+import Folder from '@oneonefour/rkui/components/folder/Folder.vue'
 import Tab from '@oneonefour/rkui/components/folder/Tab.vue'
-import Tabs from '@oneonefour/rkui/components/folder/Tabs.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
+import StateFolder from './StateFolder.astro'
 
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const { theme } = Astro.props
 const TABS = ['Tab one', 'Tab two', 'Tab three']
 const SHEETS = [
   { label: 'live, plain sheet', tinted: false },
@@ -15,75 +23,63 @@ const SHEETS = [
 ]
 const STATIC_TABS = ['One', 'Two', 'Three']
 
-/** A static folder: which tab is selected, and optionally a state class on one tab */
-interface StaticFolder {
-  label: string
-  selected: number
-  tinted?: boolean
-  state?: { tab: number; class: string }
-}
-
-const JOINS: StaticFolder[] = [
+const JOINS = [
   { label: 'second tab selected', selected: 1 },
   { label: 'third tab selected', selected: 2 },
   { label: 'third tab selected, tinted', selected: 2, tinted: true },
 ]
-const STATES: StaticFolder[] = [
-  { label: 'second tab hover', selected: 0, state: { tab: 1, class: 'is-hover' } },
-  { label: 'second tab pressed', selected: 0, state: { tab: 1, class: 'is-active' } },
-  { label: 'second tab focused', selected: 0, state: { tab: 1, class: 'is-focus' } },
-  { label: 'selected tab focused', selected: 0, state: { tab: 0, class: 'is-focus' } },
+const STATES = [
+  { label: 'second tab hover', state: { tab: 1, class: 'is-hover' } },
+  { label: 'second tab pressed', state: { tab: 1, class: 'is-active' } },
+  { label: 'second tab focused', state: { tab: 1, class: 'is-focus' } },
+  { label: 'selected tab focused', state: { tab: 0, class: 'is-focus' } },
 ]
 ---
 
 <SpecimenRow title="Live">
   {SHEETS.map((sheet) => (
     <Specimen label={sheet.label} wide>
-      <Tabs label="Specimen" tinted={sheet.tinted}>
+      <Folder label="Specimen" tinted={sheet.tinted}>
         {TABS.map((name) => (
           <Tab label={name}>
             <p>Panel for {name.toLowerCase()}.</p>
           </Tab>
         ))}
-      </Tabs>
+      </Folder>
     </Specimen>
   ))}
 </SpecimenRow>
 
-{[
-  { title: 'The join', specimens: JOINS },
-  { title: 'States', specimens: STATES },
-].map((row) => (
-  <SpecimenRow title={row.title}>
-    {row.specimens.map((specimen) => (
-      <Specimen label={specimen.label}>
-        <div class:list={['rkui-folder', { 'rkui-folder--tinted': specimen.tinted }]}>
-          <ul class="rkui-folder-tabs rkui-scroll" aria-label="Specimen" tabindex="0">
-            {STATIC_TABS.map((name, i) => (
-              <li>
-                <span
-                  class:list={[
-                    'rkui-folder-tab',
-                    specimen.state?.tab === i && specimen.state.class,
-                  ]}
-                  aria-current={i === specimen.selected ? 'true' : undefined}
-                >
-                  {name}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <div class="rkui-folder-sheet">
+<SpecimenRow title="The join">
+  {JOINS.map((specimen) => (
+    <Specimen label={specimen.label}>
+      <Folder label="Specimen" tinted={specimen.tinted}>
+        {STATIC_TABS.map((name, i) => (
+          <Tab label={name} selected={i === specimen.selected}>
             <p>Panel.</p>
-          </div>
-        </div>
-      </Specimen>
-    ))}
-  </SpecimenRow>
-))}
+          </Tab>
+        ))}
+      </Folder>
+    </Specimen>
+  ))}
+</SpecimenRow>
+
+<SpecimenRow title="States">
+  {STATES.map((specimen, i) => (
+    <Specimen label={specimen.label}>
+      <StateFolder
+        name={`${theme}-folder-state-${i}`}
+        tabs={STATIC_TABS}
+        selected={0}
+        state={specimen.state}
+      />
+    </Specimen>
+  ))}
+</SpecimenRow>
 
 <style>
-  .rkui-folder-sheet p {
+  /* The sheets are drawn by Folder, outside this file's scope; the paragraphs are this file's. */
+  :global(.rkui-folder-sheet) p {
     margin: 0;
   }
 </style>

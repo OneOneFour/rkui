@@ -186,11 +186,11 @@ a:where(:not(.rkui-button, .rkui-chip, .rkui-tile, .rkui-folder-tab, .rkui-eqref
 
 /* Folder tabs */
 
-.rkui-folder-tab:is(:has(:checked), [aria-current='page'], [aria-current='true']).is-focus {
+.rkui-folder-tab:is(:has(:checked), [aria-current='page']).is-focus {
   outline: none;
 }
 
-.rkui-folder-tab:is(:has(:checked), [aria-current='page'], [aria-current='true']).is-focus::before {
+.rkui-folder-tab:is(:has(:checked), [aria-current='page']).is-focus::before {
   outline: var(--rkui-focus-width) solid var(--rkui-focus);
   outline-offset: var(--rkui-focus-offset);
   box-shadow: none;

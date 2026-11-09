@@ -33,7 +33,7 @@
  *   component with a custom element for plain pages, such as Stepper, is written as that element
  *   (plain-render.js); one without, such as CodeBlock, shows the markup it renders on the server.
  *
- * A `widget` demo uses Vue's reactivity, events or Vue-only components (WidgetTabs), and has no
+ * A `widget` demo uses Vue's reactivity or events (a Folder's `v-model`), and has no
  * Astro or plain-HTML form, so it shows only Preview and Vue. A demo that isn't marked `widget`
  * but can't be written for Astro stops the build.
  *
@@ -46,8 +46,8 @@
  * @param widget the demo is a Vue widget with no Astro or plain-HTML form
  */
 import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
+import Folder from '@oneonefour/rkui/components/folder/Folder.vue'
 import Tab from '@oneonefour/rkui/components/folder/Tab.vue'
-import Tabs from '@oneonefour/rkui/components/folder/Tabs.vue'
 import { astroSource } from '../lib/astro-source.js'
 import { scriptsFor } from '../lib/element-scripts.js'
 import { formatCode } from '../lib/format-code.js'
@@ -127,7 +127,7 @@ try {
 }
 ---
 
-<Tabs label={label} class="demo">
+<Folder label={label} class="demo">
   <Tab label="Preview">
     <div class:list={['preview', { 'preview--stack': stack }]}>
       <Fragment set:html={rendered} />
@@ -146,7 +146,7 @@ try {
       <CodeBlock client:visible code={html} lang="html" />
     </Tab>
   )}
-</Tabs>
+</Folder>
 
 <style>
   .demo {
