@@ -8,7 +8,8 @@
  *
  * Text on each block follows the on-colour rule: a fill's own label token; the page colour on a
  * -deep step (a deep step is text on the page, so the page colour reads on it); body text on a
- * tint. The fills' text is large, because bright coral passes with white only at that size.
+ * tint; body text on a panel. Translucent shading is shown over the page colour, and its hex is that
+ * mix. The fills' text is large, because bright coral passes with white only at that size.
  */
 import Segmented from '@oneonefour/rkui/components/segmented/Segmented.vue'
 import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.vue'
@@ -46,6 +47,26 @@ const NEUTRALS: Swatch[] = [
   { token: 'fg', text: 'surface' },
   { token: 'muted', text: 'surface' },
   { token: 'line', text: 'on-ink' },
+]
+
+/** The panel and shading colours, each with what uses it. */
+const PANELS: { token: string; job: string }[] = [
+  { token: 'slate', job: 'Code blocks, quotes, nested quotes' },
+  { token: 'slate-tab', job: "The code block's editor-tab strip" },
+  { token: 'slate-greige', job: 'The greige alternative to slate' },
+  { token: 'slate-greige-tab', job: 'The greige alternative to the tab strip' },
+  { token: 'folder-back', job: "Unselected folder tabs, a drawer's tray, an inset card" },
+  { token: 'recess', job: "The shadow inside a drawer's tray and an inset card (translucent)" },
+  { token: 'stripe', job: "The code panel's inset, hatching (translucent)" },
+]
+
+/** The syntax colours, with the kind of code each one sets. */
+const CODE: { token: string; job: string }[] = [
+  { token: 'code-keyword', job: 'Keywords' },
+  { token: 'code-string', job: 'Strings' },
+  { token: 'code-number', job: 'Numbers' },
+  { token: 'code-function', job: 'Function names' },
+  { token: 'code-comment', job: 'Comments' },
 ]
 ---
 
@@ -87,6 +108,38 @@ const NEUTRALS: Swatch[] = [
     </div>
   </div>
 
+  <div class="auxiliary">
+    <h2>Panels and shading</h2>
+    <p class="note">
+      Recess and stripe are translucent recipes, the outline colour over whatever they cross. They
+      are shown over the page colour.
+    </p>
+    <div class="hues">
+      {PANELS.map(({ token, job }) => (
+        <div class="column panel">
+          <Swatch token={token} text="fg" />
+          <p class="job">{job}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="auxiliary">
+    <h2>Code colours</h2>
+    <div class="hues">
+      {CODE.map(({ token, job }) => (
+        <div class="column panel">
+          <Swatch token={token} text="surface" />
+          <p class="job">{job}</p>
+        </div>
+      ))}
+    </div>
+    <div class="samples">
+      <pre class="sample slate"><code><span class="kw">const</span> total = <span class="fn">add</span>(<span class="num">2</span>, <span class="str">'3'</span>) <span class="cm">// slate</span></code></pre>
+      <pre class="sample greige"><code><span class="kw">const</span> total = <span class="fn">add</span>(<span class="num">2</span>, <span class="str">'3'</span>) <span class="cm">// slate-greige</span></code></pre>
+    </div>
+  </div>
+
   <p class="rkui-visually-hidden" aria-live="polite"></p>
 </div>
 
@@ -119,6 +172,58 @@ const NEUTRALS: Swatch[] = [
     grid-template-rows: 10rem 5rem 5rem auto;
   }
 
+  .auxiliary .column.panel {
+    grid-template-rows: 7rem auto;
+  }
+
+  .note {
+    margin: 0 0 var(--palette-gap);
+  }
+
+  .samples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--palette-gap);
+    margin-block-start: var(--palette-gap);
+  }
+
+  .sample {
+    margin: 0;
+    padding: var(--rkui-space-3);
+    overflow-x: auto;
+    color: var(--rkui-fg);
+    font-family: var(--rkui-font-mono);
+    font-size: var(--rkui-step--1);
+  }
+
+  .sample.slate {
+    background: var(--rkui-slate);
+  }
+
+  .sample.greige {
+    background: var(--rkui-slate-greige);
+  }
+
+  .kw {
+    color: var(--rkui-code-keyword);
+  }
+
+  .fn {
+    color: var(--rkui-code-function);
+  }
+
+  .str {
+    color: var(--rkui-code-string);
+  }
+
+  .num {
+    color: var(--rkui-code-number);
+  }
+
+  .cm {
+    color: var(--rkui-code-comment);
+  }
+
   .job {
     margin: 0;
     color: var(--rkui-muted);
@@ -143,11 +248,13 @@ const NEUTRALS: Swatch[] = [
 
   let context: OffscreenCanvasRenderingContext2D | null | undefined
 
-  /** Any colour the browser can paint, as `#rrggbb`: painted on a 1 by 1 canvas and read back. */
+  /** Any colour the browser can paint, as `#rrggbb`, over the page colour: painted on a 1 by 1 canvas and read back. */
   function toHex(cssColor: string): string {
     context ??= new OffscreenCanvas(1, 1).getContext('2d', { willReadFrequently: true })
     if (!context) return ''
     context.clearRect(0, 0, 1, 1)
+    context.fillStyle = getComputedStyle(document.body).backgroundColor
+    context.fillRect(0, 0, 1, 1)
     context.fillStyle = cssColor
     context.fillRect(0, 0, 1, 1)
     const [r, g, b] = context.getImageData(0, 0, 1, 1).data
