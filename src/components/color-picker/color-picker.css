@@ -165,20 +165,20 @@
     calc(var(--rkui-shadow-offset) * var(--rkui-drop-dx))
       calc(var(--rkui-shadow-offset) * var(--rkui-drop-dy)) 0 var(--rkui-shadow-color),
     calc(var(--rkui-shadow-offset) * var(--rkui-drop-dx))
-      calc(var(--rkui-shadow-offset) * var(--rkui-drop-dy)) 0
-      var(--rkui-stroke-width, var(--rkui-outline-width)) var(--rkui-shadow-edge);
+      calc(var(--rkui-shadow-offset) * var(--rkui-drop-dy)) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
   --rkui-shadow-hover:
     calc(var(--rkui-shadow-offset-hover) * var(--rkui-drop-dx))
       calc(var(--rkui-shadow-offset-hover) * var(--rkui-drop-dy)) 0 var(--rkui-shadow-color),
     calc(var(--rkui-shadow-offset-hover) * var(--rkui-drop-dx))
-      calc(var(--rkui-shadow-offset-hover) * var(--rkui-drop-dy)) 0
-      var(--rkui-stroke-width, var(--rkui-outline-width)) var(--rkui-shadow-edge);
+      calc(var(--rkui-shadow-offset-hover) * var(--rkui-drop-dy)) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
   --rkui-shadow-pressed:
     calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dx))
       calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dy)) 0 var(--rkui-shadow-color),
     calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dx))
-      calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dy)) 0
-      var(--rkui-stroke-width, var(--rkui-outline-width)) var(--rkui-shadow-edge);
+      calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dy)) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
   --rkui-shadow-inset: inset calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dx))
     calc(var(--rkui-shadow-offset-pressed) * var(--rkui-drop-dy)) 0 var(--rkui-line);
   --rkui-picker-radius: var(--rkui-drop-corners);

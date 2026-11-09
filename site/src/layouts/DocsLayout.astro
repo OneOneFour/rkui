@@ -48,9 +48,6 @@ const branch = gitBranch()
         if (palette) document.documentElement.dataset.palette = palette
         const shadow = localStorage.getItem('rkui-shadow')
         if (shadow) document.documentElement.dataset.shadow = shadow
-        // Experiment for Rob: outlines off (data-outline="none", space.css). Delete when decided.
-        const outline = localStorage.getItem('rkui-outline')
-        if (outline) document.documentElement.dataset.outline = outline
       } catch {
         // Storage is blocked, so the page keeps the defaults.
       }
@@ -81,15 +78,6 @@ const branch = gitBranch()
             { value: 'slab', label: 'Slab' },
             { value: 'color', label: 'Colour' },
             { value: 'block', label: 'Block' },
-          ]}
-        />
-        {/* Experiment for Rob: outlines on or off (data-outline, space.css). Delete when decided. */}
-        <ModeSwitch
-          name="outline"
-          legend="Outlines (experiment)"
-          options={[
-            { value: 'on', label: 'Outline' },
-            { value: 'none', label: 'None' },
           ]}
         />
         <ModeSwitch

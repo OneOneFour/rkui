@@ -279,9 +279,9 @@
 .rkui-drawer--blind > .rkui-drawer-handle .rkui-drawer-pull::before {
   content: '';
   position: absolute;
-  inset-block-end: calc(100% + var(--rkui-stroke-width, var(--rkui-outline-width)));
-  inset-inline-start: calc(50% - var(--rkui-stroke-width, var(--rkui-outline-width)) / 2);
-  inline-size: var(--rkui-stroke-width, var(--rkui-outline-width));
+  inset-block-end: calc(100% + var(--rkui-outline-width));
+  inset-inline-start: calc(50% - var(--rkui-outline-width) / 2);
+  inline-size: var(--rkui-outline-width);
   block-size: var(--rkui-space-2);
   background: var(--rkui-line-unfilled);
 }

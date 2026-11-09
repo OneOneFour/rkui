@@ -116,7 +116,7 @@
 @media (hover: hover) {
   .rkui-sidebar:not(.rkui-sidebar--deck) .rkui-sidebar-link:hover {
     text-decoration: underline;
-    text-decoration-thickness: var(--rkui-stroke-width, var(--rkui-outline-width));
+    text-decoration-thickness: var(--rkui-outline-width);
   }
 }
 
