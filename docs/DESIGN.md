@@ -119,6 +119,8 @@ panel under every palette; `.rkui-slate-greige` opts in to greige.
 Repeated mixes are named, so the docs page can show them:
 - `--rkui-stripe`: `--rkui-line` at 25% over whatever it crosses. Progress stripes, illustration hatching,
   the code panel's sunken edge.
+- `--rkui-recess`: `--rkui-line` at 45% over whatever it crosses. The shadow inside a drawer's tray, a
+  deeper recess than the code panel's.
 - `--rkui-shade`: `color-mix(in oklab, var(--rkui-shade-of) 75%, var(--rkui-line))`; set `--rkui-shade-of` to a fill.
   The sticky-note fold and every colour-mode extrusion. Declared on `*`, so each element mixes its
   own.
@@ -338,7 +340,8 @@ Hover cue: the background sinks to the page by default; `.rkui-hover-ring`, `.rk
 **When.** Motion explains: it answers input, shows work under way, or shows how a change happens.
 Never decoration.
 - **Never moves:** readable text, layout, scroll position (smooth scrolling only for in-page jumps),
-  the light, the outline width, the focus band.
+  the light, the outline width, the focus band. One accepted exception: a drawer's slam jolts its
+  parent, text and all, by about 2px (DECISIONS, 2026-11-08).
 - **Never turns**, so shadows stay on the light's side. Parts that turn have no shadow: the spinner
   wedge, the dial's notch (the knob stays still), the clock hands, whose tags counter-turn. The
   orbit spinner's dots counter-turn too.
@@ -360,6 +363,8 @@ cycle. A sequence uses equal steps of 0.6–1s and ends on a held step.
 - **Squash:** up to 1.3 × 0.7 on impact, 0.8–0.9 × 1.1–1.25 in flight, 0.95 × 1.05 to settle.
   Area within about 10%, pinned to the contact point.
 - **Overshoot:** one swing only, from the snap curves or one keyframe past the target (10% at most).
+  The drawer's slam and the blind's settle make their one swing with a delayed transition of a
+  number instead (DECISIONS, 2026-11-08).
 
 **Shadows while moving.** Offsets from `--rkui-shadow-dx`/`-dy`, never literal; lengths that go with a
 shadow multiply by `--rkui-shadow-depth`.
@@ -462,6 +467,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Widget frame | `.rkui-widget-frame` (dashed, lilac tint) | |
 | Figure | `.rkui-figure` | |
 | Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
+| Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`); `.rkui-cabinet` | drawer by default |
 | Equations | `.rkui-equation`, `.rkui-eqref` | §3.3 |
 | Table | `.rkui-table` (`--ledger`, `--small`, `--messy`, `--still`, `--lift`) | sheet by default; sheet or ledger open |
 | Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on |

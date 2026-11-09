@@ -82,6 +82,9 @@
   /* Shading: hatching stripes, the outline colour at a quarter strength over whatever they cross.
      A fill's shade is the --rkui-shade recipe below. */
   --rkui-stripe: color-mix(in srgb, var(--rkui-line) 25%, transparent);
+  /* The shadow inside a recess deeper than the code panel's: a drawer's tray. The outline colour
+     at a little under half strength. */
+  --rkui-recess: color-mix(in srgb, var(--rkui-line) 45%, transparent);
 
   /* Icon fills: the quiet default for interface icons, a pale wash of the outline colour */
   --rkui-icon-fill-neutral: color-mix(in srgb, currentColor 20%, transparent);

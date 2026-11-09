@@ -39,6 +39,7 @@
 @import './components/dial/dial.css';
 @import './components/clock/clock.css';
 @import './components/code/code.css';
+@import './components/drawer/drawer.css';
 @import './components/badge/badge.css';
 @import './components/spinner/spinner.css';
 @import './components/progress/progress.css';

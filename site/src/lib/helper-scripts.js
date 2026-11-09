@@ -15,6 +15,8 @@ const SERVES = {
     'ThemeToggle',
     'Tiles',
   ],
+  // A drawer's close animation, in Safari (drawer.css).
+  'drawer-enhance.js': ['Cabinet', 'Drawer'],
   // The "more" dots on scroll regions, without scroll-driven animations (overflow.css).
   'overflow-enhance.js': ['CodeBlock', 'Pagination', 'Scroll', 'Table'],
   'pagination-enhance.js': ['Pagination'],

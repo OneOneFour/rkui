@@ -1,0 +1,138 @@
+---
+title: Drawer
+description: Storage that slides out from under a card or panel.
+group: Containers
+order: 78
+component: Drawer
+---
+
+import Demo from '../../components/Demo.astro'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import Card from '@oneonefour/rkui/components/card/Card.vue'
+import Cabinet from '@oneonefour/rkui/components/drawer/Cabinet.vue'
+import Drawer from '@oneonefour/rkui/components/drawer/Drawer.vue'
+import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
+
+<Demo label="Drawer in a card">
+  <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <Card title="Field notes" meta="Updated today" style="inline-size: 20rem">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Tools">
+        <SlidersIcon slot="handle" class="rkui-icon rkui-icon--small" />
+        <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-3)">
+          <Button small>Export</Button>
+          <Button small hue="teal">
+            Share
+          </Button>
+          <Button small unfilled>
+            Archive
+          </Button>
+        </div>
+      </Drawer>
+    </Card>
+  </div>
+</Demo>
+
+## Depth
+
+<Demo label="Drawers at three depths">
+  <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <Card title="Depth 1" style="inline-size: 12rem; --rkui-drawer-depth: 1">
+      <Drawer label="Tools" open>
+        <Button small>Export</Button>
+      </Drawer>
+    </Card>
+    <Card title="Depth 2" style="inline-size: 12rem">
+      <Drawer label="Tools" open>
+        <Button small>Export</Button>
+      </Drawer>
+    </Card>
+    <Card title="Depth 3" style="inline-size: 12rem; --rkui-drawer-depth: 3">
+      <Drawer label="Tools" open>
+        <Button small>Export</Button>
+      </Drawer>
+    </Card>
+  </div>
+</Demo>
+
+## Cabinet
+
+<Demo label="Cabinet of drawers">
+  <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <Cabinet style="inline-size: 18rem">
+      <Drawer label="Pens">
+        <p>Pack my box with five dozen liquor jugs.</p>
+      </Drawer>
+      <Drawer label="Paper">
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+      <Drawer label="Stamps">
+        <p>The five boxing wizards jump quickly.</p>
+      </Drawer>
+    </Cabinet>
+  </div>
+</Demo>
+
+## Exclusive cabinet
+
+<Demo label="Cabinet with one drawer open at a time">
+  <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <Cabinet exclusive style="inline-size: 18rem">
+      <Drawer label="Pens">
+        <p>Pack my box with five dozen liquor jugs.</p>
+      </Drawer>
+      <Drawer label="Paper">
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+      <Drawer label="Stamps">
+        <p>The five boxing wizards jump quickly.</p>
+      </Drawer>
+    </Cabinet>
+  </div>
+</Demo>
+
+## Blind
+
+<Demo label="Blind on a panel">
+  <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <div style="--rkui-drawer-bleed: var(--rkui-space-4); display: grid; gap: var(--rkui-space-3); inline-size: 20rem; padding: var(--rkui-space-4); overflow: hidden; border-radius: var(--rkui-radius); background: var(--rkui-raised)">
+      <p style="margin: 0">Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Screen" variant="blind">
+        <p>How vexingly quick daft zebras jump.</p>
+        <p>The five boxing wizards jump quickly.</p>
+      </Drawer>
+    </div>
+  </div>
+</Demo>
+
+## Blind with its label
+
+<Demo label="Blind with its label in the pull">
+  <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <Card title="Field notes" style="inline-size: 20rem">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Notes" variant="blind" showLabel>
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+    </Card>
+  </div>
+</Demo>
+
+## Starting open
+
+<Demo label="Drawer and blind starting open">
+  <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <Card title="Drawer" style="inline-size: 18rem">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Tools" open>
+        <Button small>Export</Button>
+      </Drawer>
+    </Card>
+    <Card title="Blind" style="inline-size: 18rem">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Screen" variant="blind" open>
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+    </Card>
+  </div>
+</Demo>

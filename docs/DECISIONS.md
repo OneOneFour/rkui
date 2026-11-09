@@ -25,6 +25,18 @@ are written in and the stickers stamp down. A table in view on load plays it too
 inlines `table-init.js` in `<head>`; without it, that table only draws its rules. The cascade runs
 to the last row (Rob).
 
+**Drawer, accepted as built** (Rob). Both looks stay: a drawer sunk into its parent by default,
+and the blind (`variant="blind"`), a screen that unrolls from a roller.
+- The blind's settle at the bottom is a single swing made by a delayed transition of a number,
+  not one of the two snap curves or a keyframe, which bends DESIGN §5's easing rule.
+- A drawer's slam gives its parent a jolt of about 2px, which moves the parent's text, though
+  DESIGN §5 says readable text never moves.
+- A `Cabinet` lets every drawer open by default; `exclusive` opts in to one at a time.
+- The blind hangs in front of its parent as one raised object with the hard shadow.
+- The blind's pull is a yellow ring on a short cord from the middle of a slim hem, holding the
+  caret, with the label there for screen readers; `showLabel` grows the ring into a pill that
+  shows the label too.
+
 ### 2026-11-02
 
 **Prefix changed to `rkui-`, and every custom property takes `--rkui-`** (Rob), to match the
