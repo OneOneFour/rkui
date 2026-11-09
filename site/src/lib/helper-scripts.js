@@ -28,8 +28,8 @@ const HELPERS = {
     browser: 'safari',
     serves: ['Cabinet', 'Drawer'],
   },
-  // The chosen file's name inside a drop panel.
-  'file-enhance.js': { label: 'Shows the file name', serves: ['File'] },
+  // The chosen files' names inside a drop panel, cleared when its form is reset.
+  'file-enhance.js': { label: 'Shows the chosen file names', serves: ['File'] },
   // A folder strip's bar while its tabs don't fit, and how many tabs a collapsing strip shows.
   'folder-enhance.js': { label: 'Strip bar and collapse', serves: ['Folder', 'Pagination'] },
   // The "more" dots on scroll regions, without scroll-driven animations (overflow.css): Safari

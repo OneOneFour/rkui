@@ -20,8 +20,10 @@ import File from '@oneonefour/rkui/components/file/File.vue'
 
 ## Drop panel
 
+The drop panel takes a click or dropped files. With `file-enhance.js` (in `enhance.js`) it shows the chosen files' names, joined with commas, and clears them when its form is reset; without it the panel keeps showing its prompt.
+
 <Demo label="File drop panel" stack>
-  <File variant="drop" aria-label="Upload" name="file-drop" />
+  <File variant="drop" aria-label="Upload" name="file-drop" multiple />
 </Demo>
 
 ## Disabled
