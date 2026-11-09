@@ -19,20 +19,36 @@ import Rocket from '@oneonefour/rkui/icons/rocket.vue'
     style="--rkui-section: var(--rkui-coral-solid); --rkui-on-section: var(--rkui-on-coral)"
   >
     <div class="shell">
-      <Sidebar label="Example site" variant="sections">
+      <Sidebar label="Example site" slab class="site-nav">
         <template #header>
           <strong class="site-name">Site name</strong>
           <span>A short tagline</span>
         </template>
         <SidebarGroup>
-          <SidebarLink href="#" hue="sky"><House class="rkui-icon" /> Home</SidebarLink>
-          <SidebarLink href="#" hue="coral" current>
-            <PenNib class="rkui-icon" /> Notes
+          <SidebarLink href="#" hue="sky">
+            <template #icon><House /></template>
+            Home
           </SidebarLink>
-          <SidebarLink href="#" hue="navy"><Flask class="rkui-icon" /> Papers</SidebarLink>
-          <SidebarLink href="#" hue="teal"><Rocket class="rkui-icon" /> Projects</SidebarLink>
-          <SidebarLink href="#" hue="yellow"><Camera class="rkui-icon" /> Photos</SidebarLink>
-          <SidebarLink href="#" hue="green"><IdCard class="rkui-icon" /> About</SidebarLink>
+          <SidebarLink href="#" hue="coral" current>
+            <template #icon><PenNib /></template>
+            Notes
+          </SidebarLink>
+          <SidebarLink href="#" hue="navy">
+            <template #icon><Flask /></template>
+            Papers
+          </SidebarLink>
+          <SidebarLink href="#" hue="teal">
+            <template #icon><Rocket /></template>
+            Projects
+          </SidebarLink>
+          <SidebarLink href="#" hue="yellow">
+            <template #icon><Camera /></template>
+            Photos
+          </SidebarLink>
+          <SidebarLink href="#" hue="green">
+            <template #icon><IdCard /></template>
+            About
+          </SidebarLink>
         </SidebarGroup>
       </Sidebar>
       <div class="page">
@@ -64,6 +80,8 @@ import Rocket from '@oneonefour/rkui/icons/rocket.vue'
 
 .shell {
   display: grid;
+  /* Safari otherwise sizes a stacked nav's row as if its text wrapped at its narrowest. */
+  grid-auto-rows: max-content;
   gap: var(--rkui-outline-width);
   overflow: clip;
   border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
@@ -77,8 +95,14 @@ import Rocket from '@oneonefour/rkui/icons/rocket.vue'
   }
 }
 
+/* The nav column: a plain sidebar on a sky panel. */
+.site-nav {
+  --rkui-sidebar-panel: var(--rkui-sky-tint);
+
+  padding-inline: var(--rkui-space-2);
+}
+
 .site-name {
-  font-family: var(--rkui-font-display);
   font-size: var(--rkui-step-1);
   font-weight: 800;
 }

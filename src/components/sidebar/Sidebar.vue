@@ -5,7 +5,8 @@
   `class`, `style` and other attributes go on the `<nav>`. The hints need Safari 26 or Firefox
   159. Only Chrome gives the card's and the note's stuck headings their stuck look; elsewhere they
   stick as they are. The `header` slot (`slot="header"` in Astro, `<template #header>` in Vue)
-  sits above the links and doesn't scroll, for a site's name and tagline.
+  sits above the links and doesn't scroll, for a site's name and tagline. `--rkui-sidebar-panel`
+  in `style` sets the panel's colour.
 
   @example
   <Sidebar label="Docs">
@@ -19,11 +20,12 @@ interface Props {
   /** The navigation's accessible name; two sidebars on a page need different ones. */
   label: string
   /**
-   * The look: 'card', 'folders', 'deck', 'note' or 'sections', a sky panel whose links each wear
-   * their own section hue (SidebarLink's `hue`); 'plain' when left out. Open, see DECISIONS
+   * The look: 'card', 'folders', 'deck' or 'note'; 'plain' when left out. Open, see DECISIONS
    * ("Sidebar").
    */
-  variant?: 'plain' | 'card' | 'folders' | 'deck' | 'note' | 'sections'
+  variant?: 'plain' | 'card' | 'folders' | 'deck' | 'note'
+  /** Sets the header, headings and links in the slab serif, in any look; false when left out. */
+  slab?: boolean
   /**
    * The look of the hints at the top and bottom edges, written as `data-rkui-dots` on the `<nav>`:
    * 'plain' dots, or 'pill' for dots in a raised pill (a card's are always pills); the page's
@@ -32,7 +34,7 @@ interface Props {
   dots?: 'plain' | 'pill'
 }
 
-const { label, variant = 'plain', dots } = defineProps<Props>()
+const { label, variant = 'plain', slab, dots } = defineProps<Props>()
 </script>
 
 <template>
@@ -42,6 +44,7 @@ const { label, variant = 'plain', dots } = defineProps<Props>()
       {
         [`rkui-sidebar--${variant}`]: variant !== 'plain',
         'rkui-sticky-note rkui-sticky-note--tape': variant === 'note',
+        'rkui-sidebar--slab': slab,
       },
     ]"
     :aria-label="label"

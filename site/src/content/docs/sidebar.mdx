@@ -20,6 +20,8 @@ import Deck from '../../examples/sidebar/Deck.vue'
 import deckCode from '../../examples/sidebar/Deck.vue?raw'
 import Note from '../../examples/sidebar/Note.vue'
 import noteCode from '../../examples/sidebar/Note.vue?raw'
+import EveryLook from '../../examples/sidebar/EveryLook.vue'
+import everyLookCode from '../../examples/sidebar/EveryLook.vue?raw'
 import Flask from '@oneonefour/rkui/icons/flask.vue'
 import House from '@oneonefour/rkui/icons/house.vue'
 import PenNib from '@oneonefour/rkui/icons/pen-nib.vue'
@@ -27,8 +29,8 @@ import Rocket from '@oneonefour/rkui/icons/rocket.vue'
 
 Groups of links, each a child component. The page gives the sidebar its height; when its links
 don't fit, it scrolls, with hints at its edges and a scrollbar on hover and focus. `variant`
-picks the look, and `dots="pill"` puts the hints in pills, as the card's are (see
-[Scroll](../scroll/)).
+picks the look; slab type, link colours and icons work with any of them. `dots="pill"` puts the
+hints in pills, as the card's are (see [Scroll](../scroll/)).
 
 <Demo label="A short sidebar" stack>
   <Sidebar label="Short example" style="max-inline-size: 16rem">
@@ -85,32 +87,50 @@ A taped sticky note with sticking slab headings; the current page is an ink pill
   <Note />
 </Demo>
 
-## F: Sections
+## With any look
 
-A sky panel for a site's own navigation. Each link takes `hue`, the section hue of the page it
-leads to: it fills the link's icon, and the link itself when it is the current page. The `header`
-slot stays above the links, for the site's name and tagline. A group needs no heading. When the
-panel is wide, the links flow into columns. The [header band](../header-band/) page shows it in a
-site frame.
+Each look also takes these:
 
-<Demo label="Sections sidebar" stack>
-  <Sidebar label="Sections example" variant="sections" style="max-inline-size: 16rem">
+- `slab` on the Sidebar sets its header, headings and links in the slab serif.
+- `hue` on a SidebarLink gives the link its own colour, such as the section colour of the page it
+  leads to. It fills the link's icon, and the link itself when it is the current page, in the
+  look's own shape. Other links keep the page's text colour.
+- An icon in a SidebarLink's `icon` slot sits before its text.
+- The `header` slot stays above the links, for a site's name and tagline, and a SidebarGroup
+  needs no heading.
+
+<Demo vue={everyLookCode} label="Every look with slab type, link colours and icons">
+  <EveryLook />
+</Demo>
+
+## A site's own nav
+
+The plain look on a sky panel (`--rkui-sidebar-panel`), with slab type, a header, one group with
+no heading, and a colour and an icon for each link. The [header band](../header-band/) page shows
+it in a site frame.
+
+<Demo label="A site's own nav" stack>
+  <Sidebar
+    label="Site nav example"
+    slab
+    style="--rkui-sidebar-panel: var(--rkui-sky-tint); padding-inline: var(--rkui-space-2); max-inline-size: 16rem"
+  >
     <Fragment slot="header">
-      <strong>Site name</strong>
+      <strong style="font-size: var(--rkui-step-1)">Site name</strong>
       <span>A short tagline</span>
     </Fragment>
     <SidebarGroup>
       <SidebarLink href="#" hue="sky">
-        <House class="rkui-icon" /> Home
+        <House slot="icon" /> Home
       </SidebarLink>
       <SidebarLink href="#" hue="coral" current>
-        <PenNib class="rkui-icon" /> Notes
+        <PenNib slot="icon" /> Notes
       </SidebarLink>
       <SidebarLink href="#" hue="navy">
-        <Flask class="rkui-icon" /> Papers
+        <Flask slot="icon" /> Papers
       </SidebarLink>
       <SidebarLink href="#" hue="teal">
-        <Rocket class="rkui-icon" /> Projects
+        <Rocket slot="icon" /> Projects
       </SidebarLink>
     </SidebarGroup>
   </Sidebar>

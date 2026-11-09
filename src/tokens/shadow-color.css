@@ -108,6 +108,12 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
+    /* A sidebar's current page filled with its link's own colour (sidebar.css). */
+    .rkui-sidebar-link--hue[aria-current='page'] {
+      --rkui-shade-of: var(--rkui-sidebar-hue);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
     /* sticky-note.css sets the note's --rkui-shade-of, for its fold. */
     .rkui-sticky-note {
       --rkui-extrusion: var(--rkui-shade);

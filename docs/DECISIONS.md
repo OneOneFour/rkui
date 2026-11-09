@@ -24,6 +24,11 @@ the alert is open, and keeps its scroll position when it closes.
 thumb, which widens to fit it, and `value-display="popup"` shows it in a bubble over the thumb.
 With neither, the value doesn't show.
 
+**Sidebar options, not a sections look** (Rob). There is no separate sections look. What it
+brought works with every look instead: slab type (`slab`), a colour for each link (`hue`), which
+fills its icon and, on the current page, the link, an icon before a link's text, a header, and
+groups with no heading.
+
 **Quote slant** (Rob). Both stay: a quote is upright by default, and `slant="italic"` slants it,
 with the browser slanting Roboto Slab, which has no italic.
 
@@ -245,8 +250,8 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Static card edge: A outline, B outline and hard shadow, C slate fill (the default), or D
   pushed in. ("Card")
 - [ ] Logo: lift (the pop only), or motifs (each tile's motif plays on hover). ("Logo")
-- [ ] Sidebar: A plain (the default), B card, C folders, D deck, E note, or F sections. ("Sidebar")
-- [ ] Header band, built as a prototype with the sections sidebar: stays, changes, or goes. A
+- [ ] Sidebar: A plain (the default), B card, C folders, D deck, or E note. ("Sidebar")
+- [ ] Header band, built as a prototype beside a sidebar: stays, changes, or goes. A
   site's frame (nav column beside the page) stays a recipe in the site. ("Header band")
 - [ ] Table: A sheet (the default), or B ledger. ("Table")
 - [ ] Inline maths size (`--rkui-maths-scale`): A 1em, B 1.1em, C 1.15em (proposed, as built), or D

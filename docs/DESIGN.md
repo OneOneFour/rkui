@@ -240,6 +240,7 @@ back inside it.
 - Both main families have Greek and are variable. Slab headings give character; one sans for prose
   and widgets keeps them in one voice. Roboto Slab has no italics, so it never sets body text,
   except a quote (`.rkui-quote`, weight 400), which the serif sets apart from the prose around it.
+  A sidebar may set its links in it too (`slab`), for a site's own nav.
 - **Self-hosted and vendored.** Xmind isn't on Fontsource, plain files also suit vanilla sites, and
   pinning guards against changes to a very new font.
 - Each family is split by `unicode-range` into latin, greek and a maths-symbols subset
@@ -523,7 +524,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Equations | `.rkui-equation` (`--panel`, `--rule`, `--key`), `.rkui-eqref` | bare by default; §3.3 |
 | Table | `.rkui-table` (`--ledger`, `--small`, `--messy`, `--still`, `--lift`) | sheet by default; sheet or ledger open |
 | Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on; its colours (`--rkui-scroll-*`, `--rkui-pill-*`) pass down from wherever they are set; every other scrollbar takes the page's |
-| Sidebar | `.rkui-sidebar` (`--card`, `--folders`, `--deck`, `--note`, `--sections`) | plain by default; open |
+| Sidebar | `.rkui-sidebar` (`--card`, `--folders`, `--deck`, `--note`; `--slab`), `.rkui-sidebar-link--hue` | plain by default; open |
 | Header band | `.rkui-header-band` | takes `--rkui-section`; a prototype, open |
 | Badge | `.rkui-badge` (`--tint`, hues, `--corner`, `--dot`); corner `--ring`, `--sticker` | corner edge open |
 | Spinners | `.rkui-spinner` `--ring`, `--dots` (with `--squash`), `--water`, `--orbit`, `--triangle` | |

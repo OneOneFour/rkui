@@ -23,12 +23,16 @@
    .rkui-sidebar--folders  each group a folder, its heading the tab, sticking as you scroll;
    .rkui-sidebar--deck     every link a raised key, the current page pushed in (interactive.css);
    .rkui-sidebar--note     a taped sticky note (with .rkui-sticky-note .rkui-sticky-note--tape);
-                           the current page an ink pill;
-   .rkui-sidebar--sections a sky panel for a site's own navigation, each link wearing its
-                           section hue (--rkui-section, set on its <li>).
+                           the current page an ink pill.
+
+   With any look:
+   .rkui-sidebar--slab     sets the header, headings and links in the slab serif;
+   .rkui-sidebar-link--hue a link with its own colour, --rkui-sidebar-hue with --rkui-sidebar-on-hue
+                           text, set in its style: it fills the link's icon, and the link itself
+                           when it is the current page.
 
    A .rkui-sidebar-header before the scroller holds what stays above the links, such as a site's
-   name and tagline. A group may have no heading.
+   name and tagline. A group may have no heading. A link may start with an icon (an <svg>).
 
    data-rkui-dots="pill" on the sidebar or any ancestor puts the hints in yellow pills, as the
    card's are (overflow.css). The scrollbar takes the scroll settings (--rkui-scroll-track and the
@@ -111,6 +115,22 @@
   border-radius: var(--rkui-radius);
   color: inherit;
   text-decoration: none;
+}
+
+/* An icon before the text, drawn in the link's text colour. */
+.rkui-sidebar-link:has(> svg) {
+  display: flex;
+  align-items: center;
+  gap: var(--rkui-space-2);
+}
+
+.rkui-sidebar-link > svg {
+  --rkui-icon-stroke: 24;
+
+  flex: none;
+  inline-size: 1.25em;
+  block-size: 1.25em;
+  color: inherit;
 }
 
 @media (hover: hover) {
@@ -446,49 +466,27 @@
   box-shadow: none;
 }
 
-/* Sections: a sky panel for a site's own navigation, as in the palette board's mockup. Each link
-   wears the section hue of the page it leads to (SidebarLink's `hue`, as --rkui-section): its
-   icon is filled with it, and the current page is an outlined pill filled with it, its icon a glint
-   sticker. Headings are in the panel's text colour, which muted text would fail on the tint. When
-   the panel is wide, as when it stacks above the page on a phone, the links flow into columns. */
-.rkui-sidebar--sections {
-  --rkui-sidebar-panel: var(--rkui-sky-tint);
-
-  padding-inline: var(--rkui-space-2);
+/* Slab: the header, headings and links in the slab serif, in any look. */
+.rkui-sidebar--slab {
+  font-family: var(--rkui-font-display);
 }
 
-.rkui-sidebar--sections .rkui-sidebar-heading > span {
-  color: inherit;
+/* A link with its own colour, in any look: its icon is filled with it, and as the current page
+   the link is filled with it, keeping the look's own shape and shadow, its icon a glint sticker
+   with an ink edge. */
+.rkui-sidebar-link--hue {
+  --rkui-icon-fill: var(--rkui-sidebar-hue);
 }
 
-.rkui-sidebar--sections .rkui-sidebar-list {
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 7.5rem), 1fr));
-}
-
-.rkui-sidebar--sections .rkui-sidebar-link {
-  --rkui-icon-fill: var(--rkui-section);
-
-  display: flex;
-  align-items: center;
-  gap: var(--rkui-space-2);
-  border-radius: var(--rkui-radius-pill);
-  font-weight: 600;
-}
-
-.rkui-sidebar--sections .rkui-sidebar-link .rkui-icon {
-  color: inherit;
-}
-
-.rkui-sidebar--sections .rkui-sidebar-link[aria-current='page'] {
+.rkui-sidebar .rkui-sidebar-link--hue[aria-current='page'] {
   --rkui-icon-fill: var(--rkui-glint);
 
   border-color: var(--rkui-line);
-  background: var(--rkui-section, var(--rkui-ink));
-  color: var(--rkui-on-section, var(--rkui-on-ink));
-  box-shadow: none;
+  background: var(--rkui-sidebar-hue);
+  color: var(--rkui-sidebar-on-hue);
 }
 
-.rkui-sidebar--sections .rkui-sidebar-link[aria-current='page'] .rkui-icon {
+.rkui-sidebar-link--hue[aria-current='page'] > svg {
   color: var(--rkui-ink);
 }
 
