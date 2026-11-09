@@ -28,6 +28,7 @@ import Sidebar from '../components/Sidebar.astro'
 import { link, type DocsPage } from '../lib/pages'
 import { version } from '../../../package.json'
 import { gitBranch } from '../lib/git-branch.js'
+import type { ComponentProps } from 'astro/types'
 
 interface Props {
   page: DocsPage
@@ -36,6 +37,53 @@ interface Props {
 const { page } = Astro.props
 const { title, description, component } = page.data
 const branch = gitBranch()
+
+// The settings drawer's switches. The head script restores a stored choice only while it is
+// still one of the options.
+const modes: ComponentProps<typeof ModeSwitch>[] = [
+  {
+    name: 'palette',
+    legend: 'Palette',
+    options: [
+      { value: 'cream', label: 'Cream' },
+      { value: 'slate', label: 'Slate' },
+      { value: 'greige', label: 'Greige' },
+    ],
+  },
+  {
+    name: 'shadow',
+    legend: 'Shadow',
+    note: 'in dark mode',
+    options: [
+      { value: 'outline', label: 'Outline' },
+      { value: 'block', label: 'Block' },
+      { value: 'color', label: 'Colour' },
+    ],
+  },
+  {
+    name: 'highlight',
+    legend: 'Highlight',
+    note: 'in dark mode',
+    options: [
+      { value: 'cream', label: 'Cream' },
+      { value: 'dark', label: 'Dark' },
+    ],
+  },
+  {
+    name: 'dots',
+    attribute: 'data-rkui-dots',
+    legend: 'Scroll dots',
+    options: [
+      { value: 'plain', label: 'Plain' },
+      { value: 'pill', label: 'Pill' },
+    ],
+  },
+]
+const storedModes = modes.map(({ name, attribute = `data-${name}`, options }) => ({
+  name,
+  attribute,
+  values: options.map((option) => option.value),
+}))
 ---
 
 <!doctype html>
@@ -44,19 +92,14 @@ const branch = gitBranch()
     <meta charset="utf-8" />
     <script is:inline set:html={themeInit} />
     <script is:inline set:html={tableInit} />
-    <script is:inline>
+    <script is:inline define:vars={{ storedModes }}>
       // Inline, like the theme, so a stored palette, shadow, highlight or dots look doesn't flash
-      // the default first. Each is stored under rkui-<name> and set as this attribute on <html>.
+      // the default first. Each is stored under rkui-<name> and set as its attribute on <html>,
+      // unless it is no longer one of the options (an old "slab" shadow, say).
       try {
-        const modes = {
-          palette: 'data-palette',
-          shadow: 'data-shadow',
-          highlight: 'data-highlight',
-          dots: 'data-rkui-dots',
-        }
-        for (const [name, attribute] of Object.entries(modes)) {
+        for (const { name, attribute, values } of storedModes) {
           const value = localStorage.getItem(`rkui-${name}`)
-          if (value) document.documentElement.setAttribute(attribute, value)
+          if (values.includes(value)) document.documentElement.setAttribute(attribute, value)
         }
       } catch {
         // Storage is blocked, so the page keeps the defaults.
@@ -92,43 +135,9 @@ const branch = gitBranch()
         </Button>
         <Drawer label="Settings" remote overlay id="docs-settings" class="docs-settings">
           <div class="docs-settings-body">
-            <ModeSwitch
-              name="palette"
-              legend="Palette"
-              options={[
-                { value: 'cream', label: 'Cream' },
-                { value: 'slate', label: 'Slate' },
-                { value: 'greige', label: 'Greige' },
-              ]}
-            />
-            <ModeSwitch
-              name="shadow"
-              legend="Shadow"
-              note="in dark mode"
-              options={[
-                { value: 'outline', label: 'Outline' },
-                { value: 'block', label: 'Block' },
-                { value: 'color', label: 'Colour' },
-              ]}
-            />
-            <ModeSwitch
-              name="highlight"
-              legend="Highlight"
-              note="in dark mode"
-              options={[
-                { value: 'cream', label: 'Cream' },
-                { value: 'dark', label: 'Dark' },
-              ]}
-            />
-            <ModeSwitch
-              name="dots"
-              attribute="data-rkui-dots"
-              legend="Scroll dots"
-              options={[
-                { value: 'plain', label: 'Plain' },
-                { value: 'pill', label: 'Pill' },
-              ]}
-            />
+            {modes.map((mode) => (
+              <ModeSwitch {...mode} />
+            ))}
             <Button small unfilled popovertarget="docs-settings" popovertargetaction="hide">
               Close
             </Button>
