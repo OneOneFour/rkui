@@ -191,10 +191,11 @@ a:where(:not(.rkui-button, .rkui-chip, .rkui-tile, .rkui-folder-tab, .rkui-eqref
 }
 
 .rkui-folder-tab:is(:has(:checked), [aria-current='page']).is-focus::before {
+  --rkui-folder-cut: 0px;
+
   outline: var(--rkui-focus-width) solid var(--rkui-focus);
   outline-offset: var(--rkui-focus-offset);
   box-shadow: none;
-  clip-path: inset(-100vmax -100vmax 0);
 }
 
 /* Input hover cue */

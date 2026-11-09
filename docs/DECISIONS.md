@@ -12,6 +12,18 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-08
 
+**Folder and Pagination tabs** (Rob). Tabs never wrap. They stand on the top, bottom, left or right
+of the sheet; for bottom and right the tabs come after the sheet in the page, so the tab order
+follows the reading order. When they don't fit, a strip either scrolls or collapses:
+- Folder scrolls by default and has no ‹ › step tabs unless asked, so every panel's name stays in
+  view and a tab is one click away. Pagination collapses by default, with its step tabs on.
+- A collapsing strip shows the first and last tabs, the current one and its neighbours, then fills
+  the spare room outwards from the current one, the next one first. A "…" never stands for a single
+  tab. On a narrow screen it goes to its small size, then shows only ‹ current ›, and scrolls only
+  if even that doesn't fit. The script measures this; without JavaScript the strip scrolls.
+- A step tab with nowhere to go, at either end, shows dimmed rather than disappearing.
+- A Folder takes up to 20 tabs. Pagination's tiles go only above or below the content.
+
 **Table rows that lift.** Only clickable things lift, with one opt-in exception: a Table's `lift`
 option, where the hovered row lifts though it isn't clickable (Rob).
 

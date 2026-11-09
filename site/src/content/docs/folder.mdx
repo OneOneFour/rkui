@@ -43,12 +43,54 @@ native radio, so Folder needs no JavaScript.
   </Folder>
 </Demo>
 
-## Narrow
+## Placement
 
-Tabs that don't fit wrap onto another row.
+<Demo label="Folder with tabs below" stack>
+  <Folder label="Tabs below" placement="bottom">
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+  </Folder>
+</Demo>
 
-<Demo label="Narrow folder" stack>
-  <Folder label="Narrow" style="max-inline-size: 16rem">
+<Demo label="Folder with tabs on the left" stack>
+  <Folder label="Tabs on the left" placement="left" style="min-block-size: 18rem">
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+<Demo label="Folder with tabs on the right" stack>
+  <Folder label="Tabs on the right" placement="right" style="min-block-size: 18rem">
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+## Scroll
+
+<Demo label="Narrow folder that scrolls" stack>
+  <Folder label="Scroll" style="max-inline-size: 16rem">
     <Tab label="Tab one">
       <p>Panel one.</p>
     </Tab>
@@ -60,6 +102,155 @@ Tabs that don't fit wrap onto another row.
     </Tab>
     <Tab label="Tab four">
       <p>Panel four.</p>
+    </Tab>
+    <Tab label="Tab five">
+      <p>Panel five.</p>
+    </Tab>
+    <Tab label="Tab six">
+      <p>Panel six.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+## Collapse
+
+<Demo label="Narrow folder that collapses" stack>
+  <Folder label="Collapse" overflow="collapse" style="max-inline-size: 30rem">
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+    <Tab label="Four">
+      <p>Panel four.</p>
+    </Tab>
+    <Tab label="Five" selected>
+      <p>Panel five.</p>
+    </Tab>
+    <Tab label="Six">
+      <p>Panel six.</p>
+    </Tab>
+    <Tab label="Seven">
+      <p>Panel seven.</p>
+    </Tab>
+    <Tab label="Eight">
+      <p>Panel eight.</p>
+    </Tab>
+    <Tab label="Nine">
+      <p>Panel nine.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+<Demo label="Collapsed folder with tabs on the left" stack>
+  <Folder
+    label="Collapse on the left"
+    overflow="collapse"
+    placement="left"
+    style="block-size: 24rem"
+  >
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+    <Tab label="Four">
+      <p>Panel four.</p>
+    </Tab>
+    <Tab label="Five" selected>
+      <p>Panel five.</p>
+    </Tab>
+    <Tab label="Six">
+      <p>Panel six.</p>
+    </Tab>
+    <Tab label="Seven">
+      <p>Panel seven.</p>
+    </Tab>
+    <Tab label="Eight">
+      <p>Panel eight.</p>
+    </Tab>
+    <Tab label="Nine">
+      <p>Panel nine.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+## Step tabs
+
+<Demo label="Folder with step tabs" stack>
+  <Folder label="Steps" overflow="collapse" steps>
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+    <Tab label="Four">
+      <p>Panel four.</p>
+    </Tab>
+    <Tab label="Five" selected>
+      <p>Panel five.</p>
+    </Tab>
+    <Tab label="Six">
+      <p>Panel six.</p>
+    </Tab>
+    <Tab label="Seven">
+      <p>Panel seven.</p>
+    </Tab>
+    <Tab label="Eight">
+      <p>Panel eight.</p>
+    </Tab>
+    <Tab label="Nine">
+      <p>Panel nine.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+<Demo label="Folder with step tabs on the right" stack>
+  <Folder
+    label="Steps on the right"
+    overflow="collapse"
+    placement="right"
+    steps
+    style="block-size: 24rem"
+  >
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+    <Tab label="Four">
+      <p>Panel four.</p>
+    </Tab>
+    <Tab label="Five" selected>
+      <p>Panel five.</p>
+    </Tab>
+    <Tab label="Six">
+      <p>Panel six.</p>
+    </Tab>
+    <Tab label="Seven">
+      <p>Panel seven.</p>
+    </Tab>
+    <Tab label="Eight">
+      <p>Panel eight.</p>
+    </Tab>
+    <Tab label="Nine">
+      <p>Panel nine.</p>
     </Tab>
   </Folder>
 </Demo>

@@ -28,17 +28,107 @@ There is no previous link on the first page, and no next link on the last.
   </Pagination>
 </Demo>
 
-## Narrow
+## Placement
 
-When the tabs don't fit, the strip scrolls, with dots at the edge that has more and a scrollbar above it.
+<Demo label="Pagination below" stack>
+  <Pagination current={2} total={9} href={(page) => `#page-${page}`} placement="bottom">
+    <p>Page 2.</p>
+  </Pagination>
+</Demo>
 
-<Demo label="Narrow pagination" stack>
+<Demo label="Pagination on the left" stack>
   <Pagination
     current={5}
-    total={12}
+    total={9}
     href={(page) => `#page-${page}`}
+    placement="left"
+    style="min-block-size: 30rem"
+  >
+    <p>Page 5.</p>
+  </Pagination>
+</Demo>
+
+<Demo label="Pagination on the right" stack>
+  <Pagination
+    current={5}
+    total={9}
+    href={(page) => `#page-${page}`}
+    placement="right"
+    style="min-block-size: 30rem"
+  >
+    <p>Page 5.</p>
+  </Pagination>
+</Demo>
+
+## Collapse
+
+<Demo label="Narrow pagination that collapses" stack>
+  <Pagination
+    current={10}
+    total={20}
+    href={(page) => `#page-${page}`}
+    style="max-inline-size: 24rem"
+  >
+    <p>Page 10 of 20.</p>
+  </Pagination>
+</Demo>
+
+<Demo label="Wide pagination that collapses" stack>
+  <Pagination current={10} total={20} href={(page) => `#page-${page}`}>
+    <p>Page 10 of 20.</p>
+  </Pagination>
+</Demo>
+
+## Scroll
+
+<Demo label="Narrow pagination that scrolls" stack>
+  <Pagination
+    current={10}
+    total={20}
+    href={(page) => `#page-${page}`}
+    overflow="scroll"
     style="max-inline-size: 16rem"
   >
-    <p>Page 5, in a narrow folder: the tabs scroll sideways.</p>
+    <p>Page 10 of 20.</p>
+  </Pagination>
+</Demo>
+
+## Without step tabs
+
+<Demo label="Pagination without step tabs" stack>
+  <Pagination current={5} total={9} href={(page) => `#page-${page}`} steps={false}>
+    <p>Page 5.</p>
+  </Pagination>
+</Demo>
+
+## Tiles
+
+<Demo label="Pagination as tiles" stack>
+  <Pagination current={2} total={9} href={(page) => `#page-${page}`} variant="tiles">
+    <p>Page 2.</p>
+  </Pagination>
+</Demo>
+
+<Demo label="Pagination as tiles below" stack>
+  <Pagination
+    current={10}
+    total={20}
+    href={(page) => `#page-${page}`}
+    variant="tiles"
+    placement="bottom"
+  >
+    <p>Page 10 of 20.</p>
+  </Pagination>
+</Demo>
+
+<Demo label="Narrow pagination as tiles" stack>
+  <Pagination
+    current={10}
+    total={20}
+    href={(page) => `#page-${page}`}
+    variant="tiles"
+    style="max-inline-size: 24rem"
+  >
+    <p>Page 10 of 20.</p>
   </Pagination>
 </Demo>

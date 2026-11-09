@@ -112,14 +112,15 @@
 
 /* Folder tabs pop with their position offsets instead of translate. A translate transition puts
    the tab on its own compositor layer, which snaps to whole pixels and can open a hairline at the
-   join with the sheet. The clip at the sheet's edge (folder.css) moves with the offsets. */
+   join with the sheet. The clip at the sheet's edge (folder.css) moves with the offsets. The
+   offsets are physical, as the light is, so a tab on a strip turned on end still lifts towards it. */
 .rkui-folder-tab {
-  inset-block-start: var(--rkui-folder-tab-y);
-  inset-inline-start: var(--rkui-folder-tab-x);
+  top: var(--rkui-folder-tab-y);
+  left: var(--rkui-folder-tab-x);
   box-shadow: var(--rkui-shadow);
   transition:
-    inset-block-start var(--rkui-duration-fast) ease,
-    inset-inline-start var(--rkui-duration-fast) ease,
+    top var(--rkui-duration-fast) ease,
+    left var(--rkui-duration-fast) ease,
     clip-path var(--rkui-duration-fast) ease,
     box-shadow var(--rkui-duration-fast) ease;
 }
@@ -198,7 +199,7 @@
   outline: var(--rkui-focus-width) solid var(--rkui-focus);
   outline-offset: var(--rkui-focus-offset);
   box-shadow: none;
-  clip-path: inset(-100vmax -100vmax 0);
+  --rkui-folder-cut: 0px;
 }
 
 /* A focused sheet comes in front of the tabs, so its whole focus band shows, and loses its
@@ -207,7 +208,7 @@
   z-index: 3;
 }
 
-.rkui-folder:has(> .rkui-folder-sheet:focus-visible) > .rkui-folder-tab::before {
+.rkui-folder:has(> .rkui-folder-sheet:focus-visible) > .rkui-folder-strip .rkui-folder-tab::before {
   box-shadow: none;
 }
 
@@ -222,9 +223,16 @@
   .rkui-range
 ):disabled,
 :is(.rkui-button, .rkui-chip, .rkui-segmented label, .rkui-tile, .rkui-color-input):has(:disabled),
-.rkui-ballot-option:has(:disabled) > .rkui-ballot-text {
+.rkui-ballot-option:has(:disabled) > .rkui-ballot-text,
+.rkui-folder-tab.rkui-folder-tab--off {
   opacity: 0.45;
   cursor: not-allowed;
   box-shadow: none;
   translate: none;
+}
+
+/* A folder step tab with nowhere to go, at either end of the strip, doesn't pop either. */
+.rkui-folder-tab.rkui-folder-tab--off {
+  --rkui-folder-tab-x: 0px;
+  --rkui-folder-tab-y: 0px;
 }

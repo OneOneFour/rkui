@@ -17,9 +17,10 @@ const SERVES = {
   ],
   // A drawer's close animation, in Safari (drawer.css).
   'drawer-enhance.js': ['Cabinet', 'Drawer'],
+  // A folder strip's bar while its tabs don't fit, and how many tabs a collapsing strip shows.
+  'folder-enhance.js': ['Folder', 'Pagination'],
   // The "more" dots on scroll regions, without scroll-driven animations (overflow.css).
-  'overflow-enhance.js': ['CodeBlock', 'Pagination', 'Scroll', 'Table'],
-  'pagination-enhance.js': ['Pagination'],
+  'overflow-enhance.js': ['CodeBlock', 'Folder', 'Pagination', 'Scroll', 'Table'],
   'sidebar-enhance.js': ['Sidebar'],
   'table-enhance.js': ['Table'],
   // Escape to hide an open tooltip.

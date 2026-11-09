@@ -98,11 +98,19 @@ const TABLE_ROWS = [
     </Specimen>
     {option.withFolder && (
       <Specimen label="folder tabs, 16rem wide: the strip scrolls, with dots" wide>
-        <div class="narrow rkui-folder">
-          <nav aria-label="Specimen pages">
+        <div class="narrow rkui-folder rkui-folder--scroll">
+          <nav class="rkui-folder-strip" aria-label="Specimen pages">
+            <div
+              class="rkui-folder-scrollbar rkui-scroll rkui-scroll--bar"
+              aria-hidden="true"
+              tabindex="-1"
+              hidden
+            >
+              <div />
+            </div>
             <ol class="rkui-folder-tabs rkui-scroll">
               {TABS.map((name, i) => (
-                <li>
+                <li class="rkui-strip-item">
                   <a
                     class="rkui-folder-tab"
                     href="#specimen-link"

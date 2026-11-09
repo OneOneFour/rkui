@@ -1,62 +1,135 @@
 /* Folder: tabs standing on a sheet of paper, like a folder's index tabs. The selected tab is joined
    to the sheet in front; the others are tucked behind it.
 
-   As a folder (Folder.vue), with no JavaScript: each tab is a label around a radio,
-   followed by its panel. The tabs line up in a row, wrapping when they don't fit, and the panels go
-   below them; only the checked tab's panel shows. The radios share a name, so the arrow keys move
-   between the tabs.
-   <div class="rkui-folder rkui-folder--tabs" role="group" aria-label="Topics">
-     <label class="rkui-folder-tab" id="tab-a"><input type="radio" name="topics" checked> One</label>
+   As a folder (Folder.vue), with no JavaScript: each tab is a label around a radio, in one strip
+   of tabs, and the panels follow the strip; only the checked tab's panel shows. The radios share
+   a name, so the arrow keys move between the tabs. Each tab sits in a .rkui-strip-item (a span
+   with no box of its own) with its "…" gap, after the first tab or before the last, and with
+   `steps` its ‹ › step tabs: labels for the neighbouring radios, shown only beside the checked tab.
+   <div class="rkui-folder rkui-folder--tabs rkui-folder--scroll" role="group" aria-label="Topics">
+     <div class="rkui-folder-strip">
+       <div class="rkui-folder-scrollbar rkui-scroll rkui-scroll--bar" aria-hidden="true"
+         tabindex="-1" hidden><div></div></div>
+       <div class="rkui-folder-tabs rkui-scroll">
+         <span class="rkui-strip-item">
+           <label class="rkui-folder-tab" id="tab-a"><input type="radio" name="topics" checked> <span class="rkui-folder-label">One</span></label>
+         </span>
+         <span class="rkui-strip-item">
+           <label class="rkui-folder-tab" id="tab-b"><input type="radio" name="topics"> <span class="rkui-folder-label">Two</span></label>
+         </span>
+       </div>
+     </div>
      <div class="rkui-folder-sheet" role="group" aria-labelledby="tab-a" tabindex="0">…</div>
-     <label class="rkui-folder-tab" id="tab-b"><input type="radio" name="topics"> Two</label>
      <div class="rkui-folder-sheet" role="group" aria-labelledby="tab-b" tabindex="0">…</div>
    </div>
 
-   As pagination (Pagination.vue), a strip of tabs that are links over one sheet. The strip is a
-   scroll region (overflow.css) for when the tabs don't fit. It hides its own scrollbar, which
-   would come between the tabs and the sheet. pagination-enhance.js puts a scrollbar above the
-   strip:
-   <div class="rkui-folder">
-     <nav aria-label="Pagination">
+   As pagination (Pagination.vue), the same strip as a list of links in a nav, over one sheet:
+   <div class="rkui-folder rkui-folder--collapse">
+     <nav class="rkui-folder-strip" aria-label="Pagination">
+       <div class="rkui-folder-scrollbar …" hidden><div></div></div>
        <ol class="rkui-folder-tabs rkui-scroll">
-         <li><a class="rkui-folder-tab" href="?page=1">1</a></li>
-         <li><a class="rkui-folder-tab" href="?page=2" aria-current="page">2</a></li>
+         <li class="rkui-strip-item"><a class="rkui-folder-tab" href="?page=1">1</a></li>
+         <li class="rkui-strip-item">
+           <a class="rkui-folder-tab" href="?page=2" aria-current="page">2</a>
+         </li>
        </ol>
      </nav>
      <div class="rkui-folder-sheet">…</div>
    </div>
 
-   Add .rkui-folder--tinted for a sheet in --rkui-selected-tint.
+   Modifiers on .rkui-folder:
+   - where the tabs stand: on top by default, or .rkui-folder--bottom, --left or --right. On the
+     sides the strip turns on end (writing-mode), so the tabs stack down the sheet's edge, as long
+     as the sheet, with the foot of their letters towards the sheet. The tabs' logical sides turn
+     with it, so their open side still faces the sheet. Something that must stay upright, such as
+     a page number, sets writing-mode: horizontal-tb. The strip goes after the sheet for --bottom
+     and --right, so the reading order follows the page;
+   - when the tabs don't fit: .rkui-folder--scroll, a strip that scrolls; or .rkui-folder--collapse,
+     where folder-enhance.js shows as many tabs as fit, hiding the rest (below). Without the script
+     a collapsing strip scrolls. Tabs never wrap;
+   - .rkui-folder--tinted, a sheet in --rkui-selected-tint.
+
+   The strip hides its own scrollbar, which would come between the tabs and the sheet, and
+   folder-enhance.js shows the bar (.rkui-folder-scrollbar) on its outer side instead, only while
+   the tabs don't fit, scrolled to the same place. Without it the strip still scrolls by touch,
+   trackpad, wheel and keyboard.
 
    The tabs sit in front of the sheet, so the join never depends on tabs inside a scroll container
    stacking either side of something outside it (Safari draws such a strip as one layer). The other
-   tabs look tucked behind the sheet because they are clipped at its top edge. */
+   tabs look tucked behind the sheet because they are clipped at its edge. */
 
 .rkui-folder {
   --rkui-folder-sheet: var(--rkui-raised);
-  /* How far the tabs reach down past the sheet's top edge, so a lift or press never shows a gap */
+  /* How far the tabs reach past the sheet's edge, so a lift or press never shows a gap */
   --rkui-folder-tuck: calc(var(--rkui-outline-width) + var(--rkui-space-1));
+  /* Between tabs: wider than a lifted tab's shadow at any light angle, so the shadow never falls
+     on a neighbour */
+  --rkui-folder-gap: calc(var(--rkui-shadow-depth) * var(--rkui-space-3));
 
-  display: block;
+  display: grid;
+  grid-template: 'strip' auto 'sheet' auto / minmax(0, 1fr);
   isolation: isolate;
+}
+
+.rkui-folder--bottom {
+  grid-template: 'sheet' auto 'strip' auto / minmax(0, 1fr);
+}
+
+.rkui-folder--left {
+  grid-template: 'strip sheet' auto / auto minmax(0, 1fr);
+}
+
+.rkui-folder--right {
+  grid-template: 'sheet strip' auto / minmax(0, 1fr) auto;
 }
 
 .rkui-folder--tinted {
   --rkui-folder-sheet: var(--rkui-selected-tint);
 }
 
-/* Scrolls sideways when the tabs don't fit. The padding, inside the dots' gutters, leaves room
-   for the focus band and a lifted tab's shadow. The gap is wider than a lifted tab's shadow at
-   any light angle, so the shadow never falls on a neighbour. The gap and the side padding grow
+/* The strip: the bar and the tabs, in front of the sheet. On the sides its length doesn't depend
+   on its tabs (inline-size containment), so it runs the sheet's length. */
+.rkui-folder-strip {
+  --rkui-folder-cut: max(0px, -1 * var(--rkui-shadow-offset-y));
+
+  grid-area: strip;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+:is(.rkui-folder--left, .rkui-folder--right) > .rkui-folder-strip {
+  contain: inline-size;
+}
+
+.rkui-folder--bottom > .rkui-folder-strip {
+  --rkui-folder-cut: max(0px, var(--rkui-shadow-offset-y));
+}
+
+.rkui-folder--left > .rkui-folder-strip {
+  --rkui-folder-cut: max(0px, -1 * var(--rkui-shadow-offset-x));
+
+  writing-mode: vertical-lr;
+}
+
+.rkui-folder--right > .rkui-folder-strip {
+  --rkui-folder-cut: max(0px, var(--rkui-shadow-offset-x));
+
+  writing-mode: vertical-rl;
+}
+
+/* The tabs, in one row that never wraps, reaching past the sheet's edge by the tuck. The padding,
+   inside the dots' gutters, leaves room for the focus band and a lifted tab's shadow, and grows
    with the shadow's depth. */
 .rkui-folder-tabs {
   display: flex;
   align-items: flex-end;
-  gap: calc(var(--rkui-shadow-depth) * var(--rkui-space-3));
-  position: relative;
-  z-index: 2;
-  margin: 0 0 calc(-1 * var(--rkui-folder-tuck));
-  padding: var(--rkui-space-2) calc(var(--rkui-shadow-depth) * var(--rkui-space-2)) 0;
+  gap: var(--rkui-folder-gap);
+  margin-block: 0 calc(-1 * var(--rkui-folder-tuck));
+  margin-inline: 0;
+  padding-block: var(--rkui-space-2) 0;
+  padding-inline: calc(var(--rkui-shadow-depth) * var(--rkui-space-2));
   overflow: auto hidden;
   scrollbar-width: none;
   list-style: none;
@@ -66,74 +139,290 @@
   display: none;
 }
 
-/* The scrollbar above Pagination's tabs (pagination-enhance.js): a scroller with an empty spacer. */
+/* On the sides the strip scrolls down. */
+:is(.rkui-folder--left, .rkui-folder--right) > .rkui-folder-strip > .rkui-folder-tabs {
+  overflow: hidden auto;
+}
+
+/* The bar on the strip's outer side (folder-enhance.js): a scroller with an empty spacer. Hidden,
+   it takes no room. */
 .rkui-folder-scrollbar {
+  flex: none;
   block-size: var(--rkui-scroll-bar-size);
   overflow: auto hidden;
 }
 
-/* The spacer needs some height to count towards the scroll width. */
+:is(.rkui-folder--left, .rkui-folder--right) > .rkui-folder-strip > .rkui-folder-scrollbar {
+  overflow: hidden auto;
+}
+
+.rkui-folder--bottom > .rkui-folder-strip > .rkui-folder-scrollbar {
+  order: 1;
+}
+
+/* The spacer needs some size across the bar to count towards its scroll length. */
 .rkui-folder-scrollbar > div {
   block-size: 1px;
 }
 
-/* Pagination's strip keeps room above it for the bar that pagination-enhance.js puts there, so
-   nothing moves when it does: the bar sits in the strip's top margin, which the nav holds on to
-   (flow-root) rather than letting it merge with the margin above. */
-.rkui-folder > nav {
-  display: flow-root;
+/* 1 while the strip's tabs don't fit, from a scroll timeline, which is inactive while nothing
+   overflows; 0 when they fit. */
+@property --rkui-strip-overflowing {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
 }
 
-.rkui-folder > nav > .rkui-folder-tabs {
-  margin-block-start: var(--rkui-scroll-bar-size);
+@keyframes rkui-strip-overflowing {
+  from,
+  to {
+    --rkui-strip-overflowing: 1;
+  }
 }
 
-.rkui-folder > nav > .rkui-folder-scrollbar {
-  margin-block-end: calc(-1 * var(--rkui-scroll-bar-size));
-}
-
-/* Like a scroll region's own scrollbar, it waits for hover or keyboard focus, on the tabs or on
-   itself, wherever the dots can show. */
+/* Where CSS can tell that the tabs don't fit, the strip makes room for the bar only while they
+   don't, before the script shows it, so nothing moves when it does: the bar then stands in that
+   room. Elsewhere the bar takes its room when it shows. The animation joins the dots' one
+   (overflow.css). Like a scroll region's own scrollbar, the bar waits for hover or keyboard focus
+   wherever the dots show; strips on the sides have no dots, so their bar stays. */
 @supports (animation-timeline: scroll()) {
+  .rkui-folder-strip > .rkui-folder-tabs.rkui-scroll {
+    animation-name: rkui-scroll-more, rkui-strip-overflowing;
+    margin-block-start: calc(var(--rkui-strip-overflowing) * var(--rkui-scroll-bar-size));
+  }
+
+  .rkui-folder--bottom > .rkui-folder-strip > .rkui-folder-tabs.rkui-scroll {
+    margin-block: calc(-1 * var(--rkui-folder-tuck))
+      calc(var(--rkui-strip-overflowing) * var(--rkui-scroll-bar-size));
+  }
+
+  .rkui-folder-strip > .rkui-folder-scrollbar {
+    margin-block-end: calc(-1 * var(--rkui-scroll-bar-size));
+  }
+
+  .rkui-folder--bottom > .rkui-folder-strip > .rkui-folder-scrollbar {
+    margin-block: calc(-1 * var(--rkui-scroll-bar-size)) 0;
+  }
+
+  @media (forced-colors: active) {
+    .rkui-folder-strip > .rkui-folder-tabs.rkui-scroll:not(.rkui-scroll--bar) {
+      animation-name: rkui-scroll-more, rkui-scroll-more-forced, rkui-strip-overflowing;
+    }
+  }
+
   @media (forced-colors: none) {
-    .rkui-folder-scrollbar:not(:hover, :has(+ .rkui-folder-tabs:is(:hover, :has(:focus-visible)))) {
+    .rkui-folder-strip:not(:hover, :has(:focus-visible)):has(
+        > .rkui-folder-tabs:not(.rkui-scroll--bar)
+      )
+      > .rkui-folder-scrollbar {
       opacity: 0;
     }
   }
 }
 
-/* Folder: the tabs and their panels in one wrapping row. Each panel takes a row of its own after
-   all the tabs and reaches up under them, as a strip does; only the checked tab's panel shows.
-   The first tab starts where a strip's would, inside its side padding and its scroll gutter. */
-.rkui-folder--tabs {
+/* One tab and what goes with it. In a Folder it has no box of its own, so its tab, gap and step
+   tabs sit in the strip's row. */
+.rkui-strip-item {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  column-gap: calc(var(--rkui-shadow-depth) * var(--rkui-space-3));
-  padding-block-start: var(--rkui-space-2);
+  gap: inherit;
 }
 
-.rkui-folder--tabs > .rkui-folder-tab {
-  z-index: 2;
+span.rkui-strip-item {
+  display: contents;
 }
 
-.rkui-folder--tabs > .rkui-folder-tab:first-child {
-  margin-inline-start: calc(
-    var(--rkui-dots-gutter) + var(--rkui-shadow-depth) * var(--rkui-space-2)
-  );
+/* The "…" between the first tab and the rest, or the rest and the last, level with the labels.
+   It shows only while the tabs beside it are hidden (below), or, as a list item of its own, where
+   Pagination leaves pages out. */
+.rkui-folder-tabs .rkui-strip-gap,
+.rkui-folder-tabs > li:not(.rkui-strip-item, .rkui-folder-step) {
+  padding-block-end: calc(var(--rkui-space-2) + var(--rkui-folder-tuck));
+  line-height: var(--rkui-line-height-heading);
 }
 
-/* A flex item is at least as wide as its content, so wide content (a table, a long code line) would
-   stretch the panel; min-inline-size lets it scroll inside the panel instead. */
-.rkui-folder--tabs > .rkui-folder-sheet {
-  order: 1;
-  flex-basis: 100%;
-  min-inline-size: 0;
-  margin-block-start: calc(-1 * var(--rkui-folder-tuck));
-}
-
-.rkui-folder--tabs > .rkui-folder-tab:not(:has(:checked)) + .rkui-folder-sheet {
+.rkui-strip-gap {
   display: none;
+}
+
+/* Collapse (folder-enhance.js). The script marks each tab it hides `hidden`, and each "…" it
+   shows data-rkui-shown. The chosen tab always shows, even before the script catches up with a
+   change it hasn't been told of. When even the fewest tabs don't fit, the strip goes to its small
+   size (data-rkui-small), and then, with steps, shows the chosen tab alone between them; a
+   Folder's neighbouring tabs are then tucked out of sight (data-rkui-tucked) but stay in place, so
+   the arrow keys still reach them. */
+.rkui-strip-item[hidden] {
+  display: none;
+}
+
+li.rkui-strip-item[hidden]:has([aria-current='page']) {
+  display: flex;
+}
+
+span.rkui-strip-item[hidden]:has(:checked) {
+  display: contents;
+}
+
+.rkui-strip-gap[data-rkui-shown] {
+  display: block;
+}
+
+.rkui-folder-tabs[data-rkui-small] .rkui-folder-tab {
+  padding-inline: var(--rkui-space-2);
+}
+
+.rkui-folder-tabs[data-rkui-small] .rkui-folder-step > .rkui-folder-tab {
+  padding-inline: var(--rkui-space-1);
+}
+
+span.rkui-strip-item[data-rkui-tucked] > .rkui-folder-tab {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The ‹ › step tabs stand at the two ends of the row, before the first tab and after the last. A
+   Folder writes a pair beside every tab and shows the checked tab's pair, moved to the ends. */
+.rkui-folder-step {
+  display: flex;
+}
+
+.rkui-folder-step > .rkui-folder-tab {
+  padding-inline: var(--rkui-space-3);
+}
+
+span.rkui-strip-item > .rkui-folder-step {
+  display: none;
+}
+
+span.rkui-strip-item:has(:checked) > .rkui-folder-step--previous {
+  order: -1;
+  display: flex;
+}
+
+span.rkui-strip-item:has(:checked) > .rkui-folder-step--next {
+  order: 1;
+  display: flex;
+}
+
+/* On the sides a tab's text runs along the strip with the foot of its letters towards the sheet:
+   on the right that is how a vertical writing mode sets it; on the left it is turned round, so it
+   reads upwards. */
+.rkui-folder--left > .rkui-folder-strip .rkui-folder-label {
+  display: inline-block;
+  rotate: 180deg;
+}
+
+/* On the sides the carets point along the strip. */
+:is(.rkui-folder--left, .rkui-folder--right) > .rkui-folder-strip .rkui-folder-step .rkui-icon {
+  rotate: 90deg;
+}
+
+/* The panels share one place beside the strip; only the checked tab's panel shows. CSS can match
+   a tab to its panel only by number, so a Folder takes up to 20 tabs. A grid item is at least as
+   wide as its content, so wide content (a table, a long code line) would stretch the panel;
+   min-inline-size lets it scroll inside the panel instead. */
+.rkui-folder-sheet {
+  grid-area: sheet;
+  position: relative;
+  z-index: 1;
+  min-inline-size: 0;
+  padding: var(--rkui-space-4);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-folder-sheet);
+  box-shadow: var(--rkui-shadow);
+}
+
+.rkui-folder--tabs > .rkui-folder-sheet {
+  display: none;
+}
+
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(1 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(1 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(2 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(2 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(3 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(3 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(4 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(4 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(5 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(5 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(6 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(6 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(7 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(7 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(8 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(8 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(9 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(9 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(10 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(10 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(11 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(11 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(12 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(12 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(13 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(13 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(14 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(14 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(15 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(15 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(16 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(16 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(17 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(17 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(18 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(18 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(19 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(19 of .rkui-folder-sheet),
+.rkui-folder--tabs:has(
+    > .rkui-folder-strip :nth-child(20 of .rkui-strip-item) > .rkui-folder-tab > :checked
+  )
+  > :nth-child(20 of .rkui-folder-sheet) {
+  display: block;
 }
 
 /* The radio is there for its keyboard and its checked state; the tab is what shows. */
@@ -143,17 +432,9 @@
   pointer-events: none;
 }
 
-.rkui-folder-tabs > li {
-  display: flex;
-}
-
-/* Text between the tabs, such as an ellipsis, sits level with their labels. */
-.rkui-folder-tabs > li:not(:has(.rkui-folder-tab)) {
-  padding-block-end: calc(var(--rkui-space-2) + var(--rkui-folder-tuck));
-}
-
 /* --rkui-folder-tab-x and -y are the pop's offsets (interactive.css). The clip follows the tab as
-   it moves, so it always cuts the tab, its shadow and its focus band at the sheet's top edge. */
+   it moves, so it always cuts the tab, its shadow and its focus band at the sheet's edge. Sides
+   are logical, so they turn with the strip: block-end is always the side facing the sheet. */
 .rkui-folder-tab {
   --rkui-folder-tab-x: 0px;
   --rkui-folder-tab-y: 0px;
@@ -163,8 +444,8 @@
   align-items: center;
   gap: var(--rkui-space-2);
   flex: none;
-  padding: var(--rkui-space-2) var(--rkui-space-4)
-    calc(var(--rkui-space-2) + var(--rkui-folder-tuck));
+  padding-block: var(--rkui-space-2) calc(var(--rkui-space-2) + var(--rkui-folder-tuck));
+  padding-inline: var(--rkui-space-4);
   border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
   border-block-end: 0;
   border-start-start-radius: var(--rkui-radius);
@@ -183,9 +464,9 @@
   color: inherit;
 }
 
-/* The selected tab stops at the sheet's top edge, and its ::after covers the sheet's outline
-   between the tab's sides, joining the two. The cover reaches a pixel past the outline each way,
-   so a sub-pixel offset never leaves a hairline of it. */
+/* The selected tab stops at the sheet's edge, and its ::after covers the sheet's outline between
+   the tab's sides, joining the two. The cover reaches a pixel past the outline each way, so a
+   sub-pixel offset never leaves a hairline of it. */
 .rkui-folder-tab:is(:has(:checked), [aria-current='page']) {
   margin-block-end: var(--rkui-folder-tuck);
   padding-block-end: var(--rkui-space-2);
@@ -205,23 +486,96 @@
 }
 
 /* The selected tab's shadow is the sheet's, cast by the tab and cut off where it would fall on the
-   sheet: at the tab's bottom edge, or higher by the shadow's offset when the light comes from
-   below, so that it meets the sheet's own shadow edge to edge. */
+   sheet: at the tab's edge, or further out by the shadow's offset (--rkui-folder-cut, set on the
+   strip) when the light comes from the sheet's side, so that it meets the sheet's own shadow edge
+   to edge. Its focus band (interactive.css) is cut at the edge. */
 .rkui-folder-tab:is(:has(:checked), [aria-current='page'])::before {
   content: '';
   position: absolute;
-  inset: calc(-1 * var(--rkui-outline-width)) calc(-1 * var(--rkui-outline-width)) 0;
+  inset-block: calc(-1 * var(--rkui-outline-width)) 0;
+  inset-inline: calc(-1 * var(--rkui-outline-width));
   border-radius: inherit;
   box-shadow: var(--rkui-shadow);
-  clip-path: inset(-100vmax -100vmax max(0px, -1 * var(--rkui-shadow-offset-y)));
+  clip-path: inset(-100vmax -100vmax var(--rkui-folder-cut));
 }
 
-.rkui-folder-sheet {
-  position: relative;
-  z-index: 1;
-  padding: var(--rkui-space-4);
-  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
-  border-radius: var(--rkui-radius);
-  background: var(--rkui-folder-sheet);
-  box-shadow: var(--rkui-shadow);
+/* Clips are drawn on the page's own sides, so each placement cuts at its own edge. The selected
+   tab isn't clipped. */
+.rkui-folder--bottom
+  > .rkui-folder-strip
+  .rkui-folder-tab:not(:has(:checked), [aria-current='page']) {
+  clip-path: inset(calc(var(--rkui-folder-tuck) - var(--rkui-folder-tab-y)) -100vmax -100vmax);
+}
+
+.rkui-folder--left
+  > .rkui-folder-strip
+  .rkui-folder-tab:not(:has(:checked), [aria-current='page']) {
+  clip-path: inset(
+    -100vmax calc(var(--rkui-folder-tuck) + var(--rkui-folder-tab-x)) -100vmax -100vmax
+  );
+}
+
+.rkui-folder--right
+  > .rkui-folder-strip
+  .rkui-folder-tab:not(:has(:checked), [aria-current='page']) {
+  clip-path: inset(
+    -100vmax -100vmax -100vmax calc(var(--rkui-folder-tuck) - var(--rkui-folder-tab-x))
+  );
+}
+
+.rkui-folder--bottom
+  > .rkui-folder-strip
+  .rkui-folder-tab:is(:has(:checked), [aria-current='page'])::before {
+  clip-path: inset(var(--rkui-folder-cut) -100vmax -100vmax);
+}
+
+.rkui-folder--left
+  > .rkui-folder-strip
+  .rkui-folder-tab:is(:has(:checked), [aria-current='page'])::before {
+  clip-path: inset(-100vmax var(--rkui-folder-cut) -100vmax -100vmax);
+}
+
+.rkui-folder--right
+  > .rkui-folder-strip
+  .rkui-folder-tab:is(:has(:checked), [aria-current='page'])::before {
+  clip-path: inset(-100vmax -100vmax -100vmax var(--rkui-folder-cut));
+}
+
+/* Below the sheet. No writing mode stacks blocks upwards, so the tabs' two ends swap here. */
+.rkui-folder--bottom > .rkui-folder-strip > .rkui-folder-tabs {
+  align-items: flex-start;
+  margin-block: calc(-1 * var(--rkui-folder-tuck)) 0;
+  padding-block: 0 var(--rkui-space-2);
+}
+
+.rkui-folder--bottom > .rkui-folder-strip .rkui-folder-tab {
+  padding-block: calc(var(--rkui-space-2) + var(--rkui-folder-tuck)) var(--rkui-space-2);
+  border-block-start: 0;
+  border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: 0 0 var(--rkui-radius) var(--rkui-radius);
+}
+
+.rkui-folder--bottom
+  > .rkui-folder-strip
+  .rkui-folder-tab:is(:has(:checked), [aria-current='page']) {
+  margin-block: var(--rkui-folder-tuck) 0;
+  padding-block: var(--rkui-space-2);
+}
+
+.rkui-folder--bottom
+  > .rkui-folder-strip
+  .rkui-folder-tab:is(:has(:checked), [aria-current='page'])::after {
+  inset-block: auto calc(100% - 1px);
+}
+
+.rkui-folder--bottom
+  > .rkui-folder-strip
+  .rkui-folder-tab:is(:has(:checked), [aria-current='page'])::before {
+  inset-block: 0 calc(-1 * var(--rkui-outline-width));
+}
+
+.rkui-folder--bottom
+  > .rkui-folder-strip
+  :is(.rkui-strip-gap, .rkui-folder-tabs > li:not(.rkui-strip-item, .rkui-folder-step)) {
+  padding-block: calc(var(--rkui-space-2) + var(--rkui-folder-tuck)) 0;
 }
