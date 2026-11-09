@@ -30,11 +30,34 @@
   overscroll-behavior: contain;
 }
 
-/* The page stays still under an open alert. The gutter keeps the space the scrollbar leaves, so
-   the page doesn't shift sideways; the scroll position is untouched, so it is the same on close. */
+/* The page stays still under an open alert; the scroll position is untouched, so it is the same
+   on close. A page that scrolls keeps the space its scrollbar leaves, so it doesn't shift
+   sideways, and a page that doesn't gains none. The page's scroll timeline is inactive when
+   nothing overflows, so the gutter is set only when the page scrolls. Longhands only, as in
+   overflow.css. Browsers without scroll-driven animations get data-rkui-page-scrolls from
+   alert-enhance.js instead. */
 :root:has(.rkui-alert:modal) {
   overflow: hidden;
+}
+
+@supports (animation-timeline: scroll()) {
+  :root:has(.rkui-alert:modal) {
+    animation-name: rkui-alert-gutter;
+    animation-duration: auto;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root);
+  }
+}
+
+:root[data-rkui-page-scrolls]:has(.rkui-alert:modal) {
   scrollbar-gutter: stable;
+}
+
+@keyframes rkui-alert-gutter {
+  from,
+  to {
+    scrollbar-gutter: stable;
+  }
 }
 
 .rkui-alert[open] {
