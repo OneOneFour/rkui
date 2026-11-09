@@ -23,7 +23,12 @@
    .rkui-sidebar--folders  each group a folder, its heading the tab, sticking as you scroll;
    .rkui-sidebar--deck     every link a raised key, the current page pushed in (interactive.css);
    .rkui-sidebar--note     a taped sticky note (with .rkui-sticky-note .rkui-sticky-note--tape);
-                           the current page an ink pill.
+                           the current page an ink pill;
+   .rkui-sidebar--sections a sky panel for a site's own navigation, each link wearing its
+                           section hue (--rkui-section, set on its <li>).
+
+   A .rkui-sidebar-header before the scroller holds what stays above the links, such as a site's
+   name and tagline. A group may have no heading.
 
    data-rkui-dots="pill" on the sidebar or any ancestor puts the hints in yellow pills, as the
    card's are (overflow.css).
@@ -60,6 +65,13 @@
   overscroll-behavior: contain;
   scroll-timeline-name: --rkui-sidebar;
   scroll-timeline-axis: block;
+}
+
+/* What stays above the links, one item under another, lined up with their text. */
+.rkui-sidebar-header {
+  display: grid;
+  gap: var(--rkui-space-1);
+  padding: 0 calc(var(--rkui-sidebar-pad) + var(--rkui-space-3)) var(--rkui-space-3);
 }
 
 .rkui-sidebar-group + .rkui-sidebar-group {
@@ -427,6 +439,52 @@
   background: var(--rkui-ink);
   color: var(--rkui-on-ink);
   box-shadow: none;
+}
+
+/* Sections: a sky panel for a site's own navigation, as in the palette board's mockup. Each link
+   wears the section hue of the page it leads to (SidebarLink's `color`, as --rkui-section): its
+   icon is filled with it, and the current page is an outlined pill filled with it, its icon a glint
+   sticker. Headings are in the panel's text colour, which muted text would fail on the tint. When
+   the panel is wide, as when it stacks above the page on a phone, the links flow into columns. */
+.rkui-sidebar--sections {
+  --rkui-sidebar-panel: var(--rkui-sky-tint);
+
+  padding-inline: var(--rkui-space-2);
+}
+
+.rkui-sidebar--sections .rkui-sidebar-heading > span {
+  color: inherit;
+}
+
+.rkui-sidebar--sections .rkui-sidebar-list {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 7.5rem), 1fr));
+}
+
+.rkui-sidebar--sections .rkui-sidebar-link {
+  --rkui-icon-fill: var(--rkui-section);
+
+  display: flex;
+  align-items: center;
+  gap: var(--rkui-space-2);
+  border-radius: var(--rkui-radius-pill);
+  font-weight: 600;
+}
+
+.rkui-sidebar--sections .rkui-sidebar-link .rkui-icon {
+  color: inherit;
+}
+
+.rkui-sidebar--sections .rkui-sidebar-link[aria-current='page'] {
+  --rkui-icon-fill: var(--rkui-glint);
+
+  border-color: var(--rkui-line);
+  background: var(--rkui-section, var(--rkui-ink));
+  color: var(--rkui-on-section, var(--rkui-on-ink));
+  box-shadow: none;
+}
+
+.rkui-sidebar--sections .rkui-sidebar-link[aria-current='page'] .rkui-icon {
+  color: var(--rkui-ink);
 }
 
 /* Forced colours: edges that aren't shown become Canvas, the dots become a system-colour line at

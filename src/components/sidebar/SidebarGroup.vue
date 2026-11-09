@@ -1,6 +1,7 @@
 <!--
-  One group of a Sidebar: a heading over a list of SidebarLinks. `class`, `style` and other
-  attributes go on the `<section>`.
+  One group of a Sidebar: a heading over a list of SidebarLinks, or just the list when it has no
+  heading, as in a site's one list of sections. `class`, `style` and other attributes go on the
+  `<section>`.
 
   @example
   <SidebarGroup heading="Form controls">
@@ -9,8 +10,8 @@
 -->
 <script setup lang="ts">
 interface Props {
-  /** The group's heading. */
-  heading: string
+  /** The group's heading; none when left out. */
+  heading?: string
 }
 
 const { heading } = defineProps<Props>()
@@ -18,7 +19,7 @@ const { heading } = defineProps<Props>()
 
 <template>
   <section class="rkui-sidebar-group">
-    <h2 class="rkui-sidebar-heading">
+    <h2 v-if="heading" class="rkui-sidebar-heading">
       <span>{{ heading }}</span>
     </h2>
     <ul class="rkui-sidebar-list">

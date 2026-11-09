@@ -4,7 +4,8 @@
   height from the page. Hints at the top and bottom edges show when there is more to scroll to.
   `class`, `style` and other attributes go on the `<nav>`. The hints need Safari 26 or Firefox
   159. Only Chrome gives the card's and the note's stuck headings their stuck look; elsewhere they
-  stick as they are.
+  stick as they are. The `header` slot (`slot="header"` in Astro, `<template #header>` in Vue)
+  sits above the links and doesn't scroll, for a site's name and tagline.
 
   @example
   <Sidebar label="Docs">
@@ -18,10 +19,11 @@ interface Props {
   /** The navigation's accessible name; two sidebars on a page need different ones. */
   label: string
   /**
-   * The look: 'card', 'folders', 'deck' or 'note'; 'plain' when left out. Open, see DECISIONS
+   * The look: 'card', 'folders', 'deck', 'note' or 'sections', a sky panel whose links each wear
+   * their own section hue (SidebarLink's `color`); 'plain' when left out. Open, see DECISIONS
    * ("Sidebar").
    */
-  variant?: 'plain' | 'card' | 'folders' | 'deck' | 'note'
+  variant?: 'plain' | 'card' | 'folders' | 'deck' | 'note' | 'sections'
 }
 
 const { label, variant = 'plain' } = defineProps<Props>()
@@ -38,6 +40,9 @@ const { label, variant = 'plain' } = defineProps<Props>()
     ]"
     :aria-label="label"
   >
+    <div v-if="$slots.header" class="rkui-sidebar-header">
+      <slot name="header" />
+    </div>
     <div class="rkui-sidebar-scroll">
       <slot />
     </div>

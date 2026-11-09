@@ -58,6 +58,7 @@
 @import './components/table/table.css';
 @import './components/sidebar/sidebar.css';
 @import './components/topbar/topbar.css';
+@import './components/header-band/header-band.css';
 @import './components/logo/logo.css';
 @import './components/motion/motion.css';
 @import './interactive.css';

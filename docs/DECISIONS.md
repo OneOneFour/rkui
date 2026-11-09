@@ -229,7 +229,9 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Breadcrumbs: A plain links, B chips, or C path bar. ("Breadcrumbs")
 - [ ] Pagination: A folder tabs, or B tiles between buttons. ("Pagination")
 - [ ] Logo: lift (the pop only), or motifs (each tile's motif plays on hover). ("Logo")
-- [ ] Sidebar: A plain (the default), B card, C folders, D deck, or E note. ("Sidebar")
+- [ ] Sidebar: A plain (the default), B card, C folders, D deck, E note, or F sections. ("Sidebar")
+- [ ] Header band, built as a prototype with the sections sidebar: stays, changes, or goes. A
+  site's frame (nav column beside the page) stays a recipe in the site. ("Header band")
 - [ ] Table: A sheet (the default), or B ledger. ("Table")
 - [ ] Quote: A upright (the default), or B italic (`slant="italic"`, slanted by the browser). ("Quote")
 - [ ] Inline maths size (`--rkui-maths-scale`): A 1em, B 1.1em, C 1.15em (proposed, as built), or D
@@ -249,7 +251,7 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] `\Cref` for a reference that leads a sentence (the long "Equation (n)" pill).
 - [ ] The dashed grouping panel, flat and raised, with the widget frame as one use of it; to be
   built with the site's card work.
-- [ ] Card variants (post, project, paper, album), `HeaderBand`, `PullQuote`, `Sidenote`.
+- [ ] Card variants (post, project, paper, album), `PullQuote`, `Sidenote`.
 - [ ] Custom marks: a gravity-wave signature, a monogram.
 - [ ] The PowerPoint template: review it, after the re-check in
   [pptx/README.md](../pptx/README.md#needs-updating-before-the-next-build).

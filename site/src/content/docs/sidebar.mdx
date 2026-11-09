@@ -20,6 +20,10 @@ import Deck from '../../examples/sidebar/Deck.vue'
 import deckCode from '../../examples/sidebar/Deck.vue?raw'
 import Note from '../../examples/sidebar/Note.vue'
 import noteCode from '../../examples/sidebar/Note.vue?raw'
+import Flask from '@oneonefour/rkui/icons/flask.vue'
+import House from '@oneonefour/rkui/icons/house.vue'
+import PenNib from '@oneonefour/rkui/icons/pen-nib.vue'
+import Rocket from '@oneonefour/rkui/icons/rocket.vue'
 
 Groups of links, each a child component. The page gives the sidebar its height; when its links
 don't fit, it scrolls, with hints at its edges and a scrollbar on hover and focus. `variant`
@@ -78,4 +82,35 @@ A taped sticky note with sticking slab headings; the current page is an ink pill
 
 <Demo vue={noteCode} label="Note sidebar" stack>
   <Note />
+</Demo>
+
+## F: Sections
+
+A sky panel for a site's own navigation. Each link takes `color`, the section hue of the page it
+leads to: it fills the link's icon, and the link itself when it is the current page. The `header`
+slot stays above the links, for the site's name and tagline. A group needs no heading. When the
+panel is wide, the links flow into columns. The [header band](../header-band/) page shows it in a
+site frame.
+
+<Demo label="Sections sidebar" stack>
+  <Sidebar label="Sections example" variant="sections" style="max-inline-size: 16rem">
+    <Fragment slot="header">
+      <strong>Site name</strong>
+      <span>A short tagline</span>
+    </Fragment>
+    <SidebarGroup>
+      <SidebarLink href="#" color="sky">
+        <House class="rkui-icon" /> Home
+      </SidebarLink>
+      <SidebarLink href="#" color="coral" current>
+        <PenNib class="rkui-icon" /> Notes
+      </SidebarLink>
+      <SidebarLink href="#" color="navy">
+        <Flask class="rkui-icon" /> Papers
+      </SidebarLink>
+      <SidebarLink href="#" color="teal">
+        <Rocket class="rkui-icon" /> Projects
+      </SidebarLink>
+    </SidebarGroup>
+  </Sidebar>
 </Demo>
