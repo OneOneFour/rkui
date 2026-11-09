@@ -12,6 +12,8 @@
   <Quote by="Ada Lovelace"><p>The Analytical Engine weaves algebraic patterns.</p></Quote>
 -->
 <script setup lang="ts">
+import { computed } from 'vue'
+
 interface Props {
   /** Who said it, shown under the quote after a dash; none when left out. */
   by?: string
@@ -20,17 +22,27 @@ interface Props {
    * when left out.
    */
   slant?: 'upright' | 'italic'
+  /**
+   * Sets the quote two steps larger, as a one-line quote is, whatever its length; when left out,
+   * the helper script sizes it by its length.
+   */
+  short?: boolean
 }
 
-const { by, slant = 'upright' } = defineProps<Props>()
+const { by, slant = 'upright', short = false } = defineProps<Props>()
+
+const classes = computed(() => [
+  'rkui-quote',
+  { 'rkui-quote--italic': slant === 'italic', 'rkui-quote--short': short },
+])
 </script>
 
 <template>
-  <figure v-if="by" :class="['rkui-quote', { 'rkui-quote--italic': slant === 'italic' }]">
+  <figure v-if="by" :class="classes">
     <blockquote><slot /></blockquote>
     <figcaption class="rkui-quote-by">{{ by }}</figcaption>
   </figure>
-  <blockquote v-else :class="['rkui-quote', { 'rkui-quote--italic': slant === 'italic' }]">
+  <blockquote v-else :class="classes">
     <slot />
   </blockquote>
 </template>
