@@ -6,6 +6,8 @@
  *
  * @param page the docs page being shown; its title and description head the content
  */
+// KaTeX's stylesheet comes first, so rkui's maths styles win.
+import 'katex/dist/katex.min.css'
 import '@oneonefour/rkui/styles.css'
 import '../styles/docs.css'
 import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'

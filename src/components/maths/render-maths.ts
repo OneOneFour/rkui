@@ -1,7 +1,10 @@
+// TeX to KaTeX's HTML, for Equation and Maths. KaTeX is an optional peer dependency: a site that
+// uses the maths components installs it, and loads its stylesheet before rkui's.
 import katex from 'katex'
+import type { Hue } from '../../shared/hues'
 
-/** The palette hues with a term class; each has a `\name{…}` macro for colour-coded terms. */
-export const TERM_HUES = [
+/** The hues with a term class in maths.css; each has a `\<hue>{…}` macro for a colour-coded term. */
+export const TERM_HUES: Hue[] = [
   'teal',
   'yellow',
   'navy',
@@ -26,12 +29,10 @@ function trust(context: { command: string; url?: string; class?: string }): bool
 }
 
 /**
- * Renders TeX to KaTeX HTML (with MathML for screen readers) at build time.
- *
- * @param tex the TeX source
- * @param display true for display maths, false (default) for inline
+ * Renders TeX to KaTeX's HTML, with MathML for screen readers. A TeX error throws, which stops
+ * the build.
  */
-export function renderMaths(tex: string, display = false): string {
+export function renderMaths(tex: string, display: boolean): string {
   return katex.renderToString(tex, {
     displayMode: display,
     output: 'htmlAndMathml',

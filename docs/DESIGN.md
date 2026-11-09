@@ -248,7 +248,10 @@ because 1 ÷ 1.3 (12.3px) is too small. Line height 1.6 body, 1.2 headings; `rem
 
 ### 3.3 Maths
 
-KaTeX renders at build time; there is no runtime maths JavaScript.
+KaTeX renders at build time; there is no runtime maths JavaScript. `Equation` (display maths) and
+`Maths` (inline) take the TeX in a `tex` attribute, which MDX leaves as it is; numbers are written
+with `\tag{n}`. `EquationReference` links to an equation's `id`, with the number written out. KaTeX
+is an optional peer dependency, installed by the sites that use them.
 - `.katex` is 1.15em (`--rkui-maths-scale`), where KaTeX's italic x-height matches Xmind's (KaTeX's
   default is 1.21em). Load KaTeX's stylesheet before rkui's. The size is still open (DECISIONS).
 - **Equation references:** `\label{k}` and `\eqref{k}`; labelled equations are numbered, anchored
@@ -499,7 +502,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Quote | `.rkui-quote` (slate panel, slab serif; `--italic`) | upright by default; slant open |
 | Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
 | Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`); `.rkui-cabinet` | drawer by default |
-| Equations | `.rkui-equation`, `.rkui-eqref` | §3.3 |
+| Equations | `.rkui-equation` (`--panel`, `--rule`, `--key`), `.rkui-eqref` | bare by default; §3.3 |
 | Table | `.rkui-table` (`--ledger`, `--small`, `--messy`, `--still`, `--lift`) | sheet by default; sheet or ledger open |
 | Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on; every other scrollbar takes its colours |
 | Sidebar | `.rkui-sidebar` (`--card`, `--folders`, `--deck`, `--note`) | plain by default; open |

@@ -6,12 +6,12 @@
  * @param theme the panel's theme, used to keep anchors unique across the two panels
  */
 import Callout from '@oneonefour/rkui/components/callout/Callout.vue'
-import Equation from './Equation.astro'
-import EquationReference from './EquationReference.astro'
-import Maths from './Maths.astro'
+import Equation from '@oneonefour/rkui/components/maths/Equation.vue'
+import EquationReference from '@oneonefour/rkui/components/maths/EquationReference.vue'
+import Maths from '@oneonefour/rkui/components/maths/Maths.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import { TERM_HUES } from './maths'
+import { TERM_HUES } from '@oneonefour/rkui/components/maths/render-maths.ts'
 
 interface Props {
   theme: 'light' | 'dark'

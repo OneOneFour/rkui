@@ -10,7 +10,7 @@ to the files it covers.
 | Xmind | Body and UI typeface | SIL Open Font License 1.1 | https://github.com/xmindltd/nevermind |
 | Roboto Slab | Heading typeface | Apache License 2.0 | https://github.com/google/fonts/tree/main/apache/robotoslab |
 | JetBrains Mono | Monospace typeface | SIL Open Font License 1.1 | https://github.com/google/fonts/tree/main/ofl/jetbrainsmono |
-| KaTeX and its maths fonts | Equations in the docs site, rendered at build time | MIT | https://github.com/KaTeX/KaTeX |
+| KaTeX and its maths fonts | Equation and Maths render TeX with it at build time. An optional peer dependency, not included: a site that uses them installs it | MIT | https://github.com/KaTeX/KaTeX |
 
 ## Docs site only
 

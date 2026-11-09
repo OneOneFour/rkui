@@ -5,8 +5,8 @@
  *
  * @param theme the panel's theme, used to keep anchors unique across the two panels
  */
-import Equation from './Equation.astro'
-import EquationReference from './EquationReference.astro'
+import Equation from '@oneonefour/rkui/components/maths/Equation.vue'
+import EquationReference from '@oneonefour/rkui/components/maths/EquationReference.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 
@@ -35,19 +35,16 @@ const LYAPUNOV = String.raw`\lambda = \lim_{t \to \infty} \frac{1}{t} \ln \frac{
 const flow = anchor('flow')
 const lorenz = anchor('lorenz')
 const WRAPPERS = [
-  { label: 'bare (the default); the references below jump here', class: undefined, id: flow },
-  { label: 'slate panel (.rkui-equation--panel)', class: 'rkui-equation--panel' },
-  {
-    label: 'left rule (.rkui-equation--rule.rkui-scroll--bar)',
-    class: 'rkui-equation--rule rkui-scroll--bar',
-  },
+  { label: 'bare (the default); the references below jump here', variant: undefined, id: flow },
+  { label: 'slate panel (variant="panel")', variant: 'panel' as const },
+  { label: 'left rule (variant="rule")', variant: 'rule' as const },
 ]
 ---
 
 <SpecimenRow title="Display equations">
   {WRAPPERS.map((wrapper) => (
     <Specimen label={wrapper.label} wide>
-      <Equation tex={`${FLOW} \\tag{1}`} class={wrapper.class} id={wrapper.id} />
+      <Equation tex={`${FLOW} \\tag{1}`} variant={wrapper.variant} id={wrapper.id} />
     </Specimen>
   ))}
 </SpecimenRow>
@@ -94,8 +91,8 @@ const WRAPPERS = [
 </SpecimenRow>
 
 <SpecimenRow title="Key result">
-  <Specimen label="raised dashed panel (.rkui-equation--key.rkui-scroll--bar)" wide>
-    <Equation tex={`${LYAPUNOV} \\tag{6}`} class="rkui-equation--key rkui-scroll--bar" />
+  <Specimen label='raised dashed panel (variant="key")' wide>
+    <Equation tex={`${LYAPUNOV} \\tag{6}`} variant="key" />
   </Specimen>
 </SpecimenRow>
 
