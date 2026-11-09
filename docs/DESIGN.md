@@ -45,8 +45,8 @@ ink, not white. It draws on neo-brutalist graphics
 
 ## 2. Tokens
 
-All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`,
-`shadows.css`, `fallback.css`) unless noted. Colours are `light-dark(<light>, <dark>)` pairs.
+All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`, `shadows.css`,
+`shadow-color.css`, `fallback.css`) unless noted. Colours are `light-dark(<light>, <dark>)` pairs.
 
 ### 2.1 Neutrals, lines and focus
 
@@ -210,7 +210,8 @@ and depth, light, shadow and highlight couldn't change inside a container.
   `--rkui-shadow-color`, then `--rkui-recess-shade`, with `--rkui-shadow-edge` one outline width
   past them. It follows the light, the depth and `data-shadow` as raised shadows do: in dark mode a
   cream rim with `outline`, none with `block`, and with `color` the first step is
-  `--rkui-shadow-lit`. In light mode it is ink, then grey. The code block's editor look is flat.
+  `--rkui-shadow-lit`, or the element's own extrusion. In light mode it is ink, then grey. The
+  code block's editor look is flat.
 
 ### 2.8 Modes
 
@@ -233,11 +234,14 @@ back inside it.
   `<head>` (a module runs too late and flashes). `<rkui-theme-toggle>` is Light / Dark / System and
   syncs tabs and sites.
 - **No `light-dark()`** (browsers before mid-2024): `tokens/fallback.css` gives the light theme on
-  cream everywhere, palettes included. Checked by hand.
+  cream everywhere, palettes included. Checked by hand. One gap: a `hue` given as a hex code sets
+  its tint inline with `light-dark()` (`hueVars()`), which the fallback can't reach, so there a
+  tinted panel loses its fill and its text sits on the page behind it.
 - **Light:** the angle names where light comes from, clockwise from 12. The default 315° (top left)
-  gives dx = dy = 1: shadows fall down-right. `<rkui-light-direction>`
-  (`src/components/light-direction/light-direction.js`) sets it from a range, or follows the sun (rises left
-  at 6:00, overhead at noon, sets right at 18:00, default at night).
+  gives dx = dy = 1: shadows fall down-right. `LightDirection`
+  (`src/components/light-direction/LightDirection.vue`, `<rkui-light-direction>` on a plain page)
+  sets it from a range, or follows the sun (rises left at 6:00, overhead at noon, sets right at
+  18:00, default at night).
 - `rkui-palette`, `rkui-shadow`, `rkui-highlight` and `rkui-dots` are the docs site's own storage
   keys for its settings drawer, not part of the theme contract.
 
@@ -268,26 +272,26 @@ because 1 ÷ 1.3 (12.3px) is too small. Line height 1.6 body, 1.2 headings; `rem
 
 ### 3.3 Maths
 
-KaTeX renders at build time; there is no runtime maths JavaScript. `Equation` (display maths) and
-`Maths` (inline) take the TeX in a `tex` attribute, which MDX leaves as it is; numbers are written
-with `\tag{n}`. `EquationReference` links to an equation's `id`, with the number written out. KaTeX
-is an optional peer dependency, installed by the sites that use them.
+KaTeX renders on the server when the page is built; there is no runtime maths JavaScript.
+`Equation` (display maths) and `Maths` (inline) take the TeX in a `tex` attribute, which MDX leaves
+as it is. In MDX, rkui's Astro integration also turns `$…$` into `Maths` and `$$…$$` into
+`Equation`. KaTeX is an optional peer dependency, installed by the sites that use them, and a TeX
+error stops the build.
 - `.katex` is 1.15em (`--rkui-maths-scale`), where KaTeX's italic x-height matches Xmind's (KaTeX's
   default is 1.21em). Load KaTeX's stylesheet before rkui's. The size is still open (DECISIONS).
-- **Equation references:** `\label{k}` and `\eqref{k}`; labelled equations are numbered, anchored
-  `#eq-k` and linked, forward references work, and an unknown or duplicate label fails the build.
-  No off-the-shelf plugin does this, so a small rehype plugin runs before KaTeX. The plugin is
-  designed but not built yet.
-  - A bare reference in prose is an `.rkui-eqref` pill; its brackets stay in spans, so it reads
-    "(n)" without CSS.
-  - One leading a sentence is the long pill: the `function` icon and "Equation (n)". Writing it
-    as `\Cref` is proposed (DECISIONS).
-  - Inside larger maths it is KaTeX's own `\href`, unstyled: KaTeX puts the next operator's spacing
-    inside the link, so a pill would be lopsided.
+- **Numbering:** `\tag{n}`, written by hand. A tag on each `align` row numbers each row; one tag
+  after an `aligned` or `gathered` display numbers the block once.
+- **Equation references:** `EquationReference` links to an equation's `id` (`to`) and writes its
+  number (`number`). An equation it links to is written as a tag, `<Equation id="…" tex="…" />`,
+  since dollars can't carry an `id`.
+  - In prose it is an `.rkui-eqref` pill; its brackets stay in spans, so it reads "(n)" without
+    CSS.
+  - With `long` it is the long pill, for a reference that leads a sentence: the `function` icon
+    and "Equation (n)".
+  - Inside larger maths it is KaTeX's own `\href{#…}{(n)}`, unstyled: KaTeX puts the next
+    operator's spacing inside the link, so a pill would be lopsided.
 - **Pills:** vivid `--rkui-lilac` with ink text in both themes, because the dark lilac tint is too close
   to the dark page.
-- **Numbering:** both styles. A `\label` per `align` row numbers each row; one `\label` on an
-  `aligned` or `gathered` display numbers the block once.
 - **Wrappers:** `.rkui-equation` bare (default), `--panel` (the palette's panel), `--rule` (a grape rule down the
   left), `--key` (raised dashed panel on `--rkui-yellow-tint`, for a key result). `\boxed` keeps a
   thicker toon border. Wrappers are scroll regions for wide equations.
@@ -545,7 +549,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Chips | `.rkui-chip`, `.rkui-chip-group` | checked takes `--rkui-section`, or inverts the page colours |
 | Breadcrumbs | `.rkui-breadcrumbs` (chips; `--path`) | open |
 | Pagination | `.rkui-pagination`; folder-tab version in `folder.css` | open |
-| Folder tabs | `.rkui-folder`, `<rkui-tabs>` (`--tinted`) | bar above the tabs; flat scrollbar |
+| Folder tabs | `.rkui-folder` (`--tinted`) | bar above the tabs; flat scrollbar |
 | Top bar | `.rkui-topbar--toast`, `--flush` | toast by default; flush for full-width headers |
 | Popup | `.rkui-popup` (Popover API) | |
 | Alert | `.rkui-alert` (modal `<dialog>`) | coral band; blurs the page behind, which stays still |
@@ -556,7 +560,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Widget frame | `.rkui-widget-frame` (dashed, lilac tint) | |
 | Figure | `.rkui-figure` | |
 | Quote | `.rkui-quote` (panel, slab serif; `--italic`) | upright by default; `slant="italic"` slants it; one line, two steps larger; two lines, one step (`quote-enhance.js`); `--short` always two steps |
-| Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
+| Code block | `.rkui-code` (`--tab`) | inset panel by default |
 | Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`), `--top`, `--left`, `--right`, `--remote` (a `<div>` that a button's `popovertarget` opens), `--overlay` (hangs over the page beyond its parent, as `--left` and `--right` always do), `--hue` (`hue`: the tray or screen in the hue's tint, carrying `--rkui-fg`, with the inset's grey step mixed from it; the pull and the blind's hem in its solid fill); `.rkui-cabinet` | drawer by default, pulling out from the bottom |
 | Equations | `.rkui-equation` (`--panel`, `--rule`, `--key`), `.rkui-eqref` | bare by default; §3.3 |
 | Table | `.rkui-table` (`--ledger`, `--small`, `--messy`, `--still`, `--lift`) | sheet by default; sheet or ledger open |
@@ -572,19 +576,23 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 
 ### 7.3 Behaviour and distribution
 
-- Custom elements (vanilla, JSDoc types, each beside its CSS in `src/components/<name>/`) enhance markup the page writes:
-  - `<rkui-theme-toggle>`, `<rkui-light-direction>`, `<rkui-motion>`, `<rkui-tabs>`, `<rkui-tooltip>`;
-  - `<rkui-stepper>`, `<rkui-color-picker>`, `<rkui-code-block>`, `<rkui-dial>`, `<rkui-clock>`;
-  - helpers: `src/head-scripts/theme-init.js`, `src/head-scripts/table-init.js` (inlined beside it;
-    tables visible on load keep their values hidden until their entrance), `afterSlide()` in
-    `src/shared/after-slide.js`, `src/components/folder/folder-scrollbar.js`, and
-    `src/components/table/table-enhance.js` (plays each table's entrance the first time it is
-    seen, in every browser).
+- Custom elements, for plain HTML pages: each component with behaviour is also an element,
+  registered from its own `.vue` file by a small `<name>-element.ts` beside it, with
+  `defineElement()` (`src/shared/define-element.ts`):
+  - `<rkui-clock>`, `<rkui-color-picker>`, `<rkui-dial>`, `<rkui-light-direction>`, `<rkui-range>`,
+    `<rkui-stepper>` and `<rkui-theme-toggle>`;
+  - `dist/rkui.js` bundles them, with the Vue runtime and the helper scripts.
+- Helpers: `src/head-scripts/theme-init.js`, `src/head-scripts/table-init.js` (inlined beside it;
+  tables visible on load keep their values hidden until their entrance), `afterSlide()` in
+  `src/shared/after-slide.js`, and the enhance scripts that `src/enhance.js` loads, such as
+  `src/components/table/table-enhance.js` (plays each table's entrance the first time it is seen,
+  in every browser).
 - Plain CSS and JS, fonts by relative path, icons and sprite. There is no CDN, so pages make no
   third-party requests: plain-HTML sites copy a tagged release into `vendor/`.
-- Layers: tokens → fonts and base → CSS classes → icons → custom elements → thin wrappers.
-  Wrappers are for Astro only, with an optional integration. Vue and vanilla sites use the core
-  directly.
+- Layers: tokens → fonts and base → CSS classes → icons → Vue components → custom elements.
+  Astro, MDX and Vue pages use the same `.vue` files; plain pages use the classes and the custom
+  elements. An optional Astro integration (`rkui()`) renders fenced code and dollar maths in MDX
+  with rkui's components.
 - The prefix `rkui-` is fixed: it is in every consumer's markup and namespaces storage keys.
 
 ## 8. Illustration style

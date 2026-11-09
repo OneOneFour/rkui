@@ -102,9 +102,9 @@
    inside the sides towards the light, 3px each (4.5px when deep): the shadow colour, then
    --rkui-recess-shade, and the raised shadow's rim just past them. So it follows data-shadow as
    raised shadows do: a cream rim in dark mode with "outline", none with "block", and with "color"
-   the first step is --rkui-shadow-lit. The component sets --rkui-recess-floor to its fill; the
-   shade is that floor 60% of the way to the outline colour. Declared on every element, so each
-   recess mixes its own. */
+   the first step is --rkui-shadow-lit, or the element's own extrusion. The component sets
+   --rkui-recess-floor to its fill; the shade is that floor 60% of the way to the outline colour.
+   Declared on every element, so each recess mixes its own. */
 * {
   --rkui-recess-step: calc(var(--rkui-shadow-depth) * 3px);
   --rkui-recess-x: calc(var(--rkui-shadow-dx) * var(--rkui-recess-step));

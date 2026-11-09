@@ -10,6 +10,20 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ## Decisions
 
+### 2026-11-09
+
+**Equation references are written by hand** (a record of what is built). The rehype plugin for
+`\label` and `\eqref` (2026-11-01) was not built. An equation is numbered with `\tag{n}`, and
+`EquationReference` links to it by its `id` (`to`) with the number written out (`number`). Its
+`long` prop gives the long "Equation (n)" pill, which leaves the proposed `\Cref` with nothing to
+do. In MDX, rkui's Astro integration turns `$…$` into Maths and `$$…$$` into Equation.
+
+**One Vue file per component, not framework wrappers** (a record of what is built). This replaces
+"Framework wrappers" (2026-11-02). Each component is one `.vue` file that Astro, MDX and Vue pages
+all use, and plain HTML pages get custom elements registered from the same files with
+`defineElement()`. The optional Astro integration (`rkui()`) renders fenced code and dollar maths
+in MDX with rkui's components.
+
 ### 2026-11-08
 
 **Insets: two steps, ink then a grey shade, with the outline rim in dark** (Rob). Code blocks,
@@ -303,7 +317,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Exploded view: an open assembly labels every part (as built), or only the hovered one.
 
 **Proposed, not built**
-- [ ] `\Cref` for a reference that leads a sentence (the long "Equation (n)" pill).
 - [ ] The dashed grouping panel, flat and raised, with the widget frame as one use of it; to be
   built with the site's card work.
 - [ ] Card variants (post, project, paper, album), `PullQuote`, `Sidenote`.
