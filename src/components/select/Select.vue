@@ -11,7 +11,9 @@
   Where the browser supports it, the open list is a raised panel in the toon look, and options can
   hold icons (`<Icon class="rkui-icon rkui-icon--small" aria-hidden="true" />` before the text);
   elsewhere it is the browser's own list. Add `showSelected` to show the chosen option's icon in
-  the closed select too.
+  the closed select too. A browser without the toon list reads only each option's text and drops
+  the icons and that button, so a Select that wakes up there, inside a widget, draws only the
+  text too, matching what the browser kept.
 
   @example
   <Select label="Size" name="size">
@@ -21,7 +23,7 @@
   <Select v-model="size" label="Size">…</Select>
 -->
 <script setup lang="ts">
-import { h, useAttrs, useSlots, type VNode } from 'vue'
+import { Fragment, h, useAttrs, useSlots, type VNode } from 'vue'
 import Field from '../field/Field.vue'
 import { useComponentId } from '../../shared/component-id'
 import { useLiveValue } from '../../shared/live-value'
@@ -64,6 +66,12 @@ function options(vnodes: VNode[]): VNode[] {
   })
 }
 
+/** The text in an option, as it is written. */
+function optionText(option: VNode): string {
+  const { children } = option
+  return typeof children === 'string' ? children : slotText((children ?? []) as VNode[])
+}
+
 /**
  * An option's value: its `value`, or else its text with the spaces collapsed, as a browser reads
  * it.
@@ -71,9 +79,7 @@ function options(vnodes: VNode[]): VNode[] {
 function optionValue(option: VNode): string {
   const value = option.props?.value
   if (value !== undefined && value !== null) return String(value)
-  const { children } = option
-  const text = typeof children === 'string' ? children : slotText((children ?? []) as VNode[])
-  return text.trim().replace(/\s+/g, ' ')
+  return optionText(option).trim().replace(/\s+/g, ' ')
 }
 
 /** Whether an option sets a boolean attribute (`selected`, `disabled`). */
@@ -112,9 +118,45 @@ const selection = modelWithStart(model, () => selectedValue(slots.default?.() ??
 const vLiveValue = useLiveValue(selection)
 const id = (attrs.id as string | undefined) ?? useComponentId('select')
 
-// The customizable select's button, made with h(): in a template Vue warns about a `<button>`
-// inside a `<select>`, and treats `<selectedcontent>` as a component.
-const SelectedButton = () => h('button', h('selectedcontent'))
+/**
+ * Whether the browser's HTML parser keeps more than options and their text in a `<select>`, as
+ * one with the customizable select does. On the server, true.
+ */
+function keepsSelectContent(): boolean {
+  if (typeof document === 'undefined') return true
+  const probe = document.createElement('div')
+  probe.innerHTML = '<select><button></button></select>'
+  return probe.querySelector('button') !== null
+}
+
+/**
+ * Slot vnodes with each option holding just its text, through optgroups and loops, as the
+ * browser's parser leaves them where it keeps nothing else in a `<select>`.
+ */
+function textOnly(vnodes: VNode[]): VNode[] {
+  return vnodes.map((vnode) => {
+    const props = { ...vnode.props, key: vnode.key ?? undefined }
+    if (vnode.type === 'option') return h('option', props, optionText(vnode))
+    if (vnode.type === 'optgroup') return h('optgroup', props, textOnly(vnode.children as VNode[]))
+    if (vnode.type === Fragment) return h(Fragment, props, textOnly(vnode.children as VNode[]))
+    return vnode
+  })
+}
+
+const fullContent = keepsSelectContent()
+
+/**
+ * What the select holds: the options from the slot, after the customizable select's button with
+ * `showSelected`. Where the parser keeps only the options' text, a Select that wakes up over the
+ * server's HTML draws only that, so Vue finds what it draws. The button is made with h(): in a
+ * template Vue warns about a `<button>` inside a `<select>`, and treats `<selectedcontent>` as a
+ * component.
+ */
+const SelectContent = () => {
+  const vnodes = slots.default?.() ?? []
+  if (!fullContent) return textOnly(vnodes)
+  return showSelected ? [h('button', h('selectedcontent')), ...vnodes] : vnodes
+}
 
 /**
  * The page's attributes, split between the Field and the select. Without a frame the select is
@@ -133,8 +175,7 @@ function pageAttrs() {
       :class="['rkui-select', hover && `rkui-hover-${hover}`]"
       v-bind="pageAttrs().control"
     >
-      <SelectedButton v-if="showSelected" />
-      <slot />
+      <SelectContent />
     </select>
   </Field>
 </template>
