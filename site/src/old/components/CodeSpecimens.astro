@@ -5,7 +5,7 @@
  * sentence.
  */
 import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
-import { siCplusplus, siFortran, siJulia, siMarkdown, siPython } from 'simple-icons'
+import { siCplusplus, siFortran, siMarkdown, siPython } from 'simple-icons'
 import LanguageLogo from '../../components/LanguageLogo.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
@@ -19,10 +19,9 @@ import { LORENZ_PYTHON } from './code-samples'
       <LanguageLogo slot="logo" icon={siPython} />
     </CodeBlock>
   </Specimen>
-  <Specimen label="Julia" wide>
+  <Specimen label="no logo, no icon: extension text (Julia)" wide>
     <CodeBlock client:visible lang="julia" label="Julia">
       σ, ρ, β = 10.0, 28.0, 8 / 3
-      <LanguageLogo slot="logo" icon={siJulia} />
     </CodeBlock>
   </Specimen>
   <Specimen label="Fortran" wide>
