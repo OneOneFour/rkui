@@ -3,38 +3,84 @@ title: Chips
 description: Pill-shaped filters that pick one choice or several.
 group: Form controls
 order: 34
+component: ChipGroup
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/chips/default.astro'
-import defaultCode from '../../examples/chips/default.astro?raw'
-import Single from '../../examples/chips/single.astro'
-import singleCode from '../../examples/chips/single.astro?raw'
-import Icons from '../../examples/chips/icons.astro'
-import iconsCode from '../../examples/chips/icons.astro?raw'
-import Disabled from '../../examples/chips/disabled.astro'
-import disabledCode from '../../examples/chips/disabled.astro?raw'
+import ChipGroup from '@oneonefour/rkui/components/chip/ChipGroup.vue'
+import Chip from '@oneonefour/rkui/components/chip/Chip.vue'
+import Leaf from '@oneonefour/rkui/icons/leaf.vue'
+import Sun from '@oneonefour/rkui/icons/sun.vue'
 
-<Demo code={defaultCode} label="Chips, several choices">
-  <Default />
+<Demo label="Chips, several choices">
+  <ChipGroup legend="Topics" multiple>
+    <Chip value="fruit" checked>
+      Fruit
+    </Chip>
+    <Chip value="veg">Vegetables</Chip>
+    <Chip value="grain" checked>
+      Grains
+    </Chip>
+  </ChipGroup>
 </Demo>
 
 ## One choice
 
 Without `multiple` the group's chips are radios.
 
-<Demo code={singleCode} label="Chips, one choice">
-  <Single />
+<Demo label="Chips, one choice">
+  <ChipGroup legend="Size">
+    <Chip value="small">Small</Chip>
+    <Chip value="medium" checked>
+      Medium
+    </Chip>
+    <Chip value="large">Large</Chip>
+  </ChipGroup>
 </Demo>
 
 ## With icons
 
-<Demo code={iconsCode} label="Chips with icons">
-  <Icons />
+<Demo label="Chips with icons">
+  <ChipGroup legend="Topics" multiple>
+    <Chip value="leaf" checked>
+      <Leaf class="rkui-icon" /> Leaf
+    </Chip>
+    <Chip value="sun">
+      <Sun class="rkui-icon" /> Sun
+    </Chip>
+  </ChipGroup>
+</Demo>
+
+## Colour
+
+Checked chips take the page's section colour, or ink. Give the group a `hue` for another.
+
+<Demo label="Chips in teal">
+  <ChipGroup legend="Size" hue="teal">
+    <Chip value="small">Small</Chip>
+    <Chip value="medium" checked>
+      Medium
+    </Chip>
+    <Chip value="large">Large</Chip>
+  </ChipGroup>
 </Demo>
 
 ## A disabled chip
 
-<Demo code={disabledCode} label="Chips with a disabled chip">
-  <Disabled />
+<Demo label="Chips with a disabled chip">
+  <ChipGroup legend="Topics" multiple>
+    <Chip value="fruit" checked>
+      Fruit
+    </Chip>
+    <Chip value="veg" disabled>
+      Vegetables
+    </Chip>
+  </ChipGroup>
 </Demo>
+
+## Reference
+
+<ApiReference component="ChipGroup" />
+
+<ApiReference component="Chip" />

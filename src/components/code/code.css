@@ -1,69 +1,67 @@
-/* Code block: a slate panel pressed into the page by a hard inner shadow, with an optional
-   language caption and a copy button. The button starts hidden and <rkui-code-block>
-   (rkui-code-block.js) shows it. It comes after the code so that readers reach the code first, and
+/* Code block: a panel pressed into the page by a hard inner shadow, with an optional
+   language caption and a copy button. The button stays hidden until CodeBlock.vue runs in the
+   browser and marks the figure data-rkui-live. It comes after the code so that readers reach the code first, and
    the grid lifts it into the header row. Pre is a scroll region for long lines (overflow.css),
    which the keyboard can scroll (tabindex="0"). The caption may start with a mark for the
    language (the site's logo, a file-type icon, or the file extension as text), coloured by
    --rkui-code-lang-color (default --rkui-muted).
 
-   <rkui-code-block>
-     <figure class="rkui-code">
-       <figcaption class="rkui-code-header">
-         <span class="rkui-code-lang">
-           <svg class="rkui-icon rkui-icon--small" aria-hidden="true">…optional logo or file-type
-             icon…</svg>
-           Python
-         </span>
-       </figcaption>
-       <pre class="rkui-scroll" tabindex="0"><code>…</code></pre>
-       <button type="button" class="rkui-button rkui-button--small rkui-code-copy" hidden>
-         <svg class="rkui-icon rkui-icon--small">…copy icon…</svg>
-         <span class="rkui-code-copy-label">Copy</span>
-       </button>
-     </figure>
-   </rkui-code-block>
+   <figure class="rkui-code">
+     <figcaption class="rkui-code-header">
+       <span class="rkui-code-lang">
+         <svg class="rkui-icon rkui-icon--small" aria-hidden="true">…optional logo or file-type
+           icon…</svg>
+         Python
+       </span>
+     </figcaption>
+     <pre class="rkui-scroll" tabindex="0"><code>…</code></pre>
+     <button type="button" class="rkui-button rkui-button--small rkui-code-copy">
+       <svg class="rkui-icon rkui-icon--small">…copy icon…</svg>
+       <span class="rkui-code-copy-label">Copy</span>
+     </button>
+   </figure>
+
+   It has the same space above and below as an equation or a quote, so code in a page's prose is
+   spaced without a rule of the site's own.
 
    Without the figcaption there is no title area: the copy button sits in the code's top-right
    corner. The copy button can be left out too.
 
-   Opt-in modifiers: .rkui-scroll--bar on the pre keeps its scrollbar visible, and .rkui-code--tab
-   puts the caption in a darker strip, like an editor tab.
-   Put .rkui-slate-greige on a block or any ancestor for the greige slate, inline code included.
+   Opt-in modifiers: .rkui-scroll--bar on the pre keeps its scrollbar visible, with no dots
+   (CodeBlock.vue's `bar`), .rkui-code--editor
+   puts the caption in a darker strip, like an editor tab, and .rkui-code--copy-hover shows the
+   copy button only while the pointer is over the block or focus is inside it.
 
-   Highlighted code is coloured by Shiki's css-variables theme (Astro's <Code>), which paints each
-   token with var(--astro-code-*); .rkui-code maps those onto the --rkui-code-* tokens. */
-
-rkui-code-block {
-  display: block;
-}
-
-.rkui-slate-greige {
-  --rkui-slate: var(--rkui-slate-greige);
-  --rkui-slate-tab: var(--rkui-slate-greige-tab);
-}
+   Highlighted code is coloured by Shiki's css-variables theme (highlight.js), which paints each
+   token with var(--rkui-shiki-token-*); .rkui-code maps those onto the --rkui-code-* colour
+   tokens. */
 
 .rkui-code {
-  --rkui-code-inset: var(--rkui-shadow-code-inset);
+  --rkui-recess-floor: var(--rkui-panel);
+  --rkui-code-inset: var(--rkui-shadow-recess);
+  /* Where the caption and the code start: past the scroll region's dot gutter where that is
+     wider (the pill look, overflow.css) */
+  --rkui-code-pad: max(var(--rkui-space-4), var(--rkui-dots-gutter));
 
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  margin: 0;
+  margin: var(--rkui-space-5) 0;
   border-radius: var(--rkui-radius);
-  background: var(--rkui-slate);
+  background: var(--rkui-recess-floor);
   box-shadow: var(--rkui-code-inset);
   color: var(--rkui-fg);
 
-  --astro-code-foreground: var(--rkui-fg);
-  --astro-code-background: transparent;
-  --astro-code-token-keyword: var(--rkui-code-keyword);
-  --astro-code-token-function: var(--rkui-code-function);
-  --astro-code-token-string: var(--rkui-code-string);
-  --astro-code-token-string-expression: var(--rkui-code-string);
-  --astro-code-token-constant: var(--rkui-code-number);
-  --astro-code-token-comment: var(--rkui-code-comment);
-  --astro-code-token-parameter: var(--rkui-fg);
-  --astro-code-token-punctuation: var(--rkui-fg);
-  --astro-code-token-link: var(--rkui-navy-deep);
+  --rkui-shiki-foreground: var(--rkui-fg);
+  --rkui-shiki-background: transparent;
+  --rkui-shiki-token-keyword: var(--rkui-code-keyword);
+  --rkui-shiki-token-function: var(--rkui-code-function);
+  --rkui-shiki-token-string: var(--rkui-code-string);
+  --rkui-shiki-token-string-expression: var(--rkui-code-string);
+  --rkui-shiki-token-constant: var(--rkui-code-number);
+  --rkui-shiki-token-comment: var(--rkui-code-comment);
+  --rkui-shiki-token-parameter: var(--rkui-fg);
+  --rkui-shiki-token-punctuation: var(--rkui-fg);
+  --rkui-shiki-token-link: var(--rkui-navy-deep);
 }
 
 .rkui-code-header {
@@ -71,7 +69,7 @@ rkui-code-block {
   align-items: center;
   grid-row: 1;
   grid-column: 1 / -1;
-  padding: var(--rkui-space-2) var(--rkui-space-4) 0;
+  padding: var(--rkui-space-2) var(--rkui-code-pad) 0;
 }
 
 .rkui-code-lang {
@@ -85,12 +83,17 @@ rkui-code-block {
   text-transform: uppercase;
 }
 
-/* Single-colour logos are paths with no fill of their own, sized to the caption text. Wide marks
-   keep their shape: the width follows the viewBox. */
+/* The mark is sized to the caption text. Wide marks keep their shape: the width follows the
+   viewBox. */
 .rkui-code-lang svg {
   inline-size: auto;
   block-size: 1.25em;
   color: var(--rkui-code-lang-color, var(--rkui-muted));
+}
+
+/* A single-colour logo is paths with no fill of their own, filled with the caption's colour. The
+   file-type icons are lines, marked fill="none", which they keep. */
+.rkui-code-lang svg:not([fill]) {
   fill: currentColor;
 }
 
@@ -100,7 +103,7 @@ rkui-code-block {
   grid-column: 1 / -1;
   margin: 0;
   padding: var(--rkui-space-4);
-  padding-inline: calc(var(--rkui-space-4) - var(--rkui-scroll-gutter));
+  padding-inline: calc(var(--rkui-code-pad) - var(--rkui-scroll-gutter));
   background-color: transparent;
   font-size: var(--rkui-step--1);
   line-height: var(--rkui-line-height-body);
@@ -124,9 +127,31 @@ rkui-code-block {
   margin-block-start: var(--rkui-space-3);
 }
 
-/* .rkui-button's display would otherwise override the hidden attribute. */
-.rkui-code-copy[hidden] {
-  display: none;
+/* Until CodeBlock runs in the browser (it sets data-rkui-live), the button would do nothing. It
+   keeps its space, so the caption row doesn't grow when it shows. */
+.rkui-code:not([data-rkui-live]) > .rkui-code-copy {
+  visibility: hidden;
+}
+
+/* Copy on hover: the button rolls down into place while the pointer is over the block, or focus
+   is inside it, so the keyboard reaches it. It stays put on a touch screen, which has no hover.
+   It moves by transform, as the button's own lift and press use translate, whose transitions are
+   kept. */
+@media (hover: hover) {
+  .rkui-code--copy-hover > .rkui-code-copy {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition:
+      translate var(--rkui-duration-fast) ease,
+      box-shadow var(--rkui-duration-fast) ease,
+      opacity var(--rkui-duration-fast) ease,
+      transform var(--rkui-duration-spring) var(--rkui-ease-snap);
+  }
+
+  .rkui-code--copy-hover:is(:hover, :focus-within) > .rkui-code-copy {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* The panel shows the focus band for its scroll region: a ring of the outline colour for the band
@@ -144,17 +169,17 @@ rkui-code-block {
   box-shadow: none;
 }
 
-/* The editor tab is flat: no inner shadow. A blank shadow, not none, so it can sit in a list. */
-.rkui-code--tab {
+/* The editor look is flat: no inner shadow. A blank shadow, not none, so it can sit in a list. */
+.rkui-code--editor {
   --rkui-code-inset: 0 0 transparent;
 }
 
-.rkui-code--tab .rkui-code-header {
+.rkui-code--editor .rkui-code-header {
   padding-block: var(--rkui-space-2);
   border-radius: var(--rkui-radius) var(--rkui-radius) 0 0;
-  background: var(--rkui-slate-tab);
+  background: var(--rkui-panel-tab);
 }
 
-.rkui-code--tab .rkui-code-copy {
+.rkui-code--editor .rkui-code-copy {
   margin-block: var(--rkui-space-2);
 }

@@ -10,6 +10,134 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ## Decisions
 
+### 2026-11-09
+
+**Equation references are written by hand** (a record of what is built). The rehype plugin for
+`\label` and `\eqref` (2026-11-01) was not built. An equation is numbered with `\tag{n}`, and
+`EquationReference` links to it by its `id` (`to`) with the number written out (`number`). Its
+`long` prop gives the long "Equation (n)" pill, which leaves the proposed `\Cref` with nothing to
+do. In MDX, rkui's Astro integration turns `$…$` into Maths and `$$…$$` into Equation.
+
+**One Vue file per component, not framework wrappers** (a record of what is built). This replaces
+"Framework wrappers" (2026-11-02). Each component is one `.vue` file that Astro, MDX and Vue pages
+all use, and plain HTML pages get custom elements registered from the same files with
+`defineElement()`. The optional Astro integration (`rkui()`) renders fenced code and dollar maths
+in MDX with rkui's components.
+
+**Loops and staggers use the motion tokens** (Rob). Spinners, loaders, progress bars, water and
+the table's entrance time their loops with the `--rkui-loop-*` tokens and their staggers with
+`--rkui-stagger`, rather than durations of their own. Two loop tokens join, `--rkui-loop-quick`
+(0.6s) and `--rkui-loop-steady` (1.2s), and `--rkui-loop-medium` moves from 1.6s to 1.8s, the
+length the triangle spinner and the reduced-motion fade already used. The orbit spinner's dots
+start 0.15s apart instead of 0.12s, and an indeterminate progress bar under reduced motion takes
+the spinners' fade (1.8s, to 30%) instead of its own (2s, to 40%).
+
+### 2026-11-08
+
+**Insets: two steps, ink then a grey shade, with the outline rim in dark** (Rob). Code blocks,
+drawer trays and inset cards share one inset, `--rkui-shadow-recess`, chosen from a board of
+prototypes. Inside the sides towards the light it draws two hard 3px steps: the shadow colour
+(ink, or the lighter grey with the colour shadow in dark mode), then the floor 60% of the way to
+the outline colour (`--rkui-recess-shade`). The raised shadow's rim sits just past them, so in
+dark mode the outline shadow gives a cream rim and block gives none. All three are 6px deep (9px
+with `data-depth="deep"`); the drawer's `--rkui-drawer-depth` is gone. It replaces the code
+panel's `--rkui-stripe` inset and the 45% `--rkui-recess` shadow in drawers and inset cards.
+
+**One panel, the palette's** (Rob). Panels follow the page palette instead of offering a choice:
+`--rkui-panel` and `--rkui-panel-tab` replace `--rkui-slate` and `--rkui-slate-tab`, and each
+palette sets its own pair. The slate palette keeps the cool slate panel, greige takes the greige
+one, and cream, the default, gets a new cream panel a step from the cream page. The greige opt-in
+(`.rkui-slate-greige`) is gone; a `data-palette="greige"` container gives the greige panel.
+
+**Shadow and highlight, two settings** (Rob). The four dark-mode shadow modes become two settings
+that work on their own. Shadow (`data-shadow`) is `outline` (the default, the near-black shadow on a
+rim), `block` (no rim) or `color` (each fill casts its own shade). Highlight (`data-highlight`) is
+`cream` (the default) or `dark`: the colour of the outlines on things with no fill. The old modes
+map across: slab is outline and cream, color is color and cream, block is block and dark, and block-
+color, the mode to try, is color and dark. Block with cream and outline with dark are new; the
+outline shadow's rim stays cream with either highlight. `slab` and `block-color` are gone. The docs
+site's settings drawer under the top bar holds both, with the palette.
+
+**Tooltip** (Rob). The toon bubble, raised with the outline and hard shadow, is the default;
+`variant="flat"` gives the bubble in the page's colours swapped.
+
+**Card** (Rob). A static card has the outline by default (`variant="outline"`). The other three
+edges stay as options: `raised` (the outline and a hard shadow that doesn't lift), `shaded` (a
+panel fill, `--rkui-panel`; first written here as a slate fill) and `inset` (pushed in like a drawer's tray). Card's `hue` still only colours the
+shadow in the dark colour shadow mode.
+
+**Sidebar columns, bold links and selected slab** (Rob). Three more options that work with every
+look: `columns`, where each group's links flow into columns when the sidebar is wide and stay in
+one when it is narrow; `bold`, links at weight 600; and `selected-slab`, only the current page's
+link in the slab serif. The site nav demos use the first two, as the sections look did.
+
+**Block mode outlines** (Rob). In dark mode with `data-shadow="block"`, things with no fill of
+their own (inputs, chips, tiles, folder tabs, unchecked controls) take the near-black outline too,
+like the mockup's Surface card, though their edges are then hard to see on the dark page.
+
+**Alert backdrop** (Rob). An open Alert blurs the page behind it, with no shade, the one exception
+to "no blur"; the darken backdrop and `--rkui-scrim` are gone. The page behind stays still while
+the alert is open, and keeps its scroll position when it closes.
+
+**Range value** (Rob). Both stay as options: `value-display="thumb"` shows the value inside the
+thumb, which widens to fit it, and `value-display="popup"` shows it in a bubble over the thumb,
+raised like a Tooltip; `value-display="flat-popup"` is the same bubble flat. With none of them,
+the value doesn't show.
+
+**Sidebar options, not a sections look** (Rob). There is no separate sections look. What it
+brought works with every look instead: slab type (`slab`), a colour for each link (`hue`), which
+fills its icon and, on the current page, the link, an icon before a link's text, a header, and
+groups with no heading.
+
+**Quote slant** (Rob). Both stay: a quote is upright by default, and `slant="italic"` slants it,
+with the browser slanting Roboto Slab, which has no italic.
+
+**Motion** (Rob). The motion principles are the docs site's Motion page. The Motion component
+stays in rkui as the Pause button for a group of animations; it doesn't pause them off-screen.
+
+**Select's open list** (Rob). Every select draws its open list in the toon look where the browser
+supports `appearance: base-select`, and shows the browser's own list elsewhere; there is no
+`picker` option to turn it on. The checked option is filled with `--rkui-selected`, like every
+other checked control, and the tinted variant is gone.
+
+**Folder and Pagination tabs** (Rob). Tabs never wrap. They stand on the top, bottom, left or right
+of the sheet; for bottom and right the tabs come after the sheet in the page, so the tab order
+follows the reading order. When they don't fit, a strip either scrolls or collapses:
+- Folder scrolls by default and has no ‹ › step tabs unless asked, so every panel's name stays in
+  view and a tab is one click away. Pagination collapses by default, with its step tabs on.
+- A collapsing strip shows the first and last tabs, the current one and its neighbours, then fills
+  the spare room outwards from the current one, the next one first. A "…" never stands for a single
+  tab. On a narrow screen it goes to its small size, then leaves out the first and last tabs,
+  showing ‹ current › and as many tabs around it as fit, and scrolls only if even ‹ current ›
+  doesn't fit. The script measures this; without JavaScript the strip scrolls.
+- A step tab with nowhere to go, at either end, shows dimmed rather than disappearing.
+- A Folder takes up to 20 tabs. Pagination's tiles go only above or below the content.
+
+**Table rows that lift.** Only clickable things lift, with one opt-in exception: a Table's `lift`
+option, where the hovered row lifts though it isn't clickable (Rob).
+
+**Table header band in dark mode.** With no `hue` and no section hue, the band is ink in light mode;
+in dark mode it is the raised surface colour with a line under it, so it reads as a header on the
+dark sheet. A `hue`, or a section hue the page sets, wins in dark mode too (Rob).
+
+**Table entrance plays once.** The first time a table is seen, it plays a short
+entrance through `table-enhance.js` in every browser: the band fills, the rules draw, the values
+are written in and the stickers stamp down. A table in view on load plays it too when the page
+inlines `table-init.js` in `<head>`; without it, that table only draws its rules. The cascade runs
+to the last row (Rob).
+
+**Drawer, accepted as built** (Rob). Both looks stay: a drawer sunk into its parent by default,
+and the blind (`variant="blind"`), a screen that unrolls from a roller.
+- The blind's settle at the bottom is a single swing made by a delayed transition of a number,
+  not one of the two snap curves or a keyframe, which bends DESIGN §5's easing rule.
+- A drawer's slam gives its parent a jolt of about 2px, which moves the parent's text, though
+  DESIGN §5 says readable text never moves.
+- A `Cabinet` lets every drawer open by default; `exclusive` opts in to one at a time.
+- The blind hangs in front of its parent as one raised object with the hard shadow.
+- The blind's pull is a yellow ring on a short cord from the middle of a slim hem, holding the
+  caret, with the label there for screen readers; `showLabel` grows the ring into a pill that
+  shows the label too.
+
 ### 2026-11-02
 
 **Prefix changed to `rkui-`, and every custom property takes `--rkui-`** (Rob), to match the
@@ -21,7 +149,8 @@ The library holds no brand logos. The one logo it holds is its own (`Logo`).
 
 **Dark-mode shadows.** The outlined slab (option B) is the default; own-colour extrusion (option
 D) is a supported mode, `data-shadow="color"`. A near-black shadow is hard to see on night blue.
-Four options were tried at Gate 1b and narrowed to these two.
+Four options were tried at Gate 1b and narrowed to these two. Block, the slab with no rim
+(`data-shadow="block"`), is a third, rarely used mode, kept at Rob's request.
 
 **Unfilled buttons, pressed** (Gate 1b). They fill with `--rkui-raised`, so the near-black inset shows
 in dark mode. `--rkui-shadow-inset` is the pressed offset in `--rkui-line`, near-black in both themes.
@@ -56,6 +185,8 @@ second look it went gentler again, to the current curve (DESIGN §5).
   removed.
 - Loader: the hopping ball stays; the others were removed.
 - Progress: striped by default.
+- Range ticks: B, the datalist tick row with labels. A (the browser's own ticks) and C (dots on
+  the track) were removed.
 - Water and pending: the filling panel stays; the slosh was removed.
 
 **Illustration style.** From a flat cartoon locomotive Rob shared as a reference (not copied). Rob
@@ -126,8 +257,8 @@ yet; see [Open decisions](#open-decisions).
 **Font pairing A:** Roboto Slab headings, Xmind body and UI, self-hosted (reasons in DESIGN §3.1).
 Xmind had been on Google Fonts only since 2026-10-20.
 
-**Auxiliary colours** (approved direction): grape, lilac, tangerine and apricot have set jobs and
-are never section colours.
+**Auxiliary colours** (approved direction): grape, lilac, tangerine and apricot have set jobs. As
+of v0.0.3 they may also mark sections.
 
 **Iconography** (approved after Rob saw the icons on the mood board): Phosphor duotone from the
 GitHub sources, Tabler for gaps.
@@ -160,29 +291,24 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] "Only clickable things lift and sink": stays, or changes. ("Motion")
 - [ ] Under reduced motion, illustrative loops stop while state loops fade: stays, or changes.
   ("Motion")
-- [ ] `<rkui-motion>` (the Pause button, off-screen pausing): stays in rkui, or not. ("Motion",
-  "Diagrams")
-- [ ] Loaders and spinners: time their loops with the `--rkui-loop-*` tokens, or keep their own.
-  ("Loading")
 
 **Picks among built options**
-- [ ] Custom select list, checked option: A filled, or B tinted (`--tint`). ("Custom select list")
 - [ ] File input: A framed button and filename, or B drop panel. ("Special inputs")
 - [ ] Search: A icon inside, or B attached button. ("Special inputs")
-- [ ] Range ticks: A native, B datalist tick row with labels, or C dots on the track. ("Range
-  slider")
 - [ ] Dial: A knob, or B arc. ("Dial")
 - [ ] Dial ramp: blocks lit up to the value (as built), or all lit. ("Dial")
 - [ ] Clock: the hour hand stays longer than the minute hand (as built), or not. ("Clock")
 - [ ] Colour-tile flair: none, A paint brush, B paint drops, or C palette and brush stroke with
   legend. ("Tile and colour pickers")
 - [ ] `.rkui-progress--flat`: stays, or goes. ("Loading")
-- [ ] Tooltip: A inverted (the default), or B toon. ("Tooltips and popups")
 - [ ] Corner badge edge: A outline, B ring, or C sticker. ("Badges")
 - [ ] Breadcrumbs: A plain links, B chips, or C path bar. ("Breadcrumbs")
 - [ ] Pagination: A folder tabs, or B tiles between buttons. ("Pagination")
 - [ ] Logo: lift (the pop only), or motifs (each tile's motif plays on hover). ("Logo")
 - [ ] Sidebar: A plain (the default), B card, C folders, D deck, or E note. ("Sidebar")
+- [ ] Header band, built as a prototype beside a sidebar: stays, changes, or goes. A
+  site's frame (nav column beside the page) stays a recipe in the site. ("Header band")
+- [ ] Table: A sheet (the default), or B ledger. ("Table")
 - [ ] Inline maths size (`--rkui-maths-scale`): A 1em, B 1.1em, C 1.15em (proposed, as built), or D
   1.21em (KaTeX's default). ("Maths in text")
 - [ ] Number stepper: split, or stacked. No pick recorded; both may stay as opt-ins.
@@ -197,10 +323,9 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Exploded view: an open assembly labels every part (as built), or only the hovered one.
 
 **Proposed, not built**
-- [ ] `\Cref` for a reference that leads a sentence (the long "Equation (n)" pill).
 - [ ] The dashed grouping panel, flat and raised, with the widget frame as one use of it; to be
   built with the site's card work.
-- [ ] Card variants (post, project, paper, album), `HeaderBand`, `PullQuote`, `Sidenote`.
+- [ ] Card variants (post, project, paper, album), `PullQuote`, `Sidenote`.
 - [ ] Custom marks: a gravity-wave signature, a monogram.
 - [ ] The PowerPoint template: review it, after the re-check in
   [pptx/README.md](../pptx/README.md#needs-updating-before-the-next-build).

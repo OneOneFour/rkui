@@ -1,0 +1,22 @@
+---
+/**
+ * Whether a component runs JavaScript as it is by default, as a badge: "Uses JavaScript" when an
+ * Astro page gives it `client:visible` with no attributes (interactive-components.js), otherwise
+ * "No JavaScript". A Range is "No JavaScript", though its `ticks` and `value-display` options need JavaScript.
+ *
+ * @param component the component's name, e.g. 'Range'
+ */
+import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
+import { needsClientVisible } from '../lib/interactive-components.js'
+
+interface Props {
+  component: string
+}
+
+const { component } = Astro.props
+const usesJavaScript = needsClientVisible(component, {})
+---
+
+<Badge hue={usesJavaScript ? 'grape' : 'teal'}>
+  {usesJavaScript ? 'Uses JavaScript' : 'No JavaScript'}
+</Badge>

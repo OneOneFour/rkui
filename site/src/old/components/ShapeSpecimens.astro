@@ -50,9 +50,14 @@ const BOXES = [
     background: var(--rkui-raised);
   }
 
+  /* The colour shadow casts the shadow in the box's fill, darkened (shadow-color.css). */
   .outlined {
+    --box-fill: var(--rkui-teal);
+    --rkui-shade-of: var(--box-fill);
+    --rkui-extrusion: var(--rkui-shade);
+
     border-color: var(--rkui-line);
-    background: var(--rkui-teal);
+    background: var(--box-fill);
     box-shadow: var(--rkui-shadow);
     color: var(--rkui-on-fill);
   }
@@ -68,8 +73,9 @@ const BOXES = [
   }
 
   .pill {
+    --box-fill: var(--rkui-yellow);
+
     border-radius: var(--rkui-radius-pill);
-    background: var(--rkui-yellow);
   }
 
   .unfilled {

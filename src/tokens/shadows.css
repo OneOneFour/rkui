@@ -2,13 +2,13 @@
 
 :root {
   /* The way shadows fall, as a multiple of each shadow length on each axis: 1 1 is down and to
-     the right. rkui-light-direction.js sets them on <html>. */
+     the right. LightDirection sets them on <html>. */
   --rkui-shadow-dx: 1;
   --rkui-shadow-dy: 1;
 }
 
 /* A fill's shade, a quarter of the way to the outline colour: the sticky note's fold and the colour
-   shadow mode's extrusions. Set --rkui-shade-of to the fill; declared on every element, so each one
+   shadow's extrusions. Set --rkui-shade-of to the fill; declared on every element, so each one
    mixes its own. */
 * {
   --rkui-shade: color-mix(in oklab, var(--rkui-shade-of) 75%, var(--rkui-line));
@@ -65,18 +65,57 @@
       var(--rkui-shadow-edge);
   --rkui-shadow-inset: inset calc(var(--rkui-shadow-dx) * var(--rkui-shadow-offset-pressed))
     calc(var(--rkui-shadow-dy) * var(--rkui-shadow-offset-pressed)) 0 var(--rkui-line);
-  --rkui-shadow-code-inset: inset var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0
-    var(--rkui-stripe);
 }
 
-/* The shadow colours, the outlined slab. The edge is a light rim in dark mode, so the near-black
-   shadow shows on the page, and transparent in light mode. Set data-shadow="color" on <html> or
-   any container for the colour shadow mode (shadow-color.css), or "slab" to switch back inside
-   it. */
+/* Shadow: data-shadow on <html> or any container sets how hard shadows look in dark mode, and
+   another value switches back inside it. Light mode is the same in all three.
+   - "outline", the default: the near-black shadow on a cream rim (--rkui-fg), so it shows on the
+     page, whatever the highlight;
+   - "block": the near-black shadow with no rim;
+   - "color": each raised thing with a fill casts its shadow in that fill, darkened
+     (shadow-color.css). Browsers without @scope draw the outline instead.
+   The near-black shadow is set again on each data-shadow, so one inside "color" switches back.
+   :where() keeps it below the "color" rule, so data-shadow="color" on a button or card itself
+   works too. */
 :root,
-[data-shadow='slab'] {
+:where([data-shadow]) {
   --rkui-shadow-color: var(--rkui-line);
-  --rkui-shadow-edge: light-dark(transparent, var(--rkui-line-unfilled));
+}
+
+/* The rim is cream unless --rkui-shadow-rim is set. initial unsets it again, so "outline" or
+   "color" inside "block" switches the rim back on. */
+[data-shadow='outline'],
+[data-shadow='color'] {
+  --rkui-shadow-rim: initial;
+}
+
+[data-shadow='block'] {
+  --rkui-shadow-rim: transparent;
+}
+
+/* Declared on every element, so the rim follows the nearest data-shadow. */
+* {
+  --rkui-shadow-edge: light-dark(transparent, var(--rkui-shadow-rim, var(--rkui-fg)));
+}
+
+/* The inset: a code panel, a drawer's tray or an inset card, sunk into the page. Two hard steps
+   inside the sides towards the light, 3px each (4.5px when deep): the shadow colour, then
+   --rkui-recess-shade, and the raised shadow's rim just past them. So it follows data-shadow as
+   raised shadows do: a cream rim in dark mode with "outline", none with "block", and with "color"
+   the first step is --rkui-shadow-lit, or the element's own extrusion. The component sets
+   --rkui-recess-floor to its fill; the shade is that floor 60% of the way to the outline colour.
+   Declared on every element, so each recess mixes its own. */
+* {
+  --rkui-recess-step: calc(var(--rkui-shadow-depth) * 3px);
+  --rkui-recess-x: calc(var(--rkui-shadow-dx) * var(--rkui-recess-step));
+  --rkui-recess-y: calc(var(--rkui-shadow-dy) * var(--rkui-recess-step));
+  --rkui-recess-shade: color-mix(in srgb, var(--rkui-recess-floor), var(--rkui-line) 60%);
+  --rkui-shadow-recess:
+    inset var(--rkui-recess-x) var(--rkui-recess-y) 0 var(--rkui-shadow-color),
+    inset calc(2 * var(--rkui-recess-x)) calc(2 * var(--rkui-recess-y)) 0 var(--rkui-recess-shade),
+    inset calc(2 * var(--rkui-recess-x) + var(--rkui-shadow-dx) * var(--rkui-outline-width))
+      calc(2 * var(--rkui-recess-y) + var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0
+      var(--rkui-shadow-edge);
 }
 
 /* Nothing moves under reduced motion; shadows still change. */

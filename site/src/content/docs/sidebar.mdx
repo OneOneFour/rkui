@@ -1,37 +1,60 @@
 ---
 title: Sidebar
 description: A column of links grouped under headings, which scrolls on its own.
-group: Navigation
-order: 94
+group: Layout
+order: 16
+component: Sidebar
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Markup from '../../examples/sidebar/markup.astro'
-import markupCode from '../../examples/sidebar/markup.astro?raw'
-import Plain from '../../examples/sidebar/plain.astro'
-import plainCode from '../../examples/sidebar/plain.astro?raw'
-import Card from '../../examples/sidebar/card.astro'
-import cardCode from '../../examples/sidebar/card.astro?raw'
-import Folders from '../../examples/sidebar/folders.astro'
-import foldersCode from '../../examples/sidebar/folders.astro?raw'
-import Deck from '../../examples/sidebar/deck.astro'
-import deckCode from '../../examples/sidebar/deck.astro?raw'
-import Note from '../../examples/sidebar/note.astro'
-import noteCode from '../../examples/sidebar/note.astro?raw'
+import Sidebar from '@oneonefour/rkui/components/sidebar/Sidebar.vue'
+import SidebarGroup from '@oneonefour/rkui/components/sidebar/SidebarGroup.vue'
+import SidebarLink from '@oneonefour/rkui/components/sidebar/SidebarLink.vue'
+import Plain from '../../examples/sidebar/Plain.vue'
+import plainCode from '../../examples/sidebar/Plain.vue?raw'
+import Card from '../../examples/sidebar/Card.vue'
+import cardCode from '../../examples/sidebar/Card.vue?raw'
+import Folders from '../../examples/sidebar/Folders.vue'
+import foldersCode from '../../examples/sidebar/Folders.vue?raw'
+import Deck from '../../examples/sidebar/Deck.vue'
+import deckCode from '../../examples/sidebar/Deck.vue?raw'
+import Note from '../../examples/sidebar/Note.vue'
+import noteCode from '../../examples/sidebar/Note.vue?raw'
+import EveryLook from '../../examples/sidebar/EveryLook.vue'
+import everyLookCode from '../../examples/sidebar/EveryLook.vue?raw'
+import SelectedSlab from '../../examples/sidebar/SelectedSlab.vue'
+import selectedSlabCode from '../../examples/sidebar/SelectedSlab.vue?raw'
+import Flask from '@oneonefour/rkui/icons/flask.vue'
+import House from '@oneonefour/rkui/icons/house.vue'
+import PenNib from '@oneonefour/rkui/icons/pen-nib.vue'
+import Rocket from '@oneonefour/rkui/icons/rocket.vue'
 
 Groups of links, each a child component. The page gives the sidebar its height; when its links
 don't fit, it scrolls, with hints at its edges and a scrollbar on hover and focus. `variant`
-picks the look.
+picks the look; slab type, bold links, columns, link colours and icons work with any of them. `dots="pill"` puts the
+hints in pills, as the card's are (see [Scroll](../scroll/)).
 
-<Demo code={markupCode} label="A short sidebar" stack>
-  <Markup />
+<Demo label="A short sidebar" stack>
+  <Sidebar label="Short example" style="max-inline-size: 16rem">
+    <SidebarGroup heading="Start">
+      <SidebarLink href="#" current>
+        Getting started
+      </SidebarLink>
+      <SidebarLink href="#">Install</SidebarLink>
+    </SidebarGroup>
+    <SidebarGroup heading="Form controls">
+      <SidebarLink href="#">Button</SidebarLink>
+      <SidebarLink href="#">Checkbox</SidebarLink>
+    </SidebarGroup>
+  </Sidebar>
 </Demo>
 
 ## A: Plain
 
 The page's own colour, with dots at the edges; the current page is a tinted pill on a slab.
 
-<Demo code={plainCode} label="Plain sidebar" stack>
+<Demo vue={plainCode} label="Plain sidebar" stack>
   <Plain />
 </Demo>
 
@@ -39,7 +62,7 @@ The page's own colour, with dots at the edges; the current page is a tinted pill
 
 A raised card whose headings lift into slabs as they stick, with tabs on its edges.
 
-<Demo code={cardCode} label="Card sidebar" stack>
+<Demo vue={cardCode} label="Card sidebar" stack>
   <Card />
 </Demo>
 
@@ -47,7 +70,7 @@ A raised card whose headings lift into slabs as they stick, with tabs on its edg
 
 Each group is a small folder whose tab sticks to the top while you scroll through it.
 
-<Demo code={foldersCode} label="Folders sidebar" stack>
+<Demo vue={foldersCode} label="Folders sidebar" stack>
   <Folders />
 </Demo>
 
@@ -55,7 +78,7 @@ Each group is a small folder whose tab sticks to the top while you scroll throug
 
 Every link is a raised key that pops on hover; the current page is pushed in.
 
-<Demo code={deckCode} label="Deck sidebar" stack>
+<Demo vue={deckCode} label="Deck sidebar" stack>
   <Deck />
 </Demo>
 
@@ -63,6 +86,76 @@ Every link is a raised key that pops on hover; the current page is pushed in.
 
 A taped sticky note with sticking slab headings; the current page is an ink pill.
 
-<Demo code={noteCode} label="Note sidebar" stack>
+<Demo vue={noteCode} label="Note sidebar" stack>
   <Note />
 </Demo>
+
+## With any look
+
+Each look also takes these:
+
+- `slab` on the Sidebar sets its header, headings and links in the slab serif.
+- `selected-slab` on the Sidebar sets only the current page's link in the slab serif, and the
+  other links in the UI font. Headings keep the look's own type.
+- `bold` on the Sidebar sets its links bolder (weight 600).
+- `columns` on the Sidebar lets each group's links flow into several columns when the sidebar is
+  wide, as when it stacks above the page on a phone; a narrow sidebar keeps one column.
+- `hue` on a SidebarLink gives the link its own colour, such as the section colour of the page it
+  leads to. It fills the link's icon, and the link itself when it is the current page, in the
+  look's own shape. Other links keep the page's text colour.
+- An icon in a SidebarLink's `icon` slot sits before its text.
+- The `header` slot stays above the links, for a site's name and tagline, and a SidebarGroup
+  needs no heading.
+
+<Demo vue={everyLookCode} label="Every look with slab type, link colours and icons">
+  <EveryLook />
+</Demo>
+
+<Demo vue={selectedSlabCode} label="Every look with only the current page in slab type">
+  <SelectedSlab />
+</Demo>
+
+## A site's own nav
+
+The plain look on a sky panel (`--rkui-sidebar-panel`), with slab type, bold links, a header, one
+group with no heading, and a colour and an icon for each link. With `columns` the links flow into
+columns here, where the sidebar is as wide as the demo; in a narrow column they stay in one. In a flex column,
+like this demo's, the sidebar needs an inline size, or the browser keeps the height of one column. The
+[header band](../header-band/) page shows it in a site frame.
+
+<Demo label="A site's own nav" stack>
+  <Sidebar
+    label="Site nav example"
+    slab
+    bold
+    columns
+    style="--rkui-sidebar-panel: var(--rkui-sky-tint); padding-inline: var(--rkui-space-2); inline-size: 100%"
+  >
+    <Fragment slot="header">
+      <strong style="font-size: var(--rkui-step-1)">Site name</strong>
+      <span>A short tagline</span>
+    </Fragment>
+    <SidebarGroup>
+      <SidebarLink href="#" hue="sky">
+        <House slot="icon" /> Home
+      </SidebarLink>
+      <SidebarLink href="#" hue="coral" current>
+        <PenNib slot="icon" /> Notes
+      </SidebarLink>
+      <SidebarLink href="#" hue="navy">
+        <Flask slot="icon" /> Papers
+      </SidebarLink>
+      <SidebarLink href="#" hue="teal">
+        <Rocket slot="icon" /> Projects
+      </SidebarLink>
+    </SidebarGroup>
+  </Sidebar>
+</Demo>
+
+## Reference
+
+<ApiReference component="Sidebar" />
+
+<ApiReference component="SidebarGroup" />
+
+<ApiReference component="SidebarLink" />

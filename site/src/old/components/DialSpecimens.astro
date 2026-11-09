@@ -1,10 +1,11 @@
 ---
 /**
- * The two dial variants, live with a decimal and an integer range and disabled, the ramp modifier
- * with the two ramps rkui has, and how a dial looks without its script.
+ * The two dial variants, live with a decimal and an integer range and disabled, the ramp with the
+ * two ramps rkui has, and how a dial looks without JavaScript.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
+import Dial from '@oneonefour/rkui/components/dial/Dial.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 
@@ -16,7 +17,7 @@ const { theme } = Astro.props
 const VARIANTS = [
   { name: 'knob', title: 'A: knob (rkui-dial--knob)' },
   { name: 'arc', title: 'B: arc (rkui-dial--arc)' },
-]
+] as const
 const RANGES = [
   {
     name: 'temperature',
@@ -48,85 +49,62 @@ const RANGES = [
   },
 ]
 const RAMPS = [
-  { name: 'knob', classes: 'rkui-dial--knob', caption: 'knob, cool to warm' },
-  { name: 'arc', classes: 'rkui-dial--arc', caption: 'arc, cool to warm' },
-  {
-    name: 'heat',
-    classes: 'rkui-dial--arc rkui-dial--ramp-heat',
-    caption: 'arc, rkui-dial--ramp-heat',
-  },
-]
-const fallbackId = `${theme}-dial-fallback`
+  { name: 'knob', variant: 'knob', ramp: 'cool', caption: 'knob, cool to warm' },
+  { name: 'arc', variant: 'arc', ramp: 'cool', caption: 'arc, cool to warm' },
+  { name: 'heat', variant: 'arc', ramp: 'heat', caption: 'arc, rkui-dial--ramp-heat' },
+] as const
 ---
 
 {VARIANTS.map((variant) => (
   <SpecimenRow title={variant.title}>
-    {RANGES.map((range) => {
-      const id = `${theme}-dial-${variant.name}-${range.name}`
-      return (
-        <Specimen label={range.caption}>
-          <rkui-dial class:list={['rkui-dial', `rkui-dial--${variant.name}`]}>
-            <label for={id}>{range.label}</label>
-            <input
-              class="rkui-range"
-              type="range"
-              id={id}
-              min={range.min}
-              max={range.max}
-              step={range.step}
-              value={range.value}
-              disabled={range.disabled}
-            />
-            <output class="rkui-output" for={id}>
-              {range.value}
-            </output>
-          </rkui-dial>
-        </Specimen>
-      )
-    })}
+    {RANGES.map((range) => (
+      <Specimen label={range.caption}>
+        <Dial
+          client:visible
+          id={`${theme}-dial-${variant.name}-${range.name}`}
+          variant={variant.name}
+          label={range.label}
+          min={range.min}
+          max={range.max}
+          step={range.step}
+          value={range.value}
+          disabled={range.disabled}
+        />
+      </Specimen>
+    ))}
   </SpecimenRow>
 ))}
 
 <SpecimenRow title="Ramps (rkui-dial--ramp)">
-  {RAMPS.map((ramp) => {
-    const id = `${theme}-dial-ramp-${ramp.name}`
-    return (
-      <Specimen label={ramp.caption}>
-        <rkui-dial class:list={['rkui-dial', 'rkui-dial--ramp', ramp.classes]}>
-          <label for={id}>Temperature</label>
-          <input class="rkui-range" type="range" id={id} min="10" max="30" step="0.5" value="21" />
-          <output class="rkui-output" for={id}>
-            21
-          </output>
-        </rkui-dial>
-      </Specimen>
-    )
-  })}
-</SpecimenRow>
-
-<SpecimenRow title="Without the script">
-  <Specimen
-    label="a plain range and readout; the readout only follows the range with rkui-dial.js"
-    wide
-  >
-    <div class="rkui-dial rkui-dial--knob">
-      <label for={fallbackId}>Temperature</label>
-      <input
-        class="rkui-range"
-        type="range"
-        id={fallbackId}
+  {RAMPS.map((ramp) => (
+    <Specimen label={ramp.caption}>
+      <Dial
+        client:visible
+        id={`${theme}-dial-ramp-${ramp.name}`}
+        variant={ramp.variant}
+        ramp={ramp.ramp}
+        label="Temperature"
         min="10"
         max="30"
         step="0.5"
-        value="20"
+        value="21"
       />
-      <output class="rkui-output" for={fallbackId}>
-        20
-      </output>
-    </div>
-  </Specimen>
+    </Specimen>
+  ))}
 </SpecimenRow>
 
-<script>
-  import '@oneonefour/rkui/components/dial/dial.js'
-</script>
+<SpecimenRow title="Without JavaScript">
+  <Specimen
+    label="the face hidden, the range at its foot; the readout keeps its starting value"
+    wide
+  >
+    <Dial
+      id={`${theme}-dial-fallback`}
+      label="Temperature"
+      min="10"
+      max="30"
+      step="0.5"
+      value="20"
+    />
+  </Specimen>
+</SpecimenRow>

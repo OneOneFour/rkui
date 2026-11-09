@@ -49,6 +49,11 @@ const { label, wide = false } = Astro.props
     min-inline-size: 0;
   }
 
+  /* A code block sits right above its caption, without the space it keeps in prose. */
+  .example :global(.rkui-code) {
+    margin-block: 0;
+  }
+
   figcaption {
     color: var(--rkui-muted);
     font-size: var(--rkui-step--1);

@@ -3,28 +3,29 @@ title: Field
 description: A label, a control and a hint or error message, stacked.
 group: Form controls
 order: 40
+component: Field
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Hint from '../../examples/field/hint.astro'
-import hintCode from '../../examples/field/hint.astro?raw'
-import ErrorDemo from '../../examples/field/error.astro'
-import errorCode from '../../examples/field/error.astro?raw'
-import AroundControl from '../../examples/field/around-control.astro'
-import around_controlCode from '../../examples/field/around-control.astro?raw'
+import Input from '@oneonefour/rkui/components/input/Input.vue'
 
-<Demo code={hintCode} label="Field with a hint" stack>
-  <Hint />
+<Demo label="Field with a hint" stack>
+  <Input label="Email" type="email" name="field-email" hint="We never share it" />
 </Demo>
 
 ## Error
 
-<Demo code={errorCode} label="Field with an error" stack>
-  <ErrorDemo />
+<Demo label="Field with an error" stack>
+  <Input
+    label="Email"
+    type="email"
+    name="field-error"
+    value="not an email"
+    error="Enter an email address"
+  />
 </Demo>
 
-## Around another control
+## Reference
 
-<Demo code={around_controlCode} label="Field around a range" stack>
-  <AroundControl />
-</Demo>
+<ApiReference component="Field" />

@@ -1,28 +1,87 @@
-/* Pagination: page links as tiles, with the current page's pushed in, between previous and next
-   buttons. folder.css has a folder-tab version.
+/* Pagination, in two looks (open, see DECISIONS).
 
-   <nav class="rkui-pagination" aria-label="Pagination">
-     <a class="rkui-button rkui-button--small" href="?page=1" rel="prev">Previous</a>
-     <ol class="rkui-tiles rkui-tiles--compact">
-       <li><a class="rkui-tile" href="?page=1">1</a></li>
-       <li><a class="rkui-tile" href="?page=2" aria-current="page">2</a></li>
-       <li>…</li>
-       <li><a class="rkui-tile" href="?page=9">9</a></li>
-     </ol>
-     <a class="rkui-button rkui-button--small" href="?page=3" rel="next">Next</a>
-   </nav> */
+   Folder tabs: the strip and the sheet are folder.css's. Page numbers stay upright when the strip
+   stands on a side.
+
+   Tiles: page links as round tiles, with the current page's pushed in, between Previous and Next
+   buttons, above the content or below it (--bottom). The tiles take what room the buttons leave,
+   centred, as a scroll region for when they don't fit. The words in the buttons are in
+   .rkui-pagination-word, so the small size can leave just the carets:
+   <div class="rkui-pagination-tiles rkui-pagination-tiles--collapse">
+     <nav class="rkui-pagination" aria-label="Pagination">
+       <a class="rkui-button rkui-button--small" href="?page=1" rel="prev">
+         <svg …></svg> <span class="rkui-pagination-word">Previous</span>
+       </a>
+       <div class="rkui-pagination-pages">
+         <ol class="rkui-tiles rkui-tiles--compact rkui-scroll">
+           <li class="rkui-strip-item"><a class="rkui-tile" href="?page=1">1</a></li>
+           <li class="rkui-strip-item"><a class="rkui-tile" href="?page=2" aria-current="page">2</a></li>
+           <li>…</li>
+           <li class="rkui-strip-item"><a class="rkui-tile" href="?page=9">9</a></li>
+         </ol>
+       </div>
+       <a class="rkui-button rkui-button--small" href="?page=3" rel="next">
+         <span class="rkui-pagination-word">Next</span> <svg …></svg>
+       </a>
+     </nav>
+     <div>…</div>
+   </div>
+
+   With collapse, folder-enhance.js shows as many pages as fit in either look (folder.css); without
+   it the pages scroll. */
+
+.rkui-pagination-number {
+  writing-mode: horizontal-tb;
+}
+
+/* On the sides, an upright number's tab is about square, and as wide as the step tabs. */
+:is(.rkui-folder--left, .rkui-folder--right)
+  > .rkui-folder-strip
+  .rkui-folder-tab:has(> .rkui-pagination-number) {
+  padding-inline: var(--rkui-space-2);
+}
+
+:is(.rkui-folder--left, .rkui-folder--right) > .rkui-folder-strip .rkui-pagination-number {
+  min-inline-size: 1.25rem;
+  text-align: center;
+}
+
+.rkui-pagination-tiles {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--rkui-space-4);
+}
 
 .rkui-pagination {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: var(--rkui-space-3);
 }
 
-.rkui-pagination ol {
+/* The tiles take the room the buttons leave. */
+.rkui-pagination-pages {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+/* Room inside the scroll region for the focus band and the tiles' shadows. */
+.rkui-pagination-pages > ol {
+  flex-wrap: nowrap;
+  justify-content: safe center;
+  padding: var(--rkui-space-2) calc(var(--rkui-shadow-depth) * var(--rkui-space-2));
   list-style: none;
 }
 
 .rkui-pagination .rkui-tile {
   text-decoration: none;
+}
+
+/* At the small size the buttons keep their carets, and their words stay for screen readers. */
+.rkui-pagination:has(> .rkui-pagination-pages > [data-rkui-small]) .rkui-pagination-word {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

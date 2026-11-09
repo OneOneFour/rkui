@@ -3,28 +3,50 @@ title: Radio
 description: A native radio button, one choice from a group.
 group: Form controls
 order: 36
+component: Radio
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/radio/default.astro'
-import defaultCode from '../../examples/radio/default.astro?raw'
-import States from '../../examples/radio/states.astro'
-import statesCode from '../../examples/radio/states.astro?raw'
-import Group from '../../examples/radio/group.astro'
-import groupCode from '../../examples/radio/group.astro?raw'
+import Radio from '@oneonefour/rkui/components/checkbox/Radio.vue'
 
-<Demo code={defaultCode} label="Default radio">
-  <Default />
+<Demo label="Default radio">
+  <Radio name="radio-default" value="label">
+    Label
+  </Radio>
 </Demo>
 
 ## States
 
-<Demo code={statesCode} label="Radio states">
-  <States />
+<Demo label="Radio states">
+  <Radio name="radio-on" value="on" checked>
+    On
+  </Radio>
+  <Radio name="radio-disabled" value="disabled" disabled>
+    Disabled
+  </Radio>
+  <Radio name="radio-disabled-on" value="disabled-on" checked disabled>
+    Disabled, on
+  </Radio>
+  <Radio name="radio-error" value="error" aria-invalid="true">
+    Error
+  </Radio>
 </Demo>
 
 ## Group
 
-<Demo code={groupCode} label="A radio group">
-  <Group />
+<Demo label="A radio group">
+  <Radio name="radio-group" value="one" checked>
+    One
+  </Radio>
+  <Radio name="radio-group" value="two">
+    Two
+  </Radio>
+  <Radio name="radio-group" value="three">
+    Three
+  </Radio>
 </Demo>
+
+## Reference
+
+<ApiReference component="Radio" />

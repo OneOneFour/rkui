@@ -102,7 +102,7 @@ pre {
 code {
   padding: 0.1em 0.35em;
   border-radius: calc(var(--rkui-radius) / 2);
-  background: var(--rkui-slate);
+  background: var(--rkui-panel);
   color: var(--rkui-fg);
   font-size: 0.9em;
 }
@@ -111,7 +111,7 @@ pre {
   overflow-x: auto;
   padding: var(--rkui-space-4);
   border-radius: var(--rkui-radius);
-  background: var(--rkui-slate);
+  background: var(--rkui-panel);
   color: var(--rkui-fg);
 }
 

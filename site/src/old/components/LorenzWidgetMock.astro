@@ -6,8 +6,8 @@
  *
  * @param theme the panel's theme, used to keep SVG ids unique across the two panels
  */
-import WidgetFrame from '@oneonefour/rkui/components/widget-frame/WidgetFrame.astro'
-import Button from '@oneonefour/rkui/components/button/Button.astro'
+import WidgetFrame from '@oneonefour/rkui/components/widget-frame/WidgetFrame.vue'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
 import PlayIcon from '@oneonefour/rkui/icons/play.svg'
 import ResetIcon from '@oneonefour/rkui/icons/arrow-counter-clockwise.svg'
 import { linear, linePath } from './chart-scale'
@@ -80,20 +80,7 @@ const sliderId = `${theme}-lorenz-offset`
     </Button>
     <div class="rkui-field offset">
       <label for={sliderId}>Offset</label>
-      <div class="rkui-range-row">
-        <input
-          class="rkui-range"
-          type="range"
-          id={sliderId}
-          min="-5"
-          max="-1"
-          step="1"
-          value="-3"
-        />
-        <output class="rkui-output" for={sliderId}>
-          10⁻³
-        </output>
-      </div>
+      <input class="rkui-range" type="range" id={sliderId} min="-5" max="-1" step="1" value="-3" />
     </div>
   </Fragment>
 </WidgetFrame>

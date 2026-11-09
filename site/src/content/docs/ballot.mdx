@@ -3,82 +3,182 @@ title: Ballot
 description: A column of options, each a tile beside a text box.
 group: Form controls
 order: 33
+component: Ballot
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/ballot/default.astro'
-import defaultCode from '../../examples/ballot/default.astro?raw'
-import Text from '../../examples/ballot/text.astro'
-import textCode from '../../examples/ballot/text.astro?raw'
-import Icons from '../../examples/ballot/icons.astro'
-import iconsCode from '../../examples/ballot/icons.astro?raw'
-import Colors from '../../examples/ballot/colors.astro'
-import colorsCode from '../../examples/ballot/colors.astro?raw'
-import MarkEnd from '../../examples/ballot/mark-end.astro'
-import markEndCode from '../../examples/ballot/mark-end.astro?raw'
-import Overlap from '../../examples/ballot/overlap.astro'
-import overlapCode from '../../examples/ballot/overlap.astro?raw'
-import Inside from '../../examples/ballot/inside.astro'
-import insideCode from '../../examples/ballot/inside.astro?raw'
-import Tight from '../../examples/ballot/tight.astro'
-import tightCode from '../../examples/ballot/tight.astro?raw'
-import TightOverlap from '../../examples/ballot/tight-overlap.astro'
-import tightOverlapCode from '../../examples/ballot/tight-overlap.astro?raw'
+import Ballot from '@oneonefour/rkui/components/ballot/Ballot.vue'
+import BallotOption from '@oneonefour/rkui/components/ballot/BallotOption.vue'
+import Sun from '@oneonefour/rkui/icons/sun.vue'
+import Moon from '@oneonefour/rkui/icons/moon.vue'
+import Leaf from '@oneonefour/rkui/icons/leaf.vue'
 
-<Demo code={defaultCode} label="Ballot" stack>
-  <Default />
+<Demo label="Ballot" stack>
+  <Ballot legend="Vote">
+    <BallotOption value="first" mark="A" checked>
+      First choice
+    </BallotOption>
+    <BallotOption value="second" mark="B">
+      Second choice
+    </BallotOption>
+    <BallotOption value="third" mark="C">
+      Third choice
+    </BallotOption>
+  </Ballot>
 </Demo>
+
+Ballot works with no JavaScript. The small helper script only mends one thing in Safari: the focus band on a radio that an arrow key moves to. It does nothing in other browsers.
 
 ## Longer text
 
-<Demo code={textCode} label="Ballot with longer text" stack>
-  <Text />
+<Demo label="Ballot with longer text" stack>
+  <Ballot legend="Vote">
+    <BallotOption
+      value="first"
+      text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+      checked
+    >
+      First choice
+    </BallotOption>
+    <BallotOption
+      value="second"
+      text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    >
+      Second choice
+    </BallotOption>
+    <BallotOption
+      value="third"
+      text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    >
+      Third choice
+    </BallotOption>
+  </Ballot>
 </Demo>
 
 ## Icons, several choices
 
 Add `multiple` for checkboxes. Give an option a `hue` and `tint` to colour its checked box.
 
-<Demo code={iconsCode} label="Ballot with icons" stack>
-  <Icons />
+<Demo label="Ballot with icons" stack>
+  <Ballot legend="Weather" multiple>
+    <BallotOption value="sun" hue="yellow" tint checked>
+      <Sun slot="icon" /> Sun
+    </BallotOption>
+    <BallotOption value="moon" hue="lilac" tint>
+      <Moon slot="icon" /> Moon
+    </BallotOption>
+    <BallotOption value="leaf" hue="green" tint checked>
+      <Leaf slot="icon" /> Leaf
+    </BallotOption>
+  </Ballot>
 </Demo>
 
 ## Colours
 
 A `hue` on an option with no icon or mark fills its tile with that colour.
 
-<Demo code={colorsCode} label="Ballot with colour tiles" stack>
-  <Colors />
+<Demo label="Ballot with colour tiles" stack>
+  <Ballot legend="Colour">
+    <BallotOption value="teal" hue="teal" tint checked>
+      Teal
+    </BallotOption>
+    <BallotOption value="green" hue="green" tint>
+      Green
+    </BallotOption>
+    <BallotOption value="sky" hue="sky" tint>
+      Sky
+    </BallotOption>
+    <BallotOption value="coral" hue="coral" tint>
+      Coral
+    </BallotOption>
+  </Ballot>
 </Demo>
 
 ## Tiles on the right
 
-<Demo code={markEndCode} label="Ballot with tiles on the right" stack>
-  <MarkEnd />
+<Demo label="Ballot with tiles on the right" stack>
+  <Ballot legend="Vote" markEnd>
+    <BallotOption value="first" mark="A" checked>
+      First choice
+    </BallotOption>
+    <BallotOption value="second" mark="B">
+      Second choice
+    </BallotOption>
+    <BallotOption value="third" mark="C">
+      Third choice
+    </BallotOption>
+  </Ballot>
 </Demo>
 
 ## Overlap
 
-<Demo code={overlapCode} label="Ballot with overlapping tiles" stack>
-  <Overlap />
+<Demo label="Ballot with overlapping tiles" stack>
+  <Ballot legend="Vote" overlap>
+    <BallotOption value="first" mark="A" checked>
+      First choice
+    </BallotOption>
+    <BallotOption value="second" mark="B">
+      Second choice
+    </BallotOption>
+    <BallotOption value="third" mark="C">
+      Third choice
+    </BallotOption>
+  </Ballot>
 </Demo>
 
 ## Inside
 
-<Demo code={insideCode} label="Ballot with tiles inside" stack>
-  <Inside />
+<Demo label="Ballot with tiles inside" stack>
+  <Ballot legend="Vote" inside>
+    <BallotOption value="first" mark="A" checked>
+      First choice
+    </BallotOption>
+    <BallotOption value="second" mark="B">
+      Second choice
+    </BallotOption>
+    <BallotOption value="third" mark="C">
+      Third choice
+    </BallotOption>
+  </Ballot>
 </Demo>
 
 ## Tight
 
-<Demo code={tightCode} label="Tight ballot" stack>
-  <Tight />
+<Demo label="Tight ballot" stack>
+  <Ballot legend="Vote" tight>
+    <BallotOption value="first" mark="A" checked>
+      First choice
+    </BallotOption>
+    <BallotOption value="second" mark="B">
+      Second choice
+    </BallotOption>
+    <BallotOption value="third" mark="C">
+      Third choice
+    </BallotOption>
+  </Ballot>
 </Demo>
 
 ## Tight and overlap
 
 The layout props combine freely.
 
-<Demo code={tightOverlapCode} label="Tight ballot with overlapping tiles" stack>
-  <TightOverlap />
+<Demo label="Tight ballot with overlapping tiles" stack>
+  <Ballot legend="Vote" tight overlap>
+    <BallotOption value="first" mark="A" checked>
+      First choice
+    </BallotOption>
+    <BallotOption value="second" mark="B">
+      Second choice
+    </BallotOption>
+    <BallotOption value="third" mark="C">
+      Third choice
+    </BallotOption>
+  </Ballot>
 </Demo>
+
+## Reference
+
+<ApiReference component="Ballot" />
+
+<ApiReference component="BallotOption" />

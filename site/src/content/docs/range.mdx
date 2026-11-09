@@ -3,58 +3,95 @@ title: Range
 description: A slider with a pill track and an outlined thumb.
 group: Form controls
 order: 38
+component: Range
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/range/default.astro'
-import defaultCode from '../../examples/range/default.astro?raw'
-import Readout from '../../examples/range/readout.astro'
-import readoutCode from '../../examples/range/readout.astro?raw'
-import Disabled from '../../examples/range/disabled.astro'
-import disabledCode from '../../examples/range/disabled.astro?raw'
-import TicksNative from '../../examples/range/ticks-native.astro'
-import ticksNativeCode from '../../examples/range/ticks-native.astro?raw'
-import TicksScale from '../../examples/range/ticks-scale.astro'
-import ticksScaleCode from '../../examples/range/ticks-scale.astro?raw'
-import TicksDots from '../../examples/range/ticks-dots.astro'
-import ticksDotsCode from '../../examples/range/ticks-dots.astro?raw'
+import Range from '@oneonefour/rkui/components/range/Range.vue'
+import OwnReadout from '../../examples/range/OwnReadout.vue'
+import ownReadoutCode from '../../examples/range/OwnReadout.vue?raw'
 
-<Demo code={defaultCode} label="Default range">
-  <Default />
-</Demo>
-
-## With a readout
-
-<Demo code={readoutCode} label="Range with a readout" stack>
-  <Readout />
+<Demo label="Default range" stack>
+  <Range label="Volume" />
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled range">
-  <Disabled />
+<Demo label="Disabled range" stack>
+  <Range label="Volume" disabled />
 </Demo>
 
-## Ticks A: native
+## Ticks
 
-Open, see DECISIONS. The browser draws the ticks, where it supports them.
+`ticks` lists the values to mark, as a row of ticks and labels under the slider. In the browser the thumb snaps from tick to tick with one small overshoot, so the Range needs `client:visible`; without it the thumb jumps. A plain HTML page writes this slider as the HTML tab shows it: `<rkui-range>` doesn't take `ticks`.
 
-<Demo code={ticksNativeCode} label="Range with native ticks">
-  <TicksNative />
+<Demo label="Range with ticks" stack>
+  <Range client:visible label="Volume" step="25" ticks={[0, 25, 50, 75, 100]} />
 </Demo>
 
-## Ticks B: tick row with labels
+## Showing the value
 
-Open, see DECISIONS.
+`value-display` shows the value as the slider moves: in the thumb (`thumb`), which widens to fit it, or in a popup over the thumb while it is hovered, dragged or focused from the keyboard, raised like a Tooltip (`popup`) or flat (`flat-popup`). Each one needs `client:visible`; without it the Range is a plain slider.
 
-<Demo code={ticksScaleCode} label="Range with a tick row" stack>
-  <TicksScale />
+<Demo label="Value in the thumb" stack>
+  <Range
+    client:visible
+    label="Opacity"
+    value-display="thumb"
+    min="0"
+    max="1"
+    step="0.01"
+    value="0.28"
+  />
+  <Range
+    client:visible
+    label="Volume"
+    value-display="thumb"
+    step="25"
+    ticks={[0, 25, 50, 75, 100]}
+  />
 </Demo>
 
-## Ticks C: dots on the track
-
-Open, see DECISIONS.
-
-<Demo code={ticksDotsCode} label="Range with dots on the track">
-  <TicksDots />
+<Demo label="Value in a popup" stack>
+  <Range
+    client:visible
+    label="Opacity"
+    value-display="popup"
+    min="0"
+    max="1"
+    step="0.01"
+    value="0.28"
+  />
+  <Range
+    client:visible
+    label="Volume"
+    value-display="popup"
+    step="25"
+    ticks={[0, 25, 50, 75, 100]}
+  />
 </Demo>
+
+<Demo label="Value in a flat popup" stack>
+  <Range
+    client:visible
+    label="Opacity"
+    value-display="flat-popup"
+    min="0"
+    max="1"
+    step="0.01"
+    value="0.28"
+  />
+</Demo>
+
+## A readout of your own
+
+To show the value somewhere else, bind the Range with `v-model` in a `.vue` file and write it out yourself.
+
+<Demo vue={ownReadoutCode} label="Range with a readout written beside it" widget>
+  <OwnReadout client:visible />
+</Demo>
+
+## Reference
+
+<ApiReference component="Range" />

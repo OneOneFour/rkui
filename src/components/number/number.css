@@ -1,21 +1,22 @@
 /* Number steppers: a number input with our own step buttons in place of the browser's
-   spinners. Both need rkui-stepper.js.
+   spinners. The buttons step only with Stepper.vue running in the browser, which marks the
+   stepper data-rkui-live; until then they stay hidden.
 
    Split: − and + buttons either side of the field.
-   <rkui-stepper class="rkui-stepper rkui-stepper--split">
+   <div class="rkui-stepper rkui-stepper--split">
      <button class="rkui-button" type="button" data-step="down" aria-label="Decrease">−</button>
      <input class="rkui-input" type="number" aria-label="Label">
      <button class="rkui-button" type="button" data-step="up" aria-label="Increase">+</button>
-   </rkui-stepper>
+   </div>
 
    Stacked: up and down arrow buttons inside the field's end. The buttons skip the tab order
    because the arrow keys already step the focused field, as with native spinners.
-   <rkui-stepper class="rkui-stepper rkui-stepper--stacked">
+   <div class="rkui-stepper rkui-stepper--stacked">
      <input class="rkui-input" type="number" aria-label="Label">
      <button type="button" tabindex="-1" data-step="up" aria-label="Increase"><svg>…</svg></button>
      <button type="button" tabindex="-1" data-step="down"
        aria-label="Decrease"><svg>…</svg></button>
-   </rkui-stepper> */
+   </div> */
 
 .rkui-stepper .rkui-input {
   inline-size: 8rem;
@@ -28,8 +29,8 @@
   margin: 0;
 }
 
-/* Until rkui-stepper.js runs, the buttons would do nothing. */
-.rkui-stepper:not(:defined) button {
+/* Until the Stepper runs in the browser (it sets data-rkui-live), the buttons would do nothing. */
+.rkui-stepper:not([data-rkui-live]) button {
   visibility: hidden;
 }
 

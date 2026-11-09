@@ -1,0 +1,7 @@
+/* Theme toggle: a Segmented (segmented.css) with icons, built by ThemeToggle.vue. It does nothing
+   until it runs in the browser and sets data-rkui-live, so until then it is hidden, keeping its
+   space. */
+
+.rkui-theme-toggle:not([data-rkui-live]) {
+  visibility: hidden;
+}

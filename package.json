@@ -1,6 +1,6 @@
 {
   "name": "@oneonefour/rkui",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "private": true,
   "repository": {
     "type": "git",
@@ -15,6 +15,11 @@
     "./base/*": "./src/base/*",
     "./rkui.css": "./dist/rkui.css",
     "./rkui.js": "./dist/rkui.js",
+    "./colors.js": {
+      "types": "./dist/colors.d.ts",
+      "default": "./dist/colors.js"
+    },
+    "./enhance.js": "./src/enhance.js",
     "./components/*.js": {
       "types": "./dist/types/components/*.d.ts",
       "default": "./src/components/*.js"
@@ -28,15 +33,23 @@
     "./head-scripts/*": "./src/head-scripts/*",
     "./icons/*": "./dist/icons/*",
     "./fonts/*": "./src/fonts/*",
+    "./astro": {
+      "types": "./astro/index.d.ts",
+      "default": "./astro/index.js"
+    },
+    "./astro-attributes": {
+      "types": "./src/shared/astro-attributes.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "files": [
+    "astro",
     "src",
     "dist",
     "THIRD_PARTY_NOTICES.md"
   ],
   "scripts": {
-    "build": "node build/index.js && astro check --root site && astro build --root site",
+    "build": "node build/index.js && vue-tsc -p src && astro check --root site && astro build --root site",
     "preview": "vite preview --outDir site/dist --base /rkui/ --port 4322 --strictPort",
     "dev": "node build/index.js && astro dev --root site --port 4321",
     "prepack": "node build/index.js",
@@ -44,18 +57,34 @@
     "screenshots": "playwright test"
   },
   "peerDependencies": {
-    "astro": "^7.0.0"
+    "@astrojs/mdx": "^8.1.0",
+    "astro": "^7.4.0",
+    "katex": "^0.19.0",
+    "shiki": "^4.0.0",
+    "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {
+    "@astrojs/mdx": {
+      "optional": true
+    },
     "astro": {
+      "optional": true
+    },
+    "katex": {
+      "optional": true
+    },
+    "shiki": {
       "optional": true
     }
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@astrojs/markdown-satteri": "^0.4.6",
     "@astrojs/mdx": "^8.1.2",
+    "@astrojs/vue": "^7.1.2",
     "@playwright/test": "^1.64.1",
-    "astro": "^7.0.7",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "astro": "^7.4.0",
     "katex": "^0.19.1",
     "lightningcss": "^1.33.0",
     "pagefind": "^1.6.0",
@@ -63,7 +92,12 @@
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
     "rolldown": "~1.2.16",
+    "satteri": "^0.10.5",
+    "shiki": "^4.6.0",
+    "simple-icons": "^16.37.0",
     "svgo": "^4.1.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vue": "^3.5.44",
+    "vue-tsc": "^3.3.14"
   }
 }

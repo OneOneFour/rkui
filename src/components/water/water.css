@@ -2,14 +2,15 @@
    .rkui-water in a host that clips it; it sits behind the host's content. Set --rkui-water-level (0
    to 1) on the host or the water for a fixed level, or add .rkui-water--rise to fill and drain it,
    for an unknown wait.
-   Under reduced motion the water stays still and fades in and out instead.
+   Under reduced motion the water stays still, filling or at a set level, and fades in and out
+   instead.
 
    Hosts in this file:
-   water spinner, .rkui-spinner--water with .rkui-water--rise: a flask that fills and drains;
+   water spinner, .rkui-spinner--water: a flask that fills and drains, or holds a set level;
    filling button: a filled .rkui-button with aria-busy="true" and an .rkui-water child fills with
    its own colour. Keep it focusable with aria-disabled="true" rather than disabled, so focus isn't
    lost, ignore its clicks while busy, and say what is happening in its label;
-   pending panel, .rkui-pending with .rkui-water--rise: a dashed panel filling up while it waits.
+   pending panel, .rkui-pending: a dashed panel filling up while it waits, or to a set level.
 
    <span class="rkui-spinner rkui-spinner--water" role="status">
      <span class="rkui-water rkui-water--rise" aria-hidden="true"></span>
@@ -37,17 +38,22 @@
   --rkui-wave-line: var(--rkui-line);
   --rkui-wave-length: 2rem;
   --rkui-wave-height: 0.5rem;
-  --rkui-wave-period: 1.2s;
+  --rkui-wave-period: var(--rkui-loop-steady);
   --rkui-wave-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 12' preserveAspectRatio='none'%3E%3Cpath d='M0 6Q10 0 20 6T40 6V12H0Z'/%3E%3C/svg%3E");
 
   position: absolute;
-  inset: 0 0 calc(-1 * var(--rkui-wave-height));
+  inset: 0;
   z-index: -1;
-  /* The top edge is the water's surface: level 0 puts the wave just below the host, 1 just
-     above it. */
+  /* The wave sits just above the top edge, its crests a quarter of the wave height below the top
+     of the wave and its troughs a quarter above the bottom. Level 0 puts the outlined crests just
+     below the host, so it shows empty; 1 puts the troughs at its top, so it shows full. */
   translate: 0
-    calc((1 - var(--rkui-water-level)) * 100% - var(--rkui-water-level) * var(--rkui-wave-height));
-  transition: translate var(--rkui-duration-slide) var(--rkui-ease-spring);
+    calc(
+      (1 - var(--rkui-water-level)) *
+        (100% + var(--rkui-outline-width) + 0.75 * var(--rkui-wave-height)) +
+        var(--rkui-water-level) * 0.25 * var(--rkui-wave-height)
+    );
+  transition: translate var(--rkui-duration-slide) var(--rkui-ease-snap);
   pointer-events: none;
 }
 
@@ -80,7 +86,7 @@
 /* The animation sets the level, so the level's transition would only drag behind it. */
 .rkui-water--rise {
   transition: none;
-  animation: rkui-water-rise 2.4s ease-in-out infinite alternate;
+  animation: rkui-water-rise var(--rkui-loop-long) ease-in-out infinite alternate;
 }
 
 @keyframes rkui-wave-roll {
@@ -91,11 +97,11 @@
 
 @keyframes rkui-water-rise {
   from {
-    --rkui-water-level: 0.1;
+    --rkui-water-level: 0.15;
   }
 
   to {
-    --rkui-water-level: 0.9;
+    --rkui-water-level: 1;
   }
 }
 
@@ -120,7 +126,7 @@
   --rkui-water-fill: var(--rkui-spinner-fill);
   --rkui-wave-length: calc(var(--rkui-spinner-size) * 0.6);
   --rkui-wave-height: calc(var(--rkui-spinner-size) / 6);
-  --rkui-wave-period: 0.9s;
+  --rkui-wave-period: var(--rkui-loop-short);
 }
 
 .rkui-spinner--water::after {
@@ -204,11 +210,12 @@
   --rkui-wave-line: var(--rkui-line-unfilled);
   --rkui-wave-length: 4rem;
   --rkui-wave-height: 0.75rem;
-  --rkui-wave-period: 2.4s;
+  --rkui-wave-period: var(--rkui-loop-long);
 }
 
-.rkui-pending > .rkui-water--rise {
-  animation-duration: 4s;
+/* :where() keeps this at the rise's weight, so the reduced-motion fade below replaces it. */
+.rkui-pending > :where(.rkui-water--rise) {
+  animation-duration: var(--rkui-loop-panel);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -217,8 +224,8 @@
     animation: none;
   }
 
-  .rkui-water--rise {
-    animation: rkui-spinner-fade 1.8s ease-in-out infinite alternate;
+  .rkui-water {
+    animation: rkui-spinner-fade var(--rkui-loop-medium) ease-in-out infinite alternate;
   }
 }
 

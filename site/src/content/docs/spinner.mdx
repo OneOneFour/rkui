@@ -3,30 +3,35 @@ title: Spinner
 description: The ring spinner, a busy indicator.
 group: Loading
 order: 80
+component: Spinner
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Ring from '../../examples/spinner/ring.astro'
-import ringCode from '../../examples/spinner/ring.astro?raw'
-import Sizes from '../../examples/spinner/sizes.astro'
-import sizesCode from '../../examples/spinner/sizes.astro?raw'
-import Fills from '../../examples/spinner/fills.astro'
-import fillsCode from '../../examples/spinner/fills.astro?raw'
+import Spinner from '@oneonefour/rkui/components/spinner/Spinner.vue'
 
-An outlined ring with a wedge rolling round inside it. Its label is read out, not shown.
+An outlined ring with a wedge rolling round inside it. Screen readers read out its label, which is never shown; it defaults to "Loading…".
 
-<Demo code={ringCode} label="Ring spinner">
-  <Ring />
+<Demo label="Ring spinner">
+  <Spinner label="Loading results…" />
 </Demo>
 
 ## Sizes
 
-<Demo code={sizesCode} label="Ring spinner sizes">
-  <Sizes />
+<Demo label="Ring spinner sizes">
+  <Spinner size="1.25rem" />
+  <Spinner />
+  <Spinner size="3rem" />
 </Demo>
 
 ## Hues
 
-<Demo code={fillsCode} label="Ring spinner hues">
-  <Fills />
+<Demo label="Ring spinner hues">
+  <Spinner size="3rem" hue="teal" />
+  <Spinner size="3rem" hue="coral" />
+  <Spinner size="3rem" hue="grape" />
 </Demo>
+
+## Reference
+
+<ApiReference component="Spinner" />

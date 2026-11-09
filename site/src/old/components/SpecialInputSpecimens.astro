@@ -166,10 +166,10 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
   ))}
 </SpecimenRow>
 
-<SpecimenRow title="Number stepper, split (.rkui-stepper--split): buttons either side">
+<SpecimenRow title="Number stepper, split (.rkui-stepper--split): buttons either side, static markup shown as live">
   {NUMBER_STATES.map((state) => (
     <Specimen label={state.label}>
-      <rkui-stepper class="rkui-stepper rkui-stepper--split">
+      <div class="rkui-stepper rkui-stepper--split" data-rkui-live>
         <button
           class="rkui-button"
           type="button"
@@ -198,15 +198,15 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
         >
           +
         </button>
-      </rkui-stepper>
+      </div>
     </Specimen>
   ))}
 </SpecimenRow>
 
-<SpecimenRow title="Number stepper, stacked (.rkui-stepper--stacked): arrows inside">
+<SpecimenRow title="Number stepper, stacked (.rkui-stepper--stacked): arrows inside, static markup shown as live">
   {NUMBER_STATES.map((state) => (
     <Specimen label={state.label.replace('+', 'up')}>
-      <rkui-stepper class="rkui-stepper rkui-stepper--stacked">
+      <div class="rkui-stepper rkui-stepper--stacked" data-rkui-live>
         <input
           class:list={['rkui-input', state.input]}
           type="number"
@@ -236,7 +236,7 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
         >
           <CaretDownIcon aria-hidden="true" />
         </button>
-      </rkui-stepper>
+      </div>
     </Specimen>
   ))}
 </SpecimenRow>
@@ -251,7 +251,3 @@ const TEXT_TYPES = ['email', 'url', 'tel', 'password'] as const
     </Specimen>
   ))}
 </SpecimenRow>
-
-<script>
-  import '@oneonefour/rkui/components/number/stepper.js'
-</script>

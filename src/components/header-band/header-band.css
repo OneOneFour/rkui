@@ -1,0 +1,54 @@
+/* Header band: a full-width block of colour at the top of a page or a section, with a small
+   kicker line over the page's heading, and a hard rule along its foot. Static, so it has no
+   outline or shadow.
+
+   <header class="rkui-header-band">
+     <p class="rkui-header-band-kicker">Section · kicker</p>
+     <h1>The page's title</h1>
+   </header>
+
+   --rkui-header-band-hue and --rkui-header-band-on-hue set the fill and the text (HeaderBand.vue's
+   `hue`). Left alone, the band is the page's section hue (--rkui-section) if it sets one; with
+   none, it is ink in light mode, and in dark mode it lets the page's colour show, with a line
+   along its foot in the colour of an outline without a fill, which any fill covers. That is the
+   Table's header band rule (DECISIONS, "Table header band in dark mode"). */
+
+.rkui-header-band {
+  --rkui-header-band-hue: var(--rkui-section, light-dark(var(--rkui-ink), transparent));
+  --rkui-header-band-on-hue: var(--rkui-on-section, light-dark(var(--rkui-on-ink), var(--rkui-fg)));
+  --rkui-header-band-underline: light-dark(transparent, var(--rkui-line-unfilled));
+
+  display: grid;
+  gap: var(--rkui-space-1);
+  padding: var(--rkui-space-5) clamp(var(--rkui-space-4), 5vw, var(--rkui-space-6));
+  border-block-end: var(--rkui-outline-width) solid var(--rkui-line);
+  background:
+    linear-gradient(var(--rkui-header-band-hue), var(--rkui-header-band-hue)),
+    linear-gradient(var(--rkui-header-band-underline), var(--rkui-header-band-underline)) bottom /
+      100% var(--rkui-outline-width) no-repeat;
+  color: var(--rkui-header-band-on-hue);
+}
+
+.rkui-header-band-kicker {
+  margin: 0;
+  font-size: var(--rkui-step--1);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* The page's heading, at any level, as one big slab. */
+.rkui-header-band > :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+  color: inherit;
+  font-family: var(--rkui-font-display);
+  font-size: var(--rkui-step-3);
+  font-weight: 800;
+  line-height: var(--rkui-line-height-heading);
+  text-wrap: balance;
+}
+
+.rkui-header-band > p:not(.rkui-header-band-kicker) {
+  margin: 0;
+  max-inline-size: 60ch;
+}

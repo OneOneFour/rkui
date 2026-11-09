@@ -1,0 +1,73 @@
+/* Quote: a static panel holding quoted text in the slab serif. It fills the column's width
+   with no indent, so its edges line up with the text around it, and keeps the same space above
+   and below whatever its length. A quote inside a quote sits on the panel tab, a step darker.
+
+   <blockquote class="rkui-quote"><p>Quoted text.</p></blockquote>
+
+   With an attribution:
+
+   <figure class="rkui-quote">
+     <blockquote><p>Quoted text.</p></blockquote>
+     <figcaption class="rkui-quote-by">Who said it</figcaption>
+   </figure>
+
+   Opt-in modifier: .rkui-quote--italic slants the quote. Roboto Slab has no italic, so the browser
+   slants the upright letters; emphasis inside turns upright.
+
+   quote-enhance.js marks a quote whose text is under three lines at this size with
+   data-rkui-short: a single line is set two steps larger, two lines a step larger.
+   .rkui-quote--short sets it two steps larger whatever its length. */
+
+.rkui-quote {
+  margin: var(--rkui-space-5) 0;
+  padding: var(--rkui-space-4);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-panel);
+  color: var(--rkui-fg);
+  font-family: var(--rkui-font-display);
+  font-weight: 400;
+}
+
+/* The quote's paragraphs, or in a figure its blockquote and attribution */
+.rkui-quote > *,
+.rkui-quote > blockquote > * {
+  margin: 0 0 var(--rkui-space-3);
+}
+
+.rkui-quote > :last-child,
+.rkui-quote > blockquote > :last-child {
+  margin-block-end: 0;
+}
+
+/* Its padding and margins are in rem, so a short quote keeps the same space around it. */
+.rkui-quote[data-rkui-short='two'] {
+  font-size: var(--rkui-step-1);
+}
+
+.rkui-quote[data-rkui-short='one'],
+.rkui-quote.rkui-quote--short {
+  font-size: var(--rkui-step-2);
+}
+
+.rkui-quote .rkui-quote {
+  background: var(--rkui-panel-tab);
+}
+
+.rkui-quote-by {
+  color: var(--rkui-muted);
+  font-family: var(--rkui-font-body);
+  font-size: var(--rkui-step--1);
+  font-style: normal;
+}
+
+.rkui-quote-by::before {
+  content: '— ';
+}
+
+.rkui-quote--italic {
+  font-style: italic;
+}
+
+.rkui-quote--italic em {
+  font-style: normal;
+}

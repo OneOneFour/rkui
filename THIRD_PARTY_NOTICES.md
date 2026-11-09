@@ -10,26 +10,51 @@ to the files it covers.
 | Xmind | Body and UI typeface | SIL Open Font License 1.1 | https://github.com/xmindltd/nevermind |
 | Roboto Slab | Heading typeface | Apache License 2.0 | https://github.com/google/fonts/tree/main/apache/robotoslab |
 | JetBrains Mono | Monospace typeface | SIL Open Font License 1.1 | https://github.com/google/fonts/tree/main/ofl/jetbrainsmono |
-| KaTeX and its maths fonts | Equations in the docs site, rendered at build time | MIT | https://github.com/KaTeX/KaTeX |
+| KaTeX and its maths fonts | Equation and Maths render TeX with it at build time. An optional peer dependency, not included: a site that uses them installs it | MIT | https://github.com/KaTeX/KaTeX |
 
 ## Docs site only
 
-The programming-language logos in `site/src/components/languages/` label the language of the docs
-site's code specimens. They are not part of the library: CodeBlock takes its logo from the site
-that uses it.
+The docs site labels the language of its code specimens with logos from the `simple-icons`
+package (a development dependency, drawn by `site/src/components/LanguageLogo.vue`), and marks the
+helper scripts that only matter in Safari with Safari's (`site/src/components/HelperBadge.astro`).
+They are not part of the library: CodeBlock takes its logo from the site that uses it.
 
 | Work | Licence | Source |
 |---|---|---|
-| Simple Icons paths (C++, Fortran, JavaScript, Python) | CC0 1.0 | https://github.com/simple-icons/simple-icons |
-| Julia logo (the Simple Icons path), by Stefan Karpinski | CC BY-NC-SA 4.0 | https://github.com/JuliaLang/julia-logo-graphics |
-| Markdown Mark (outline version), by Dustin Curtis | CC0 1.0 | https://github.com/dcurtis/markdown-mark |
+| Simple Icons paths (C++, Fortran, Python, Safari) | CC0 1.0 | https://github.com/simple-icons/simple-icons |
+| Simple Icons JavaScript path (the JS logo, by Christopher Williams) | MIT (below) | https://github.com/voodootikigod/logo.js |
+| Simple Icons Markdown path (Markdown Mark, by Dustin Curtis) | CC0 1.0 | https://github.com/dcurtis/markdown-mark |
 
 Simple Icons' CC0 dedication covers the SVG data, not the trademarks, which belong to their
-owners. The logos are shown in the caption's own flat grey; a page may give them an accent
-colour, except Python's, since the PSF asks for permission before its logo's colours are changed.
-The Julia logo
-is a single-colour adaptation of Stefan Karpinski's design, shared under the same CC BY-NC-SA 4.0
-licence, so it must not be reused commercially and any copy must carry that licence. Only logos
-that still read well in one colour are used: the C++, Fortran and JavaScript marks keep only the
-letters from the Simple Icons paths of the Standard C++ Foundation's, fortran-lang's and the
-community JS logos (the hexagon and square backgrounds are removed). The Markdown mark is the outline version from its creator's repository.
+owners. The logos are drawn unchanged in shape, flat in the caption's grey or the badge's text
+colour, never in their brand colours: the PSF asks for permission before its logo's colours are
+changed, and other brands' guidelines mostly allow only a black, white or grey version. Logos
+under NonCommercial or ShareAlike terms (Julia, Vue, Rust, R) aren't used.
+
+### The JS logo's licence
+
+Simple Icons takes its JavaScript path from logo.js, under this licence:
+
+```text
+The MIT License (MIT)
+
+Copyright (c) 2011 Christopher Williams <chris@iterativedesigns.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```

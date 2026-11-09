@@ -1,14 +1,15 @@
 ---
 /**
- * The two dark-mode shadow modes, the default slab and color, each on a few raised things: fills
- * that cast their own shade, and things that cast the lit shadow instead.
+ * The dark-mode shadows (outline, the default, block and color) with each highlight (cream, the
+ * default, and dark), each on a few raised things: fills that cast their own shade in color, and
+ * things that cast the lit shadow instead.
  *
  * @param theme the panel's theme, used to keep ids and names unique across the two panels
  */
-import Button from '@oneonefour/rkui/components/button/Button.astro'
-import Card from '@oneonefour/rkui/components/card/Card.astro'
-import Chip from '@oneonefour/rkui/components/chip/Chip.astro'
-import ChipGroup from '@oneonefour/rkui/components/chip/ChipGroup.astro'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import Card from '@oneonefour/rkui/components/card/Card.vue'
+import Chip from '@oneonefour/rkui/components/chip/Chip.vue'
+import ChipGroup from '@oneonefour/rkui/components/chip/ChipGroup.vue'
 import Ballot from './Ballot.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
@@ -19,10 +20,13 @@ interface Props {
 }
 
 const { theme } = Astro.props
-const MODES = [
-  { mode: 'slab', title: 'data-shadow="slab" (the default)' },
-  { mode: 'color', title: 'data-shadow="color"' },
-]
+const MODES = ['outline', 'block', 'color'].flatMap((shadow) =>
+  ['cream', 'dark'].map((highlight) => ({
+    shadow,
+    highlight,
+    title: `data-shadow="${shadow}" data-highlight="${highlight}"`,
+  })),
+)
 const FILLS = ['navy', 'coral', 'grape', 'teal'] as const
 const KEYS = ['One', 'Two', 'Three']
 const TILES = ['1', '2', '3'].map((number) => ({ value: number, label: number }))
@@ -34,10 +38,10 @@ const BALLOT = ['teal', 'green'].map((color) => ({
 }))
 ---
 
-{MODES.map(({ mode, title }) => {
-  const prefix = `${theme}-shadow-${mode}`
+{MODES.map(({ shadow, highlight, title }) => {
+  const prefix = `${theme}-shadow-${shadow}-${highlight}`
   return (
-    <div data-shadow={mode}>
+    <div data-shadow={shadow} data-highlight={highlight}>
       <SpecimenRow title={title}>
         <Specimen label="buttons: yellow, navy, coral, grape, teal">
           <Button>Button</Button>

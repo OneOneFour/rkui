@@ -12,11 +12,16 @@ const icons = import.meta.glob('../../../dist/icons/*.svg', {
 /** Where a plain page keeps the sprite: dist/ copied into the site as rkui/. */
 export const SPRITE = 'rkui/icons/sprite.svg'
 
-/** An SVG's drawing, for comparison: what's inside the <svg>, with self-closing tags written alike. */
+/**
+ * An SVG's drawing, for comparison: what's inside the <svg>, with empty and self-closing tags
+ * written alike, and style attributes without a final semicolon (Vue's renderer writes both).
+ */
 function drawing(svg) {
   return svg
     .slice(svg.indexOf('>') + 1, svg.lastIndexOf('</svg>'))
+    .replaceAll(/<(\w+)([^>]*)><\/\1>/g, '<$1$2/>')
     .replaceAll(/\s*\/>/g, '/>')
+    .replaceAll(/;"/g, '"')
     .trim()
 }
 

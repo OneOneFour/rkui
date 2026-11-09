@@ -1,29 +1,29 @@
 /* Tooltip: a short plain-text description of a control, shown above it while it is hovered or
-   focused. The control points at the bubble with aria-describedby; anything interactive belongs
-   in a popup instead. <rkui-tooltip> (rkui-tooltip.js) lets Escape hide it; without the script the
-   rest still works. A parent with overflow: hidden clips the bubble.
-   A, the default: an inverted bubble, in the page's colours swapped.
-   B, .rkui-tooltip--toon: a raised bubble with the outline and the hard shadow.
+   focused, with no JavaScript. The control points at the bubble with aria-describedby; anything
+   interactive belongs in a popup instead. A parent with overflow: hidden clips the bubble.
+   tooltip-enhance.js lets Escape hide an open bubble, marking the tooltip data-rkui-dismissed.
+   By default a raised bubble with the outline and the hard shadow; .rkui-tooltip--flat is a
+   bubble in the page's colours swapped, with no outline or shadow.
 
-   <rkui-tooltip class="rkui-tooltip">
+   <span class="rkui-tooltip">
      <button class="rkui-button" aria-describedby="save-tip">Save</button>
      <span class="rkui-tooltip-bubble" id="save-tip" role="tooltip">Text</span>
-   </rkui-tooltip> */
+   </span> */
 
 .rkui-tooltip {
-  --rkui-tooltip-fill: var(--rkui-fg);
-  --rkui-tooltip-text: var(--rkui-surface);
-  --rkui-tooltip-edge: transparent;
+  --rkui-tooltip-fill: var(--rkui-raised);
+  --rkui-tooltip-text: var(--rkui-fg);
+  --rkui-tooltip-edge: var(--rkui-line-unfilled);
   --rkui-tooltip-gap: var(--rkui-space-3);
 
   position: relative;
   display: inline-flex;
 }
 
-.rkui-tooltip--toon {
-  --rkui-tooltip-fill: var(--rkui-raised);
-  --rkui-tooltip-text: var(--rkui-fg);
-  --rkui-tooltip-edge: var(--rkui-line-unfilled);
+.rkui-tooltip--flat {
+  --rkui-tooltip-fill: var(--rkui-fg);
+  --rkui-tooltip-text: var(--rkui-surface);
+  --rkui-tooltip-edge: transparent;
 }
 
 .rkui-tooltip-bubble {
@@ -55,7 +55,7 @@
 /* drop-shadow, unlike box-shadow, follows the tail too. It can't be widened, so the edge is a
    second drop-shadow that shadows the first, moved on by --rkui-outline-width: it shows on the
    shadow's far sides only. */
-.rkui-tooltip--toon .rkui-tooltip-bubble {
+.rkui-tooltip:not(.rkui-tooltip--flat) .rkui-tooltip-bubble {
   filter: drop-shadow(
       var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0 var(--rkui-shadow-color)
     )
@@ -99,13 +99,15 @@
 }
 
 /* A short wait on hover, so a pointer passing over doesn't flash the bubble. */
-.rkui-tooltip:hover:not(:has(:focus-visible)) > .rkui-tooltip-bubble {
+.rkui-tooltip:hover:not(:has(:focus-visible), [data-rkui-dismissed]) > .rkui-tooltip-bubble {
   transition-delay: 300ms;
 }
 
-.rkui-tooltip[data-dismissed] > .rkui-tooltip-bubble {
+/* Hidden with Escape, until the pointer or focus comes back (tooltip-enhance.js). */
+.rkui-tooltip[data-rkui-dismissed] > .rkui-tooltip-bubble {
   opacity: 0;
   visibility: hidden;
+  translate: -50% var(--rkui-space-1);
 }
 
 /* Forced colours outline the tail's transparent edges too, so it is left out. */

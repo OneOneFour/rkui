@@ -1,13 +1,14 @@
-/* Maths: KaTeX's output, sized to the body font and coloured by the tokens. Load KaTeX's own
-   stylesheet before @oneonefour/rkui/styles.css, so these rules win. A display equation sits in a wrapper that
-   is a scroll region (overflow.css) for when it is too wide (tabindex="0" lets the keyboard scroll
-   it). Its id is the anchor that equation references (\href{#eq-…}) link to.
+/* Maths: KaTeX's output, sized to the body font and coloured by the tokens, for Equation, Maths
+   and EquationReference. Load KaTeX's own stylesheet before @oneonefour/rkui/styles.css, so these
+   rules win. A display equation sits in a wrapper that is a scroll region (overflow.css) for when
+   it is too wide (tabindex="0" lets the keyboard scroll it). Its id is the anchor that equation
+   references link to.
 
-   <div class="rkui-equation rkui-scroll" id="eq-lorenz" tabindex="0">
+   <div class="rkui-equation rkui-scroll" id="eq-lorenz" tabindex="0" role="region" aria-label="Equation 1">
      <span class="katex-display">…KaTeX output, with \tag{1}…</span>
    </div>
 
-   A bare wrapper is the default. Modifiers on .rkui-equation: --panel (a slate panel), --rule (a
+   A bare wrapper is the default. Modifiers on .rkui-equation: --panel (a panel), --rule (a
    rule down the left) and --key (a raised dashed panel for a key result). --rule and --key have
    side borders of their own, so they take .rkui-scroll--bar too, in place of the dots. Equation
    numbers, and references to them in prose (.rkui-eqref), are small lilac pills.
@@ -20,7 +21,10 @@
   font-size: var(--rkui-maths-scale, 1.15em);
 }
 
+/* Never wider than its container, even in one that sizes to its content (a flex column, a folder
+   sheet): a wide equation scrolls instead. */
 .rkui-equation {
+  max-inline-size: 100%;
   margin-block: var(--rkui-space-5);
   overflow-y: hidden;
   border-radius: var(--rkui-radius);
@@ -75,7 +79,7 @@
 }
 
 .rkui-equation--panel {
-  background: var(--rkui-slate);
+  background: var(--rkui-panel);
 }
 
 .rkui-equation--panel > .katex-display {
@@ -194,10 +198,18 @@
 }
 
 .rkui-maths-grape {
-  --rkui-term-tint: var(--rkui-lilac-tint);
+  --rkui-term-tint: var(--rkui-grape-tint);
 }
 
 .rkui-maths-tangerine {
+  --rkui-term-tint: var(--rkui-tangerine-tint);
+}
+
+.rkui-maths-lilac {
+  --rkui-term-tint: var(--rkui-lilac-tint);
+}
+
+.rkui-maths-apricot {
   --rkui-term-tint: var(--rkui-apricot-tint);
 }
 

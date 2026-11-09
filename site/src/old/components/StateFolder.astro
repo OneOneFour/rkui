@@ -1,0 +1,49 @@
+---
+/**
+ * A Folder's HTML written out, so one tab can carry a state class (`is-hover`, `is-active`,
+ * `is-focus`), which a Tab can't.
+ *
+ * @param name the radios' name, unique on the page
+ * @param tabs the tabs' labels
+ * @param selected the index of the tab that starts selected
+ * @param state a state class for one tab: its index and the class
+ */
+interface Props {
+  name: string
+  tabs: string[]
+  selected: number
+  state?: { tab: number; class: string }
+}
+
+const { name, tabs, selected, state } = Astro.props
+---
+
+<!-- Mirrors Folder's markup (Folder.vue), for the state specimens. -->
+<div class="rkui-folder rkui-folder--tabs rkui-folder--scroll" role="group" aria-label="Specimen">
+  <div class="rkui-folder-strip">
+    <div class="rkui-folder-tabs rkui-scroll">
+      {tabs.map((label, i) => (
+        <span class="rkui-strip-item">
+          <label
+            class:list={['rkui-folder-tab', state?.tab === i && state.class]}
+            id={`${name}-tab-${i}`}
+          >
+            <input type="radio" name={name} value={i} checked={i === selected} />
+            {label}
+          </label>
+        </span>
+      ))}
+    </div>
+  </div>
+  {tabs.map((_, i) => (
+    <div class="rkui-folder-sheet" role="group" aria-labelledby={`${name}-tab-${i}`} tabindex="0">
+      <p>Panel.</p>
+    </div>
+  ))}
+</div>
+
+<style>
+  .rkui-folder-sheet p {
+    margin: 0;
+  }
+</style>

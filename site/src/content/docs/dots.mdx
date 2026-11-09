@@ -3,22 +3,28 @@ title: Dots
 description: Three-dot loaders, a busy indicator.
 group: Loading
 order: 81
+component: Dots
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Bounce from '../../examples/dots/bounce.astro'
-import bounceCode from '../../examples/dots/bounce.astro?raw'
-import Variants from '../../examples/dots/variants.astro'
-import variantsCode from '../../examples/dots/variants.astro?raw'
+import Dots from '@oneonefour/rkui/components/spinner-dots/Dots.vue'
 
-Three dots that move in turn. Their label is read out, not shown.
+Three dots that move in turn. Screen readers read out their label, which is never shown; it defaults to "Loading…".
 
-<Demo code={bounceCode} label="Bouncing dots">
-  <Bounce />
+<Demo label="Bouncing dots">
+  <Dots />
+  <Dots size="3rem" />
 </Demo>
 
 ## Squash, triangle and orbit
 
-<Demo code={variantsCode} label="Dots loader variants">
-  <Variants />
+<Demo label="Dots loader variants">
+  <Dots variant="squash" />
+  <Dots variant="triangle" size="3rem" />
+  <Dots variant="orbit" />
 </Demo>
+
+## Reference
+
+<ApiReference component="Dots" />

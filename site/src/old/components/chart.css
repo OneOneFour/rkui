@@ -40,7 +40,7 @@
      <g class="rkui-heatmap-pop" aria-hidden="true"><rect class="rkui-heatmap-pop-band" rx="4" />
        <rect class="rkui-heatmap-pop-cell" rx="4" /></g>
      and after the SVG a toon tooltip (tooltip.css) for it to place:
-     <span class="rkui-tooltip rkui-tooltip--toon rkui-heatmap-tip" aria-hidden="true"><span
+     <span class="rkui-tooltip rkui-heatmap-tip" aria-hidden="true"><span
        class="rkui-tooltip-bubble"><strong class="rkui-heatmap-value"></strong>
        <span class="rkui-heatmap-name"></span></span></span>
    - small multiples: <div class="rkui-chart-multiples"><div><p class="rkui-chart-title">…</p><svg>…

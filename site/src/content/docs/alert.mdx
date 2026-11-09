@@ -1,0 +1,75 @@
+---
+title: Alert
+description: An urgent message in a box in the middle of the window.
+group: Containers
+order: 72
+component: Alert
+---
+
+import ApiReference from '../../components/ApiReference.astro'
+import Demo from '../../components/Demo.astro'
+import Alert from '@oneonefour/rkui/components/alert/Alert.vue'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import InfoIcon from '@oneonefour/rkui/icons/info.vue'
+
+Click the button to open the alert. The page behind it blurs, stays still and can't be used until
+it closes, and Escape closes it.
+
+<Demo label="Alert with one button">
+  <Button command="show-modal" commandfor="alert-basic">
+    Open
+  </Button>
+  <Alert id="alert-basic" title="Unsaved changes">
+    <p>Pack my box with five dozen liquor jugs.</p>
+    <Button slot="actions" command="close" commandfor="alert-basic">
+      OK
+    </Button>
+  </Alert>
+</Demo>
+
+## An answer it must have
+
+With `closedby="none"`, Escape leaves it open, so one of its buttons must close it. The button's
+`value` becomes the dialog's `returnValue`, which a script reads on its `close` event. `autofocus`
+starts focus on the safer button.
+
+<Demo label="Alert that waits for an answer">
+  <Button command="show-modal" commandfor="alert-answer">
+    Delete
+  </Button>
+  <Alert id="alert-answer" title="Delete for good?" closedby="none">
+    <p>Pack my box with five dozen liquor jugs.</p>
+    <Fragment slot="actions">
+      <Button unfilled command="close" commandfor="alert-answer" value="keep" autofocus>
+        Keep
+      </Button>
+      <Button hue="coral" command="close" commandfor="alert-answer" value="delete">
+        Delete
+      </Button>
+    </Fragment>
+  </Alert>
+</Demo>
+
+## Colour and icon
+
+<Demo label="Alert in teal with its own icon">
+  <Button hue="teal" command="show-modal" commandfor="alert-hue">
+    Open
+  </Button>
+  <Alert id="alert-hue" title="New version" hue="teal">
+    <InfoIcon slot="icon" class="rkui-icon" />
+    <p>Pack my box with five dozen liquor jugs.</p>
+    <Button slot="actions" command="close" commandfor="alert-hue">
+      OK
+    </Button>
+  </Alert>
+</Demo>
+
+## From a script
+
+A script opens an alert with `document.getElementById('alert-basic').showModal()`, as it would
+call `alert()`, and closes it with `close()`.
+
+## Reference
+
+<ApiReference component="Alert" />

@@ -3,30 +3,51 @@ title: Breadcrumbs
 description: The trail of pages leading to this one.
 group: Navigation
 order: 90
+component: Breadcrumbs
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Plain from '../../examples/breadcrumbs/plain.astro'
-import plainCode from '../../examples/breadcrumbs/plain.astro?raw'
-import Chips from '../../examples/breadcrumbs/chips.astro'
-import chipsCode from '../../examples/breadcrumbs/chips.astro?raw'
-import Path from '../../examples/breadcrumbs/path.astro'
-import pathCode from '../../examples/breadcrumbs/path.astro?raw'
+import Breadcrumbs from '@oneonefour/rkui/components/breadcrumbs/Breadcrumbs.vue'
 
 The last item is the current page.
 
-<Demo code={plainCode} label="Plain breadcrumbs">
-  <Plain />
+<Demo label="Plain breadcrumbs">
+  <Breadcrumbs
+    items={[
+      { label: 'Home', href: '#' },
+      { label: 'Section', href: '#' },
+      { label: 'Page', href: '#' },
+    ]}
+  />
 </Demo>
 
 ## Chips
 
-<Demo code={chipsCode} label="Chip breadcrumbs">
-  <Chips />
+<Demo label="Chip breadcrumbs">
+  <Breadcrumbs
+    variant="chips"
+    items={[
+      { label: 'Home', href: '#' },
+      { label: 'Section', href: '#' },
+      { label: 'Page', href: '#' },
+    ]}
+  />
 </Demo>
 
 ## Path bar
 
-<Demo code={pathCode} label="Path bar breadcrumbs">
-  <Path />
+<Demo label="Path bar breadcrumbs">
+  <Breadcrumbs
+    variant="path"
+    items={[
+      { label: 'Home', href: '#' },
+      { label: 'Section', href: '#' },
+      { label: 'Page', href: '#' },
+    ]}
+  />
 </Demo>
+
+## Reference
+
+<ApiReference component="Breadcrumbs" />

@@ -5,7 +5,8 @@
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
-import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import Tooltip from '@oneonefour/rkui/components/tooltip/Tooltip.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import CopyIcon from '@oneonefour/rkui/icons/copy.svg'
@@ -19,33 +20,27 @@ const { theme } = Astro.props
 const SPECIMEN_TEXT =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.'
 const OPTIONS = [
-  { label: 'A: inverted', class: '' },
-  { label: 'B: toon', class: 'rkui-tooltip--toon' },
+  { label: 'Toon', class: '', variant: 'toon' as const },
+  { label: 'Flat', class: 'rkui-tooltip--flat', variant: 'flat' as const },
 ]
 ---
 
-<SpecimenRow title="Tooltips: hover or focus the button, Escape hides">
+<SpecimenRow title="Tooltips: hover or focus the button">
   {OPTIONS.map((option, index) => (
     <Specimen label={option.label}>
-      <rkui-tooltip class:list={['rkui-tooltip', option.class]}>
+      <Tooltip id={`${theme}-tip-${index}`} text="Tooltip text" variant={option.variant}>
         <Button aria-describedby={`${theme}-tip-${index}`}>Button</Button>
-        <span class="rkui-tooltip-bubble" id={`${theme}-tip-${index}`} role="tooltip">
-          Tooltip text
-        </span>
-      </rkui-tooltip>
+      </Tooltip>
     </Specimen>
   ))}
   {OPTIONS.map((option, index) => (
     <Specimen label={`${option.label}, icon button`}>
-      <rkui-tooltip class:list={['rkui-tooltip', option.class]}>
+      <Tooltip id={`${theme}-icon-tip-${index}`} text={SPECIMEN_TEXT} variant={option.variant}>
         <Button hue="teal" aria-describedby={`${theme}-icon-tip-${index}`}>
           <CopyIcon class="rkui-icon" />
           <span class="rkui-visually-hidden">Copy</span>
         </Button>
-        <span class="rkui-tooltip-bubble" id={`${theme}-icon-tip-${index}`} role="tooltip">
-          {SPECIMEN_TEXT}
-        </span>
-      </rkui-tooltip>
+      </Tooltip>
     </Specimen>
   ))}
 </SpecimenRow>
@@ -101,10 +96,6 @@ const OPTIONS = [
     </div>
   </Specimen>
 </SpecimenRow>
-
-<script>
-  import '@oneonefour/rkui/components/tooltip/tooltip.js'
-</script>
 
 <style>
   /* The shown bubbles overhang their buttons, so give them room. */

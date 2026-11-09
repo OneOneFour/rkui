@@ -2,36 +2,141 @@
 title: Pagination
 description: Page links as folder tabs over the page's sheet.
 group: Navigation
-order: 93
+order: 92
+component: Pagination
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/pagination/default.astro'
-import defaultCode from '../../examples/pagination/default.astro?raw'
-import First from '../../examples/pagination/first.astro'
-import firstCode from '../../examples/pagination/first.astro?raw'
-import Narrow from '../../examples/pagination/narrow.astro'
-import narrowCode from '../../examples/pagination/narrow.astro?raw'
+import Pagination from '@oneonefour/rkui/components/pagination/Pagination.vue'
 
 Give it the `current` page, the `total` and an `href` function that returns a page's link. It
 links the first and last pages, the current one and its neighbours, with previous and next.
 
-<Demo code={defaultCode} label="Pagination" stack>
-  <Default />
+<Demo label="Pagination" stack>
+  <Pagination current={2} total={9} href={(page) => `#page-${page}`}>
+    <p>Page 2.</p>
+  </Pagination>
 </Demo>
 
 ## On the first page
 
 There is no previous link on the first page, and no next link on the last.
 
-<Demo code={firstCode} label="Pagination on the first page" stack>
-  <First />
+<Demo label="Pagination on the first page" stack>
+  <Pagination current={1} total={3} href={(page) => `#page-${page}`}>
+    <p>Page 1: no previous link.</p>
+  </Pagination>
 </Demo>
 
-## Narrow
+## Placement
 
-The scrollbar for the tabs sits above them.
-
-<Demo code={narrowCode} label="Narrow pagination" stack>
-  <Narrow />
+<Demo label="Pagination below" stack>
+  <Pagination current={2} total={9} href={(page) => `#page-${page}`} placement="bottom">
+    <p>Page 2.</p>
+  </Pagination>
 </Demo>
+
+<Demo label="Pagination on the left" stack>
+  <Pagination
+    current={5}
+    total={9}
+    href={(page) => `#page-${page}`}
+    placement="left"
+    style="min-block-size: 30rem"
+  >
+    <p>Page 5.</p>
+  </Pagination>
+</Demo>
+
+<Demo label="Pagination on the right" stack>
+  <Pagination
+    current={5}
+    total={9}
+    href={(page) => `#page-${page}`}
+    placement="right"
+    style="min-block-size: 30rem"
+  >
+    <p>Page 5.</p>
+  </Pagination>
+</Demo>
+
+## Collapse
+
+<Demo label="Narrow pagination that collapses" stack>
+  <Pagination
+    current={10}
+    total={20}
+    href={(page) => `#page-${page}`}
+    style="max-inline-size: 24rem"
+  >
+    <p>Page 10 of 20.</p>
+  </Pagination>
+</Demo>
+
+<Demo label="Wide pagination that collapses" stack>
+  <Pagination current={10} total={20} href={(page) => `#page-${page}`}>
+    <p>Page 10 of 20.</p>
+  </Pagination>
+</Demo>
+
+## Scroll
+
+Links that don't fit scroll, with dots at the strip's ends; `dots="pill"` puts them in pills (see
+[Scroll](../scroll/)).
+
+<Demo label="Narrow pagination that scrolls" stack>
+  <Pagination
+    current={10}
+    total={20}
+    href={(page) => `#page-${page}`}
+    overflow="scroll"
+    style="max-inline-size: 16rem"
+  >
+    <p>Page 10 of 20.</p>
+  </Pagination>
+</Demo>
+
+## Without step tabs
+
+<Demo label="Pagination without step tabs" stack>
+  <Pagination current={5} total={9} href={(page) => `#page-${page}`} steps={false}>
+    <p>Page 5.</p>
+  </Pagination>
+</Demo>
+
+## Tiles
+
+<Demo label="Pagination as tiles" stack>
+  <Pagination current={2} total={9} href={(page) => `#page-${page}`} variant="tiles">
+    <p>Page 2.</p>
+  </Pagination>
+</Demo>
+
+<Demo label="Pagination as tiles below" stack>
+  <Pagination
+    current={10}
+    total={20}
+    href={(page) => `#page-${page}`}
+    variant="tiles"
+    placement="bottom"
+  >
+    <p>Page 10 of 20.</p>
+  </Pagination>
+</Demo>
+
+<Demo label="Narrow pagination as tiles" stack>
+  <Pagination
+    current={10}
+    total={20}
+    href={(page) => `#page-${page}`}
+    variant="tiles"
+    style="max-inline-size: 24rem"
+  >
+    <p>Page 10 of 20.</p>
+  </Pagination>
+</Demo>
+
+## Reference
+
+<ApiReference component="Pagination" />

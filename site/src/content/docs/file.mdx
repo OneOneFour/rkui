@@ -1,44 +1,45 @@
 ---
 title: File
-description: A file input, as a framed button or a drop panel.
+description: A file input, as a framed button or a drop panel that shows the chosen file.
 group: Form controls
 order: 46
+component: File
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Button from '../../examples/file/button.astro'
-import buttonCode from '../../examples/file/button.astro?raw'
-import Multiple from '../../examples/file/multiple.astro'
-import multipleCode from '../../examples/file/multiple.astro?raw'
-import Drop from '../../examples/file/drop.astro'
-import dropCode from '../../examples/file/drop.astro?raw'
-import Disabled from '../../examples/file/disabled.astro'
-import disabledCode from '../../examples/file/disabled.astro?raw'
-import ErrorDemo from '../../examples/file/error.astro'
-import errorCode from '../../examples/file/error.astro?raw'
+import File from '@oneonefour/rkui/components/file/File.vue'
 
-<Demo code={buttonCode} label="File input with a button" stack>
-  <Button />
+<Demo label="File input with a button" stack>
+  <File label="Attachment" name="file-button" />
 </Demo>
 
-<Demo code={multipleCode} label="File input for several files" stack>
-  <Multiple />
+<Demo label="File input for several files" stack>
+  <File label="Photos" name="file-multiple" accept="image/*" multiple />
 </Demo>
 
 ## Drop panel
 
-<Demo code={dropCode} label="File drop panel" stack>
-  <Drop />
+The drop panel takes a click or dropped files. With `file-enhance.js` (in `enhance.js`) it shows the chosen files' names, joined with commas, and clears them when its form is reset; without it the panel keeps showing its prompt.
+
+<Demo label="File drop panel" stack>
+  <File variant="drop" aria-label="Upload" name="file-drop" multiple />
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled file inputs" stack>
-  <Disabled />
+<Demo label="Disabled file inputs" stack>
+  <File aria-label="Attachment" disabled />
+  <File variant="drop" aria-label="Upload" disabled />
 </Demo>
 
 ## Error
 
-<Demo code={errorCode} label="File inputs with an error" stack>
-  <ErrorDemo />
+<Demo label="File inputs with an error" stack>
+  <File label="Attachment" name="file-error" error="Error message" />
+  <File variant="drop" label="Upload" name="file-drop-error" error="Error message" />
 </Demo>
+
+## Reference
+
+<ApiReference component="File" />

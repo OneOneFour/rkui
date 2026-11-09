@@ -1,5 +1,5 @@
 // Paste this inline at the top of <head>, as a classic script, so it runs before the page is drawn.
-// The Astro integration will do this for you.
+// It applies the reader's stored light or dark choice; with none, the page follows the OS.
 try {
   const theme = localStorage.getItem('rkui-theme')
   if (theme === 'light' || theme === 'dark') {

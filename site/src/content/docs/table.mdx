@@ -1,0 +1,772 @@
+---
+title: Table
+description: A data table on a toon sheet, with a header band, ruled rows and sticker cells.
+group: Containers
+order: 78
+component: Table
+---
+
+import ApiReference from '../../components/ApiReference.astro'
+import Demo from '../../components/Demo.astro'
+import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
+import Table from '@oneonefour/rkui/components/table/Table.vue'
+import CheckIcon from '@oneonefour/rkui/icons/check.vue'
+import XIcon from '@oneonefour/rkui/icons/x.vue'
+
+<Demo label="Results table" stack>
+  <Table caption="Lorenz runs" hue="teal">
+    <thead>
+      <tr>
+        <th scope="col">Run</th>
+        <th scope="col">σ</th>
+        <th scope="col">ρ</th>
+        <th scope="col">β</th>
+        <th scope="col">Δt (s)</th>
+        <th scope="col">Steps</th>
+        <th scope="col">x₀</th>
+        <th scope="col">y₀</th>
+        <th scope="col">z₀</th>
+        <th scope="col">λ₁</th>
+        <th scope="col">max |x|</th>
+        <th scope="col">Wall time (s)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">a</th>
+        <td>10</td>
+        <td>28</td>
+        <td>2.667</td>
+        <td>0.01</td>
+        <td>10 000</td>
+        <td>1.0</td>
+        <td>1.0</td>
+        <td>1.0</td>
+        <td>0.906</td>
+        <td>19.6</td>
+        <td>0.8</td>
+      </tr>
+      <tr>
+        <th scope="row">b</th>
+        <td>10</td>
+        <td>99.96</td>
+        <td>2.667</td>
+        <td>0.005</td>
+        <td>20 000</td>
+        <td>0.1</td>
+        <td>0.0</td>
+        <td>0.0</td>
+        <td>1.42</td>
+        <td>41.3</td>
+        <td>1.7</td>
+      </tr>
+      <tr>
+        <th scope="row">c</th>
+        <td>16</td>
+        <td>45.92</td>
+        <td>4.0</td>
+        <td>0.01</td>
+        <td>10 000</td>
+        <td>1.0</td>
+        <td>0.0</td>
+        <td>20.0</td>
+        <td>1.50</td>
+        <td>26.4</td>
+        <td>0.9</td>
+      </tr>
+      <tr>
+        <th scope="row">d</th>
+        <td>10</td>
+        <td>13</td>
+        <td>2.667</td>
+        <td>0.01</td>
+        <td>5 000</td>
+        <td>1.0</td>
+        <td>1.0</td>
+        <td>1.0</td>
+        <td>−0.12</td>
+        <td>8.4</td>
+        <td>0.4</td>
+      </tr>
+    </tbody>
+  </Table>
+</Demo>
+
+A table wider than its sheet scrolls sideways inside it, with dots at the edges; `dots="pill"` puts
+them in pills (see [Scroll](../scroll/)).
+`bar` keeps the scrollbar in view instead, with no dots; a plain HTML page writes it as the class
+`rkui-scroll--bar` on the scroll region.
+
+<Demo label="Table with a scrollbar that stays" stack>
+  <Table caption="Lorenz parameters" hue="sky" bar style="max-inline-size: min(24rem, 100%)">
+    <thead>
+      <tr>
+        <th scope="col">Run</th>
+        <th scope="col">σ</th>
+        <th scope="col">ρ</th>
+        <th scope="col">β</th>
+        <th scope="col">Δt</th>
+        <th scope="col">Steps</th>
+        <th scope="col">x₀</th>
+        <th scope="col">y₀</th>
+        <th scope="col">z₀</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">a</th>
+        <td>10</td>
+        <td>28</td>
+        <td>2.667</td>
+        <td>0.01</td>
+        <td>10 000</td>
+        <td>1.0</td>
+        <td>1.0</td>
+        <td>1.0</td>
+      </tr>
+      <tr>
+        <th scope="row">b</th>
+        <td>10</td>
+        <td>99.96</td>
+        <td>2.667</td>
+        <td>0.005</td>
+        <td>20 000</td>
+        <td>0.1</td>
+        <td>0.0</td>
+        <td>0.0</td>
+      </tr>
+    </tbody>
+  </Table>
+</Demo>
+
+## Sticker cells
+
+<Demo label="Table with sticker cells" stack>
+  <Table caption="Integrators" hue="yellow">
+    <thead>
+      <tr>
+        <th scope="col">Method</th>
+        <th scope="col">Order</th>
+        <th scope="col">Symplectic</th>
+        <th scope="col">Adaptive step</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Euler</th>
+        <td>1</td>
+        <td>
+          <Badge hue="coral">
+            <XIcon class="rkui-icon" /> No
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="coral">
+            <XIcon class="rkui-icon" /> No
+          </Badge>
+        </td>
+        <td>
+          <Badge tint hue="tangerine">
+            Legacy
+          </Badge>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Leapfrog</th>
+        <td>2</td>
+        <td>
+          <Badge hue="green">
+            <CheckIcon class="rkui-icon" /> Yes
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="coral">
+            <XIcon class="rkui-icon" /> No
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="teal">Stable</Badge>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">RK4</th>
+        <td>4</td>
+        <td>
+          <Badge hue="coral">
+            <XIcon class="rkui-icon" /> No
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="green">
+            <CheckIcon class="rkui-icon" /> Yes
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="teal">Stable</Badge>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Yoshida</th>
+        <td>4</td>
+        <td>
+          <Badge hue="green">
+            <CheckIcon class="rkui-icon" /> Yes
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="coral">
+            <XIcon class="rkui-icon" /> No
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="grape">Beta</Badge>
+        </td>
+      </tr>
+    </tbody>
+  </Table>
+</Demo>
+
+## Messy stickers
+
+<Demo label="Table with messy stickers" stack>
+  <Table caption="Integrators" hue="yellow" messy>
+    <thead>
+      <tr>
+        <th scope="col">Method</th>
+        <th scope="col">Order</th>
+        <th scope="col">Symplectic</th>
+        <th scope="col">Adaptive step</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Euler</th>
+        <td>1</td>
+        <td>
+          <Badge hue="coral">
+            <XIcon class="rkui-icon" /> No
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="coral">
+            <XIcon class="rkui-icon" /> No
+          </Badge>
+        </td>
+        <td>
+          <Badge tint hue="tangerine">
+            Legacy
+          </Badge>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Leapfrog</th>
+        <td>2</td>
+        <td>
+          <Badge hue="green">
+            <CheckIcon class="rkui-icon" /> Yes
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="coral">
+            <XIcon class="rkui-icon" /> No
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="teal">Stable</Badge>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">RK4</th>
+        <td>4</td>
+        <td>
+          <Badge hue="coral">
+            <XIcon class="rkui-icon" /> No
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="green">
+            <CheckIcon class="rkui-icon" /> Yes
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="teal">Stable</Badge>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Yoshida</th>
+        <td>4</td>
+        <td>
+          <Badge hue="green">
+            <CheckIcon class="rkui-icon" /> Yes
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="coral">
+            <XIcon class="rkui-icon" /> No
+          </Badge>
+        </td>
+        <td>
+          <Badge hue="grape">Beta</Badge>
+        </td>
+      </tr>
+    </tbody>
+  </Table>
+</Demo>
+
+## Ledger
+
+<Demo label="Ledger table" stack>
+  <Table caption="Pendulum log" variant="ledger">
+    <thead>
+      <tr>
+        <th scope="col">Trial</th>
+        <th scope="col">Length (m)</th>
+        <th scope="col">Swings</th>
+        <th scope="col">Time (s)</th>
+        <th scope="col">Period (s)</th>
+        <th scope="col">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>0.25</td>
+        <td>20</td>
+        <td>20.1</td>
+        <td>1.005</td>
+        <td>Lorem ipsum</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>0.50</td>
+        <td>20</td>
+        <td>28.4</td>
+        <td>1.420</td>
+        <td>Dolor sit amet</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>0.75</td>
+        <td>20</td>
+        <td>34.8</td>
+        <td>1.740</td>
+        <td>Consectetur</td>
+      </tr>
+      <tr>
+        <th scope="row">4</th>
+        <td>1.00</td>
+        <td>20</td>
+        <td>40.1</td>
+        <td>2.005</td>
+        <td>Adipiscing elit</td>
+      </tr>
+      <tr>
+        <th scope="row">5</th>
+        <td>1.25</td>
+        <td>20</td>
+        <td>44.9</td>
+        <td>2.245</td>
+        <td>Sed do eiusmod</td>
+      </tr>
+    </tbody>
+  </Table>
+</Demo>
+
+## Small
+
+<Demo label="Small table" stack>
+  <Table caption="Constants" hue="navy" small>
+    <thead>
+      <tr>
+        <th scope="col">Symbol</th>
+        <th scope="col">Name</th>
+        <th scope="col">Value</th>
+        <th scope="col">Unit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">c</th>
+        <td>Speed of light</td>
+        <td>299 792 458</td>
+        <td>m s⁻¹</td>
+      </tr>
+      <tr>
+        <th scope="row">G</th>
+        <td>Gravitational constant</td>
+        <td>6.674 × 10⁻¹¹</td>
+        <td>m³ kg⁻¹ s⁻²</td>
+      </tr>
+      <tr>
+        <th scope="row">h</th>
+        <td>Planck constant</td>
+        <td>6.626 × 10⁻³⁴</td>
+        <td>J s</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          k<sub>B</sub>
+        </th>
+        <td>Boltzmann constant</td>
+        <td>1.381 × 10⁻²³</td>
+        <td>J K⁻¹</td>
+      </tr>
+    </tbody>
+  </Table>
+</Demo>
+
+## Still
+
+<Demo label="Still table, with no entrance" stack>
+  <Table caption="Moons" hue="green" still>
+    <thead>
+      <tr>
+        <th scope="col">Moon</th>
+        <th scope="col">Planet</th>
+        <th scope="col">Radius (km)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Io</th>
+        <td>Jupiter</td>
+        <td>1822</td>
+      </tr>
+      <tr>
+        <th scope="row">Titan</th>
+        <td>Saturn</td>
+        <td>2575</td>
+      </tr>
+      <tr>
+        <th scope="row">Triton</th>
+        <td>Neptune</td>
+        <td>1353</td>
+      </tr>
+    </tbody>
+  </Table>
+</Demo>
+
+## Lift
+
+<Demo label="Table with lifting rows" stack>
+  <Table caption="Planets" hue="grape" lift>
+    <thead>
+      <tr>
+        <th scope="col">Planet</th>
+        <th scope="col">Distance (AU)</th>
+        <th scope="col">Period (years)</th>
+        <th scope="col">Moons</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Mercury</th>
+        <td>0.39</td>
+        <td>0.24</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <th scope="row">Venus</th>
+        <td>0.72</td>
+        <td>0.62</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <th scope="row">Earth</th>
+        <td>1.00</td>
+        <td>1.00</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <th scope="row">Mars</th>
+        <td>1.52</td>
+        <td>1.88</td>
+        <td>2</td>
+      </tr>
+    </tbody>
+  </Table>
+</Demo>
+
+## Sticky header and first column
+
+<Demo label="Long table with a sticky header and first column" stack>
+  <Table
+    caption="Lorenz trajectory, every 100 steps"
+    style="max-block-size: 22rem; max-inline-size: min(34rem, 100%)"
+  >
+    <thead>
+      <tr>
+        <th scope="col">Step</th>
+        <th scope="col">t</th>
+        <th scope="col">x</th>
+        <th scope="col">y</th>
+        <th scope="col">z</th>
+        <th scope="col">ẋ</th>
+        <th scope="col">ẏ</th>
+        <th scope="col">ż</th>
+        <th scope="col">|r|</th>
+        <th scope="col">|v|</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">0</th>
+        <td>0.00</td>
+        <td>1.000</td>
+        <td>1.000</td>
+        <td>1.000</td>
+        <td>0.000</td>
+        <td>26.000</td>
+        <td>−1.667</td>
+        <td>1.732</td>
+        <td>26.053</td>
+      </tr>
+      <tr>
+        <th scope="row">100</th>
+        <td>1.00</td>
+        <td>−9.379</td>
+        <td>−8.357</td>
+        <td>29.362</td>
+        <td>10.216</td>
+        <td>21.135</td>
+        <td>0.078</td>
+        <td>31.937</td>
+        <td>23.474</td>
+      </tr>
+      <tr>
+        <th scope="row">200</th>
+        <td>2.00</td>
+        <td>−8.173</td>
+        <td>−9.562</td>
+        <td>24.621</td>
+        <td>−13.886</td>
+        <td>−18.060</td>
+        <td>12.500</td>
+        <td>27.648</td>
+        <td>25.984</td>
+      </tr>
+      <tr>
+        <th scope="row">300</th>
+        <td>3.00</td>
+        <td>−7.457</td>
+        <td>−6.191</td>
+        <td>27.442</td>
+        <td>12.657</td>
+        <td>2.030</td>
+        <td>−27.015</td>
+        <td>29.103</td>
+        <td>29.902</td>
+      </tr>
+      <tr>
+        <th scope="row">400</th>
+        <td>4.00</td>
+        <td>−10.091</td>
+        <td>−10.931</td>
+        <td>27.972</td>
+        <td>−8.399</td>
+        <td>10.647</td>
+        <td>35.705</td>
+        <td>31.682</td>
+        <td>38.194</td>
+      </tr>
+      <tr>
+        <th scope="row">500</th>
+        <td>5.00</td>
+        <td>−6.512</td>
+        <td>−6.974</td>
+        <td>23.924</td>
+        <td>−4.618</td>
+        <td>−19.568</td>
+        <td>−18.384</td>
+        <td>25.757</td>
+        <td>27.244</td>
+      </tr>
+      <tr>
+        <th scope="row">600</th>
+        <td>6.00</td>
+        <td>−9.742</td>
+        <td>−7.707</td>
+        <td>30.886</td>
+        <td>20.352</td>
+        <td>35.826</td>
+        <td>−7.277</td>
+        <td>33.291</td>
+        <td>41.841</td>
+      </tr>
+      <tr>
+        <th scope="row">700</th>
+        <td>7.00</td>
+        <td>−7.664</td>
+        <td>−9.841</td>
+        <td>22.589</td>
+        <td>−21.771</td>
+        <td>−31.628</td>
+        <td>15.187</td>
+        <td>25.804</td>
+        <td>41.291</td>
+      </tr>
+      <tr>
+        <th scope="row">800</th>
+        <td>8.00</td>
+        <td>−7.013</td>
+        <td>−4.586</td>
+        <td>28.386</td>
+        <td>24.269</td>
+        <td>7.294</td>
+        <td>−43.537</td>
+        <td>29.597</td>
+        <td>50.375</td>
+      </tr>
+      <tr>
+        <th scope="row">900</th>
+        <td>9.00</td>
+        <td>−9.981</td>
+        <td>−12.931</td>
+        <td>24.848</td>
+        <td>−29.493</td>
+        <td>−18.531</td>
+        <td>62.803</td>
+        <td>29.736</td>
+        <td>71.816</td>
+      </tr>
+      <tr>
+        <th scope="row">1000</th>
+        <td>10.00</td>
+        <td>−4.903</td>
+        <td>−3.743</td>
+        <td>24.692</td>
+        <td>11.594</td>
+        <td>−12.476</td>
+        <td>−47.492</td>
+        <td>25.451</td>
+        <td>50.453</td>
+      </tr>
+      <tr>
+        <th scope="row">1100</th>
+        <td>11.00</td>
+        <td>−11.663</td>
+        <td>−14.815</td>
+        <td>27.173</td>
+        <td>−31.529</td>
+        <td>5.174</td>
+        <td>100.324</td>
+        <td>33.074</td>
+        <td>105.289</td>
+      </tr>
+      <tr>
+        <th scope="row">1200</th>
+        <td>12.00</td>
+        <td>−3.344</td>
+        <td>−1.981</td>
+        <td>23.598</td>
+        <td>13.623</td>
+        <td>−12.736</td>
+        <td>−56.304</td>
+        <td>23.916</td>
+        <td>59.313</td>
+      </tr>
+      <tr>
+        <th scope="row">1300</th>
+        <td>13.00</td>
+        <td>−5.734</td>
+        <td>−9.827</td>
+        <td>13.894</td>
+        <td>−40.933</td>
+        <td>−71.048</td>
+        <td>19.291</td>
+        <td>17.958</td>
+        <td>84.235</td>
+      </tr>
+      <tr>
+        <th scope="row">1400</th>
+        <td>14.00</td>
+        <td>8.749</td>
+        <td>16.247</td>
+        <td>12.391</td>
+        <td>74.980</td>
+        <td>120.318</td>
+        <td>109.106</td>
+        <td>22.227</td>
+        <td>178.892</td>
+      </tr>
+      <tr>
+        <th scope="row">1500</th>
+        <td>15.00</td>
+        <td>−4.385</td>
+        <td>−2.064</td>
+        <td>25.904</td>
+        <td>23.210</td>
+        <td>−7.126</td>
+        <td>−60.025</td>
+        <td>26.354</td>
+        <td>64.750</td>
+      </tr>
+      <tr>
+        <th scope="row">1600</th>
+        <td>16.00</td>
+        <td>−6.579</td>
+        <td>−10.806</td>
+        <td>15.858</td>
+        <td>−42.271</td>
+        <td>−69.082</td>
+        <td>28.813</td>
+        <td>20.286</td>
+        <td>85.962</td>
+      </tr>
+      <tr>
+        <th scope="row">1700</th>
+        <td>17.00</td>
+        <td>−15.375</td>
+        <td>−12.038</td>
+        <td>39.390</td>
+        <td>33.371</td>
+        <td>187.159</td>
+        <td>80.044</td>
+        <td>43.964</td>
+        <td>206.274</td>
+      </tr>
+      <tr>
+        <th scope="row">1800</th>
+        <td>18.00</td>
+        <td>0.835</td>
+        <td>−0.846</td>
+        <td>22.290</td>
+        <td>−16.818</td>
+        <td>5.617</td>
+        <td>−60.147</td>
+        <td>22.322</td>
+        <td>62.706</td>
+      </tr>
+      <tr>
+        <th scope="row">1900</th>
+        <td>19.00</td>
+        <td>3.593</td>
+        <td>5.582</td>
+        <td>19.903</td>
+        <td>19.894</td>
+        <td>23.509</td>
+        <td>−33.018</td>
+        <td>20.981</td>
+        <td>45.152</td>
+      </tr>
+      <tr>
+        <th scope="row">2000</th>
+        <td>20.00</td>
+        <td>13.473</td>
+        <td>12.691</td>
+        <td>34.392</td>
+        <td>−7.814</td>
+        <td>−98.812</td>
+        <td>79.279</td>
+        <td>39.057</td>
+        <td>126.925</td>
+      </tr>
+    </tbody>
+  </Table>
+</Demo>
+
+## Reference
+
+<ApiReference component="Table" />

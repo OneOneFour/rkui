@@ -1,6 +1,7 @@
 /* Badges: a small pill for a status or a count. Static, so inline badges have no outline.
    Solid by default (yellow); .rkui-badge--tint is the quiet version, a tint panel with --rkui-fg
-   text. The hue modifiers set both. An .rkui-icon inside takes the badge's hue as its fill.
+   text. The hue modifiers set both; for any other colour, set --rkui-badge-fill, --rkui-badge-label
+   and --rkui-badge-tint. An .rkui-icon inside takes the badge's fill as its own.
 
    On a corner: wrap the picture or button in .rkui-badge-host and add .rkui-badge--corner. On a
    round host, add .rkui-badge-host--round so the badge sits on the circle's edge. .rkui-badge--dot
@@ -117,10 +118,25 @@
 .rkui-badge--grape {
   --rkui-badge-fill: var(--rkui-grape);
   --rkui-badge-label: var(--rkui-on-grape);
-  --rkui-badge-tint: var(--rkui-lilac-tint);
+  --rkui-badge-tint: var(--rkui-grape-tint);
+}
+
+.rkui-badge--sky {
+  --rkui-badge-fill: var(--rkui-sky);
+  --rkui-badge-tint: var(--rkui-sky-tint);
 }
 
 .rkui-badge--tangerine {
   --rkui-badge-fill: var(--rkui-tangerine);
+  --rkui-badge-tint: var(--rkui-tangerine-tint);
+}
+
+.rkui-badge--lilac {
+  --rkui-badge-fill: var(--rkui-lilac);
+  --rkui-badge-tint: var(--rkui-lilac-tint);
+}
+
+.rkui-badge--apricot {
+  --rkui-badge-fill: var(--rkui-apricot);
   --rkui-badge-tint: var(--rkui-apricot-tint);
 }

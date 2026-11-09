@@ -13,18 +13,44 @@
    Opt-in modifier: .rkui-scroll--bar keeps the scrollbar visible, with no dots. Use it on an
    element with side borders of its own, which the dots' gutters would replace.
 
-   The dots follow the scroll position with a scroll-driven animation. Browsers without one show
-   the scrollbar at all times instead. */
+   The dots follow the scroll position with a scroll-driven animation. Browsers without one get
+   them from overflow-enhance.js instead, and show the scrollbar at all times.
 
-/* The scrollbar's colours and size. A sidebar's scroller (sidebar.css) shares the scrollbar, stood
-   on end. */
+   Two looks for the dots, plain or a pill: set data-rkui-dots="pill" on <html> or on any
+   container (or one region, or a component's outer element, where its `dots` prop writes it) and
+   its dots sit in a raised yellow pill that slides in from the edge, in wider gutters. Sidebars
+   (sidebar.css) take it too. data-rkui-dots="plain" switches back inside it. Browsers without
+   @scope show plain dots in the wider gutters.
+
+   The scrollbar's look and the pill's colours pass down: set any of these on <html>, a container
+   or a component to change every scroll region inside it. Each falls back to its default.
+     --rkui-scroll-track       the track (--rkui-raised)
+     --rkui-scroll-track-edge  the track's outline (--rkui-line-unfilled)
+     --rkui-scroll-thumb       the thumb (--rkui-selected)
+     --rkui-scroll-thumb-edge  the thumb's outline (--rkui-line)
+     --rkui-scroll-bar-size    the scrollbar's thickness (0.875rem)
+     --rkui-pill-fill          the pill (--rkui-selected)
+     --rkui-pill-edge          the pill's outline (--rkui-line)
+     --rkui-pill-dot           the dots on the pill (--rkui-on-selected)
+
+   Every other scrollbar on the page (the page's own, a textarea's, a plain <pre>'s) takes the
+   colours set on <html>, in the browser's own shape, with no dots and no hiding. */
+
+:root {
+  --rkui-scroll-bar-size: 0.875rem;
+}
+
+/* The colours each scrollbar is drawn in: the settings above, or their defaults. Each scroller
+   works out its own, so the defaults follow a palette container's colours, and one that hides
+   its scrollbar (below) doesn't hide a nested one's. A sidebar's scroller (sidebar.css) shares
+   the scrollbar, stood on end. */
+:root,
 .rkui-scroll,
 .rkui-sidebar-scroll {
-  --rkui-scroll-bar-size: 0.875rem;
-  --rkui-scroll-track: var(--rkui-raised);
-  --rkui-scroll-track-edge: var(--rkui-line-unfilled);
-  --rkui-scroll-thumb: var(--rkui-selected);
-  --rkui-scroll-thumb-edge: var(--rkui-line);
+  --rkui-scroll-drawn-track: var(--rkui-scroll-track, var(--rkui-raised));
+  --rkui-scroll-drawn-track-edge: var(--rkui-scroll-track-edge, var(--rkui-line-unfilled));
+  --rkui-scroll-drawn-thumb: var(--rkui-scroll-thumb, var(--rkui-selected));
+  --rkui-scroll-drawn-thumb-edge: var(--rkui-scroll-thumb-edge, var(--rkui-line));
 }
 
 .rkui-scroll {
@@ -47,9 +73,9 @@
 }
 
 :is(.rkui-scroll, .rkui-sidebar-scroll)::-webkit-scrollbar-track {
-  border: var(--rkui-outline-width) solid var(--rkui-scroll-track-edge);
+  border: var(--rkui-outline-width) solid var(--rkui-scroll-drawn-track-edge);
   border-radius: var(--rkui-radius-pill);
-  background: var(--rkui-scroll-track);
+  background: var(--rkui-scroll-drawn-track);
 }
 
 .rkui-scroll::-webkit-scrollbar-track {
@@ -61,15 +87,30 @@
 }
 
 :is(.rkui-scroll, .rkui-sidebar-scroll)::-webkit-scrollbar-thumb {
-  border: var(--rkui-outline-width) solid var(--rkui-scroll-thumb-edge);
+  border: var(--rkui-outline-width) solid var(--rkui-scroll-drawn-thumb-edge);
   border-radius: var(--rkui-radius-pill);
-  background: var(--rkui-scroll-thumb);
+  background: var(--rkui-scroll-drawn-thumb);
+}
+
+/* Every other scrollbar: the colours only. */
+:root {
+  scrollbar-color: var(--rkui-scroll-drawn-thumb) var(--rkui-scroll-drawn-track);
+}
+
+/* Chrome draws no styled parts where scrollbar-color is set, so a scroller that has them drops the
+   page's colours. Firefox ESR 153 matches this selector without styling the parts, so its
+   scrollers' scrollbars stay grey. */
+@supports selector(::-webkit-scrollbar) {
+  .rkui-scroll,
+  .rkui-sidebar-scroll {
+    scrollbar-color: auto;
+  }
 }
 
 @supports not selector(::-webkit-scrollbar) {
   .rkui-scroll,
   .rkui-sidebar-scroll {
-    scrollbar-color: var(--rkui-scroll-thumb) var(--rkui-scroll-track);
+    scrollbar-color: var(--rkui-scroll-drawn-thumb) var(--rkui-scroll-drawn-track);
   }
 }
 
@@ -81,32 +122,22 @@
   initial-value: 0px;
 }
 
-/* The dots. The gutters are borders because content is clipped inside the border, so it never
-   runs under the dots. Each dot is a background layer; a scroll container's background stays put
-   while its content scrolls. */
+/* The dots, in the text colour (cream in dark mode, whatever the highlight). The gutters are
+   borders because content is clipped inside the border, so it never runs under the dots. Each dot
+   is a background layer; a scroll container's background stays put while its content scrolls. */
 .rkui-scroll:not(.rkui-scroll--bar) {
-  --rkui-scroll-gutter: 0.75rem;
+  --rkui-scroll-gutter: var(--rkui-dots-gutter);
   --rkui-dot-size: 0.3rem;
   --rkui-dot-spacing: 0.55rem;
   --rkui-dot-inset: calc((var(--rkui-scroll-gutter) - var(--rkui-dot-size)) / 2);
   --rkui-dot-start: radial-gradient(
     closest-side,
-    color-mix(
-        in srgb,
-        var(--rkui-line-unfilled) calc(var(--rkui-scroll-more-start) * 100%),
-        transparent
-      )
-      90%,
+    color-mix(in srgb, var(--rkui-fg) calc(var(--rkui-scroll-more-start) * 100%), transparent) 90%,
     transparent
   );
   --rkui-dot-end: radial-gradient(
     closest-side,
-    color-mix(
-        in srgb,
-        var(--rkui-line-unfilled) calc(var(--rkui-scroll-more-end) * 100%),
-        transparent
-      )
-      90%,
+    color-mix(in srgb, var(--rkui-fg) calc(var(--rkui-scroll-more-end) * 100%), transparent) 90%,
     transparent
   );
 
@@ -124,6 +155,162 @@
   background-size: var(--rkui-dot-size) var(--rkui-dot-size);
   background-repeat: no-repeat;
   background-origin: border-box;
+}
+
+/* The pill look's colours, which the card sidebar's hints share (sidebar.css). */
+:root {
+  --rkui-pill-fill: var(--rkui-selected);
+  --rkui-pill-edge: var(--rkui-line);
+  --rkui-pill-dot: var(--rkui-on-selected);
+}
+
+/* A scroll region draws its pills' shadows itself, in this colour: the region's own shadow colour,
+   which the colour shadow turns to the pill's shade (shadow-color.css). */
+.rkui-scroll {
+  --rkui-pill-shadow-color: var(--rkui-shadow-color);
+}
+
+/* The pill's size across and along it (shorter in a scroll region, to sit on a strip of tabs
+   clear of the sheet), and the width of a scroll region's dot gutters in each look. Inherited,
+   so the nearest data-rkui-dots wins; a code block's caption and Folder's tabs line up with them. */
+:root {
+  --rkui-pill-width: var(--rkui-space-4);
+  --rkui-pill-length: var(--rkui-space-7);
+}
+
+/* Never shorter than this: each cap's inner half, and its shadow's, must stay under the middle. */
+.rkui-scroll {
+  --rkui-pill-length: 1.75rem;
+}
+
+:root,
+[data-rkui-dots='plain'] {
+  --rkui-dots-gutter: 0.75rem;
+}
+
+[data-rkui-dots='pill'] {
+  --rkui-dots-gutter: calc(
+    var(--rkui-pill-width) + 2 * (var(--rkui-shadow-offset) + var(--rkui-outline-width))
+  );
+}
+
+/* The pill: each gutter holds the pill (two round caps under a straight middle, all outlined) on
+   its slab shadow (the same three shapes, offset, and widened by the shadow's edge), with
+   smaller dots on top. The pill and its shadow are centred together, so the shadow stays clear
+   of whatever is below. Each side's pill slides out past its edge as that side's
+   --rkui-scroll-more falls to 0. Forced colours keep their system-colour edges. */
+@scope ([data-rkui-dots='pill']) to ([data-rkui-dots='plain']) {
+  @media (forced-colors: none) {
+    :scope.rkui-scroll:not(.rkui-scroll--bar),
+    .rkui-scroll:not(.rkui-scroll--bar) {
+      --rkui-dot-size: 0.25rem;
+      --rkui-dot-spacing: 0.4rem;
+      --rkui-pill-line: var(--rkui-outline-width);
+      --rkui-pill-shadow-width: calc(var(--rkui-pill-width) + 2 * var(--rkui-pill-line));
+      /* How far apart the caps' centres are */
+      --rkui-pill-mid: calc(var(--rkui-pill-length) - var(--rkui-pill-width));
+      /* The straight middle's length: a pixel short, so rounding never pokes it past the caps */
+      --rkui-pill-straight: calc(var(--rkui-pill-mid) - 1px);
+      /* How far in from its edge each pill sits when it shows */
+      --rkui-pill-inset: calc((var(--rkui-scroll-gutter) - var(--rkui-pill-width)) / 2);
+      --rkui-pill-start: calc(
+        var(--rkui-pill-inset) - (1 - var(--rkui-scroll-more-start)) * var(--rkui-scroll-gutter)
+      );
+      --rkui-pill-end: calc(
+        var(--rkui-pill-inset) - (1 - var(--rkui-scroll-more-end)) * var(--rkui-scroll-gutter)
+      );
+      --rkui-pill-dot-inset: calc((var(--rkui-pill-width) - var(--rkui-dot-size)) / 2);
+      --rkui-pill-dx: var(--rkui-shadow-offset-x);
+      --rkui-pill-dy: var(--rkui-shadow-offset-y);
+      /* The pill's centre along the gutter, and its caps' centres */
+      --rkui-pill-y: calc(50% - var(--rkui-pill-dy) / 2);
+      --rkui-pill-cap-up: calc(var(--rkui-pill-y) - var(--rkui-pill-mid) / 2);
+      --rkui-pill-cap-down: calc(var(--rkui-pill-y) + var(--rkui-pill-mid) / 2);
+
+      --rkui-pill-dots: radial-gradient(closest-side, var(--rkui-pill-dot) 90%, transparent);
+      --rkui-pill-cap: radial-gradient(
+        closest-side,
+        var(--rkui-pill-fill) calc(100% - var(--rkui-pill-line)),
+        var(--rkui-pill-edge) calc(100% - var(--rkui-pill-line)) calc(100% - 0.5px),
+        transparent
+      );
+      --rkui-pill-middle: linear-gradient(
+        to right,
+        var(--rkui-pill-edge) var(--rkui-pill-line),
+        var(--rkui-pill-fill) var(--rkui-pill-line) calc(100% - var(--rkui-pill-line)),
+        var(--rkui-pill-edge) calc(100% - var(--rkui-pill-line))
+      );
+      --rkui-pill-shadow-cap: radial-gradient(
+        closest-side,
+        var(--rkui-pill-shadow-color) calc(100% - var(--rkui-pill-line)),
+        var(--rkui-shadow-edge) calc(100% - var(--rkui-pill-line)) calc(100% - 0.5px),
+        transparent
+      );
+      --rkui-pill-shadow-middle: linear-gradient(
+        to right,
+        var(--rkui-shadow-edge) var(--rkui-pill-line),
+        var(--rkui-pill-shadow-color) var(--rkui-pill-line) calc(100% - var(--rkui-pill-line)),
+        var(--rkui-shadow-edge) calc(100% - var(--rkui-pill-line))
+      );
+
+      /* For each side: three dots, the pill's middle and caps, the shadow's middle and caps. */
+      background-image:
+        var(--rkui-pill-dots), var(--rkui-pill-dots), var(--rkui-pill-dots),
+        var(--rkui-pill-middle), var(--rkui-pill-cap), var(--rkui-pill-cap),
+        var(--rkui-pill-shadow-middle), var(--rkui-pill-shadow-cap), var(--rkui-pill-shadow-cap),
+        var(--rkui-pill-dots), var(--rkui-pill-dots), var(--rkui-pill-dots),
+        var(--rkui-pill-middle), var(--rkui-pill-cap), var(--rkui-pill-cap),
+        var(--rkui-pill-shadow-middle), var(--rkui-pill-shadow-cap), var(--rkui-pill-shadow-cap);
+      background-position:
+        left calc(var(--rkui-pill-start) + var(--rkui-pill-dot-inset)) top
+          calc(var(--rkui-pill-y) - var(--rkui-dot-spacing)),
+        left calc(var(--rkui-pill-start) + var(--rkui-pill-dot-inset)) top var(--rkui-pill-y),
+        left calc(var(--rkui-pill-start) + var(--rkui-pill-dot-inset)) top
+          calc(var(--rkui-pill-y) + var(--rkui-dot-spacing)),
+        left var(--rkui-pill-start) top var(--rkui-pill-y),
+        left var(--rkui-pill-start) top var(--rkui-pill-cap-up),
+        left var(--rkui-pill-start) top var(--rkui-pill-cap-down),
+        left calc(var(--rkui-pill-start) - var(--rkui-pill-line) + var(--rkui-pill-dx)) top
+          calc(var(--rkui-pill-y) + var(--rkui-pill-dy)),
+        left calc(var(--rkui-pill-start) - var(--rkui-pill-line) + var(--rkui-pill-dx)) top
+          calc(var(--rkui-pill-cap-up) + var(--rkui-pill-dy)),
+        left calc(var(--rkui-pill-start) - var(--rkui-pill-line) + var(--rkui-pill-dx)) top
+          calc(var(--rkui-pill-cap-down) + var(--rkui-pill-dy)),
+        right calc(var(--rkui-pill-end) + var(--rkui-pill-dot-inset)) top
+          calc(var(--rkui-pill-y) - var(--rkui-dot-spacing)),
+        right calc(var(--rkui-pill-end) + var(--rkui-pill-dot-inset)) top var(--rkui-pill-y),
+        right calc(var(--rkui-pill-end) + var(--rkui-pill-dot-inset)) top
+          calc(var(--rkui-pill-y) + var(--rkui-dot-spacing)),
+        right var(--rkui-pill-end) top var(--rkui-pill-y),
+        right var(--rkui-pill-end) top var(--rkui-pill-cap-up),
+        right var(--rkui-pill-end) top var(--rkui-pill-cap-down),
+        right calc(var(--rkui-pill-end) - var(--rkui-pill-line) - var(--rkui-pill-dx)) top
+          calc(var(--rkui-pill-y) + var(--rkui-pill-dy)),
+        right calc(var(--rkui-pill-end) - var(--rkui-pill-line) - var(--rkui-pill-dx)) top
+          calc(var(--rkui-pill-cap-up) + var(--rkui-pill-dy)),
+        right calc(var(--rkui-pill-end) - var(--rkui-pill-line) - var(--rkui-pill-dx)) top
+          calc(var(--rkui-pill-cap-down) + var(--rkui-pill-dy));
+      background-size:
+        var(--rkui-dot-size) var(--rkui-dot-size),
+        var(--rkui-dot-size) var(--rkui-dot-size),
+        var(--rkui-dot-size) var(--rkui-dot-size),
+        var(--rkui-pill-width) var(--rkui-pill-straight),
+        var(--rkui-pill-width) var(--rkui-pill-width),
+        var(--rkui-pill-width) var(--rkui-pill-width),
+        var(--rkui-pill-shadow-width) var(--rkui-pill-straight),
+        var(--rkui-pill-shadow-width) var(--rkui-pill-shadow-width),
+        var(--rkui-pill-shadow-width) var(--rkui-pill-shadow-width),
+        var(--rkui-dot-size) var(--rkui-dot-size),
+        var(--rkui-dot-size) var(--rkui-dot-size),
+        var(--rkui-dot-size) var(--rkui-dot-size),
+        var(--rkui-pill-width) var(--rkui-pill-straight),
+        var(--rkui-pill-width) var(--rkui-pill-width),
+        var(--rkui-pill-width) var(--rkui-pill-width),
+        var(--rkui-pill-shadow-width) var(--rkui-pill-straight),
+        var(--rkui-pill-shadow-width) var(--rkui-pill-shadow-width),
+        var(--rkui-pill-shadow-width) var(--rkui-pill-shadow-width);
+    }
+  }
 }
 
 /* 1 while there is more to scroll to on that side, and 0 at that end. Registered so that the
@@ -192,10 +379,10 @@
      colours keep it visible. */
   @media (forced-colors: none) {
     .rkui-scroll:not(.rkui-scroll--bar, :hover, :focus-visible, :has(:focus-visible)) {
-      --rkui-scroll-track: transparent;
-      --rkui-scroll-track-edge: transparent;
-      --rkui-scroll-thumb: transparent;
-      --rkui-scroll-thumb-edge: transparent;
+      --rkui-scroll-drawn-track: transparent;
+      --rkui-scroll-drawn-track-edge: transparent;
+      --rkui-scroll-drawn-thumb: transparent;
+      --rkui-scroll-drawn-thumb-edge: transparent;
     }
   }
 

@@ -1,19 +1,23 @@
-/* Dial: a rotary "thermostat" for a number, in two variants (A knob, B arc). Needs rkui-dial.js,
-   which draws a face over the range, or adopts one drawn at build time; without it, the range
-   and readout show side by side.
+/* Dial: a rotary "thermostat" for a number, in two variants (A knob, B arc), drawn by Dial.vue
+   over a range, which lies invisibly over the face: still focusable and announced, with the
+   dial's bounds, while the face takes the pointer. Dial.vue marks the dial data-rkui-live once it
+   runs in the browser; until then the face stays hidden, holding its place, and the range shows
+   at its foot.
 
-   Dial A, knob: <rkui-dial class="rkui-dial rkui-dial--knob">
-   Dial B, arc:  <rkui-dial class="rkui-dial rkui-dial--arc">
+   Dial A, knob: <div class="rkui-dial rkui-dial--knob">
+   Dial B, arc:  <div class="rkui-dial rkui-dial--arc">
      <label for="t">Label</label>
+     <div class="rkui-dial-face" aria-hidden="true">
+       <svg>…</svg>                            (limits, and ticks, the arc's track or ramp blocks)
+       <span class="rkui-dial-knob">…</span>   (or <span class="rkui-dial-thumb"> for the arc)
+     </div>
      <input class="rkui-range" id="t" type="range" min="10" max="30" step="0.5" value="20">
-     <output class="rkui-output" for="t">20</output>
-   </rkui-dial>
+     <output for="t">20</output>
+   </div>
 
    Add rkui-dial--ramp to either for a ring of blocks that light up to the value, cool to warm; add
-   rkui-dial--ramp-heat as well for yellow to coral. For another ramp, set --rkui-dial-ramp-steps
-   and the colours --rkui-dial-ramp-1 to --rkui-dial-ramp-<steps>. rkui-dial.js reads them when it
-   draws the face
-   itself; the Astro component's build-time face takes the count from the ramp's name.
+   rkui-dial--ramp-heat as well for yellow to coral. The ramp's colours are --rkui-dial-ramp-1 to
+   --rkui-dial-ramp-<steps>, and Dial.vue colours its blocks in as many runs as the ramp has.
 
    The face's SVG is 200 units square, so its lengths are pixels at the default --rkui-dial-size. */
 
@@ -21,11 +25,13 @@
   --rkui-dial-size: 12.5rem;
 
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: var(--rkui-dial-size);
   grid-template-areas:
-    'label label'
-    'control readout';
+    'label'
+    'control'
+    'readout';
   align-items: center;
+  justify-items: center;
   gap: var(--rkui-space-1) var(--rkui-space-3);
   max-inline-size: 30rem;
 }
@@ -42,27 +48,24 @@
 
 .rkui-dial > output {
   grid-area: readout;
+  min-inline-size: 5ch;
+  font-family: var(--rkui-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: end;
 }
 
-/* A face in the markup stays hidden until the element is defined, so without the script the range
-   and readout show as they do with no face. */
-.rkui-dial:not(:defined) > .rkui-dial-face {
-  display: none;
+/* Until Dial.vue runs in the browser, the face would do nothing: it stays hidden, and the range
+   shows at its foot. */
+.rkui-dial:not([data-rkui-live]) > .rkui-dial-face {
+  visibility: hidden;
 }
 
-/* With the face drawn, the range lies invisibly over it: still focusable and announced, with the
-   dial's bounds, while the face takes the pointer. */
-
-.rkui-dial:defined:has(> .rkui-dial-face) {
-  grid-template-columns: var(--rkui-dial-size);
-  grid-template-areas:
-    'label'
-    'control'
-    'readout';
-  justify-items: center;
+.rkui-dial:not([data-rkui-live]) > input {
+  align-self: end;
 }
 
-.rkui-dial:defined:has(> .rkui-dial-face) > input {
+.rkui-dial[data-rkui-live] > input {
   inline-size: 100%;
   block-size: 100%;
   opacity: 0;
@@ -174,7 +177,7 @@
   stroke-width: 16px;
 }
 
-/* Centred on the point rkui-dial.js sets; the margins centre it, since translate is taken by the
+/* Centred on the point Dial.vue sets; the margins centre it, since translate is taken by the
    pop. */
 .rkui-dial-thumb {
   --rkui-thumb-size: calc(var(--rkui-dial-size) * 0.14);
@@ -189,7 +192,7 @@
   background: var(--rkui-selected);
 }
 
-.rkui-dial--arc:defined:has(> .rkui-dial-face) > output {
+.rkui-dial--arc > output {
   grid-area: control;
   pointer-events: none;
   font-family: var(--rkui-font-display);
@@ -201,7 +204,6 @@
 /* Ramp */
 
 .rkui-dial--ramp {
-  --rkui-dial-ramp-steps: 6;
   --rkui-dial-ramp-1: var(--rkui-navy);
   --rkui-dial-ramp-2: var(--rkui-teal);
   --rkui-dial-ramp-3: var(--rkui-green);
@@ -211,7 +213,6 @@
 }
 
 .rkui-dial--ramp-heat {
-  --rkui-dial-ramp-steps: 3;
   --rkui-dial-ramp-1: var(--rkui-yellow);
   --rkui-dial-ramp-2: var(--rkui-tangerine);
   --rkui-dial-ramp-3: var(--rkui-coral);

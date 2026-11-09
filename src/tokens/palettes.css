@@ -1,21 +1,30 @@
-/* rkui page palettes: the surface and raised colours, and the shading mixed from them. */
+/* rkui page palettes: the surface, raised and panel colours, and the shading mixed from them. */
 
 /* Page palettes: cream by default. Set data-palette="slate" or "greige" on <html> or any
-   container for a cool or warm grey page, or "cream" to switch back inside another palette. */
+   container for a cool or warm grey page, or "cream" to switch back inside another palette.
+   The panel (code blocks, quotes, shaded cards) is a step darker than the page in light mode and
+   lighter in dark; its tab is the next step, the code block's editor-tab strip and a nested
+   quote. */
 :root,
 [data-palette='cream'] {
   --rkui-surface: light-dark(#f7f3e5, #1a1f2b);
   --rkui-raised: light-dark(#fffaf0, #232a39);
+  --rkui-panel: light-dark(#f0ead7, #272e3e);
+  --rkui-panel-tab: light-dark(#e6dfc8, #2d3548);
 }
 
 [data-palette='slate'] {
   --rkui-surface: light-dark(#f1f3f8, #1f232b);
   --rkui-raised: light-dark(#f9fafc, #282d37);
+  --rkui-panel: light-dark(#e7ebf3, #2c323d);
+  --rkui-panel-tab: light-dark(#dbe0ea, #333946);
 }
 
 [data-palette='greige'] {
   --rkui-surface: light-dark(#f2f1ee, #252420);
   --rkui-raised: light-dark(#faf9f8, #302e29);
+  --rkui-panel: light-dark(#eae7e2, #35332e);
+  --rkui-panel-tab: light-dark(#e0dcd6, #3d3a34);
 }
 
 /* Shading mixed from the page colour. A custom property resolves its var()s on the element that

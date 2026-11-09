@@ -1,6 +1,6 @@
 /**
  * Prints what the browser painted into the colour readouts: a hex for each sample and a WCAG
- * ratio for each text pair. Runs again when the theme, palette or shadow mode changes.
+ * ratio for each text pair. Runs again when the theme, palette, shadow or highlight changes.
  *
  * Markup: an `<output data-show="..." data-of="key">` in a `data-readout` element, next to the
  * sample it reads (see readout.ts). `data-show` is `hex-background` or `hex-color` (the sample's
@@ -60,6 +60,6 @@ showColors()
 
 new MutationObserver(showColors).observe(document.documentElement, {
   attributes: true,
-  attributeFilter: ['data-theme', 'data-palette', 'data-shadow'],
+  attributeFilter: ['data-theme', 'data-palette', 'data-shadow', 'data-highlight'],
 })
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', showColors)

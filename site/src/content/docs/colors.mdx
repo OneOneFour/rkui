@@ -1,14 +1,17 @@
 ---
 title: Colours
-description: The core hues with their deep and tint steps, and the page colours.
+description: The core and auxiliary hues with their deep and tint steps, the page colours, and the panel and code colours.
 group: Foundations
 order: 10
 ---
 
 import ColorPalette from '../../components/ColorPalette.astro'
+import Demo from '../../components/Demo.astro'
+import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
 
 Click a colour to copy it. The hex values are read from the page as it is painted, so they change
-with the theme and palette switches at the top.
+with the theme switch at the top and the palette in Settings.
 
 <ColorPalette />
 
@@ -18,3 +21,44 @@ In code, use the tokens rather than a copied hex: `var(--rkui-teal)` follows the
 palette, and a hex doesn't.
 A fill carries its label token (`--rkui-on-fill`, `--rkui-on-navy`, `--rkui-on-coral`), a `-tint`
 carries `--rkui-fg`, and a `-deep` step is for text and links on the page.
+
+Every component that takes a `hue` takes the auxiliary hues too. They come in pairs, one vivid
+and one pale, and each has its own steps: grape's tint is a stronger wash than lilac, and lilac's
+deep is a softer violet than grape's.
+
+## Recolouring a component
+
+Every component that has a colour takes it in one prop, `hue`: a hue's name from the palette
+above, or a hex code for a colour outside it. A hue brings its label, its tint and its dark-mode
+values with it. A hex code is the same colour in both themes, so it has no dark-mode value and no
+`-deep` step: the component picks ink or cream for the label, whichever stands out more, and mixes
+the tint from the hex. Check its contrast yourself, as a mid-tone can fall short with both.
+
+<Demo label="Hues and hex codes">
+  <Button hue="teal">Teal</Button>
+  <Button hue="#ff7eb6">Pink</Button>
+  <Button hue="#5b3a29">Brown</Button>
+  <Badge hue="#5b3a29">Brown</Badge>
+  <Badge hue="#ff7eb6" tint>
+    Pink tint
+  </Badge>
+</Demo>
+
+On a plain HTML page, a hue is a modifier class (`rkui-button--teal`), and any other colour is
+the custom properties the component's stylesheet names (`--rkui-button-fill` and
+`--rkui-button-label`).
+
+## In JavaScript
+
+The palette's hex values, light and dark, can be imported. They are read from the token files when
+the library is built, so they always match the CSS. `--rkui-teal-deep` is `colors.tealDeep`.
+
+```js
+import { colors } from '@oneonefour/rkui/colors.js'
+
+colors.teal // { light: '#2ea6b1', dark: '#3bb4bf' }
+colors.tealDeep.dark // '#6fcfd7'
+```
+
+A copied hex doesn't follow the theme, so in a page use the tokens; these are for places CSS
+can't reach, such as a canvas or a chart library.

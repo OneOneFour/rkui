@@ -1,0 +1,889 @@
+/* Drawer: storage that slides out from under an edge of the element it sits in, built on
+   <details>, so it needs no JavaScript. Put it last in its parent (first for the top), or stack
+   several in a cabinet. Drawers sharing a `name` close each other.
+
+   <details class="rkui-drawer" name="…">
+     <summary class="rkui-drawer-handle">
+       <span class="rkui-drawer-pull">
+         <svg class="rkui-icon rkui-icon--small">…optional icon…</svg>
+         <span class="rkui-drawer-label">Tools</span>
+         <svg class="rkui-icon rkui-icon--small rkui-drawer-caret">…caret-down…</svg>
+       </span>
+     </summary>
+     <div class="rkui-drawer-body">…</div>
+   </details>
+
+   A cabinet stacks drawers as one: <div class="rkui-cabinet"><details class="rkui-drawer">…
+   </details>…</div>. Its drawers pull out from the bottom.
+
+   A remote drawer, .rkui-drawer--remote, is opened by a button elsewhere on the page, with no
+   JavaScript: the button's popovertarget names the drawer's switch, an empty popover that is
+   never drawn, and the drawer is open while it is shown. Its front is no button: it holds only
+   the caret, or for a blind an empty ring at the cord's end, and doesn't pop.
+
+   <div class="rkui-drawer rkui-drawer--remote" role="group" aria-label="Tools">
+     <div id="tools" class="rkui-drawer-switch" popover="manual"></div>
+     <div class="rkui-drawer-handle" aria-hidden="true">
+       <svg class="rkui-icon rkui-icon--small rkui-drawer-caret">…caret-down…</svg>
+       (a blind: <span class="rkui-drawer-ring"></span>)
+     </div>
+     <div class="rkui-drawer-tray"><div class="rkui-drawer-body">…</div></div>
+   </div>
+   <button popovertarget="tools">Tools</button>
+
+   An overlay drawer, .rkui-drawer--overlay, hangs over the page beyond its parent's edge rather
+   than pushing it away: it is placed absolutely against that edge of its containing block (give
+   the parent position: relative, and don't clip it), and the page may set its inset. A drawer on
+   the left or right always does.
+
+   Where it pulls out: from the bottom edge by default, or .rkui-drawer--top, --left or --right.
+   The rules below are written down the page, from the parent's edge towards the handle; the
+   sections near the end turn them round for the top, and sideways for the left and right. On the
+   left and right it hangs beyond its parent's side, as tall as the parent, and its tray opens to
+   its contents' width, at most --rkui-drawer-width (min(12rem, 35vw) when left out). A card
+   holding one doesn't clip it. In a right-to-left page left and right swap.
+
+   The default is a drawer. Its tray, in the colour behind folder tabs, is sunk into the parent
+   by the inset (shadows.css), and its front (the summary) sits beyond it. It slides out from
+   under the parent; closed, it slams back in, overshoots a little and settles, and the parent
+   gives a small jolt as it lands.
+   .rkui-drawer--blind is a roller blind. A roller lies along the parent's edge; the screen
+   unrolls from it under its weighted hem (the summary), bounces as it reaches its end, and
+   snaps back into the roller. The roller's stripes move as it turns. Its pull is a yellow ring
+   holding the caret, with the label visually hidden (.rkui-visually-hidden); with
+   .rkui-drawer--show-label it is a pill showing the label too.
+
+   The caret points the way the drawer will move, and turns half a turn as it opens and closes.
+
+   A coloured drawer, .rkui-drawer--hue, sets three custom properties (Drawer.vue's `hue`):
+   --rkui-drawer-tint, a pale tint for the drawer's tray or the blind's screen, which carry
+   --rkui-fg text; --rkui-drawer-hue, a solid fill for the pull and the blind's hem; and
+   --rkui-drawer-on-hue, the pull's text on it. In the colour shadow mode it casts the solid
+   hue's shade (shadow-color.css).
+
+   In a card's body it reaches the card's sides, and the last one its bottom edge. In another
+   parent, set --rkui-drawer-bleed to the parent's padding for the same, and clip the parent's
+   corners (overflow: hidden) as a card does. A drawer on top reaches the parent's top edge when
+   it comes first.
+
+   The parent that jolts is a card holding a drawer in its body, or a cabinet. Any other parent
+   jolts with the class rkui-drawer-host: it moves by its top and inline-start offsets, so it is
+   made position: relative unless the page positions it, and its own offsets are replaced.
+
+   Safari stops drawing the contents the moment a <details> closes, so drawer-enhance.js holds
+   a closing drawer open, marked data-rkui-closing, until its move ends; this file styles that
+   mark as shut. Without the script, Safari closes at once and the rest still moves. Browsers
+   without ::details-content (before 2025) show the contents with no tray.
+
+   Open means a <details> with [open] that isn't closing, or a remote drawer whose switch is
+   shown:
+   .rkui-drawer:is([open]:not([data-rkui-closing]), :has(> .rkui-drawer-switch:popover-open)) */
+
+/* The slam, the jolt and the blind's bounce, as numbers that are 1 while a drawer is open and 0
+   once it has shut (the bounce runs from 0 to 1 as the blind unrolls): each moves by the sine of
+   half a turn times it, out and back, and rests at nothing. CSS can't tell a page load from a
+   click, but a transition only runs on a change, so none of them plays when a page loads, or
+   when a shut drawer is added to a page later. */
+@property --rkui-drawer-slam {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --rkui-drawer-jolt {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --rkui-drawer-bounce {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.rkui-drawer {
+  --rkui-recess-floor: var(--rkui-folder-back);
+  --rkui-drawer-overshoot: calc(var(--rkui-shadow-depth) * 3px);
+  /* The caret's turn while shut, pointing the way the drawer pulls out. */
+  --rkui-drawer-caret-turn: 0turn;
+  /* A clip that cuts off whatever falls past the side towards the parent, and nothing on the other
+     sides (100vmax is past any shadow): the shadow an overlay drawer would cast on its parent, and
+     a blind's screen and hem shadows that would fall on the part before them. */
+  --rkui-drawer-cut: inset(0 -100vmax -100vmax);
+
+  display: grid;
+  /* The parts in order from the parent's edge: the blind's roller, the tray, the handle. */
+  grid-template-areas: 'roller' 'tray' 'handle';
+  margin-inline: calc(-1 * var(--rkui-drawer-bleed, 0px));
+}
+
+.rkui-drawer:where(:not(.rkui-drawer--top, .rkui-drawer--left, .rkui-drawer--right)):last-child {
+  margin-block-end: calc(-1 * var(--rkui-drawer-bleed, 0px));
+}
+
+.rkui-card-body > .rkui-drawer {
+  --rkui-drawer-bleed: var(--rkui-space-4);
+}
+
+/* The handle: the drawer's front, the width of the drawer, with a pull in the middle. The pull
+   pops when the handle is hovered or pressed and shows the focus band (interactive.css). */
+.rkui-drawer-handle {
+  position: relative;
+  display: flex;
+  grid-area: handle;
+  justify-content: center;
+  padding: var(--rkui-space-2);
+  border-block-start: var(--rkui-outline-width) solid var(--rkui-stripe);
+  cursor: pointer;
+  list-style: none;
+}
+
+.rkui-drawer-handle::-webkit-details-marker {
+  display: none;
+}
+
+.rkui-drawer-handle:focus-visible {
+  outline: none;
+}
+
+.rkui-drawer-pull {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rkui-space-1);
+  padding: var(--rkui-space-1) var(--rkui-space-3);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+  font-size: var(--rkui-step--1);
+  font-weight: 600;
+}
+
+.rkui-drawer-pull .rkui-icon {
+  color: inherit;
+}
+
+/* The caret points the way the drawer will move: out when shut, in when open. It has no shadow,
+   so it may turn. */
+.rkui-drawer-caret {
+  rotate: var(--rkui-drawer-caret-turn);
+}
+
+.rkui-drawer:is([open]:not([data-rkui-closing]), :has(> .rkui-drawer-switch:popover-open))
+  > .rkui-drawer-handle
+  .rkui-drawer-caret {
+  rotate: calc(var(--rkui-drawer-caret-turn) + 0.5turn);
+}
+
+/* The tray, sunk into the parent by the inset. Open, its one row grows from
+   nothing to its contents' height: an fr track animates where height: auto can't. The contents
+   keep to the far edge, by the handle, so they slide out from under the parent with it. A remote
+   drawer's tray is hidden once it has shut, as a closed <details> hides its contents. */
+.rkui-drawer::details-content,
+.rkui-drawer-tray {
+  display: grid;
+  grid-template-rows: minmax(0, 0fr);
+  grid-area: tray;
+  align-content: end;
+  overflow: clip;
+  background: var(--rkui-recess-floor);
+  box-shadow: var(--rkui-shadow-recess);
+  /* In faster, speeding up; content-visibility and visibility wait out the move, so the contents
+     stay drawn. */
+  transition:
+    grid-template-rows var(--rkui-duration-spring) ease-in,
+    grid-template-columns var(--rkui-duration-spring) ease-in,
+    content-visibility var(--rkui-duration-spring) allow-discrete,
+    visibility var(--rkui-duration-spring);
+}
+
+.rkui-drawer-tray {
+  visibility: hidden;
+}
+
+/* Out, slowing to a stop. */
+.rkui-drawer[open]:not([data-rkui-closing])::details-content,
+.rkui-drawer:has(> .rkui-drawer-switch:popover-open) > .rkui-drawer-tray {
+  grid-template-rows: minmax(0, 1fr);
+  visibility: visible;
+  transition:
+    grid-template-rows var(--rkui-duration-slide) ease-out,
+    grid-template-columns var(--rkui-duration-slide) ease-out;
+}
+
+.rkui-drawer-body {
+  align-self: end;
+  min-block-size: 0;
+  padding: var(--rkui-space-4);
+}
+
+.rkui-drawer-body > * {
+  margin: 0;
+}
+
+/* A remote drawer's switch is never drawn, and its front is no button. */
+.rkui-drawer-switch {
+  display: none;
+}
+
+.rkui-drawer--remote > .rkui-drawer-handle {
+  cursor: default;
+}
+
+/* An overlay drawer, and every drawer on the left or right, hangs over what lies beyond its
+   parent's edge instead of pushing it away: it is placed against that edge of its containing
+   block, as wide as it (as tall on the left and right), above the page that follows. A drawer has
+   its own fill, outline and shadow, with no outline along the parent's edge, so the parent seems
+   to bulge out; a blind already hangs in front with its own. */
+:is(.rkui-drawer--overlay, .rkui-drawer--left, .rkui-drawer--right) {
+  position: absolute;
+  z-index: 1;
+  inset: 100% 0 auto;
+  margin: 0;
+  clip-path: var(--rkui-drawer-cut);
+}
+
+.rkui-drawer--overlay.rkui-drawer--top {
+  inset: auto 0 100%;
+}
+
+/* On the sides it covers the parent's outline, so its own lines up with it, and it is as wide as
+   its open tray, though it starts at the parent's edge with no room before it. */
+.rkui-drawer--left {
+  inset-block: calc(-1 * var(--rkui-outline-width));
+  inset-inline: auto 100%;
+  inline-size: max-content;
+}
+
+.rkui-drawer--right {
+  inset-block: calc(-1 * var(--rkui-outline-width));
+  inset-inline: 100% auto;
+  inline-size: max-content;
+}
+
+/* A card holding one on its side doesn't clip it, so its image rounds its own top corners, and
+   a drawer there squares the corners it joins. */
+.rkui-card:has(> .rkui-card-body > :is(.rkui-drawer--left, .rkui-drawer--right)) {
+  overflow: visible;
+}
+
+.rkui-card:has(> .rkui-card-body > .rkui-drawer--left:not(.rkui-drawer--blind)) {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+
+.rkui-card:has(> .rkui-card-body > .rkui-drawer--right:not(.rkui-drawer--blind)) {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.rkui-card:has(> .rkui-card-body > :is(.rkui-drawer--left, .rkui-drawer--right))
+  > .rkui-card-image {
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+}
+
+:is(.rkui-drawer--overlay, .rkui-drawer--left, .rkui-drawer--right):not(.rkui-drawer--blind) {
+  overflow: clip;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-block-start: none;
+  border-end-start-radius: var(--rkui-radius);
+  border-end-end-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+  box-shadow: var(--rkui-shadow);
+}
+
+.rkui-drawer--overlay.rkui-drawer--top:not(.rkui-drawer--blind) {
+  border-block-start: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-block-end: none;
+  border-radius: var(--rkui-radius) var(--rkui-radius) 0 0;
+}
+
+:is(.rkui-drawer--left, .rkui-drawer--right):not(.rkui-drawer--blind) {
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: 0;
+}
+
+.rkui-drawer--left:not(.rkui-drawer--blind) {
+  border-inline-end: none;
+  border-start-start-radius: var(--rkui-radius);
+  border-end-start-radius: var(--rkui-radius);
+}
+
+.rkui-drawer--right:not(.rkui-drawer--blind) {
+  border-inline-start: none;
+  border-start-end-radius: var(--rkui-radius);
+  border-end-end-radius: var(--rkui-radius);
+}
+
+/* A cabinet: drawers stacked as one on a raised panel, each front its width. The top drawer's
+   front has no seam, since the cabinet's edge is there. */
+.rkui-cabinet {
+  --rkui-drawer-bleed: 0px;
+
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+}
+
+.rkui-cabinet > .rkui-drawer:first-child > .rkui-drawer-handle {
+  border-block-start-color: transparent;
+}
+
+/* The blind: the roller, the screen hanging from it, a hem like the roller, and a round pull
+   on a short cord from the hem's middle, holding the caret, or the label and caret with
+   .rkui-drawer--show-label. The roller is a little wider
+   than the screen and hem. The whole blind hangs in front of the parent with one hard shadow: the
+   screen's grows as it unrolls, the roller is drawn first so the screen covers the part of its
+   shadow that falls there, and the screen's and hem's are cut off on the side towards the roller
+   (--rkui-drawer-cut), so neither falls on the part before it.
+   Each part is outlined, so its slab, widened by the outline in dark mode, lines up with its edge.
+   Shut, the roller, hem and pull show. */
+.rkui-drawer--blind {
+  --rkui-drawer-screen: var(--rkui-panel);
+  --rkui-drawer-roller: var(--rkui-panel-tab);
+  --rkui-drawer-roller-size: 0.875rem;
+  --rkui-drawer-stripe-gap: 0.375rem;
+  /* The stripes run across the roller, and move the way the screen unrolls as it turns. */
+  --rkui-drawer-stripes: to bottom;
+  --rkui-drawer-roll: 0 calc(4 * var(--rkui-drawer-stripe-gap));
+  --rkui-drawer-bounce-size: calc(var(--rkui-shadow-depth) * 6px);
+  --rkui-drawer-unroll: calc(1.5 * var(--rkui-duration-slide));
+}
+
+/* The roller: stripes over its fill, which move as it unrolls the screen and back as it winds
+   it in. It casts the hard shadow too, drawn before the screen, so the screen covers the part
+   that falls on it and the blind casts one shadow. */
+.rkui-drawer--blind::before {
+  content: '';
+  grid-area: roller;
+  block-size: var(--rkui-drawer-roller-size);
+  margin-inline: var(--rkui-space-2);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius-pill);
+  background:
+    repeating-linear-gradient(
+      var(--rkui-drawer-stripes),
+      transparent 0 calc(var(--rkui-drawer-stripe-gap) - var(--rkui-outline-width)),
+      var(--rkui-stripe) 0 var(--rkui-drawer-stripe-gap)
+    ),
+    var(--rkui-drawer-roller);
+  box-shadow: var(--rkui-shadow);
+  transition: background-position var(--rkui-duration-spring) ease-in;
+}
+
+.rkui-drawer--blind:is(
+    [open]:not([data-rkui-closing]),
+    :has(> .rkui-drawer-switch:popover-open)
+  )::before {
+  background-position:
+    var(--rkui-drawer-roll),
+    0 0;
+  transition: background-position var(--rkui-drawer-unroll) ease-in;
+}
+
+.rkui-drawer--blind::details-content,
+.rkui-drawer--blind > .rkui-drawer-tray {
+  margin-inline: var(--rkui-space-4);
+  padding-block-end: calc(
+    sin(var(--rkui-drawer-bounce) * 0.5turn) * var(--rkui-drawer-bounce-size)
+  );
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-block: none;
+  background: var(--rkui-drawer-screen);
+  box-shadow: var(--rkui-shadow);
+  clip-path: var(--rkui-drawer-cut);
+}
+
+/* The screen falls, speeding up as under gravity, and the roller turns with it; once it is down,
+   the screen stretches a little and settles. Winding up is quick, then the hem snaps into the
+   roller. */
+.rkui-drawer--blind[open]:not([data-rkui-closing])::details-content,
+.rkui-drawer--blind:has(> .rkui-drawer-switch:popover-open) > .rkui-drawer-tray {
+  --rkui-drawer-bounce: 1;
+
+  transition:
+    grid-template-rows var(--rkui-drawer-unroll) ease-in,
+    grid-template-columns var(--rkui-drawer-unroll) ease-in,
+    --rkui-drawer-bounce calc(2 * var(--rkui-duration-spring)) ease-out var(--rkui-drawer-unroll);
+}
+
+/* Shut, the screen has no height, and its shadow would show as a strip under the hem. */
+.rkui-drawer--blind:not([open])::details-content,
+.rkui-drawer--blind:not(:has(> .rkui-drawer-switch:popover-open)) > .rkui-drawer-tray {
+  box-shadow: none;
+}
+
+/* The cut makes the screen a layer of its own, so the hem is raised above it again, within the
+   blind. */
+.rkui-drawer--blind {
+  isolation: isolate;
+}
+
+.rkui-drawer--blind > .rkui-drawer-handle {
+  z-index: 1;
+  flex-direction: column;
+  align-items: center;
+  margin-inline: var(--rkui-space-4);
+  padding: 0;
+  padding-block-end: var(--rkui-space-3);
+  border-block-start: none;
+}
+
+.rkui-drawer--blind > .rkui-drawer-handle::before {
+  content: '';
+  align-self: stretch;
+  block-size: var(--rkui-drawer-roller-size);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-end-start-radius: var(--rkui-space-1);
+  border-end-end-radius: var(--rkui-space-1);
+  background: var(--rkui-drawer-roller);
+  box-shadow: var(--rkui-shadow);
+  clip-path: var(--rkui-drawer-cut);
+}
+
+/* The pull: a yellow ring, hung from the hem's middle by its cord. A remote blind's is an empty
+   ring the size of the pull, outlined like the hem. */
+.rkui-drawer--blind > .rkui-drawer-handle :is(.rkui-drawer-pull, .rkui-drawer-ring) {
+  position: relative;
+  margin-block-start: var(--rkui-space-2);
+}
+
+.rkui-drawer--blind > .rkui-drawer-handle .rkui-drawer-pull {
+  padding: var(--rkui-space-1);
+  border-color: var(--rkui-line);
+  background: var(--rkui-selected);
+  color: var(--rkui-on-selected);
+}
+
+.rkui-drawer-ring {
+  box-sizing: content-box;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  padding: var(--rkui-space-1);
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius-pill);
+}
+
+.rkui-drawer--blind > .rkui-drawer-handle :is(.rkui-drawer-pull, .rkui-drawer-ring)::before {
+  content: '';
+  position: absolute;
+  inset-block-end: calc(100% + var(--rkui-outline-width));
+  inset-inline-start: calc(50% - var(--rkui-outline-width) / 2);
+  inline-size: var(--rkui-outline-width);
+  block-size: var(--rkui-space-2);
+  background: var(--rkui-line-unfilled);
+}
+
+/* With show-label, the ring grows into a pill holding the label beside the caret, still hung
+   from the cord's end at its middle. */
+.rkui-drawer--show-label > .rkui-drawer-handle .rkui-drawer-pull {
+  padding-inline: var(--rkui-space-2);
+}
+
+/* A coloured drawer: the tray or screen takes the tint, and the inset's grey step is mixed from
+   it; the pull, and the blind's hem, take the solid hue, outlined as fills are. */
+.rkui-drawer--hue {
+  --rkui-recess-floor: var(--rkui-drawer-tint);
+  --rkui-drawer-screen: var(--rkui-drawer-tint);
+}
+
+.rkui-drawer--hue > .rkui-drawer-handle .rkui-drawer-pull {
+  border-color: var(--rkui-line);
+  background: var(--rkui-drawer-hue);
+  color: var(--rkui-drawer-on-hue);
+}
+
+.rkui-drawer--hue.rkui-drawer--blind > .rkui-drawer-handle::before {
+  border-color: var(--rkui-line);
+  background: var(--rkui-drawer-hue);
+}
+
+/* On top, the drawer is turned round: the handle comes first, then the tray, whose contents keep
+   to the handle, and the moves run upwards. */
+.rkui-drawer--top {
+  --rkui-drawer-caret-turn: 0.5turn;
+  --rkui-drawer-cut: inset(-100vmax -100vmax 0);
+
+  grid-template-areas: 'handle' 'tray' 'roller';
+}
+
+.rkui-drawer--top:first-child {
+  margin-block-start: calc(-1 * var(--rkui-drawer-bleed, 0px));
+}
+
+.rkui-drawer--top > .rkui-drawer-handle {
+  border-block-start: none;
+  border-block-end: var(--rkui-outline-width) solid var(--rkui-stripe);
+}
+
+.rkui-drawer--top::details-content,
+.rkui-drawer--top > .rkui-drawer-tray {
+  align-content: start;
+}
+
+.rkui-drawer--top > .rkui-drawer-body,
+.rkui-drawer--top > .rkui-drawer-tray > .rkui-drawer-body {
+  align-self: start;
+}
+
+.rkui-drawer--blind.rkui-drawer--top {
+  --rkui-drawer-roll: 0 calc(-4 * var(--rkui-drawer-stripe-gap));
+}
+
+.rkui-drawer--blind.rkui-drawer--top::details-content,
+.rkui-drawer--blind.rkui-drawer--top > .rkui-drawer-tray {
+  padding-block: calc(sin(var(--rkui-drawer-bounce) * 0.5turn) * var(--rkui-drawer-bounce-size)) 0;
+}
+
+.rkui-drawer--blind.rkui-drawer--top > .rkui-drawer-handle {
+  flex-direction: column-reverse;
+  border: none;
+  padding-block: var(--rkui-space-3) 0;
+}
+
+.rkui-drawer--blind.rkui-drawer--top > .rkui-drawer-handle::before {
+  border-radius: var(--rkui-space-1) var(--rkui-space-1) 0 0;
+}
+
+.rkui-drawer--blind.rkui-drawer--top
+  > .rkui-drawer-handle
+  :is(.rkui-drawer-pull, .rkui-drawer-ring) {
+  margin-block: 0 var(--rkui-space-2);
+}
+
+.rkui-drawer--blind.rkui-drawer--top
+  > .rkui-drawer-handle
+  :is(.rkui-drawer-pull, .rkui-drawer-ring)::before {
+  inset-block: calc(100% + var(--rkui-outline-width)) auto;
+}
+
+/* On the left and right the parts stand side by side, as tall as the parent, hanging beyond its
+   side (above). The tray opens sideways, to its contents' width up to --rkui-drawer-width. The
+   pull's label turns on end, with the foot of its letters towards the parent, as folder tabs on
+   the sides do. In a right-to-left page the sides swap. */
+.rkui-drawer--left {
+  grid-template-areas: 'handle tray roller';
+}
+
+.rkui-drawer--right {
+  grid-template-areas: 'roller tray handle';
+}
+
+/* The side of the screen it is on: the label's writing mode, the caret's turn, the way the
+   roller's stripes move and the side the cut is on. On the left the label is turned round to read
+   upwards, from the icon to the caret. Beside the parent, above and below the drawer, the cut
+   moves away from the parent by the shadow's offset towards it, so the end of the shadow's rim
+   doesn't show at the join. */
+.rkui-drawer--left:dir(ltr),
+.rkui-drawer--right:dir(rtl) {
+  --rkui-drawer-caret-turn: 0.25turn;
+  --rkui-drawer-turned: vertical-rl;
+  --rkui-drawer-roll: calc(-4 * var(--rkui-drawer-stripe-gap)) 0;
+  --rkui-drawer-join: calc(100% - max(0px, -1 * var(--rkui-shadow-offset-x)));
+  --rkui-drawer-cut: polygon(
+    -100vmax -100vmax,
+    var(--rkui-drawer-join) -100vmax,
+    var(--rkui-drawer-join) 0,
+    100% 0,
+    100% 100%,
+    var(--rkui-drawer-join) 100%,
+    var(--rkui-drawer-join) calc(100% + 100vmax),
+    -100vmax calc(100% + 100vmax)
+  );
+}
+
+.rkui-drawer--right:dir(ltr),
+.rkui-drawer--left:dir(rtl) {
+  --rkui-drawer-caret-turn: -0.25turn;
+  --rkui-drawer-turned: vertical-lr;
+  --rkui-drawer-roll: calc(4 * var(--rkui-drawer-stripe-gap)) 0;
+  --rkui-drawer-join: max(0px, var(--rkui-shadow-offset-x));
+  --rkui-drawer-cut: polygon(
+    calc(100% + 100vmax) -100vmax,
+    var(--rkui-drawer-join) -100vmax,
+    var(--rkui-drawer-join) 0,
+    0 0,
+    0 100%,
+    var(--rkui-drawer-join) 100%,
+    var(--rkui-drawer-join) calc(100% + 100vmax),
+    calc(100% + 100vmax) calc(100% + 100vmax)
+  );
+}
+
+:is(.rkui-drawer--left, .rkui-drawer--right) > .rkui-drawer-handle .rkui-drawer-pull {
+  writing-mode: var(--rkui-drawer-turned);
+}
+
+:is(.rkui-drawer--left:dir(ltr), .rkui-drawer--right:dir(rtl))
+  > .rkui-drawer-handle
+  .rkui-drawer-pull {
+  flex-direction: row-reverse;
+}
+
+:is(.rkui-drawer--left:dir(ltr), .rkui-drawer--right:dir(rtl))
+  > .rkui-drawer-handle
+  .rkui-drawer-label {
+  display: inline-block;
+  rotate: 0.5turn;
+}
+
+/* The handle runs down the drawer's side, with the seam towards the tray, and slams sideways. */
+:is(.rkui-drawer--left, .rkui-drawer--right) > .rkui-drawer-handle {
+  align-items: center;
+  border-block-start: none;
+}
+
+.rkui-drawer--left > .rkui-drawer-handle {
+  inset-block-start: 0;
+  inset-inline-start: calc(sin(var(--rkui-drawer-slam) * 0.5turn) * var(--rkui-drawer-overshoot));
+  border-inline-end: var(--rkui-outline-width) solid var(--rkui-stripe);
+}
+
+.rkui-drawer--right > .rkui-drawer-handle {
+  inset-block-start: 0;
+  inset-inline-start: calc(
+    sin(var(--rkui-drawer-slam) * 0.5turn) * -1 * var(--rkui-drawer-overshoot)
+  );
+  border-inline-start: var(--rkui-outline-width) solid var(--rkui-stripe);
+}
+
+/* The tray's one column grows instead of its row, and its contents keep to the handle's side. */
+.rkui-drawer--left::details-content,
+.rkui-drawer--left > .rkui-drawer-tray,
+.rkui-drawer--right::details-content,
+.rkui-drawer--right > .rkui-drawer-tray {
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0fr);
+  align-content: stretch;
+}
+
+.rkui-drawer--left::details-content,
+.rkui-drawer--left > .rkui-drawer-tray {
+  justify-content: start;
+}
+
+.rkui-drawer--right::details-content,
+.rkui-drawer--right > .rkui-drawer-tray {
+  justify-content: end;
+}
+
+:is(.rkui-drawer--left, .rkui-drawer--right)[open]:not([data-rkui-closing])::details-content,
+:is(.rkui-drawer--left, .rkui-drawer--right):has(> .rkui-drawer-switch:popover-open)
+  > .rkui-drawer-tray {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+:is(.rkui-drawer--left, .rkui-drawer--right) > .rkui-drawer-body,
+:is(.rkui-drawer--left, .rkui-drawer--right) > .rkui-drawer-tray > .rkui-drawer-body {
+  align-self: stretch;
+  inline-size: max-content;
+  max-inline-size: var(--rkui-drawer-width, min(12rem, 35vw));
+}
+
+.rkui-drawer--left > .rkui-drawer-body,
+.rkui-drawer--left > .rkui-drawer-tray > .rkui-drawer-body {
+  justify-self: start;
+}
+
+.rkui-drawer--right > .rkui-drawer-body,
+.rkui-drawer--right > .rkui-drawer-tray > .rkui-drawer-body {
+  justify-self: end;
+}
+
+/* The blind on its side: the roller and hem stand upright, the screen unrolls sideways and
+   bounces at its far side, and the cord runs sideways from the hem to the pull. */
+.rkui-drawer--blind:is(.rkui-drawer--left, .rkui-drawer--right) {
+  --rkui-drawer-stripes: to right;
+}
+
+.rkui-drawer--blind:is(.rkui-drawer--left, .rkui-drawer--right)::before {
+  inline-size: var(--rkui-drawer-roller-size);
+  block-size: auto;
+  margin: var(--rkui-space-2) 0;
+}
+
+.rkui-drawer--blind:is(.rkui-drawer--left, .rkui-drawer--right)::details-content,
+.rkui-drawer--blind:is(.rkui-drawer--left, .rkui-drawer--right) > .rkui-drawer-tray {
+  margin: var(--rkui-space-4) 0;
+  padding: 0;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-inline: none;
+}
+
+.rkui-drawer--blind.rkui-drawer--left::details-content,
+.rkui-drawer--blind.rkui-drawer--left > .rkui-drawer-tray {
+  padding-inline-start: calc(
+    sin(var(--rkui-drawer-bounce) * 0.5turn) * var(--rkui-drawer-bounce-size)
+  );
+}
+
+.rkui-drawer--blind.rkui-drawer--right::details-content,
+.rkui-drawer--blind.rkui-drawer--right > .rkui-drawer-tray {
+  padding-inline-end: calc(
+    sin(var(--rkui-drawer-bounce) * 0.5turn) * var(--rkui-drawer-bounce-size)
+  );
+}
+
+.rkui-drawer--blind:is(.rkui-drawer--left, .rkui-drawer--right) > .rkui-drawer-handle {
+  margin: var(--rkui-space-4) 0;
+  padding: 0;
+}
+
+.rkui-drawer--blind.rkui-drawer--left > .rkui-drawer-handle {
+  flex-direction: row-reverse;
+  padding-inline-start: var(--rkui-space-3);
+  border-inline-end: none;
+}
+
+.rkui-drawer--blind.rkui-drawer--right > .rkui-drawer-handle {
+  flex-direction: row;
+  padding-inline-end: var(--rkui-space-3);
+  border-inline-start: none;
+}
+
+.rkui-drawer--blind:is(.rkui-drawer--left, .rkui-drawer--right) > .rkui-drawer-handle::before {
+  inline-size: var(--rkui-drawer-roller-size);
+  block-size: auto;
+  border-radius: 0;
+}
+
+.rkui-drawer--blind.rkui-drawer--left > .rkui-drawer-handle::before {
+  border-start-start-radius: var(--rkui-space-1);
+  border-end-start-radius: var(--rkui-space-1);
+}
+
+.rkui-drawer--blind.rkui-drawer--right > .rkui-drawer-handle::before {
+  border-start-end-radius: var(--rkui-space-1);
+  border-end-end-radius: var(--rkui-space-1);
+}
+
+.rkui-drawer--blind:is(.rkui-drawer--left, .rkui-drawer--right)
+  > .rkui-drawer-handle
+  :is(.rkui-drawer-pull, .rkui-drawer-ring) {
+  margin: 0;
+}
+
+.rkui-drawer--blind.rkui-drawer--left
+  > .rkui-drawer-handle
+  :is(.rkui-drawer-pull, .rkui-drawer-ring) {
+  margin-inline-end: var(--rkui-space-2);
+}
+
+.rkui-drawer--blind.rkui-drawer--right
+  > .rkui-drawer-handle
+  :is(.rkui-drawer-pull, .rkui-drawer-ring) {
+  margin-inline-start: var(--rkui-space-2);
+}
+
+.rkui-drawer--blind:is(.rkui-drawer--left, .rkui-drawer--right)
+  > .rkui-drawer-handle
+  :is(.rkui-drawer-pull, .rkui-drawer-ring)::before {
+  /* Upright, though the pull is turned. */
+  writing-mode: horizontal-tb;
+  inset: calc(50% - var(--rkui-outline-width) / 2) auto auto;
+  inline-size: var(--rkui-space-2);
+  block-size: var(--rkui-outline-width);
+}
+
+.rkui-drawer--blind.rkui-drawer--left
+  > .rkui-drawer-handle
+  :is(.rkui-drawer-pull, .rkui-drawer-ring)::before {
+  inset-inline-start: calc(100% + var(--rkui-outline-width));
+}
+
+.rkui-drawer--blind.rkui-drawer--right
+  > .rkui-drawer-handle
+  :is(.rkui-drawer-pull, .rkui-drawer-ring)::before {
+  inset-inline-end: calc(100% + var(--rkui-outline-width));
+}
+
+/* The parent's jolt as a drawer (not a blind) lands: a card holding one in its body, a cabinet,
+   or a parent marked rkui-drawer-host. It moves the way the slam goes: up by default, down for a
+   drawer on top, and sideways for one on the left or right (--rkui-drawer-jolt-x along the line,
+   -y across it: -1, 0 or 1). */
+.rkui-card:has(> .rkui-card-body > .rkui-drawer:not(.rkui-drawer--blind)),
+.rkui-cabinet,
+.rkui-drawer-host {
+  --rkui-drawer-jolt-size: calc(var(--rkui-shadow-depth) * 2px);
+  --rkui-drawer-jolt-x: 0;
+  --rkui-drawer-jolt-y: -1;
+
+  inset-block-start: calc(
+    sin(var(--rkui-drawer-jolt) * 0.5turn) * var(--rkui-drawer-jolt-y) *
+      var(--rkui-drawer-jolt-size)
+  );
+  inset-inline-start: calc(
+    sin(var(--rkui-drawer-jolt) * 0.5turn) * var(--rkui-drawer-jolt-x) *
+      var(--rkui-drawer-jolt-size)
+  );
+  transition: --rkui-drawer-jolt var(--rkui-duration-spring) ease-out var(--rkui-duration-spring);
+}
+
+.rkui-card:has(> .rkui-card-body > .rkui-drawer--top:not(.rkui-drawer--blind)),
+:is(.rkui-cabinet, .rkui-drawer-host):has(> .rkui-drawer--top) {
+  --rkui-drawer-jolt-y: 1;
+}
+
+.rkui-card:has(> .rkui-card-body > .rkui-drawer--left:not(.rkui-drawer--blind)),
+.rkui-drawer-host:has(> .rkui-drawer--left) {
+  --rkui-drawer-jolt-x: 1;
+  --rkui-drawer-jolt-y: 0;
+}
+
+.rkui-card:has(> .rkui-card-body > .rkui-drawer--right:not(.rkui-drawer--blind)),
+.rkui-drawer-host:has(> .rkui-drawer--right) {
+  --rkui-drawer-jolt-x: -1;
+  --rkui-drawer-jolt-y: 0;
+}
+
+:where(.rkui-drawer-host) {
+  position: relative;
+}
+
+.rkui-card:has(
+  > .rkui-card-body > .rkui-drawer[open]:not([data-rkui-closing]):not(.rkui-drawer--blind)
+),
+.rkui-card:has(
+  > .rkui-card-body > .rkui-drawer:not(.rkui-drawer--blind) > .rkui-drawer-switch:popover-open
+),
+:is(.rkui-cabinet, .rkui-drawer-host):has(
+  > .rkui-drawer[open]:not([data-rkui-closing]):not(.rkui-drawer--blind)
+),
+:is(.rkui-cabinet, .rkui-drawer-host):has(
+  > .rkui-drawer:not(.rkui-drawer--blind) > .rkui-drawer-switch:popover-open
+) {
+  --rkui-drawer-jolt: 1;
+
+  transition: none;
+}
+
+/* The handle's slam into the parent, or the hem's into the roller, past where it rests and back,
+   once the tray is in. */
+.rkui-drawer-handle {
+  inset-block-start: calc(
+    sin(var(--rkui-drawer-slam) * 0.5turn) * -1 * var(--rkui-drawer-overshoot)
+  );
+  transition: --rkui-drawer-slam var(--rkui-duration-spring) ease-out var(--rkui-duration-spring);
+}
+
+.rkui-drawer--top > .rkui-drawer-handle {
+  inset-block-start: calc(sin(var(--rkui-drawer-slam) * 0.5turn) * var(--rkui-drawer-overshoot));
+}
+
+.rkui-drawer:is([open]:not([data-rkui-closing]), :has(> .rkui-drawer-switch:popover-open))
+  > .rkui-drawer-handle {
+  --rkui-drawer-slam: 1;
+
+  transition: none;
+}
+
+/* Under reduced motion the duration tokens are zero, so everything happens at once. */
+.rkui-drawer-caret {
+  transition: rotate var(--rkui-duration-slide) var(--rkui-ease-snap);
+}

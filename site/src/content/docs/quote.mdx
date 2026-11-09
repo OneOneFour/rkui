@@ -1,0 +1,130 @@
+---
+title: Quote
+description: Quoted text on a panel, in the slab serif.
+group: Containers
+order: 75
+component: Quote
+---
+
+import ApiReference from '../../components/ApiReference.astro'
+import Demo from '../../components/Demo.astro'
+import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
+import TryIt from '../../examples/quote/TryIt.vue'
+import tryItCode from '../../examples/quote/TryIt.vue?raw'
+
+`Quote` renders a `<blockquote>` on a panel, in Roboto Slab. It is as wide as its column,
+with no indent, so its edges line up with the text around it, and it keeps the same space above
+and below. With `by`, the attribution goes under the quote in a `<figcaption>`.
+
+<Demo label="Quote with an attribution" stack>
+  <Quote by="Ada Lovelace, 1843">
+    <p>
+      The Analytical Engine weaves algebraical patterns just as the Jacquard-loom weaves flowers and
+      leaves.
+    </p>
+  </Quote>
+</Demo>
+
+## Short quotes
+
+A quote whose text fits on one line is set two steps larger (`--rkui-step-2`), and one of two
+lines a step larger (`--rkui-step-1`), by the helper script `quote-enhance.js`. It measures each quote at the normal size, in the column it sits in, so
+the same quote can be larger in a wide column and normal on a phone, where it wraps to three lines
+or more. Its padding and the space around it stay the same. Without the script, every quote keeps
+the normal size.
+
+<Demo label="A short quote and a long one" stack>
+  <Quote by="Short">
+    <p>How vexingly quick daft zebras jump.</p>
+  </Quote>
+  <Quote by="Long">
+    <p>
+      Pack my box with five dozen liquor jugs. The five boxing wizards jump quickly. Sphinx of black
+      quartz, judge my vow. Jackdaws love my big sphinx of quartz. The quick onyx goblin jumps over
+      the lazy dwarf. Five quacking zephyrs jolt my wax bed.
+    </p>
+  </Quote>
+</Demo>
+
+`short` sets a quote two steps larger whatever its length, for a pull quote that should stay large
+on a phone too.
+
+<Demo label="A short quote that stays large" stack>
+  <Quote short by="Short">
+    <p>Sphinx of black quartz, judge my vow, and the five boxing wizards jump quickly.</p>
+  </Quote>
+</Demo>
+
+## Try it
+
+Type a quote and an attribution to see them render. A blank line starts a new paragraph. The quote
+turns larger while it is under three lines, and back as it grows.
+
+<Demo vue={tryItCode} label="Quote that renders as you type" stack widget>
+  <TryIt client:visible />
+</Demo>
+
+## In running text
+
+<Demo label="Quote between paragraphs" stack>
+  <div>
+    <p>Pack my box with five dozen liquor jugs. How vexingly quick daft zebras jump.</p>
+    <Quote>
+      <p>The five boxing wizards jump quickly.</p>
+      <p>Sphinx of black quartz, judge my vow.</p>
+    </Quote>
+    <p>Jackdaws love my big sphinx of quartz. The quick onyx goblin jumps over the lazy dwarf.</p>
+  </div>
+</Demo>
+
+## Slant
+
+A quote is upright by default. Roboto Slab has no italic, so `slant="italic"` has the browser slant
+its upright letters. Emphasis inside an italic quote turns upright.
+
+<Demo label="Upright and italic quotes" stack>
+  <Quote by="Upright">
+    <p>
+      Sphinx of black quartz, <em>judge</em> my vow.
+    </p>
+  </Quote>
+  <Quote slant="italic" by="Italic">
+    <p>
+      Sphinx of black quartz, <em>judge</em> my vow.
+    </p>
+  </Quote>
+</Demo>
+
+## Markdown quotes
+
+On this site a Markdown `>` quote renders as a `Quote`:
+
+> How vexingly quick daft zebras jump.
+
+A site does the same by mapping `blockquote` to `Quote` where it renders its Markdown and MDX:
+
+```astro
+---
+import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
+import TryIt from '../../examples/quote/TryIt.vue'
+import tryItCode from '../../examples/quote/TryIt.vue?raw'
+const { Content } = await render(entry)
+---
+
+<Content components={{ blockquote: Quote }} />
+```
+
+or in one MDX file:
+
+```mdx
+import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
+import TryIt from '../../examples/quote/TryIt.vue'
+import tryItCode from '../../examples/quote/TryIt.vue?raw'
+export const components = { blockquote: Quote }
+```
+
+A Markdown quote has no `by`; write `<Quote by="…">` for an attribution.
+
+## Reference
+
+<ApiReference component="Quote" />

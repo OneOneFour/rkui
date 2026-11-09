@@ -25,6 +25,24 @@
    .rkui-sidebar--note     a taped sticky note (with .rkui-sticky-note .rkui-sticky-note--tape);
                            the current page an ink pill.
 
+   With any look:
+   .rkui-sidebar--slab     sets the header, headings and links in the slab serif;
+   .rkui-sidebar--selected-slab
+                           sets only the current page's link in the slab serif;
+   .rkui-sidebar--bold     bolder links (weight 600; the current page keeps its own);
+   .rkui-sidebar--columns  the links flow into columns when the sidebar is wide, one column
+                           when it is narrow;
+   .rkui-sidebar-link--hue a link with its own colour, --rkui-sidebar-hue with --rkui-sidebar-on-hue
+                           text, set in its style: it fills the link's icon, and the link itself
+                           when it is the current page.
+
+   A .rkui-sidebar-header before the scroller holds what stays above the links, such as a site's
+   name and tagline. A group may have no heading. A link may start with an icon (an <svg>).
+
+   data-rkui-dots="pill" on the sidebar or any ancestor puts the hints in yellow pills, as the
+   card's are (overflow.css). The scrollbar takes the scroll settings (--rkui-scroll-track and the
+   rest, overflow.css) set on the sidebar or any ancestor.
+
    The hints follow the scroll position with a scroll-driven animation on a timeline the nav
    shares with its scroller. Browsers without one show the scrollbar at all times and no hints. */
 
@@ -37,7 +55,8 @@
   --rkui-sidebar-pad: calc(var(--rkui-shadow-offset) + var(--rkui-focus-width));
   /* An edge that is there but not shown, so a look can show it without the text moving */
   --rkui-sidebar-edge-off: transparent;
-  --rkui-sidebar-dot-color: var(--rkui-line-unfilled);
+  /* The plain hints are the text colour, cream in dark mode whatever the highlight */
+  --rkui-sidebar-dot-color: var(--rkui-fg);
 
   position: relative;
   display: flex;
@@ -57,6 +76,13 @@
   overscroll-behavior: contain;
   scroll-timeline-name: --rkui-sidebar;
   scroll-timeline-axis: block;
+}
+
+/* What stays above the links, one item under another, lined up with their text. */
+.rkui-sidebar-header {
+  display: grid;
+  gap: var(--rkui-space-1);
+  padding: 0 calc(var(--rkui-sidebar-pad) + var(--rkui-space-3)) var(--rkui-space-3);
 }
 
 .rkui-sidebar-group + .rkui-sidebar-group {
@@ -97,6 +123,22 @@
   text-decoration: none;
 }
 
+/* An icon before the text, drawn in the link's text colour. */
+.rkui-sidebar-link:has(> svg) {
+  display: flex;
+  align-items: center;
+  gap: var(--rkui-space-2);
+}
+
+.rkui-sidebar-link > svg {
+  --rkui-icon-stroke: 24;
+
+  flex: none;
+  inline-size: 1.25em;
+  block-size: 1.25em;
+  color: inherit;
+}
+
 @media (hover: hover) {
   .rkui-sidebar:not(.rkui-sidebar--deck) .rkui-sidebar-link:hover {
     text-decoration: underline;
@@ -104,7 +146,8 @@
   }
 }
 
-/* The current page starts in view: its scroller opens scrolled to it, where supported. */
+/* The current page starts in view: its scroller opens scrolled to it. sidebar-enhance.js does
+   the same in browsers without scroll-initial-target. */
 .rkui-sidebar-link[aria-current='page'] {
   scroll-initial-target: nearest;
   border-color: var(--rkui-line-unfilled);
@@ -193,10 +236,10 @@
      scroll region's does (overflow.css). Forced colours keep it visible. */
   @media (forced-colors: none) {
     .rkui-sidebar-scroll:not(:hover, :has(:focus-visible)) {
-      --rkui-scroll-track: transparent;
-      --rkui-scroll-track-edge: transparent;
-      --rkui-scroll-thumb: transparent;
-      --rkui-scroll-thumb-edge: transparent;
+      --rkui-scroll-drawn-track: transparent;
+      --rkui-scroll-drawn-track-edge: transparent;
+      --rkui-scroll-drawn-thumb: transparent;
+      --rkui-scroll-drawn-thumb-edge: transparent;
     }
   }
 }
@@ -223,6 +266,10 @@
   padding: var(--rkui-sidebar-pad) var(--rkui-sidebar-pad) 0;
   container-type: scroll-state;
   background: var(--rkui-sidebar-panel);
+  /* At a fractional zoom or screen scale the scroller's top edge and the stuck heading can round
+     apart, leaving a thin row of what scrolls under the heading showing above it. This shadow in
+     the panel's colour fills that row; the scroller clips it everywhere else. */
+  box-shadow: 0 calc(-1 * var(--rkui-outline-width)) var(--rkui-sidebar-panel);
 }
 
 /* Their labels are in sentence case at body size. */
@@ -247,28 +294,44 @@
    the card's top and bottom edges while there is more that way. The current page is pushed in. */
 .rkui-sidebar--card {
   --rkui-sidebar-panel: var(--rkui-raised);
-  --rkui-sidebar-dot-color: var(--rkui-on-selected);
 
   border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
   border-radius: var(--rkui-radius);
   box-shadow: var(--rkui-shadow);
 }
 
-/* :where() keeps this below the scrollbar's hide-until-hover rule (overflow.css). */
-:where(.rkui-sidebar--card) .rkui-sidebar-scroll {
+/* The scrollbar's settings (overflow.css). :where() lets a page's own setting on the sidebar win. */
+:where(.rkui-sidebar--card) {
   --rkui-scroll-track: var(--rkui-surface);
 }
 
+/* The pill look (overflow.css): a card's hints always take it, sitting on its edges. */
 .rkui-sidebar--card .rkui-sidebar-more {
-  --rkui-sidebar-more-size: var(--rkui-space-4);
+  --rkui-sidebar-dot-color: var(--rkui-pill-dot);
+  --rkui-sidebar-more-size: var(--rkui-pill-width);
 
-  inline-size: var(--rkui-space-7);
+  inline-size: var(--rkui-pill-length);
   block-size: var(--rkui-sidebar-more-size);
   margin-inline: auto;
-  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border: var(--rkui-outline-width) solid var(--rkui-pill-edge);
   border-radius: var(--rkui-radius-pill);
-  background-color: var(--rkui-selected);
+  background-color: var(--rkui-pill-fill);
   box-shadow: var(--rkui-shadow);
+}
+
+/* Any other sidebar's hints take it where data-rkui-dots="pill", in their gutters. */
+@scope ([data-rkui-dots='pill']) to ([data-rkui-dots='plain']) {
+  .rkui-sidebar-more {
+    --rkui-sidebar-dot-color: var(--rkui-pill-dot);
+
+    inline-size: var(--rkui-pill-length);
+    block-size: var(--rkui-pill-width);
+    margin-inline: auto;
+    border: var(--rkui-outline-width) solid var(--rkui-pill-edge);
+    border-radius: var(--rkui-radius-pill);
+    background-color: var(--rkui-pill-fill);
+    box-shadow: var(--rkui-shadow);
+  }
 }
 
 .rkui-sidebar--card .rkui-sidebar-more--above {
@@ -374,8 +437,8 @@
   color: var(--rkui-on-fill);
 }
 
-/* :where() keeps this below the scrollbar's hide-until-hover rule (overflow.css). */
-:where(.rkui-sidebar--note) .rkui-sidebar-scroll {
+/* The scrollbar's settings (overflow.css). :where() lets a page's own setting on the sidebar win. */
+:where(.rkui-sidebar--note) {
   --rkui-scroll-track: var(--rkui-note-tape);
   --rkui-scroll-track-edge: var(--rkui-line);
   --rkui-scroll-thumb: var(--rkui-glint);
@@ -407,6 +470,46 @@
   background: var(--rkui-ink);
   color: var(--rkui-on-ink);
   box-shadow: none;
+}
+
+/* Slab: the header, headings and links in the slab serif, in any look. */
+.rkui-sidebar--slab {
+  font-family: var(--rkui-font-display);
+}
+
+/* Selected slab: only the current page's link in the slab serif. */
+.rkui-sidebar--selected-slab .rkui-sidebar-link[aria-current='page'] {
+  font-family: var(--rkui-font-display);
+}
+
+/* Bold: links at 600, in any look. :where() keeps the current page's own weight. */
+:where(.rkui-sidebar--bold) .rkui-sidebar-link {
+  font-weight: 600;
+}
+
+/* Columns: each group's links fill as many columns of at least 7.5rem as fit, so a narrow
+   sidebar keeps one. */
+.rkui-sidebar--columns .rkui-sidebar-list {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 7.5rem), 1fr));
+}
+
+/* A link with its own colour, in any look: its icon is filled with it, and as the current page
+   the link is filled with it, keeping the look's own shape and shadow, its icon a glint sticker
+   with an ink edge. */
+.rkui-sidebar-link--hue {
+  --rkui-icon-fill: var(--rkui-sidebar-hue);
+}
+
+.rkui-sidebar .rkui-sidebar-link--hue[aria-current='page'] {
+  --rkui-icon-fill: var(--rkui-glint);
+
+  border-color: var(--rkui-line);
+  background: var(--rkui-sidebar-hue);
+  color: var(--rkui-sidebar-on-hue);
+}
+
+.rkui-sidebar-link--hue[aria-current='page'] > svg {
+  color: var(--rkui-ink);
 }
 
 /* Forced colours: edges that aren't shown become Canvas, the dots become a system-colour line at

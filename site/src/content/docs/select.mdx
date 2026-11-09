@@ -1,54 +1,58 @@
 ---
 title: Select
-description: A native select, with an optional custom open list.
+description: A native select whose open list is drawn in the toon look where the browser supports it.
 group: Form controls
 order: 43
+component: Select
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/select/default.astro'
-import defaultCode from '../../examples/select/default.astro?raw'
-import Disabled from '../../examples/select/disabled.astro'
-import disabledCode from '../../examples/select/disabled.astro?raw'
-import ErrorDemo from '../../examples/select/error.astro'
-import errorCode from '../../examples/select/error.astro?raw'
-import Picker from '../../examples/select/picker.astro'
-import pickerCode from '../../examples/select/picker.astro?raw'
-import PickerIcons from '../../examples/select/picker-icons.astro'
-import picker_iconsCode from '../../examples/select/picker-icons.astro?raw'
-import PickerTint from '../../examples/select/picker-tint.astro'
-import picker_tintCode from '../../examples/select/picker-tint.astro?raw'
+import Select from '@oneonefour/rkui/components/select/Select.vue'
+import SunIcon from '@oneonefour/rkui/icons/sun.vue'
+import MoonIcon from '@oneonefour/rkui/icons/moon.vue'
+import CircleHalfIcon from '@oneonefour/rkui/icons/circle-half.vue'
 
-<Demo code={defaultCode} label="Default select" stack>
-  <Default />
+<Demo label="Default select" stack>
+  <Select label="Size" name="select-size">
+    <option value="one">Option one</option>
+    <option value="two">Option two</option>
+    <option value="three">Option three</option>
+  </Select>
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled select" stack>
-  <Disabled />
+<Demo label="Disabled select" stack>
+  <Select label="Size" name="select-disabled" disabled>
+    <option>Option one</option>
+  </Select>
 </Demo>
 
 ## Error
 
-<Demo code={errorCode} label="Select with an error" stack>
-  <ErrorDemo />
-</Demo>
-
-## Custom open list
-
-<Demo code={pickerCode} label="Select with the custom list" stack>
-  <Picker />
+<Demo label="Select with an error" stack>
+  <Select label="Size" name="select-error" error="Error message">
+    <option>Option one</option>
+  </Select>
 </Demo>
 
 ## Icons in options
 
-<Demo code={picker_iconsCode} label="Custom list with icons" stack>
-  <PickerIcons />
+<Demo label="Select with icons" stack>
+  <Select label="Theme" name="select-icons" showSelected>
+    <option value="one">
+      <SunIcon class="rkui-icon rkui-icon--small" aria-hidden="true" /> Option one
+    </option>
+    <option value="two">
+      <MoonIcon class="rkui-icon rkui-icon--small" aria-hidden="true" /> Option two
+    </option>
+    <option value="three">
+      <CircleHalfIcon class="rkui-icon rkui-icon--small" aria-hidden="true" /> Option three
+    </option>
+  </Select>
 </Demo>
 
-## Tinted checked option
+## Reference
 
-<Demo code={picker_tintCode} label="Custom list with a tinted checked option" stack>
-  <PickerTint />
-</Demo>
+<ApiReference component="Select" />

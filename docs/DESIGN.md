@@ -23,13 +23,15 @@ ink, not white. It draws on neo-brutalist graphics
   small text on the page: use the `-deep` step.
 - **Every interactive thing has the 2px outline and the pop**, from one shared rule set
   (`src/interactive.css`), never per component. Static panels (callouts, code,
-  equations) have no outline; text inputs are outlined but flat.
+  equations) have no outline; text inputs are outlined but flat. A static card is outlined but
+  never lifts (§4.1).
 - **Hard shadows only:** zero blur, opaque, offsets always from `--rkui-shadow-dx`/`--rkui-shadow-dy`.
 - **Focus is the tangerine highlighter band** hugging the outline, shadow off. Never removed.
 - **Things move but never turn.** A shadowed thing only translates; parts that turn carry no
   shadow.
 - **Discrete steps, never gradients.** No blur, glow or bevel, in illustrations, charts,
-  third-party widgets and the PowerPoint template too.
+  third-party widgets and the PowerPoint template too. The one exception is the page behind an
+  open Alert, which is blurred.
 - **WCAG AA:** every pair, both themes, every palette, checked by hand on the docs page's Colours
   section. Code text gets AAA (7:1).
 - **Reduced motion:** nothing moves, shadows still change. **Forced colours:** meaning survives in
@@ -43,28 +45,31 @@ ink, not white. It draws on neo-brutalist graphics
 
 ## 2. Tokens
 
-All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`,
-`shadows.css`, `fallback.css`) unless noted. Colours are `light-dark(<light>, <dark>)` pairs.
+All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`, `shadows.css`,
+`shadow-color.css`, `fallback.css`) unless noted. Colours are `light-dark(<light>, <dark>)` pairs.
 
 ### 2.1 Neutrals, lines and focus
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
 | `--rkui-surface` | `#f7f3e5` | `#1a1f2b` | page (cream palette) |
-| `--rkui-raised` | `#fffaf0` | `#232a39` | cards, chips, tracks, unfilled press |
+| `--rkui-raised` | `#fffaf0` | `#232a39` | linked cards, chips, tracks, unfilled press |
 | `--rkui-fg` | `#1d232f` | `#f2eee2` | body text |
 | `--rkui-muted` | `#5b6070` | `#a3a8b6` | captions, meta |
 | `--rkui-line` | `#1d232f` | `#05070b` | outlines and hard shadows |
-| `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` | outlines of things with no fill |
+| `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` (= `--rkui-line` with the dark highlight) | outlines of things with no fill |
 | `--rkui-ink` | `#1d232f` | `#1d232f` | ink, same in both themes |
 | `--rkui-on-ink`, `--rkui-glint` | `#f7f3e5` | `#f2eee2` | text on ink; highlights on fills |
-| `--rkui-shadow-lit` | = `--rkui-line` | `#6e7891` | colour mode: shadow of things without a fill |
+| `--rkui-shadow-lit` | = `--rkui-line` | `#6e7891` | colour shadow: shadow of things without a colour of their own |
 | `--rkui-focus` / `--rkui-focus-alt` | `--rkui-tangerine` / `--rkui-yellow` | same | focus band; where tangerine surrounds it |
 
 ### 2.2 Hues
 
-Fills stay vivid in both themes. Each core hue has `-deep` (text and links on the page) and `-tint`
+Fills stay vivid in both themes. Every hue has `-deep` (text and links on the page) and `-tint`
 (panels carrying `--rkui-fg` text); tints flip to dark versions in dark mode so panels don't glare.
+The auxiliary hues come in vivid and pale pairs, grape and lilac, tangerine and apricot, and each
+has its own steps. A pale hue's fill is also its light tint and its dark deep, as sky's is; the
+vivid partner's tint is a stronger wash than the pale fill.
 
 | Hue | Fill (light / dark) | `-deep` | `-tint` | Label |
 |---|---|---|---|---|
@@ -74,19 +79,30 @@ Fills stay vivid in both themes. Each core hue has `-deep` (text and links on th
 | yellow | `#f4bc38` | `#856000` / `#f7d27a` | `#fbdf94` / `#4a3e18` | `--rkui-on-fill` |
 | green | `#7bba3d` / `#86c44a` | `#3a7016` / `#a3d977` | `#c8e5a8` / `#2a4220` | `--rkui-on-fill` |
 | sky | `#8fd3f7` | `#216b9a` / `#8fd3f7` | `#8fd3f7` / `#1e3a50` | `--rkui-on-fill` |
-| grape | `#7b4fc9` / `#a584e6` | `#7b4fc9` / `#b89cf0` | (`--rkui-lilac-tint`) | `--rkui-on-grape` |
-| lilac | `#d4c4f5` | — | `#d4c4f5` / `#342c55` | `--rkui-on-fill` |
-| tangerine | `#f58a2a` / `#f5923a` | `#a14c0a` / `#f8a65c` | (`--rkui-apricot-tint`) | `--rkui-on-fill` |
-| apricot | `#ffd2a6` | — | `#ffd2a6` / `#4a3324` | `--rkui-on-fill` |
+| grape | `#7b4fc9` / `#a584e6` | `#7b4fc9` / `#b89cf0` | `#c8b2ff` / `#4a306b` | `--rkui-on-grape` |
+| lilac | `#d4c4f5` | `#685796` / `#d4c4f5` | `#d4c4f5` / `#342c55` | `--rkui-on-fill` |
+| tangerine | `#f58a2a` / `#f5923a` | `#a14c0a` / `#f8a65c` | `#feb98f` / `#603714` | `--rkui-on-fill` |
+| apricot | `#ffd2a6` | `#7f512d` / `#ffd2a6` | `#ffd2a6` / `#4a3324` | `--rkui-on-fill` |
 
 - `--rkui-on-fill` = `--rkui-ink`. `--rkui-on-coral` and `--rkui-on-grape` are `#ffffff` in light mode, ink in dark.
 - **`--rkui-coral-solid`** = `--rkui-coral-deep` light, `--rkui-coral` dark: coral for fills with small text.
   Bright `--rkui-coral` under white passes only as large text, so it is for display blocks and bands.
   Coral is the only hue with a `-solid` step.
 - **`--rkui-coral-deep` `#c8322a`** is 4.79:1 as text on cream and 5.32:1 under white.
-- **Auxiliary colours** have set jobs and are **never section colours** or decoration: grape
-  (interactive accents, code and maths highlights), lilac (widget frames, equation pills),
-  tangerine (warnings, work in progress, focus), apricot (`<mark>`, callouts, the `:target` flash).
+- **Auxiliary colours** are grape (interactive accents, code and maths highlights), lilac (widget
+  frames, equation pills), tangerine (warnings, work in progress, focus) and apricot (`<mark>`,
+  callouts, the `:target` flash). They can mark a section like any core hue. Every component that
+  takes a `hue` takes them too.
+- **Recolouring a component:** every component with a colour takes it in one prop, `hue`: a
+  palette hue's name, which brings its label, `-tint` and dark-mode values, or a hex code for a
+  colour outside the palette. A hex code is one colour in both themes, with no dark-mode value and no
+  `-deep` step; its label and tint are worked out from it (§2.5), and its contrast is the author's
+  to check. `hueVars()` in `src/shared/hues.ts` turns either into the component's custom
+  properties. On a plain HTML page a hue is a modifier class, and any other colour is the custom
+  properties the component's stylesheet names.
+- **In JavaScript:** `import { colors } from '@oneonefour/rkui/colors.js'` gives every colour token
+  that is a plain hex, light and dark (`colors.tealDeep.dark`). The build reads it from the token
+  files (`build/colors.js`), so there is no second copy to drift.
 
 ### 2.3 Roles and code
 
@@ -94,19 +110,17 @@ Fills stay vivid in both themes. Each core hue has `-deep` (text and links on th
 |---|---|---|
 | `--rkui-selected` / `--rkui-on-selected` | `--rkui-yellow` / `--rkui-on-fill` | checked and selected controls |
 | `--rkui-selected-tint` | `--rkui-yellow-tint` | the selected option's surroundings |
-| `--rkui-section` / `--rkui-on-section` | `--rkui-ink` / `--rkui-on-ink` | the site's section-hue hook |
-| `--rkui-note-<hue>` | tint light, vivid fill dark | sticky notes (yellow, sky, tangerine, green, coral, grape) |
+| `--rkui-section` / `--rkui-on-section` | unset; uses fall back to `--rkui-ink` / `--rkui-on-ink` | the site's section-hue hook |
+| `--rkui-note-<hue>` | tint light, vivid fill dark | sticky notes (every hue but navy and teal); sky, lilac and apricot are their fill in both themes |
 | `--rkui-note-tape` | `--rkui-glint` 60% | sticky-note tape |
 | `--rkui-icon-fill-neutral` | `currentColor` 20% | quiet default fill for interface icons |
-| `--rkui-slate` / `--rkui-slate-tab` | `#e7ebf3` / `#dbe0ea`; dark `#2c323d` / `#333946` | code panels, editor-tab strip |
-| `--rkui-slate-greige` / `-tab` | `#eae7e2` / `#e0dcd6`; dark `#35332e` / `#3d3a34` | greige code, opt-in |
+| `--rkui-panel` / `--rkui-panel-tab` | set by the page palette (§2.6) | code blocks, quotes, shaded static cards, the equation panel, inline code; the tab is the editor-tab strip and a nested quote |
 
 Syntax colours are deep steps: keyword `--rkui-navy-deep`, function `--rkui-teal-deep`, string
 `--rkui-green-deep`, number `--rkui-tangerine-deep`, comment `--rkui-muted`, through Shiki's `css-variables`
 theme. The language label is `--rkui-code-lang-color` (default `--rkui-muted`). The caption's mark
 comes from the site (the `logo` slot), else Phosphor's file-type icon for the language, else the
-file extension as grey text. Cool slate is the code
-panel under every palette; `.rkui-slate-greige` opts in to greige.
+file extension as grey text. Code sits on the page palette's panel.
 
 ### 2.4 Spacing and shape
 
@@ -118,11 +132,29 @@ panel under every palette; `.rkui-slate-greige` opts in to greige.
 
 Repeated mixes are named, so the docs page can show them:
 - `--rkui-stripe`: `--rkui-line` at 25% over whatever it crosses. Progress stripes, illustration hatching,
-  the code panel's sunken edge.
+  the line above a drawer's handle, the table's rules in light mode.
+- `--rkui-recess-shade`: `color-mix(in srgb, var(--rkui-recess-floor), var(--rkui-line) 60%)`, opaque;
+  the inset's grey step (§2.7). The component sets `--rkui-recess-floor` to its fill: `--rkui-panel`
+  for a code block, `--rkui-folder-back` for a drawer's tray (its hue's tint with `hue`) and an
+  inset card. Declared on `*`, so each recess mixes its own.
 - `--rkui-shade`: `color-mix(in oklab, var(--rkui-shade-of) 75%, var(--rkui-line))`; set `--rkui-shade-of` to a fill.
   The sticky-note fold and every colour-mode extrusion. Declared on `*`, so each element mixes its
   own.
-- `--rkui-folder-back`: the page 8% towards `--rkui-line`, behind unselected folder tabs.
+- `--rkui-folder-back`: the page 8% towards `--rkui-line`, behind unselected folder tabs, in a
+  drawer's tray and an inset card.
+- A hex code's label: `--rkui-on-fill` (ink), unless `--rkui-on-ink` has more contrast on it in
+  both themes, worked out from the hex's WCAG luminance (`hueVars()`). It is the better of the
+  two, not always AA: a mid-tone can fall short with both.
+- A hex code's tint: `light-dark(color-mix(in srgb, <hex> 35%, var(--rkui-raised)),
+  color-mix(in srgb, <hex> 25%, var(--rkui-raised)))`. Pale enough in light mode, and dark enough
+  in dark mode, to carry `--rkui-fg` at AA whatever the hex.
+- A hex code's colour-mode shadow is its `--rkui-shade`, as a hue's is. A dark hex's shade can
+  be too close to the dark page to read, as navy's is; navy's is switched off, a hex's isn't.
+- The table's lines (`table.css`), over the paper. The sheet's rules are `--rkui-stripe` in light
+  mode and `--rkui-line-unfilled` at 40% in dark mode. The ledger's rules are `--rkui-sky-deep` at
+  45% (50% dark) and its margin rule `--rkui-coral` at 70% (85% dark), like a notebook's blue rules
+  and red margin.
+- The ledger's shaded rows (`table.css`): `--rkui-raised` 5% towards `--rkui-line`, in oklab.
 - `--rkui-illustration-red-shade` (80% to ink) and `--rkui-wave-line` (60% to `--rkui-line`) keep their own
   mixes, though each is close to a `--rkui-shade`.
 
@@ -131,16 +163,22 @@ Repeated mixes are named, so the docs page can show them:
 Cream is the default. Slate (cool grey) and greige (warm grey) are opt-ins on `<html>` or any
 container, and `"cream"` switches back inside one.
 
-| Palette | `--rkui-surface` (light / dark) | `--rkui-raised` (light / dark) |
-|---|---|---|
-| cream | `#f7f3e5` / `#1a1f2b` | `#fffaf0` / `#232a39` |
-| slate | `#f1f3f8` / `#1f232b` | `#f9fafc` / `#282d37` |
-| greige | `#f2f1ee` / `#252420` | `#faf9f8` / `#302e29` |
+| Palette (light / dark) | `--rkui-surface` | `--rkui-raised` | `--rkui-panel` | `--rkui-panel-tab` |
+|---|---|---|---|---|
+| cream | `#f7f3e5` / `#1a1f2b` | `#fffaf0` / `#232a39` | `#f0ead7` / `#272e3e` | `#e6dfc8` / `#2d3548` |
+| slate | `#f1f3f8` / `#1f232b` | `#f9fafc` / `#282d37` | `#e7ebf3` / `#2c323d` | `#dbe0ea` / `#333946` |
+| greige | `#f2f1ee` / `#252420` | `#faf9f8` / `#302e29` | `#eae7e2` / `#35332e` | `#e0dcd6` / `#3d3a34` |
 
-- Only the page colours change. The greys come from the code slates (light page 60% slate, 40%
-  white; raised 25% slate; dark page 70% slate, 30% black; raised 90% slate).
-- Code keeps the cool slate under every palette: on slate it sits the same luminance step from the
-  page as on cream, and on greige it differs in hue too.
+- Only the page colours and the panel change. The slate and greige pages come from their panels
+  (light page 60% panel, 40% white; raised 25% panel; dark page 70% panel, 30% black; raised 90%
+  panel).
+- The panel is one step from its page, with the page's hue and a little more chroma: in OKLCH
+  about 0.027 darker in light mode and 0.06 lighter in dark. The tab is the next step (about 0.033
+  darker, 0.028 lighter). Cream's panel is built the same way from the cream page, so it reads as
+  a panel without turning grey. Each panel is the same contrast from its page in every palette
+  (about 1.08:1 light, 1.22:1 dark).
+- There is one panel, the palette's: a container with `data-palette` switches it with the page
+  colours.
 - **A token that mixes `--rkui-surface` must be redeclared on `[data-palette]`**, because a custom
   property resolves its `var()`s where it is declared: today `--rkui-folder-back` and the docs site's
   `--rkui-div-mid`.
@@ -149,7 +187,7 @@ container, and `"cream"` switches back inside one.
 
 Built on every element (`*`) from the light (`--rkui-shadow-dx`/`-dy`), the depth (`--rkui-shadow-depth`) and
 the shadow colours (`--rkui-shadow-color`, `--rkui-shadow-edge`). Declared once on `:root` they would freeze,
-and depth, light and shadow mode couldn't change inside a container.
+and depth, light, shadow and highlight couldn't change inside a container.
 
 | Token | Normal | Deep |
 |---|---|---|
@@ -159,6 +197,7 @@ and depth, light and shadow mode couldn't change inside a container.
 | `--rkui-press-offset` (move on press) | 2px | 3px |
 | `--rkui-lift-offset` (rise on hover) | 1px | 1.5px |
 | `--rkui-depth-gap-scale` (gaps between raised neighbours) | 1 | 1.25 |
+| `--rkui-recess-step` (each of the inset's two steps) | 3px | 4.5px |
 
 - **The recipe:** two layers, the shadow in `--rkui-shadow-color` at the offset, and the same widened by
   `--rkui-outline-width` in `--rkui-shadow-edge`. `--rkui-shadow`, `--rkui-shadow-hover`, `--rkui-shadow-pressed` all follow
@@ -166,7 +205,13 @@ and depth, light and shadow mode couldn't change inside a container.
 - **Press equals rest:** press move + pressed shadow = resting shadow (2 + 2 = 4), so the outer edge
   stays put.
 - `--rkui-shadow-inset`: pressed offset in `--rkui-line`, near-black in both themes.
-- `--rkui-shadow-code-inset`: resting offset in `--rkui-stripe`, zero blur like every other shadow.
+- `--rkui-shadow-recess`: the inset, one for code blocks, drawer trays and inset cards. Two hard
+  steps inside the sides towards the light, `--rkui-recess-step` each (3px, 4.5px deep): first
+  `--rkui-shadow-color`, then `--rkui-recess-shade`, with `--rkui-shadow-edge` one outline width
+  past them. It follows the light, the depth and `data-shadow` as raised shadows do: in dark mode a
+  cream rim with `outline`, none with `block`, and with `color` the first step is
+  `--rkui-shadow-lit`, or the element's own extrusion. In light mode it is ink, then grey. The
+  code block's editor look is flat.
 
 ### 2.8 Modes
 
@@ -177,9 +222,11 @@ back inside it.
 |---|---|---|---|
 | Theme | `data-theme` on `<html>` | `light`, `dark`, none = system | sets `color-scheme`; any container can set `color-scheme` itself |
 | Palette | `data-palette` | `cream`, `slate`, `greige` | redeclares page colours and their mixes |
-| Shadow | `data-shadow` | `slab`, `color` | `tokens/shadow-color.css`: `@scope` from `color` to `slab` |
+| Shadow | `data-shadow` | `outline`, `block`, `color` | dark mode only. `tokens/shadows.css`: the rim (`--rkui-shadow-rim`, unset for `outline` and `color`, transparent for `block`); `tokens/shadow-color.css`: `@scope` from `color` to `outline` or `block` |
+| Highlight | `data-highlight` | `cream`, `dark` | dark mode only. `tokens/colors.css`: `--rkui-line-unfilled` is `--rkui-fg` or `--rkui-line` |
 | Depth | `data-depth` | `normal`, `deep` | `--rkui-shadow-depth` 1 or 1.5 |
 | Light | `style` on `<html>` | `--rkui-shadow-dx`/`-dy`, default 1, 1 | `<rkui-light-direction>` |
+| Scroll dots | `data-rkui-dots`; a component's `dots` writes it on its outer element | `plain`, `pill` | `@scope` from `pill` to `plain` (`overflow.css`) |
 
 - **Theme:** `:root` is `color-scheme: light dark`. Tokens stay unregistered, because `@property`
   breaks `light-dark()`. The choice is stored under `rkui-theme`, shared by every site on the domain,
@@ -187,12 +234,16 @@ back inside it.
   `<head>` (a module runs too late and flashes). `<rkui-theme-toggle>` is Light / Dark / System and
   syncs tabs and sites.
 - **No `light-dark()`** (browsers before mid-2024): `tokens/fallback.css` gives the light theme on
-  cream everywhere, palettes included. Checked by hand.
+  cream everywhere, palettes included. Checked by hand. One gap: a `hue` given as a hex code sets
+  its tint inline with `light-dark()` (`hueVars()`), which the fallback can't reach, so there a
+  tinted panel loses its fill and its text sits on the page behind it.
 - **Light:** the angle names where light comes from, clockwise from 12. The default 315° (top left)
-  gives dx = dy = 1: shadows fall down-right. `<rkui-light-direction>`
-  (`src/components/light-direction/light-direction.js`) sets it from a range, or follows the sun (rises left
-  at 6:00, overhead at noon, sets right at 18:00, default at night).
-- `rkui-palette` and `rkui-shadow` are the docs site's own switch keys, not part of the theme contract.
+  gives dx = dy = 1: shadows fall down-right. `LightDirection`
+  (`src/components/light-direction/LightDirection.vue`, `<rkui-light-direction>` on a plain page)
+  sets it from a range, or follows the sun (rises left at 6:00, overhead at noon, sets right at
+  18:00, default at night).
+- `rkui-palette`, `rkui-shadow`, `rkui-highlight` and `rkui-dots` are the docs site's own storage
+  keys for its settings drawer, not part of the theme contract.
 
 ## 3. Typography and maths
 
@@ -205,7 +256,9 @@ back inside it.
 | Code, readouts | JetBrains Mono, ligatures on | `--rkui-font-mono` | OFL |
 
 - Both main families have Greek and are variable. Slab headings give character; one sans for prose
-  and widgets keeps them in one voice. Roboto Slab has no italics, so it never sets body text.
+  and widgets keeps them in one voice. Roboto Slab has no italics, so it never sets body text,
+  except a quote (`.rkui-quote`, weight 400), which the serif sets apart from the prose around it.
+  A sidebar may set its links in it too (`slab`), for a site's own nav.
 - **Self-hosted and vendored.** Xmind isn't on Fontsource, plain files also suit vanilla sites, and
   pinning guards against changes to a very new font.
 - Each family is split by `unicode-range` into latin, greek and a maths-symbols subset
@@ -219,24 +272,27 @@ because 1 ÷ 1.3 (12.3px) is too small. Line height 1.6 body, 1.2 headings; `rem
 
 ### 3.3 Maths
 
-KaTeX renders at build time; there is no runtime maths JavaScript.
+KaTeX renders on the server when the page is built; there is no runtime maths JavaScript.
+`Equation` (display maths) and `Maths` (inline) take the TeX in a `tex` attribute, which MDX leaves
+as it is. In MDX, rkui's Astro integration also turns `$…$` into `Maths` and `$$…$$` into
+`Equation`. KaTeX is an optional peer dependency, installed by the sites that use them, and a TeX
+error stops the build.
 - `.katex` is 1.15em (`--rkui-maths-scale`), where KaTeX's italic x-height matches Xmind's (KaTeX's
   default is 1.21em). Load KaTeX's stylesheet before rkui's. The size is still open (DECISIONS).
-- **Equation references:** `\label{k}` and `\eqref{k}`; labelled equations are numbered, anchored
-  `#eq-k` and linked, forward references work, and an unknown or duplicate label fails the build.
-  No off-the-shelf plugin does this, so a small rehype plugin runs before KaTeX. The plugin is
-  designed but not built yet.
-  - A bare reference in prose is an `.rkui-eqref` pill; its brackets stay in spans, so it reads
-    "(n)" without CSS.
-  - One leading a sentence is the long pill: the `function` icon and "Equation (n)". Writing it
-    as `\Cref` is proposed (DECISIONS).
-  - Inside larger maths it is KaTeX's own `\href`, unstyled: KaTeX puts the next operator's spacing
-    inside the link, so a pill would be lopsided.
+- **Numbering:** `\tag{n}`, written by hand. A tag on each `align` row numbers each row; one tag
+  after an `aligned` or `gathered` display numbers the block once.
+- **Equation references:** `EquationReference` links to an equation's `id` (`to`) and writes its
+  number (`number`). An equation it links to is written as a tag, `<Equation id="…" tex="…" />`,
+  since dollars can't carry an `id`.
+  - In prose it is an `.rkui-eqref` pill; its brackets stay in spans, so it reads "(n)" without
+    CSS.
+  - With `long` it is the long pill, for a reference that leads a sentence: the `function` icon
+    and "Equation (n)".
+  - Inside larger maths it is KaTeX's own `\href{#…}{(n)}`, unstyled: KaTeX puts the next
+    operator's spacing inside the link, so a pill would be lopsided.
 - **Pills:** vivid `--rkui-lilac` with ink text in both themes, because the dark lilac tint is too close
   to the dark page.
-- **Numbering:** both styles. A `\label` per `align` row numbers each row; one `\label` on an
-  `aligned` or `gathered` display numbers the block once.
-- **Wrappers:** `.rkui-equation` bare (default), `--panel` (slate), `--rule` (a grape rule down the
+- **Wrappers:** `.rkui-equation` bare (default), `--panel` (the palette's panel), `--rule` (a grape rule down the
   left), `--key` (raised dashed panel on `--rkui-yellow-tint`, for a key result). `\boxed` keeps a
   thicker toon border. Wrappers are scroll regions for wide equations.
 - **Colour-coded terms:** `rkui-maths-<hue>` always puts the hue's tint behind `--rkui-fg` text, never
@@ -256,19 +312,61 @@ KaTeX renders at build time; there is no runtime maths JavaScript.
 - Hard shadow at 4px, zero blur, away from the light: the single biggest toon signal. One light
   drives every shadow and pop; glints sit opposite. SVG uses `drop-shadow()` from the same tokens,
   plus a second in `--rkui-shadow-edge`.
+- A static card never lifts, and needs an edge so it doesn't vanish on the raised surface: by
+  default the folder sheet's `--rkui-line-unfilled` outline. Three other edges are options: that
+  outline and the hard shadow (`raised`), a `--rkui-panel` fill like the quote and the code panel
+  (`shaded`), or pushed in like a drawer's tray (`inset`: `--rkui-folder-back` with
+  `--rkui-shadow-recess`).
+- Insets press a panel into the page with the same two steps, 6px in all (§2.7): code blocks,
+  drawer trays and inset cards. The steps are hard, like the raised shadow, never a blur.
 
-### 4.2 Dark-mode shadows: slab and colour
+### 4.2 Dark-mode shadows and highlight
 
-A near-black shadow is hard to see on night blue, so dark mode has two shadow modes.
-- **The outlined slab is the default:** the shadow sits on a copy widened by the outline in
-  `--rkui-shadow-edge`, cream in dark mode, transparent in light.
-- **Own-colour extrusion is a supported mode** (`data-shadow="color"`). In dark mode a raised
-  thing with a fill casts `--rkui-shade` of it, with no rim; light mode is unchanged.
-  - Wired up: buttons, checked checkboxes and radios, the arc dial's face, the clock's hour tag,
-    the range thumb, the file button, colour tiles, sticker badges, sticky notes.
-  - Navy and section buttons, checked chips and things without a fill cast `--rkui-shadow-lit`: their
-    darkened fills sit too close to the page.
-  - Without `@scope` or `light-dark()`, browsers keep the slab.
+A near-black shadow is hard to see on night blue, so dark mode has two settings, each on `<html>`
+or any container. Light mode is the same in every combination.
+
+**Shadow** (`data-shadow`) sets how the hard shadow is drawn:
+- **Outline is the default** (`outline`): the near-black shadow sits on a copy widened by the
+  outline in `--rkui-shadow-edge`: a cream rim (`--rkui-fg`) whatever the highlight, transparent
+  in light mode.
+- **Block** (`block`): the near-black shadow with no rim, sitting straight on the page, as in the
+  first mockup.
+- **Colour** (`color`): in dark mode a raised thing with a colour of its own casts `--rkui-shade`
+  of that colour, with no rim. The colour is its fill, or the colour it shows on a neutral body.
+  - Fills: buttons, checked checkboxes, radios and switches, the range thumb, the file button,
+    colour tiles, badges (a table's stickers too), the three-dot spinners, the blind's pull, the
+    scroll and sidebar pills, sticky notes, the clock's hour tag.
+  - Colours on a neutral body: the ring spinner and the flask take their fill (`hue`), the knob and
+    arc dials `--rkui-selected` (the notch, the thumb), the alert and the table their band's hue
+    (a table's lifted row too), the search bar its button's yellow.
+  - Tints take the solid colour of their tint, since a tint's own shade sits too close to the
+    page: a tinted folder's sheet and selected tab and a sidebar's current page take
+    `--rkui-selected`, the key equation's panel `--rkui-yellow`, a tinted badge its hue, and a
+    coloured drawer or blind (`hue`) its hue: the overlay or side drawer, the roller, screen,
+    hem and pull, and the first step of the tray's inset.
+  - A linked or raised card casts the shade of its `hue`, such as a colour from its image; without
+    one it casts `--rkui-shadow-lit`. The hue changes nothing with the other shadows.
+  - Checked chips, section buttons and a table with no `hue` take `--rkui-section` where it is set.
+  - A page's own filled element joins in by setting `--rkui-shade-of` to its fill and
+    `--rkui-extrusion: var(--rkui-shade)`, as the motion page's blocks do.
+  - These cast `--rkui-shadow-lit`:
+    - navy buttons and badges, and chips and section buttons on the default ink: their darkened
+      fills sit too close to the page;
+    - neutral things with no colour of their own: the page, panels, plain cards, popups and
+      tooltips, the untinted folder, inputs, unchecked controls and tiles, the drawer and the
+      blind's roller and screen with no `hue`, the top bar, the sidebar's card, folders and deck
+      keys;
+    - things with more than one colour: the clock face (day and night), the logo;
+    - the custom colour tile and the colour input, whose colour CSS can't read.
+  - An element's extrusion is its own (`--rkui-extrusion` doesn't inherit), so the controls on a
+    sticky note cast their own shadows, not the note's.
+  - Without `@scope` or `light-dark()`, browsers draw the outline shadow.
+
+**Highlight** (`data-highlight`) sets the colour of the outlines on things with no fill (`--rkui-line-unfilled`: inputs, chips, tiles, folder tabs, unchecked
+controls):
+- **Cream is the default** (`cream`): `--rkui-fg`, so those edges show on the dark page.
+- **Dark** (`dark`): the near-black `--rkui-line`, like the mockup's Surface card. Those edges are
+  hard to see on the dark page; that is accepted. The outline shadow's rim stays cream.
 
 ### 4.3 Depth
 
@@ -281,7 +379,10 @@ light.
 Defined once in `interactive.css` for every clickable component. **Hover** (only under
 `(hover: hover)`) lifts by `--rkui-lift-offset` towards the light and grows the shadow; **press** moves
 by `--rkui-press-offset` onto `--rkui-shadow-pressed`. 120ms, plain `ease`, no springy overshoot. Only
-clickable things lift and sink (whether this stays is open: DECISIONS). Something static shows
+clickable things lift and sink (whether this stays is open: DECISIONS), with two opt-in exceptions:
+a Table's `lift` option, where the hovered row lifts though it isn't clickable, and a StickyNote's
+`animated` option, where the fold lifts on hover on a note that isn't a link. A Logo with no link
+doesn't lift: it plays its motifs once on load, then while hovered. Something static shows
 emphasis with its fill and a small pop in place (scale 1.08 on `--rkui-ease-snap`).
 
 ### 4.5 Pressed, checked and busy
@@ -315,7 +416,7 @@ mode) and takes `--rkui-shadow-inset`, and its label sinks by `--rkui-press-offs
   against the outline (6.41:1 light, 8.69:1 dark); tangerine on cream alone is about 2.2:1.
 - **Marker pen** for things with no outline (text links): tangerine behind ink text, with a
   transparent outline that shows in forced colours.
-- Where tangerine surrounds the element (tangerine buttons, apricot panels, warnings) use
+- Where tangerine surrounds the element (tangerine buttons, apricot panels and notes, warnings) use
   `--rkui-focus: var(--rkui-focus-alt)`; such components set it themselves.
 - Groups show the band on the group, never one option; chips, cards and tiles show it for the input
   inside. An outline-less pill (an equation reference) gets a ring for the band to hug.
@@ -332,34 +433,42 @@ Hover cue: the background sinks to the page by default; `.rkui-hover-ring`, `.rk
 **When.** Motion explains: it answers input, shows work under way, or shows how a change happens.
 Never decoration.
 - **Never moves:** readable text, layout, scroll position (smooth scrolling only for in-page jumps),
-  the light, the outline width, the focus band.
+  the light, the outline width, the focus band. Accepted exceptions, each brief and in answer to
+  the reader: a drawer's slam jolts its parent, text and all, by about 2px (DECISIONS,
+  2026-11-08); a newly checked Segmented option and an opening Alert pop; a Range's value rides
+  over its thumb.
 - **Never turns**, so shadows stay on the light's side. Parts that turn have no shadow: the spinner
   wedge, the dial's notch (the knob stays still), the clock hands, whose tags counter-turn. The
   orbit spinner's dots counter-turn too.
 
 | | Input response | Ambient loop |
 |---|---|---|
-| Starts | on input, same frame | by itself, while a state lasts |
-| Length | `--rkui-duration-fast` 120ms (hover, press); `--rkui-duration-spring` 180ms (toggles, snapping); `--rkui-duration-slide` 320ms (travel, panels) | `--rkui-loop-short` 0.9s; `--rkui-loop-medium` 1.6s; `--rkui-loop-long` 2.4s (fills); `--rkui-loop-panel` 4s (diagrams) |
+| Starts | on input, same frame; never on page load | by itself, while a state lasts |
+| Length | `--rkui-duration-fast` 120ms (hover, press); `--rkui-duration-spring` 180ms (toggles, snapping); `--rkui-duration-slide` 320ms (travel, panels) | `--rkui-loop-quick` 0.6s (a hop); `--rkui-loop-short` 0.9s (small busy marks); `--rkui-loop-steady` 1.2s (a turn, a rolling wave); `--rkui-loop-medium` 1.8s (a circuit, the reduced-motion fade); `--rkui-loop-long` 2.4s (fills); `--rkui-loop-panel` 4s (diagrams) |
 | Repeats | never | until the state ends or the reader pauses it |
 
 **Easing.** Plain `ease` for input responses; `linear` for steady travel; `ease-out` up and
 `ease-in` down for gravity; `ease-in-out` `alternate` for fills. `--rkui-ease-spring`
 (`cubic-bezier(0.34, 1.56, 0.64, 1)`) recovers from a squash or press. `--rkui-ease-snap`
 (`cubic-bezier(0.38, 1.35, 0.52, 1)`, about 4% overshoot, 90% there at 35% of the time) is a jump
-to a new place or state with one visible overshoot. No other curves and no elastic easing.
+to a new place or state with one visible overshoot. No other curves and no elastic easing, except
+the ring spinner's wedge, which eases each half turn with its own mirrored pair of curves, and a
+drawer's tray, which opens `ease-out` and closes `ease-in`.
 
-**Toon phases.** Wind-up, go, overshoot, settle, with holds; a loop holds for a third or more of its
-cycle. A sequence uses equal steps of 0.6–1s and ends on a held step.
+**Toon phases.** Wind-up, go, overshoot, settle, with holds; a loop that steps between poses holds
+for a third or more of its cycle (steady travel, a turn or a rolling wave, never stops). A
+sequence uses equal steps of 0.6–1s and ends on a held step.
 - **Squash:** up to 1.3 × 0.7 on impact, 0.8–0.9 × 1.1–1.25 in flight, 0.95 × 1.05 to settle.
   Area within about 10%, pinned to the contact point.
 - **Overshoot:** one swing only, from the snap curves or one keyframe past the target (10% at most).
+  The drawer's slam and the blind's settle make their one swing with a delayed transition of a
+  number instead (DECISIONS, 2026-11-08).
 
 **Shadows while moving.** Offsets from `--rkui-shadow-dx`/`-dy`, never literal; lengths that go with a
 shadow multiply by `--rkui-shadow-depth`.
 
-**Stagger.** Neighbours start `--rkui-stagger` (0.15s) apart (`calc(var(--rkui-i) * var(--rkui-stagger))`), in
-reading order or the order a cause travels. An entrance spreads over 0.6s at most; staggered loops
+**Stagger.** Neighbours start `--rkui-stagger` (0.15s) apart (the nth `calc(n * var(--rkui-stagger))`
+after the first), in reading order or the order a cause travels. An entrance spreads over 0.6s at most; staggered loops
 share one period.
 
 **Third-party widgets and canvases.**
@@ -372,14 +481,15 @@ share one period.
 
 **Reduced motion, forced colours, pausing.**
 - Reduced motion: the tokens zero durations and press/lift offsets. State loops (spinners, loaders,
-  pending panels) become a fade (`rkui-spinner-fade`, 1.8s); illustrative loops stop (this split is
-  open: DECISIONS).
+  progress bars, water, pending panels) become a fade (`rkui-spinner-fade`, `--rkui-loop-medium`);
+  illustrative loops stop (this split is open: DECISIONS).
 - Forced colours: `CanvasText` outlines, `Highlight` for lit parts, `Canvas` behind.
 - Self-moving content over five seconds, other than a loader, gets a pause control (WCAG 2.2.2):
-  `<rkui-motion>`, which also pauses off-screen. JS loops stop when paused, off-screen or hidden.
+  the Motion component's Pause button. JS loops stop when paused, off-screen or hidden.
 
 **Performance.** Animate `transform` and `opacity`; never layout in a loop; no permanent
-`will-change`. **At a join, move with inset offsets, not `translate`:** a `translate` transition
+`will-change`. The one exception: an indeterminate progress bar moves its stripes with
+`background-position`, as a native progress bar has no part to transform. **At a join, move with inset offsets, not `translate`:** a `translate` transition
 gets its own compositor layer, which snaps to whole pixels and can open a hairline seam.
 
 ## 6. Iconography
@@ -411,7 +521,7 @@ gets its own compositor layer, which snaps to whole pixels and can open a hairli
 
 ## 7. Components
 
-`src/index.css` imports the tokens, fonts, type, base and the colour shadow mode, then
+`src/index.css` imports the tokens, fonts, type, base and the colour shadow, then
 every component, then `interactive.css` last so the shared states win. "Open" means the options are
 built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 
@@ -419,15 +529,15 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 
 | Component | Class | Default and options |
 |---|---|---|
-| Button | `.rkui-button` (`--navy`, `--teal`, `--green`, `--coral`, `--grape`, `--tangerine`, `--section`, `--small`) | filled; yellow by default |
+| Button | `.rkui-button` (`--<hue>` for every hue, `--section`, `--small`) | filled; yellow by default |
 | Unfilled button | `.rkui-button--unfilled` | discouraged (§4.6) |
 | Filling (busy) button | `.rkui-button[aria-busy]` + `.rkui-water` | |
 | Field wrapper | `.rkui-field`, `.rkui-check` | |
 | Text input, textarea | `.rkui-input` | hover cues opt-in (§4.8) |
-| Select | `.rkui-select`; list `.rkui-select--picker` (`--tint`) | picker opt-in, needs `appearance: base-select`; checked option open |
+| Select | `.rkui-select` | toon open list where `appearance: base-select` works, the browser's own elsewhere |
 | Checkbox, radio, switch | `.rkui-checkbox`, `.rkui-radio`, `.rkui-switch` | |
-| Range | `.rkui-range`, `.rkui-output` | |
-| Range ticks | A `.rkui-range-native`, B `.rkui-range-scale`, C `.rkui-range--dots` | open |
+| Range | `.rkui-range`, `.rkui-range-control`, `.rkui-range-thumb`, `.rkui-range-popup` | value shown in the thumb (`--thumb`) or a popup (raised, or `--flat`), all opt-in |
+| Range ticks | `.rkui-range-scale` (`ticks`) | |
 | Segmented | `.rkui-segmented`; `--deck`, `--plate` | deck keys opt-in; pill or deck open |
 | Tiles | `.rkui-tiles`, `.rkui-tile` (`--compact`, `--vertical`) | |
 | Colour picker | `.rkui-tile--color`, `--custom-color`, `.rkui-color-input`, `<rkui-color-picker>` | flair open (none, A `--brush`, B `--drops`, C `--stroke`) |
@@ -443,41 +553,53 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 
 | Component | Class | Default and options |
 |---|---|---|
-| Chips | `.rkui-chip`, `.rkui-chip-group` | checked takes `--rkui-section` |
+| Chips | `.rkui-chip`, `.rkui-chip-group` | checked takes `--rkui-section`, or inverts the page colours |
 | Breadcrumbs | `.rkui-breadcrumbs` (chips; `--path`) | open |
 | Pagination | `.rkui-pagination`; folder-tab version in `folder.css` | open |
-| Folder tabs | `.rkui-folder`, `<rkui-tabs>` (`--tinted`) | bar above the tabs; flat scrollbar |
+| Folder tabs | `.rkui-folder` (`--tinted`) | bar above the tabs; flat scrollbar |
 | Top bar | `.rkui-topbar--toast`, `--flush` | toast by default; flush for full-width headers |
 | Popup | `.rkui-popup` (Popover API) | |
-| Tooltip | `<rkui-tooltip>` A inverted, B `--toon` | A by default; open |
-| Card | `.rkui-card`, `--link` | content variants proposed (DECISIONS) |
+| Alert | `.rkui-alert` (modal `<dialog>`) | coral band; blurs the page behind, which stays still |
+| Tooltip | `.rkui-tooltip`, `--flat` | toon by default; flat swaps the page's colours |
+| Card | `.rkui-card`, `--link`; static `--outline`, `--raised`, `--shaded`, `--inset` | outline by default; content variants proposed (DECISIONS) |
 | Callout | `.rkui-callout--note` (sky tint), `--warning` (apricot tint) | |
 | Sticky note | `.rkui-sticky-note` (hues, `--tilt`, `--tape`, `--pin`) | |
 | Widget frame | `.rkui-widget-frame` (dashed, lilac tint) | |
 | Figure | `.rkui-figure` | |
-| Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
-| Equations | `.rkui-equation`, `.rkui-eqref` | §3.3 |
-| Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on |
-| Sidebar | `.rkui-sidebar` (`--card`, `--folders`, `--deck`, `--note`) | plain by default; open |
+| Quote | `.rkui-quote` (panel, slab serif; `--italic`) | upright by default; `slant="italic"` slants it; one line, two steps larger; two lines, one step (`quote-enhance.js`); `--short` always two steps |
+| Code block | `.rkui-code` (`--tab`) | inset panel by default |
+| Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`), `--top`, `--left`, `--right`, `--remote` (a `<div>` that a button's `popovertarget` opens), `--overlay` (hangs over the page beyond its parent, as `--left` and `--right` always do), `--hue` (`hue`: the tray or screen in the hue's tint, carrying `--rkui-fg`, with the inset's grey step mixed from it; the pull and the blind's hem in its solid fill); `.rkui-cabinet` | drawer by default, pulling out from the bottom |
+| Equations | `.rkui-equation` (`--panel`, `--rule`, `--key`), `.rkui-eqref` | bare by default; §3.3 |
+| Table | `.rkui-table` (`--ledger`, `--small`, `--messy`, `--still`, `--lift`) | sheet by default; sheet or ledger open |
+| Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on; its colours (`--rkui-scroll-*`, `--rkui-pill-*`) pass down from wherever they are set; every other scrollbar takes the page's |
+| Sidebar | `.rkui-sidebar` (`--card`, `--folders`, `--deck`, `--note`; `--slab`, `--selected-slab`, `--bold`, `--columns`), `.rkui-sidebar-link--hue` | plain by default; open |
+| Header band | `.rkui-header-band` | takes `--rkui-section`; a prototype, open |
 | Badge | `.rkui-badge` (`--tint`, hues, `--corner`, `--dot`); corner `--ring`, `--sticker` | corner edge open |
 | Spinners | `.rkui-spinner` `--ring`, `--dots` (with `--squash`), `--water`, `--orbit`, `--triangle` | |
 | Loader | `.rkui-loader--hop` | |
 | Progress, meter | `.rkui-progress` (striped), `--flat`; `.rkui-meter` | striped by default; whether `--flat` stays is open |
 | Water, pending | `.rkui-water`, `--rise`; `.rkui-pending` | a filling panel |
-| Motion pause | `<rkui-motion>` | whether it stays in rkui is open |
+| Motion pause | `.rkui-motion` | |
 
 ### 7.3 Behaviour and distribution
 
-- Custom elements (vanilla, JSDoc types, each beside its CSS in `src/components/<name>/`) enhance markup the page writes:
-  - `<rkui-theme-toggle>`, `<rkui-light-direction>`, `<rkui-motion>`, `<rkui-tabs>`, `<rkui-tooltip>`;
-  - `<rkui-stepper>`, `<rkui-color-picker>`, `<rkui-code-block>`, `<rkui-dial>`, `<rkui-clock>`;
-  - helpers: `src/head-scripts/theme-init.js`, `afterSlide()` in
-    `src/shared/after-slide.js`, and `src/components/folder/folder-scrollbar.js`.
+- Custom elements, for plain HTML pages: each component with behaviour is also an element,
+  registered from its own `.vue` file by a small `<name>-element.ts` beside it, with
+  `defineElement()` (`src/shared/define-element.ts`):
+  - `<rkui-clock>`, `<rkui-color-picker>`, `<rkui-dial>`, `<rkui-light-direction>`, `<rkui-range>`,
+    `<rkui-stepper>` and `<rkui-theme-toggle>`;
+  - `dist/rkui.js` bundles them, with the Vue runtime and the helper scripts.
+- Helpers: `src/head-scripts/theme-init.js`, `src/head-scripts/table-init.js` (inlined beside it;
+  tables visible on load keep their values hidden until their entrance), `afterSlide()` in
+  `src/shared/after-slide.js`, and the enhance scripts that `src/enhance.js` loads, such as
+  `src/components/table/table-enhance.js` (plays each table's entrance the first time it is seen,
+  in every browser).
 - Plain CSS and JS, fonts by relative path, icons and sprite. There is no CDN, so pages make no
   third-party requests: plain-HTML sites copy a tagged release into `vendor/`.
-- Layers: tokens → fonts and base → CSS classes → icons → custom elements → thin wrappers.
-  Wrappers are for Astro only, with an optional integration. Vue and vanilla sites use the core
-  directly.
+- Layers: tokens → fonts and base → CSS classes → icons → Vue components → custom elements.
+  Astro, MDX and Vue pages use the same `.vue` files; plain pages use the classes and the custom
+  elements. An optional Astro integration (`rkui()`) renders fenced code and dollar maths in MDX
+  with rkui's components.
 - The prefix `rkui-` is fixed: it is in every consumer's markup and namespaces storage keys.
 
 ## 8. Illustration style
@@ -532,15 +654,16 @@ tokens in `site/src/old/components/chart-tokens.css`.
 
 - **Contrast targets, checked by hand on the docs page** (it prints each ratio as painted):
   - text 4.5:1 on surfaces, tints, fills and notes; code 7:1;
-  - 3:1 for the focus band against the outline, unfilled outlines, fill edges, and the colour-mode
-    shades against the page;
+  - 3:1 for the focus band against the outline, unfilled outlines, fill edges, and the colour
+    shadow's shades against the page;
   - every palette, both themes, and the fallback.
 - **Dark outline gap:** near-black `--rkui-line` on the dark page is about 1.2–1.4:1. Filled components
-  get their 3:1 edge from the fill; outline-only ones use `--rkui-line-unfilled`. It is a known gap.
+  get their 3:1 edge from the fill; outline-only ones use `--rkui-line-unfilled`, except with the dark
+  highlight, where they take the near-black outline (§4.2). It is a known gap.
 - **`--rkui-section` in dark mode** defaults to ink, nearly the page colour. Sites set their own hues.
 - **Accepted shortfalls** (Rob's reasons are in DECISIONS.md):
   - ink icon lines on the coral note's fold in dark mode, 2.8:1 against 3;
-  - colour mode: coral's shade on the dark page (2.4–2.9:1) and grape's on `--rkui-raised` (2.6–2.8:1),
+  - colour shadow: coral's shade on the dark page (2.4–2.9:1) and grape's on `--rkui-raised` (2.6–2.8:1),
     as the ink outline marks the edge.
 - **A busy `--rkui-section` button's** empty part keeps 70% of the fill, so its label stays at
   6.0–6.2:1.

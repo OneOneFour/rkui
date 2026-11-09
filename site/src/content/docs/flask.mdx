@@ -3,12 +3,31 @@ title: Water flask
 description: A flask whose water fills and drains.
 group: Loading
 order: 82
+component: Flask
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Flask from '../../examples/flask/flask.astro'
-import flaskCode from '../../examples/flask/flask.astro?raw'
+import Flask from '@oneonefour/rkui/components/water/Flask.vue'
+import LevelWidget from '../../examples/flask/LevelWidget.vue'
+import levelWidgetCode from '../../examples/flask/LevelWidget.vue?raw'
 
-<Demo code={flaskCode} label="Water flask">
+<Demo label="Water flask">
   <Flask />
+  <Flask size="3rem" hue="teal" />
+  <Flask size="3rem" hue="coral" />
 </Demo>
+
+<Demo label="Water flask at a level">
+  <Flask size="3rem" hue="teal" label="Uploading, 25%" level={0.25} />
+  <Flask size="3rem" hue="teal" label="Uploading, 50%" level={0.5} />
+  <Flask size="3rem" hue="teal" label="Uploading, 85%" level={0.85} />
+</Demo>
+
+<Demo vue={levelWidgetCode} label="Water flask with its level set by a slider" widget>
+  <LevelWidget client:visible />
+</Demo>
+
+## Reference
+
+<ApiReference component="Flask" />

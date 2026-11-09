@@ -3,12 +3,27 @@ title: Pending panel
 description: A dashed panel that fills with water while it waits.
 group: Loading
 order: 85
+component: Pending
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Pending from '../../examples/pending/pending.astro'
-import pendingCode from '../../examples/pending/pending.astro?raw'
+import Pending from '@oneonefour/rkui/components/water/Pending.vue'
+import LevelWidget from '../../examples/pending/LevelWidget.vue'
+import levelWidgetCode from '../../examples/pending/LevelWidget.vue?raw'
 
-<Demo code={pendingCode} label="Pending panel" stack>
-  <Pending />
+<Demo label="Pending panel" stack>
+  <Pending>Loading…</Pending>
 </Demo>
+
+<Demo label="Pending panel at a level" stack>
+  <Pending level={0.6}>Loading the comments…</Pending>
+</Demo>
+
+<Demo vue={levelWidgetCode} label="Pending panel with its level set by a slider" stack widget>
+  <LevelWidget client:visible />
+</Demo>
+
+## Reference
+
+<ApiReference component="Pending" />

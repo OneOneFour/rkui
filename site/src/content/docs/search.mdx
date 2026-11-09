@@ -3,44 +3,45 @@ title: Search
 description: A search field, with the icon inside or a joined button.
 group: Form controls
 order: 45
+component: Search
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Icon from '../../examples/search/icon.astro'
-import iconCode from '../../examples/search/icon.astro?raw'
-import Button from '../../examples/search/button.astro'
-import buttonCode from '../../examples/search/button.astro?raw'
-import Label from '../../examples/search/label.astro'
-import labelCode from '../../examples/search/label.astro?raw'
-import Disabled from '../../examples/search/disabled.astro'
-import disabledCode from '../../examples/search/disabled.astro?raw'
-import ErrorDemo from '../../examples/search/error.astro'
-import errorCode from '../../examples/search/error.astro?raw'
+import Search from '@oneonefour/rkui/components/search/Search.vue'
 
-<Demo code={iconCode} label="Search with an icon inside" stack>
-  <Icon />
+<Demo label="Search with an icon inside" stack>
+  <Search name="q-icon" placeholder="Search" />
 </Demo>
 
 ## Joined button
 
-<Demo code={buttonCode} label="Search with a joined button" stack>
-  <Button />
+The button variant is a form with `role="search"`, so it is already a search landmark. Wrap the
+icon variant in `<search>` when it is the page's search area.
+
+<Demo label="Search with a joined button" stack>
+  <Search variant="button" name="q-button" placeholder="Search" />
 </Demo>
 
 ## With a label
 
-<Demo code={labelCode} label="Search with a label and hint" stack>
-  <Label />
+<Demo label="Search with a label and hint" stack>
+  <Search label="Search the docs" name="q-label" hint="Press Enter to search" />
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled searches" stack>
-  <Disabled />
+<Demo label="Disabled searches" stack>
+  <Search placeholder="Search" disabled />
+  <Search variant="button" placeholder="Search" disabled />
 </Demo>
 
 ## Error
 
-<Demo code={errorCode} label="Search with an error" stack>
-  <ErrorDemo />
+<Demo label="Search with an error" stack>
+  <Search label="Search" name="q-error" value="x" error="Enter at least two characters" />
 </Demo>
+
+## Reference
+
+<ApiReference component="Search" />

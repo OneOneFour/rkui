@@ -4,8 +4,8 @@
  *
  * @param theme the panel's theme, used to keep input names unique across the two panels
  */
-import Chip from '@oneonefour/rkui/components/chip/Chip.astro'
-import ChipGroup from '@oneonefour/rkui/components/chip/ChipGroup.astro'
+import Chip from '@oneonefour/rkui/components/chip/Chip.vue'
+import ChipGroup from '@oneonefour/rkui/components/chip/ChipGroup.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import FlaskIcon from '@oneonefour/rkui/icons/flask.svg'
@@ -38,11 +38,8 @@ const STATES = [
       </Chip>
     </ChipGroup>
   </Specimen>
-  <Specimen label="single select (radios), --rkui-section set to teal, with icons">
-    <ChipGroup
-      legend="Specimen"
-      style="--rkui-section: var(--rkui-teal); --rkui-on-section: var(--rkui-on-fill)"
-    >
+  <Specimen label="single select (radios), color teal, with icons">
+    <ChipGroup legend="Specimen" hue="teal">
       <Chip type="radio" name={`${theme}-single`} value="one" checked>
         <FlaskIcon class="rkui-icon rkui-icon--small" />
         One
@@ -57,11 +54,8 @@ const STATES = [
       </Chip>
     </ChipGroup>
   </Specimen>
-  <Specimen label="--rkui-section set to coral">
-    <ChipGroup
-      legend="Specimen"
-      style="--rkui-section: var(--rkui-coral-solid); --rkui-on-section: var(--rkui-on-coral)"
-    >
+  <Specimen label="color coral">
+    <ChipGroup legend="Specimen" hue="coral">
       <Chip name={`${theme}-coral`} value="one" checked>
         One
       </Chip>

@@ -3,7 +3,7 @@
  * Everything that shows waiting: the spinners, their sizes and labels, the progress bar and the
  * meter, filling buttons, the pending panel and the hopping-ball loader.
  */
-import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
 import AtomIcon from '@oneonefour/rkui/icons/atom.svg'
 import LightningIcon from '@oneonefour/rkui/icons/lightning.svg'
 import StarIcon from '@oneonefour/rkui/icons/star.svg'
@@ -235,11 +235,9 @@ const BALLS = [
           `--rkui-loader-fill: var(--rkui-${fill})${onFill ? `; --rkui-loader-on-fill: var(--rkui-${onFill})` : ''}`
         }
       >
-        {Icon && (
-          <span class="rkui-loader-ball">
-            <Icon class="rkui-icon" aria-hidden="true" />
-          </span>
-        )}
+        <span class="rkui-loader-ball">
+          {Icon && <Icon class="rkui-icon" aria-hidden="true" />}
+        </span>
         <span class="rkui-visually-hidden">Loading…</span>
       </div>
     </Specimen>

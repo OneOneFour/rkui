@@ -1,11 +1,10 @@
 ---
 /**
- * The settable clock, live by day and by night and disabled, plus how it looks without its script.
+ * The settable clock, live by day and by night and disabled, plus how it looks without JavaScript.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
-import Sun from '@oneonefour/rkui/icons/sun.svg'
-import Moon from '@oneonefour/rkui/icons/moon.svg'
+import Clock from '@oneonefour/rkui/components/clock/Clock.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 
@@ -19,41 +18,24 @@ const CLOCKS = [
   { name: 'night', label: 'Lights out', caption: 'by night', value: '22:45' },
   { name: 'disabled', label: 'Label', caption: 'disabled', value: '12:00', disabled: true },
 ]
-const fallbackId = `${theme}-clock-fallback`
 ---
 
-<SpecimenRow title="Clock (rkui-clock)">
-  {CLOCKS.map((clock) => {
-    const id = `${theme}-clock-${clock.name}`
-    return (
-      <Specimen label={clock.caption}>
-        <rkui-clock class="rkui-clock">
-          <label for={id}>{clock.label}</label>
-          <input
-            class="rkui-input"
-            type="time"
-            id={id}
-            step="300"
-            value={clock.value}
-            disabled={clock.disabled}
-          />
-          <Sun class="rkui-icon rkui-clock-day-icon" aria-hidden="true" />
-          <Moon class="rkui-icon rkui-clock-night-icon" aria-hidden="true" />
-        </rkui-clock>
-      </Specimen>
-    )
-  })}
+<SpecimenRow title="Clock">
+  {CLOCKS.map((clock) => (
+    <Specimen label={clock.caption}>
+      <Clock
+        client:visible
+        id={`${theme}-clock-${clock.name}`}
+        label={clock.label}
+        value={clock.value}
+        disabled={clock.disabled}
+      />
+    </Specimen>
+  ))}
 </SpecimenRow>
 
-<SpecimenRow title="Without the script">
-  <Specimen label="the time input on its own">
-    <div class="rkui-clock">
-      <label for={fallbackId}>Wake up</label>
-      <input class="rkui-input" type="time" id={fallbackId} step="300" value="07:30" />
-    </div>
+<SpecimenRow title="Without JavaScript">
+  <Specimen label="the face hidden, the time input on its own">
+    <Clock id={`${theme}-clock-fallback`} label="Wake up" value="07:30" />
   </Specimen>
 </SpecimenRow>
-
-<script>
-  import '@oneonefour/rkui/components/clock/clock.js'
-</script>

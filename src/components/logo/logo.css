@@ -1,13 +1,14 @@
 /* Logo: rkui's mark as a home link, four outlined tiles (r, k, u, i) raised on the hard shadow.
    It pops like a button (interactive.css). The tiles carry the library's motifs: the folded
-   corner, the water and the stripes. Logo.astro has the drawing.
+   corner, the water and the stripes. Logo.vue has the drawing.
 
    <a class="rkui-logo rkui-logo--motifs" href="/"><svg viewBox="-11.5 -11.5 1175 1175"
      aria-hidden="true">…</svg><span class="rkui-visually-hidden">Home</span></a>
 
    Variants (open, DECISIONS "Logo"): with no modifier, the pop only; .rkui-logo--motifs plays each
    tile's motif on hover and focus: the corner lifts, the wave rolls, the stripes march and the
-   dot hops. Nothing moves under reduced motion. */
+   dot hops. Without an href the logo is a span: it doesn't pop, and plays every motif once as the
+   page loads, then again while the pointer is over it. Nothing moves under reduced motion. */
 
 .rkui-logo {
   --rkui-logo-size: 6rem;
@@ -25,8 +26,8 @@
   aspect-ratio: 1;
   vertical-align: middle;
   /* The drawing's corners, in its 1175 units: the folded corner cut 150 in, the rest rounded 125.
-     The shadow and the focus band follow them. Without corner-shape the folded corner is
-     square. */
+     The shadow and the focus band follow them. Without corner-shape (Safari and Firefox) the
+     folded corner is rounded like the others. */
   border-radius: 12.8% 10.6% 10.6%;
   corner-shape: bevel round round round;
 }
@@ -117,41 +118,51 @@
 }
 
 /* Motifs: the wave rolls like the water's, the stripes march like an indeterminate progress
-   bar's, the corner lifts and the dot hops. Hover only counts where there is a pointer, so a tap
-   doesn't start them. */
+   bar's, the corner lifts and the dot hops. Each part names its keyframes and loop. Hover only
+   counts where there is a pointer, so a tap doesn't start them. */
+.rkui-logo-wave {
+  --rkui-logo-motif: rkui-logo-roll var(--rkui-loop-long) linear;
+}
+
+.rkui-logo-stripes {
+  --rkui-logo-motif: rkui-logo-march var(--rkui-loop-short) linear;
+}
+
+.rkui-logo-flap {
+  --rkui-logo-motif: rkui-logo-lift var(--rkui-loop-medium) ease-in-out;
+}
+
+.rkui-logo-dot {
+  --rkui-logo-motif: rkui-logo-hop var(--rkui-loop-medium);
+}
+
+/* A logo with no link plays each motif once as the page loads. */
 @media (prefers-reduced-motion: no-preference) {
-  .rkui-logo--motifs:focus-visible .rkui-logo-wave {
-    animation: rkui-logo-roll var(--rkui-loop-long) linear infinite;
+  span.rkui-logo :is(.rkui-logo-wave, .rkui-logo-stripes, .rkui-logo-flap, .rkui-logo-dot) {
+    animation: var(--rkui-logo-motif);
   }
 
-  .rkui-logo--motifs:focus-visible .rkui-logo-stripes {
-    animation: rkui-logo-march var(--rkui-loop-short) linear infinite;
-  }
-
-  .rkui-logo--motifs:focus-visible .rkui-logo-flap {
-    animation: rkui-logo-lift var(--rkui-loop-medium) ease-in-out infinite;
-  }
-
-  .rkui-logo--motifs:focus-visible .rkui-logo-dot {
-    animation: rkui-logo-hop var(--rkui-loop-medium) infinite;
+  .rkui-logo--motifs:focus-visible
+    :is(.rkui-logo-wave, .rkui-logo-stripes, .rkui-logo-flap, .rkui-logo-dot) {
+    animation: var(--rkui-logo-motif) infinite;
   }
 }
 
+/* Hovered, the motifs loop. On a logo with no link the loop is listed between two copies of the
+   one it played on load: browsers pair the old and new animations of the same name from
+   different ends of the list, and the middle one is new in all of them, so it starts from the
+   beginning instead of carrying on from the load. */
 @media (prefers-reduced-motion: no-preference) and (hover: hover) {
-  .rkui-logo--motifs:hover .rkui-logo-wave {
-    animation: rkui-logo-roll var(--rkui-loop-long) linear infinite;
+  .rkui-logo--motifs:hover
+    :is(.rkui-logo-wave, .rkui-logo-stripes, .rkui-logo-flap, .rkui-logo-dot) {
+    animation: var(--rkui-logo-motif) infinite;
   }
 
-  .rkui-logo--motifs:hover .rkui-logo-stripes {
-    animation: rkui-logo-march var(--rkui-loop-short) linear infinite;
-  }
-
-  .rkui-logo--motifs:hover .rkui-logo-flap {
-    animation: rkui-logo-lift var(--rkui-loop-medium) ease-in-out infinite;
-  }
-
-  .rkui-logo--motifs:hover .rkui-logo-dot {
-    animation: rkui-logo-hop var(--rkui-loop-medium) infinite;
+  span.rkui-logo:hover :is(.rkui-logo-wave, .rkui-logo-stripes, .rkui-logo-flap, .rkui-logo-dot) {
+    animation:
+      var(--rkui-logo-motif),
+      var(--rkui-logo-motif) infinite,
+      var(--rkui-logo-motif);
   }
 }
 

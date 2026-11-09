@@ -61,7 +61,7 @@ const CONTENTS = [
     sections: [
       'Buttons',
       'Text inputs and selects',
-      'Custom select list',
+      'Select list',
       'Special inputs',
       'Checkboxes, radios and switches',
       'Range slider',
@@ -138,9 +138,12 @@ const CONTENTS = [
       <p>The light turns every shadow and pop on the page.</p>
       <LightDirection />
       <p>
-        Dark mode has two shadow modes: the slab by default, or data-shadow="color" on &lt;html&gt;
-        or any container, where each fill casts its own shade. The switch at the top sets it for the
-        whole page, so every component can be seen in both. Light mode is the same in both.
+        Dark mode has two settings, each set on &lt;html&gt; or any container. data-shadow is the
+        shadow: "outline" by default, the near-black shadow on a cream rim; "block", with no rim; or
+        "color", where each fill casts its own shade. data-highlight is the colour of the outlines
+        on things with no fill: "cream" by default, or "dark", near-black. The switches at the top
+        set them for the whole page, so every component can be seen in each. Light mode is the same
+        in all of them.
       </p>
       <p>
         With data-depth="deep" on &lt;html&gt;, any container or one element, its shadows, insets
@@ -168,10 +171,6 @@ const CONTENTS = [
         place (the flow chart's steps under Diagrams); and illustrative loops stop under reduced
         motion (the network's pulses), while loops that show a state fade. Keep or change each.
       </OpenDecision>
-      <OpenDecision>
-        Whether &lt;rkui-motion&gt;, which gives these specimens and the diagrams their Pause button
-        and pauses them off-screen, stays in rkui.
-      </OpenDecision>
       <MotionSpecimens slot="light" />
       <MotionSpecimens slot="dark" />
     </SpecimenSection>
@@ -186,12 +185,11 @@ const CONTENTS = [
       <InputSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
 
-    <SpecimenSection title="Custom select list">
+    <SpecimenSection title="Select list">
       <p>
-        Open these in a browser with customizable select (appearance: base-select) to see the styled
-        list. Elsewhere they are the plain select above.
+        Open these in a browser with customizable select (appearance: base-select) to see the toon
+        list. Elsewhere they show the browser's own list.
       </p>
-      <OpenDecision>The checked option: A filled, or B tinted (.rkui-select--tint).</OpenDecision>
       <SelectPickerSpecimens slot="light" theme="light" />
       <SelectPickerSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -305,10 +303,7 @@ const CONTENTS = [
     </SpecimenSection>
 
     <SpecimenSection title="Loading">
-      <OpenDecision>
-        Whether the spinners and loaders time their loops with the --rkui-loop-* tokens (DESIGN §5)
-        rather than their own durations; and whether .rkui-progress--flat stays.
-      </OpenDecision>
+      <OpenDecision>Whether .rkui-progress--flat stays.</OpenDecision>
       <LoadingSpecimens slot="light" />
       <LoadingSpecimens slot="dark" />
     </SpecimenSection>
@@ -318,7 +313,6 @@ const CONTENTS = [
         Popups open under their button where CSS anchor positioning is supported, and in the middle
         of the window elsewhere.
       </p>
-      <OpenDecision>Tooltip A (inverted) or B (toon, .rkui-tooltip--toon).</OpenDecision>
       <TooltipSpecimens slot="light" theme="light" />
       <TooltipSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -339,10 +333,6 @@ const CONTENTS = [
     </SpecimenSection>
 
     <SpecimenSection title="Folder tabs">
-      <p>
-        The live tabs follow the ARIA tabs pattern: click a tab, or focus one and use the arrow
-        keys, Home and End.
-      </p>
       <FolderSpecimens slot="light" theme="light" />
       <FolderSpecimens slot="dark" theme="dark" />
     </SpecimenSection>
@@ -431,7 +421,7 @@ const CONTENTS = [
       <p>
         Illustrations made only of flat toon shapes, whose assemblies come apart on hover or focus.
         Each part says how far it moves and how many layers from the back it is. Try the light, the
-        palettes and the shadow modes.
+        palettes, the shadows and the highlights.
       </p>
       <OpenDecision>
         The train without a sticker (A) or with the single-outline sticker demo (B,

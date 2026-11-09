@@ -1,38 +1,276 @@
 ---
 title: Folder
-description: Tabs standing on a sheet, like a folder's index tabs.
+description: Folder tabs that switch between panels.
 group: Containers
 order: 74
+component: Folder
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/folder/default.astro'
-import defaultCode from '../../examples/folder/default.astro?raw'
-import Tinted from '../../examples/folder/tinted.astro'
-import tintedCode from '../../examples/folder/tinted.astro?raw'
-import Narrow from '../../examples/folder/narrow.astro'
-import narrowCode from '../../examples/folder/narrow.astro?raw'
+import Folder from '@oneonefour/rkui/components/folder/Folder.vue'
+import Tab from '@oneonefour/rkui/components/folder/Tab.vue'
+import StepFolder from '../../examples/folder/StepFolder.vue'
+import stepCode from '../../examples/folder/StepFolder.vue?raw'
 
-Each `Tab` is one tab, and the rest of the slot is the sheet. Mark the tab that's showing
-`selected`; the first is when none is. For tabs that switch panels, see Tabs.
+Each `Tab` is one tab, and its slot is that tab's panel. Click a tab, or move between them with the
+arrow keys. The first tab starts selected; mark another `selected` to start there. Each tab is a
+native radio, so Folder needs no JavaScript.
 
-<Demo code={defaultCode} label="Folder" stack>
-  <Default />
+<Demo label="Folder" stack>
+  <Folder label="Topics">
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+  </Folder>
 </Demo>
 
 ## Tinted
 
-Add `tinted` for a sheet in the selected tint.
-
-<Demo code={tintedCode} label="Tinted folder" stack>
-  <Tinted />
+<Demo label="Tinted folder" stack>
+  <Folder label="Tinted" tinted>
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+  </Folder>
 </Demo>
 
-## Narrow
+## Placement
 
-When the tabs don't fit, the strip scrolls. Its scrollbar sits above the tabs, where a normal one
-would come between the tabs and the sheet.
-
-<Demo code={narrowCode} label="Narrow folder" stack>
-  <Narrow />
+<Demo label="Folder with tabs below" stack>
+  <Folder label="Tabs below" placement="bottom">
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+  </Folder>
 </Demo>
+
+<Demo label="Folder with tabs on the left" stack>
+  <Folder label="Tabs on the left" placement="left" style="min-block-size: 18rem">
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+<Demo label="Folder with tabs on the right" stack>
+  <Folder label="Tabs on the right" placement="right" style="min-block-size: 18rem">
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+## Scroll
+
+Tabs that don't fit scroll, with dots at the strip's ends; `dots="pill"` puts them in pills (see
+[Scroll](../scroll/)).
+
+<Demo label="Narrow folder that scrolls" stack>
+  <Folder label="Scroll" style="max-inline-size: 16rem">
+    <Tab label="Tab one">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Tab two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Tab three">
+      <p>Panel three.</p>
+    </Tab>
+    <Tab label="Tab four">
+      <p>Panel four.</p>
+    </Tab>
+    <Tab label="Tab five">
+      <p>Panel five.</p>
+    </Tab>
+    <Tab label="Tab six">
+      <p>Panel six.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+## Collapse
+
+<Demo label="Narrow folder that collapses" stack>
+  <Folder label="Collapse" overflow="collapse" style="max-inline-size: 30rem">
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+    <Tab label="Four">
+      <p>Panel four.</p>
+    </Tab>
+    <Tab label="Five" selected>
+      <p>Panel five.</p>
+    </Tab>
+    <Tab label="Six">
+      <p>Panel six.</p>
+    </Tab>
+    <Tab label="Seven">
+      <p>Panel seven.</p>
+    </Tab>
+    <Tab label="Eight">
+      <p>Panel eight.</p>
+    </Tab>
+    <Tab label="Nine">
+      <p>Panel nine.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+<Demo label="Collapsed folder with tabs on the left" stack>
+  <Folder
+    label="Collapse on the left"
+    overflow="collapse"
+    placement="left"
+    style="block-size: 24rem"
+  >
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+    <Tab label="Four">
+      <p>Panel four.</p>
+    </Tab>
+    <Tab label="Five" selected>
+      <p>Panel five.</p>
+    </Tab>
+    <Tab label="Six">
+      <p>Panel six.</p>
+    </Tab>
+    <Tab label="Seven">
+      <p>Panel seven.</p>
+    </Tab>
+    <Tab label="Eight">
+      <p>Panel eight.</p>
+    </Tab>
+    <Tab label="Nine">
+      <p>Panel nine.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+## Step tabs
+
+<Demo label="Folder with step tabs" stack>
+  <Folder label="Steps" overflow="collapse" steps>
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+    <Tab label="Four">
+      <p>Panel four.</p>
+    </Tab>
+    <Tab label="Five" selected>
+      <p>Panel five.</p>
+    </Tab>
+    <Tab label="Six">
+      <p>Panel six.</p>
+    </Tab>
+    <Tab label="Seven">
+      <p>Panel seven.</p>
+    </Tab>
+    <Tab label="Eight">
+      <p>Panel eight.</p>
+    </Tab>
+    <Tab label="Nine">
+      <p>Panel nine.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+<Demo label="Folder with step tabs on the right" stack>
+  <Folder
+    label="Steps on the right"
+    overflow="collapse"
+    placement="right"
+    steps
+    style="block-size: 24rem"
+  >
+    <Tab label="One">
+      <p>Panel one.</p>
+    </Tab>
+    <Tab label="Two">
+      <p>Panel two.</p>
+    </Tab>
+    <Tab label="Three">
+      <p>Panel three.</p>
+    </Tab>
+    <Tab label="Four">
+      <p>Panel four.</p>
+    </Tab>
+    <Tab label="Five" selected>
+      <p>Panel five.</p>
+    </Tab>
+    <Tab label="Six">
+      <p>Panel six.</p>
+    </Tab>
+    <Tab label="Seven">
+      <p>Panel seven.</p>
+    </Tab>
+    <Tab label="Eight">
+      <p>Panel eight.</p>
+    </Tab>
+    <Tab label="Nine">
+      <p>Panel nine.</p>
+    </Tab>
+  </Folder>
+</Demo>
+
+## With v-model
+
+In a `.vue` file, `v-model` is the selected tab's index, so the widget can read and set it.
+
+The widget below is rendered with `client:visible`.
+
+<Demo vue={stepCode} label="Folder with v-model" stack widget>
+  <StepFolder client:visible />
+</Demo>
+
+## Reference
+
+<ApiReference component="Folder" />
+
+<ApiReference component="Tab" />

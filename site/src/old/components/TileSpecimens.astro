@@ -9,7 +9,7 @@
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import TilePicker from './TilePicker.astro'
-import SwatchPicker from './SwatchPicker.astro'
+import SwatchPicker from './SwatchPicker.vue'
 import SunIcon from '@oneonefour/rkui/icons/sun.svg'
 import CloudIcon from '@oneonefour/rkui/icons/cloud.svg'
 import CloudRainIcon from '@oneonefour/rkui/icons/cloud-rain.svg'
@@ -76,10 +76,10 @@ const COLOR_STATES = [
   { label: 'disabled', class: '', disabled: true },
 ]
 const FLAIRS = [
-  { label: 'flair A: paint brush', class: 'rkui-tiles--brush' },
-  { label: 'flair B: paint drops', class: 'rkui-tiles--drops' },
-  { label: 'flair C: palette and stroke', class: 'rkui-tiles--stroke', paletteLegend: true },
-]
+  { label: 'flair A: paint brush', flair: 'brush' },
+  { label: 'flair B: paint drops', flair: 'drops' },
+  { label: 'flair C: palette and stroke', flair: 'stroke' },
+] as const
 
 /**
  * The states shown for a picker: rest and compact, or with everyState, every state on its first,
@@ -126,13 +126,18 @@ function pickerStates(picker: (typeof PICKERS)[number]) {
 <SpecimenRow title="Colour picker: palette tiles and a custom colour (flair none)">
   {SWATCH_GROUPS.map((group, index) => (
     <Specimen label={group.label}>
-      <SwatchPicker
-        name={`${theme}-swatch-${index}`}
-        custom={group.custom}
-        checked={group.checked}
-        states={group.states}
-        disabled={group.disabled}
-      />
+      {group.custom ? (
+        <SwatchPicker
+          client:visible
+          name={`${theme}-swatch-${index}`}
+          custom
+          checked={group.checked}
+          states={group.states}
+          disabled={group.disabled}
+        />
+      ) : (
+        <SwatchPicker name={`${theme}-swatch-${index}`} />
+      )}
     </Specimen>
   ))}
 </SpecimenRow>
@@ -141,10 +146,10 @@ function pickerStates(picker: (typeof PICKERS)[number]) {
   {FLAIRS.map((flair, index) => (
     <Specimen label={`${flair.label}, hover on navy`}>
       <SwatchPicker
+        client:visible
         name={`${theme}-flair-${index}`}
-        flair={flair.class}
+        flair={flair.flair}
         custom
-        paletteLegend={flair.paletteLegend}
         states={{ navy: 'is-hover' }}
       />
     </Specimen>

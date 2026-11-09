@@ -8,14 +8,12 @@
   }
 
   :root,
-  [data-palette],
-  [data-shadow='slab'] {
+  [data-palette] {
     --rkui-surface: #f7f3e5;
     --rkui-raised: #fffaf0;
     --rkui-fg: #1d232f;
     --rkui-muted: #5b6070;
     --rkui-line: #1d232f;
-    --rkui-shadow-edge: transparent;
     --rkui-shadow-lit: var(--rkui-line);
 
     --rkui-navy: #2c4d6e;
@@ -38,6 +36,8 @@
     --rkui-sky-deep: #216b9a;
     --rkui-grape-deep: #7b4fc9;
     --rkui-tangerine-deep: #a14c0a;
+    --rkui-lilac-deep: #685796;
+    --rkui-apricot-deep: #7f512d;
 
     --rkui-navy-tint: #c7d5e6;
     --rkui-teal-tint: #a6dfe3;
@@ -45,18 +45,23 @@
     --rkui-yellow-tint: #fbdf94;
     --rkui-green-tint: #c8e5a8;
     --rkui-sky-tint: #8fd3f7;
+    --rkui-grape-tint: #c8b2ff;
     --rkui-lilac-tint: #d4c4f5;
+    --rkui-tangerine-tint: #feb98f;
     --rkui-apricot-tint: #ffd2a6;
 
     --rkui-note-yellow: var(--rkui-yellow-tint);
-    --rkui-note-tangerine: var(--rkui-apricot-tint);
+    --rkui-note-tangerine: var(--rkui-tangerine-tint);
     --rkui-note-green: var(--rkui-green-tint);
     --rkui-note-coral: var(--rkui-coral-tint);
-    --rkui-note-grape: var(--rkui-lilac-tint);
+    --rkui-note-grape: var(--rkui-grape-tint);
 
-    --rkui-slate: #e7ebf3;
-    --rkui-slate-tab: #dbe0ea;
-    --rkui-slate-greige: #eae7e2;
-    --rkui-slate-greige-tab: #e0dcd6;
+    --rkui-panel: #f0ead7;
+    --rkui-panel-tab: #e6dfc8;
+  }
+
+  /* The light theme's shadows have no rim, whatever data-shadow and data-highlight say. */
+  * {
+    --rkui-shadow-edge: transparent;
   }
 }

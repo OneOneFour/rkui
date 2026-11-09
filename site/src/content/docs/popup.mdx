@@ -2,23 +2,40 @@
 title: Popup
 description: A small raised panel that a button opens.
 group: Containers
-order: 72
+order: 70
+component: Popup
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Panel from '../../examples/popup/panel.astro'
-import panelCode from '../../examples/popup/panel.astro?raw'
-import Toggletip from '../../examples/popup/toggletip.astro'
-import toggletipCode from '../../examples/popup/toggletip.astro?raw'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import Popup from '@oneonefour/rkui/components/popup/Popup.vue'
+import InfoIcon from '@oneonefour/rkui/icons/info.vue'
 
 Click the button to open the popup. Escape or a click outside closes it.
 
-<Demo code={panelCode} label="Popup panel with a close button">
-  <Panel />
+<Demo label="Popup panel with a close button">
+  <Button popovertarget="popup-panel">Open</Button>
+  <Popup id="popup-panel">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+    <Button small popovertarget="popup-panel" popovertargetaction="hide">
+      Close
+    </Button>
+  </Popup>
 </Demo>
 
 ## Toggletip
 
-<Demo code={toggletipCode} label="Popup as a toggletip">
-  <Toggletip />
+<Demo label="Popup as a toggletip">
+  <Button small hue="teal" popovertarget="popup-toggletip">
+    <InfoIcon class="rkui-icon rkui-icon--small" />
+    <span class="rkui-visually-hidden">More information</span>
+  </Button>
+  <Popup id="popup-toggletip">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+  </Popup>
 </Demo>
+
+## Reference
+
+<ApiReference component="Popup" />

@@ -1,16 +1,19 @@
 ---
 /**
- * The core colours as a palette picker: a tall column per hue with its -deep and -tint steps
- * beneath, then a row of page colours. Each block is a button that copies its colour, as a hex or
- * as `var(--rkui-…)`, chosen by the switch above. The hexes are read from what the browser
- * paints, so they follow the theme, palette and shadow mode.
+ * The colours as a palette picker: a tall column per hue with its -deep and -tint steps beneath,
+ * the core hues, a row of page colours, then the auxiliary hues with their jobs. Each block is a
+ * button that copies its colour, as a hex or as `var(--rkui-…)`, chosen by the switch above. The
+ * hexes are read from what the browser paints, so they follow the theme, palette, shadow and
+ * highlight.
  *
  * Text on each block follows the on-colour rule: a fill's own label token; the page colour on a
  * -deep step (a deep step is text on the page, so the page colour reads on it); body text on a
- * tint. The fills' text is large, because bright coral passes with white only at that size.
+ * tint; body text on a panel. Translucent shading is shown over the page colour, and its hex is that
+ * mix. The fills' text is large, because bright coral passes with white only at that size.
  */
-import Segmented from '@oneonefour/rkui/components/segmented/Segmented.astro'
-import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.astro'
+import Segmented from '@oneonefour/rkui/components/segmented/Segmented.vue'
+import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.vue'
+import { onHue, type Hue } from '@oneonefour/rkui/shared/hues.ts'
 import Swatch from './Swatch.astro'
 
 /** A colour block: the token it shows and the token its text is set in, both without `--rkui-`. */
@@ -19,20 +22,24 @@ interface Swatch {
   text: string
 }
 
-const HUES = [
-  { name: 'navy', label: 'on-navy' },
-  { name: 'teal', label: 'on-fill' },
-  { name: 'coral', label: 'on-coral' },
-  { name: 'yellow', label: 'on-fill' },
-  { name: 'green', label: 'on-fill' },
-  { name: 'sky', label: 'on-fill' },
+const CORE: Hue[] = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky']
+
+/** The auxiliary hues and the jobs each one does. */
+const AUXILIARY: { hue: Hue; job: string }[] = [
+  { hue: 'grape', job: 'Interactive accents, code and maths highlights' },
+  { hue: 'lilac', job: 'Widget frames, equation pills' },
+  { hue: 'tangerine', job: 'Warnings, work in progress, focus' },
+  { hue: 'apricot', job: 'Marked text, callouts, the target flash' },
 ]
 
-const columns: Swatch[][] = HUES.map(({ name, label }) => [
-  { token: name, text: label },
-  { token: `${name}-deep`, text: 'surface' },
-  { token: `${name}-tint`, text: 'fg' },
-])
+/** A hue's fill, -deep and -tint blocks, top to bottom. */
+function column(hue: Hue): Swatch[] {
+  return [
+    { token: hue, text: onHue(hue).replace('--rkui-', '') },
+    { token: `${hue}-deep`, text: 'surface' },
+    { token: `${hue}-tint`, text: 'fg' },
+  ]
+}
 
 const NEUTRALS: Swatch[] = [
   { token: 'surface', text: 'fg' },
@@ -40,6 +47,43 @@ const NEUTRALS: Swatch[] = [
   { token: 'fg', text: 'surface' },
   { token: 'muted', text: 'surface' },
   { token: 'line', text: 'on-ink' },
+]
+
+/** The panel and shading colours, each with what uses it, and the inset floor it is mixed from. */
+const PANELS: { token: string; text: string; job: string; floor?: string }[] = [
+  { token: 'panel', text: 'fg', job: 'Code blocks, quotes, shaded cards, inline code' },
+  { token: 'panel-tab', text: 'fg', job: "The code block's editor-tab strip, a quote in a quote" },
+  {
+    token: 'folder-back',
+    text: 'fg',
+    job: "Unselected folder tabs, a drawer's tray, an inset card",
+  },
+  {
+    token: 'recess-shade',
+    text: 'on-ink',
+    job: "The inset's grey step on the panel: code blocks",
+    floor: 'panel',
+  },
+  {
+    token: 'recess-shade',
+    text: 'on-ink',
+    job: "The inset's grey step on the folder back: a drawer's tray, an inset card",
+    floor: 'folder-back',
+  },
+  {
+    token: 'stripe',
+    text: 'fg',
+    job: "Progress stripes, hatching, a drawer's handle, the table's rules (translucent)",
+  },
+]
+
+/** The syntax colours, with the kind of code each one sets. */
+const CODE: { token: string; job: string }[] = [
+  { token: 'code-keyword', job: 'Keywords' },
+  { token: 'code-string', job: 'Strings' },
+  { token: 'code-number', job: 'Numbers' },
+  { token: 'code-function', job: 'Function names' },
+  { token: 'code-comment', job: 'Comments' },
 ]
 ---
 
@@ -52,9 +96,9 @@ const NEUTRALS: Swatch[] = [
   </Segmented>
 
   <div class="hues">
-    {columns.map((column) => (
+    {CORE.map((hue) => (
       <div class="column">
-        {column.map(({ token, text }) => (
+        {column(hue).map(({ token, text }) => (
           <Swatch token={token} text={text} />
         ))}
       </div>
@@ -65,6 +109,50 @@ const NEUTRALS: Swatch[] = [
     {NEUTRALS.map(({ token, text }) => (
       <Swatch token={token} text={text} />
     ))}
+  </div>
+
+  <div class="auxiliary">
+    <h2>Auxiliary colours</h2>
+    <div class="hues">
+      {AUXILIARY.map(({ hue, job }) => (
+        <div class="column">
+          {column(hue).map(({ token, text }) => (
+            <Swatch token={token} text={text} />
+          ))}
+          <p class="job">{job}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="auxiliary">
+    <h2>Panels and shading</h2>
+    <p class="note">
+      The panel and its tab follow the page palette. The inset's grey step is its floor 60% of the
+      way to the outline colour. Stripe is translucent, the outline colour over whatever it crosses,
+      shown over the page colour.
+    </p>
+    <div class="hues">
+      {PANELS.map(({ token, text, job, floor }) => (
+        <div class="column panel" style={floor && `--rkui-recess-floor: var(--rkui-${floor})`}>
+          <Swatch token={token} text={text} />
+          <p class="job">{job}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="auxiliary">
+    <h2>Code colours</h2>
+    <div class="hues">
+      {CODE.map(({ token, job }) => (
+        <div class="column panel">
+          <Swatch token={token} text="surface" />
+          <p class="job">{job}</p>
+        </div>
+      ))}
+    </div>
+    <pre class="sample"><code><span class="kw">const</span> total = <span class="fn">add</span>(<span class="num">2</span>, <span class="str">'3'</span>) <span class="cm">// on the panel</span></code></pre>
   </div>
 
   <p class="rkui-visually-hidden" aria-live="polite"></p>
@@ -95,6 +183,54 @@ const NEUTRALS: Swatch[] = [
     gap: var(--palette-gap);
   }
 
+  .auxiliary .column {
+    grid-template-rows: 10rem 5rem 5rem auto;
+  }
+
+  .auxiliary .column.panel {
+    grid-template-rows: 7rem auto;
+  }
+
+  .note {
+    margin: 0 0 var(--palette-gap);
+  }
+
+  .sample {
+    margin: var(--palette-gap) 0 0;
+    padding: var(--rkui-space-3);
+    overflow-x: auto;
+    background: var(--rkui-panel);
+    color: var(--rkui-fg);
+    font-family: var(--rkui-font-mono);
+    font-size: var(--rkui-step--1);
+  }
+
+  .kw {
+    color: var(--rkui-code-keyword);
+  }
+
+  .fn {
+    color: var(--rkui-code-function);
+  }
+
+  .str {
+    color: var(--rkui-code-string);
+  }
+
+  .num {
+    color: var(--rkui-code-number);
+  }
+
+  .cm {
+    color: var(--rkui-code-comment);
+  }
+
+  .job {
+    margin: 0;
+    color: var(--rkui-muted);
+    font-size: var(--rkui-step--1);
+  }
+
   .neutrals {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
@@ -108,16 +244,18 @@ const NEUTRALS: Swatch[] = [
 </style>
 
 <script>
-  const ATTRIBUTES = ['data-theme', 'data-palette', 'data-shadow']
+  const ATTRIBUTES = ['data-theme', 'data-palette', 'data-shadow', 'data-highlight']
   const COPIED_FOR = 1200
 
   let context: OffscreenCanvasRenderingContext2D | null | undefined
 
-  /** Any colour the browser can paint, as `#rrggbb`: painted on a 1 by 1 canvas and read back. */
+  /** Any colour the browser can paint, as `#rrggbb`, over the page colour: painted on a 1 by 1 canvas and read back. */
   function toHex(cssColor: string): string {
     context ??= new OffscreenCanvas(1, 1).getContext('2d', { willReadFrequently: true })
     if (!context) return ''
     context.clearRect(0, 0, 1, 1)
+    context.fillStyle = getComputedStyle(document.body).backgroundColor
+    context.fillRect(0, 0, 1, 1)
     context.fillStyle = cssColor
     context.fillRect(0, 0, 1, 1)
     const [r, g, b] = context.getImageData(0, 0, 1, 1).data

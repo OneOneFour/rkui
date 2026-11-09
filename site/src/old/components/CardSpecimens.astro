@@ -1,6 +1,6 @@
 ---
 /** Linked and static cards, with and without an image, and the linked card's states. */
-import Card from '@oneonefour/rkui/components/card/Card.astro'
+import Card from '@oneonefour/rkui/components/card/Card.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import CloudLightningIcon from '@oneonefour/rkui/icons/cloud-lightning.svg'
@@ -26,7 +26,7 @@ const STATES = [
       <p>Body text. The quick brown fox jumps over the lazy dog.</p>
     </Card>
   </Specimen>
-  <Specimen label="static (no link, no outline, no pop)" wide>
+  <Specimen label="static (no link: outlined, no pop)" wide>
     <Card title="Card title" meta="Meta line">
       <p>Body text. Sphinx of black quartz, judge my vow.</p>
     </Card>

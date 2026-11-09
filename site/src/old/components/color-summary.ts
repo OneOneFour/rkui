@@ -79,7 +79,7 @@ function hueRow(hue: string): SummaryRow {
   const variants = HUE_SHADES.filter((suffix) => tokenNames.has(`${name}${suffix}`)).map((suffix) =>
     color(`${name}${suffix}`, { label: suffix }),
   )
-  // Navy casts --rkui-shadow-lit in the color shadow mode, so it has no shade.
+  // Navy casts --rkui-shadow-lit with the colour shadow, so it has no shade.
   const shade =
     hue === 'navy' ? [] : [color('--rkui-shade', { inputs: { '--rkui-shade-of': name } })]
   return {
@@ -89,10 +89,17 @@ function hueRow(hue: string): SummaryRow {
   }
 }
 
+/** The shades shown beside a page colour: the folder back by the page, the tab by the panel. */
+const PAGE_SHADES: Record<string, string[]> = {
+  '--rkui-surface': ['--rkui-folder-back'],
+  '--rkui-raised': [],
+  '--rkui-panel': ['--rkui-panel-tab'],
+}
+
 function pageRows(palette: string): SummaryRow[] {
-  return ['--rkui-surface', '--rkui-raised'].map((name) => ({
+  return Object.entries(PAGE_SHADES).map(([name, shades]) => ({
     color: color(name, { label: `${palette} ${name}`, palette }),
-    shades: name === '--rkui-surface' ? [color('--rkui-folder-back', { palette })] : [],
+    shades: shades.map((shade) => color(shade, { palette })),
     text: { fg: '--rkui-fg', bg: name, palette },
   }))
 }
@@ -101,7 +108,8 @@ function pageRows(palette: string): SummaryRow[] {
 export const SUMMARY: SummaryGroup[] = [
   {
     title: 'Page palettes',
-    caption: 'Cream is the default; set data-palette for slate or greige.',
+    caption:
+      'Cream is the default; set data-palette for slate or greige. Each palette has its own panel, for code blocks, quotes and shaded cards.',
     rows: paletteNames.flatMap(pageRows),
   },
   {
@@ -124,7 +132,7 @@ export const SUMMARY: SummaryGroup[] = [
   {
     title: 'Hues',
     caption:
-      '-deep is for text on the page, -tint for panels, and --rkui-shade (75% fill, 25% --rkui-line) for the colour shadow mode and the sticky-note fold.',
+      '-deep is for text on the page, -tint for panels, and --rkui-shade (75% fill, 25% --rkui-line) for the colour shadow and the sticky-note fold.',
     rows: HUES.map(hueRow),
   },
   {
@@ -139,11 +147,18 @@ export const SUMMARY: SummaryGroup[] = [
   {
     title: 'Shading',
     caption:
-      "Hard shadows: the slab's colour and rim, and the colour mode's shadow for things without a fill. Hatching stripes and tape are translucent.",
+      "Hard shadows: the outline shadow's colour and rim, and the colour shadow's shadow for things without a colour of their own. The inset's grey step, on the panel and on the folder back. Hatching stripes and tape are translucent.",
     rows: [
       { color: color('--rkui-shadow-color'), shades: [] },
       { color: color('--rkui-shadow-edge'), shades: [] },
       onPage('--rkui-shadow-lit'),
+      ...['--rkui-panel', '--rkui-folder-back'].map((floor) => ({
+        color: color('--rkui-recess-shade', {
+          label: `--rkui-recess-shade on ${floor}`,
+          inputs: { '--rkui-recess-floor': floor },
+        }),
+        shades: [],
+      })),
       { color: color('--rkui-stripe'), shades: [] },
       { color: color('--rkui-note-tape'), shades: [] },
     ],

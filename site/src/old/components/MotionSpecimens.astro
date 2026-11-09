@@ -2,12 +2,12 @@
 /**
  * The motion policy's core patterns side by side (PLAN §5.7): an input response, ambient loops in
  * each easing, a stagger, squash and settle, and the reduced-motion fallbacks. The pause button
- * pauses them all, as does scrolling them out of view.
+ * pauses them all.
  */
-import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import Motion from '@oneonefour/rkui/components/motion/Motion.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import PauseIcon from '@oneonefour/rkui/icons/pause.svg'
 
 const EASINGS = [
   { label: 'ease: input responses', easing: 'ease' },
@@ -20,12 +20,7 @@ const EASINGS = [
 const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green', '--rkui-coral']
 ---
 
-<rkui-motion>
-  <Button small data-motion-pause aria-pressed="false">
-    <PauseIcon class="rkui-icon" />
-    Pause
-  </Button>
-
+<Motion>
   <SpecimenRow title="Input response: hover or press">
     <Specimen label="--rkui-duration-fast, ease: lifts on hover, sinks on press">
       <Button hue="teal">Button</Button>
@@ -41,7 +36,7 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
     {EASINGS.map((item) => (
       <Specimen label={item.label} wide>
         <div class="track">
-          <span class="block hop" style={`--rkui-hop-ease: ${item.easing}`} />
+          <span class="block hop" style={`--hop-ease: ${item.easing}`} />
         </div>
       </Specimen>
     ))}
@@ -54,7 +49,7 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
     >
       <div class="stagger">
         {STAGGERED.map((fill, i) => (
-          <span class="block enter" style={`--rkui-i: ${i}; background: var(${fill})`} />
+          <span class="block enter" style={`--i: ${i}; --block-fill: var(${fill})`} />
         ))}
       </div>
     </Specimen>
@@ -80,11 +75,7 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
       </div>
     </Specimen>
   </SpecimenRow>
-</rkui-motion>
-
-<script>
-  import '@oneonefour/rkui/components/motion/motion.js'
-</script>
+</Motion>
 
 <style>
   /* What the tokens become under reduced motion, here at all times. Set on the button itself, as
@@ -103,21 +94,27 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
     border-radius: var(--rkui-radius);
   }
 
+  /* The colour shadow casts each block's and ball's shadow in its own fill, darkened
+     (shadow-color.css). */
   .block {
+    --block-fill: var(--rkui-yellow);
+    --rkui-shade-of: var(--block-fill);
+    --rkui-extrusion: var(--rkui-shade);
+
     display: block;
     box-sizing: border-box;
     inline-size: 1.5rem;
     block-size: 1.5rem;
     border: var(--rkui-outline-width) solid var(--rkui-line);
     border-radius: calc(var(--rkui-radius) / 2);
-    background: var(--rkui-yellow);
+    background: var(--block-fill);
     box-shadow: var(--rkui-shadow);
   }
 
   /* Each move takes 15% of the loop. The easing applies to every step of the keyframes, but on the
      holds it has nothing to ease. */
   .hop {
-    animation: motion-hop var(--rkui-loop-medium) var(--rkui-hop-ease) infinite;
+    animation: motion-hop var(--rkui-loop-medium) var(--hop-ease) infinite;
   }
 
   @keyframes motion-hop {
@@ -145,7 +142,7 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
   .enter {
     opacity: 0;
     animation: motion-enter var(--rkui-loop-panel) var(--rkui-ease-snap)
-      calc(var(--rkui-i) * var(--rkui-stagger)) infinite backwards;
+      calc(var(--i) * var(--rkui-stagger)) infinite backwards;
   }
 
   /* Comes in over 6% of the loop, holds, then fades out. */
@@ -179,6 +176,9 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
 
   /* A glint on the side the light comes from, opposite the shadow. */
   .ball {
+    --rkui-shade-of: var(--rkui-coral);
+    --rkui-extrusion: var(--rkui-shade);
+
     position: relative;
     box-sizing: border-box;
     inline-size: 1.75rem;
@@ -207,13 +207,13 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
   }
 
   .faded {
-    animation: rkui-spinner-fade 1.8s ease-in-out infinite alternate;
+    animation: rkui-spinner-fade var(--rkui-loop-medium) ease-in-out infinite alternate;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hop,
     .bounce {
-      animation: rkui-spinner-fade 1.8s ease-in-out infinite alternate;
+      animation: rkui-spinner-fade var(--rkui-loop-medium) ease-in-out infinite alternate;
     }
 
     .enter {

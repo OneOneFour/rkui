@@ -1,0 +1,37 @@
+<script setup>
+import StickyNote from '@oneonefour/rkui/components/sticky-note/StickyNote.vue'
+</script>
+
+<template>
+  <div class="notes">
+    <StickyNote title="Tilt" tilt>
+      <p>The quick brown fox jumps over the lazy dog.</p>
+    </StickyNote>
+    <StickyNote title="Steeper tilt" tilt style="--rkui-note-tilt: 4deg">
+      <p>The quick brown fox jumps over the lazy dog.</p>
+    </StickyNote>
+    <StickyNote title="Animated" animated>
+      <p>Hover to lift the folded corner.</p>
+    </StickyNote>
+    <StickyNote title="Tape" hold="tape">
+      <p>The quick brown fox jumps over the lazy dog.</p>
+    </StickyNote>
+    <StickyNote title="Pin" hue="coral" hold="pin">
+      <p>The quick brown fox jumps over the lazy dog.</p>
+    </StickyNote>
+    <StickyNote as="callout" kind="warning" title="Tilt and tape" tilt hold="tape">
+      <p>Sphinx of black quartz, judge my vow.</p>
+    </StickyNote>
+  </div>
+</template>
+
+<style scoped>
+.notes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  align-items: start;
+  gap: var(--rkui-space-6);
+  inline-size: 100%;
+  padding-block: var(--rkui-space-3);
+}
+</style>

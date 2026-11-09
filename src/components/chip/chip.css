@@ -1,8 +1,9 @@
 /* Filter chips: pill labels around a native checkbox (multi-select) or radio (single select),
    with an optional .rkui-icon before the text. Checked chips, and their icons' fills, take
    --rkui-section, with --rkui-on-section text; set those on the chip or its group to pass in
-   another hue. A chip can also be a link (<a class="rkui-chip">), with aria-current="page" filling
-   it like a checked one.
+   a hue. With no section they invert: an ink fill in light mode, the light foreground in dark.
+   A chip can also be a link (<a class="rkui-chip">), with aria-current="page" filling it like a
+   checked one.
 
    <fieldset class="rkui-chip-group">
      <legend class="rkui-visually-hidden">Topic</legend>
@@ -45,12 +46,19 @@
   color: inherit;
 }
 
+/* With no section hue, a checked chip is inverted: dark ink in light mode, the light foreground
+   in dark mode, so it stands apart from the unfilled chip on a dark page. */
+.rkui-chip {
+  --rkui-chip-checked: light-dark(var(--rkui-ink), var(--rkui-fg));
+  --rkui-chip-on-checked: light-dark(var(--rkui-on-ink), var(--rkui-ink));
+}
+
 .rkui-chip:is(:has(:checked), [aria-current='page']) {
-  --rkui-icon-fill: var(--rkui-section);
+  --rkui-icon-fill: var(--rkui-section, var(--rkui-chip-checked));
 
   border-color: var(--rkui-line);
-  background: var(--rkui-section);
-  color: var(--rkui-on-section);
+  background: var(--rkui-section, var(--rkui-chip-checked));
+  color: var(--rkui-on-section, var(--rkui-chip-on-checked));
 }
 
 /* Forced colours drop the checked fill, so the checked chip uses system colours. Without

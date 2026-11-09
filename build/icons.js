@@ -1,4 +1,5 @@
-// Builds dist/icons/: one recolourable SVG per icon, plus sprite.svg and the icon licences.
+// Builds dist/icons/: one recolourable SVG per icon, the same icon as a template-only Vue
+// component (`<name>.vue`, for the Vue components to import), plus sprite.svg and the icon licences.
 // Reads Phosphor's raw duotone SVGs from the `phosphor-raw` dev dependency (no network), restyles
 // them, and runs SVGO. The icon list and fills are design data in src/icons/icon-set.js.
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises'
@@ -108,7 +109,7 @@ async function checkFillTokens() {
   }
 }
 
-/** Writes dist/icons/: every icon, sprite.svg and the licences. */
+/** Writes dist/icons/: every icon as .svg and .vue, sprite.svg and the licences. */
 export async function buildIcons() {
   await checkFillTokens()
   await mkdir(OUT_DIR, { recursive: true })
@@ -117,6 +118,7 @@ export async function buildIcons() {
   for (const [name, rawSvg] of await loadRawIcons()) {
     const svg = makeRecolorable(name, rawSvg)
     await writeFile(new URL(`${name}.svg`, OUT_DIR), `${svg}\n`)
+    await writeFile(new URL(`${name}.vue`, OUT_DIR), `<template>${svg}</template>\n`)
     symbols.push(toSymbol(name, svg))
   }
 
@@ -126,5 +128,5 @@ export async function buildIcons() {
   for (const licence of ['LICENSE-phosphor.txt', 'LICENSE-tabler.txt']) {
     await copyFile(new URL(licence, ICONS_SRC), new URL(licence, OUT_DIR))
   }
-  console.log(`dist/icons: ${symbols.length} icons, sprite.svg, licences`)
+  console.log(`dist/icons: ${symbols.length} icons (.svg and .vue), sprite.svg, licences`)
 }

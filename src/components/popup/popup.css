@@ -17,7 +17,7 @@
   box-shadow: var(--rkui-shadow);
   transition:
     opacity var(--rkui-duration-spring) ease,
-    scale var(--rkui-duration-spring) var(--rkui-ease-spring),
+    scale var(--rkui-duration-spring) var(--rkui-ease-snap),
     display var(--rkui-duration-spring) allow-discrete,
     overlay var(--rkui-duration-spring) allow-discrete;
 }

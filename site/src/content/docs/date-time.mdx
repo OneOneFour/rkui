@@ -3,28 +3,33 @@ title: Date and time
 description: Date and time inputs on the text input frame.
 group: Form controls
 order: 47
+component: Input
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Types from '../../examples/date-time/types.astro'
-import typesCode from '../../examples/date-time/types.astro?raw'
-import Disabled from '../../examples/date-time/disabled.astro'
-import disabledCode from '../../examples/date-time/disabled.astro?raw'
-import Error from '../../examples/date-time/error.astro'
-import errorCode from '../../examples/date-time/error.astro?raw'
+import Input from '@oneonefour/rkui/components/input/Input.vue'
 
-<Demo code={typesCode} label="Date and time types" stack>
-  <Types />
+<Demo label="Date and time types" stack>
+  <Input label="Date" type="date" name="dt-date" />
+  <Input label="Time" type="time" name="dt-time" />
+  <Input label="Month" type="month" name="dt-month" />
+  <Input label="Week" type="week" name="dt-week" />
+  <Input label="Date and time" type="datetime-local" name="dt-local" />
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled date input" stack>
-  <Disabled />
+<Demo label="Disabled date input" stack>
+  <Input label="Date" type="date" name="dt-disabled" value="2026-11-01" disabled />
 </Demo>
 
 ## Error
 
-<Demo code={errorCode} label="Date input with an error" stack>
-  <Error />
+<Demo label="Date input with an error" stack>
+  <Input label="Time" type="time" name="dt-error" value="09:30" error="Error message" />
 </Demo>
+
+## Reference
+
+<ApiReference component="Input" />

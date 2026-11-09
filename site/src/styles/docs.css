@@ -9,11 +9,41 @@
   justify-content: flex-start;
 }
 
+/* The theme toggle and the Settings button, with the settings drawer hanging out of the bar's
+   bottom edge under the toggle. The drawer sits in the toggle's grid column, so it takes the
+   toggle's width, less a space at each side, with nothing measured. The group fills the bar's
+   row, so the column's bottom is the bar's, short of its padding. */
 .docs-switches {
-  display: flex;
-  flex-wrap: wrap;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  align-self: stretch;
   gap: var(--rkui-space-2);
   margin-inline-start: auto;
+}
+
+.docs-settings {
+  grid-area: 1 / 1 / 2 / 2;
+  inset-block-start: calc(100% + var(--rkui-space-3));
+  inset-inline: var(--rkui-space-2);
+}
+
+.docs-settings-body {
+  display: grid;
+  justify-items: start;
+  gap: var(--rkui-space-3);
+}
+
+.docs-mode-name {
+  margin: 0 0 var(--rkui-space-1);
+  font-size: var(--rkui-step--1);
+  font-weight: 600;
+}
+
+.docs-mode-note {
+  color: var(--rkui-muted);
+  font-weight: 400;
 }
 
 .docs-frame {
@@ -43,6 +73,38 @@
 
 .docs-main h1 {
   margin-block-start: 0;
+}
+
+/* The big logo above the Getting started title. */
+article > .rkui-logo {
+  margin-block-end: var(--rkui-space-5);
+}
+
+/* A component page's chips under its title: whether it uses JavaScript, and its helper script. */
+.docs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rkui-space-2);
+}
+
+/* The helper script chip links to the setup section, with the focus band around the pill. */
+.docs-chip-link {
+  display: inline-flex;
+  border-radius: var(--rkui-radius-pill);
+  text-decoration: none;
+}
+
+.docs-chip-link:focus-visible {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-focus-offset);
+  background: none;
+}
+
+/* A browser's logo on a helper script's badge, flat in the badge's text colour. */
+.docs-browser-logo {
+  inline-size: 1em;
+  block-size: 1em;
+  fill: currentColor;
 }
 
 .docs-lede {
@@ -79,13 +141,26 @@
     position: relative;
   }
 
+  /* The closed settings drawer's front hangs below the bar here, so the page starts below it: the
+     front is its padding and small caret (1.25rem), with an outline above and below. */
   .docs-frame {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--rkui-space-4);
-    padding-block-start: var(--rkui-space-4);
+    padding-block-start: calc(
+      var(--rkui-space-4) + 2 * var(--rkui-space-2) + 1.25rem + 2 * var(--rkui-outline-width)
+    );
   }
 
   .docs-sidebar {
+    display: none;
+  }
+
+  /* The Settings button is just its gear, square, so it fits beside the theme toggle. */
+  .docs-settings-button {
+    --rkui-button-padding-inline: var(--rkui-button-padding-block);
+  }
+
+  .docs-settings-word {
     display: none;
   }
 
@@ -93,4 +168,19 @@
     display: block;
     margin-block-end: var(--rkui-space-5);
   }
+}
+
+/* A component's reference tables: the types, defaults and descriptions wrap, where a table's
+   cells otherwise stay on one line. */
+.docs-reference {
+  margin-block: var(--rkui-space-5);
+}
+
+.docs-reference :is(.docs-reference-type, .docs-reference-text) {
+  min-inline-size: 9rem;
+  white-space: normal;
+}
+
+.docs-reference .docs-reference-text:last-child {
+  min-inline-size: 16rem;
 }

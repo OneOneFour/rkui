@@ -3,20 +3,51 @@ title: Loader
 description: A ball hopping along a line, a busy indicator.
 group: Loading
 order: 83
+component: Loader
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Colours from '../../examples/loader/colours.astro'
-import coloursCode from '../../examples/loader/colours.astro?raw'
-import Icons from '../../examples/loader/icons.astro'
-import iconsCode from '../../examples/loader/icons.astro?raw'
+import Loader from '@oneonefour/rkui/components/loader/Loader.vue'
+import AtomIcon from '@oneonefour/rkui/icons/atom.vue'
+import LightningIcon from '@oneonefour/rkui/icons/lightning.vue'
+import StarIcon from '@oneonefour/rkui/icons/star.vue'
 
-<Demo code={coloursCode} label="Hop loaders" stack>
-  <Colours />
+A ball hopping along a line. Screen readers read out its label, which is never shown; it defaults to "Loading…".
+
+<Demo label="Hop loaders" stack>
+  <Loader />
+  <Loader hue="coral" />
+  <Loader hue="grape" />
 </Demo>
 
 ## With an icon
 
-<Demo code={iconsCode} label="Hop loaders with an icon" stack>
-  <Icons />
+<Demo label="Hop loaders with an icon" stack>
+  <Loader hue="yellow">
+    <StarIcon class="rkui-icon" aria-hidden="true" />
+  </Loader>
+  <Loader hue="green">
+    <AtomIcon class="rkui-icon" aria-hidden="true" />
+  </Loader>
+  <Loader hue="navy">
+    <LightningIcon class="rkui-icon" aria-hidden="true" />
+  </Loader>
 </Demo>
+
+## Width
+
+Each hop covers about the same distance, so a narrow loader takes few hops and a wide one many, and
+the ball lands at each end. The loader fills its line up to 30rem; set `max-inline-size` to change
+that, and `--rkui-loader-hop-length` (4rem when left out) for the distance.
+
+<Demo label="Hop loaders of different widths" stack>
+  <Loader style="max-inline-size: 8rem" />
+  <Loader style="max-inline-size: 16rem" />
+  <Loader style="max-inline-size: none" />
+  <Loader style="max-inline-size: none; --rkui-loader-hop-length: 2rem" />
+</Demo>
+
+## Reference
+
+<ApiReference component="Loader" />

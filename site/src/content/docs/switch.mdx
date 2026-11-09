@@ -3,20 +3,34 @@ title: Switch
 description: A native checkbox drawn as an on and off switch.
 group: Form controls
 order: 37
+component: Switch
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/switch/default.astro'
-import defaultCode from '../../examples/switch/default.astro?raw'
-import States from '../../examples/switch/states.astro'
-import statesCode from '../../examples/switch/states.astro?raw'
+import Switch from '@oneonefour/rkui/components/switch/Switch.vue'
 
-<Demo code={defaultCode} label="Default switch">
-  <Default />
+<Demo label="Default switch">
+  <Switch name="switch-default">Label</Switch>
 </Demo>
 
 ## States
 
-<Demo code={statesCode} label="Switch states">
-  <States />
+<Demo label="Switch states">
+  <Switch name="switch-on" checked>
+    On
+  </Switch>
+  <Switch name="switch-disabled" disabled>
+    Disabled
+  </Switch>
+  <Switch name="switch-disabled-on" checked disabled>
+    Disabled, on
+  </Switch>
+  <Switch name="switch-error" aria-invalid="true">
+    Error
+  </Switch>
 </Demo>
+
+## Reference
+
+<ApiReference component="Switch" />

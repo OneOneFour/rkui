@@ -1,0 +1,19 @@
+{
+  // Type-checks the Vue components (`vue-tsc -p src`, part of `npm run build`), and the scripts
+  // they import. `astro check` covers the .astro files and the docs site.
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["es2022", "dom", "dom.iterable"],
+    "strict": true,
+    "noEmit": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    // import.meta.env.SSR, which CodeBlock uses to highlight on the server only.
+    "types": ["vite/client"]
+  },
+  "include": ["**/*.vue", "components/*/*-element.ts"]
+}

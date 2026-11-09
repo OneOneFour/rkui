@@ -1,29 +1,19 @@
-/* <rkui-motion> (rkui-motion.js) pauses the animations inside it while it is off-screen, and while
-   its pause button is pressed. The button shows once the script has run.
+/* Motion: a Pause toggle button (button.css) that pauses the animations in its own group. Only the
+   Pause that is the group's own child counts, so a checkbox in the content, or a nested group's
+   Pause, doesn't pause it.
 
-   <rkui-motion>
+   <div class="rkui-motion">
+     <label class="rkui-button rkui-button--small rkui-motion-pause">
+       <input class="rkui-visually-hidden" type="checkbox">
+       <svg class="rkui-icon" aria-hidden="true">…pause…</svg>
+       Pause
+     </label>
      …animated content…
-     <button class="rkui-button rkui-button--small" type="button" data-motion-pause
-       aria-pressed="false">Pause</button>
-   </rkui-motion> */
-
-rkui-motion {
-  display: block;
-}
-
-rkui-motion:not(:defined) [data-motion-pause] {
-  display: none;
-}
+   </div> */
 
 /* !important, or a component's own animation shorthand would set it running again. */
-rkui-motion[data-paused] *,
-rkui-motion[data-paused] *::before,
-rkui-motion[data-paused] *::after {
+.rkui-motion:has(> .rkui-motion-pause > :checked) *,
+.rkui-motion:has(> .rkui-motion-pause > :checked) *::before,
+.rkui-motion:has(> .rkui-motion-pause > :checked) *::after {
   animation-play-state: paused !important;
-}
-
-/* Pressed, the pause button stays pushed in, like a checked tile. */
-rkui-motion [data-motion-pause][aria-pressed='true'] {
-  box-shadow: var(--rkui-shadow-inset);
-  translate: var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y);
 }

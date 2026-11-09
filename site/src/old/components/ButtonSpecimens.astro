@@ -1,13 +1,24 @@
 ---
 /** Every button fill, size and style, and the filled and unfilled buttons in each state. */
-import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 import PlayIcon from '@oneonefour/rkui/icons/play.svg'
 import ResetIcon from '@oneonefour/rkui/icons/arrow-counter-clockwise.svg'
 import DownloadIcon from '@oneonefour/rkui/icons/download-simple.svg'
 
-const FILLS = ['navy', 'teal', 'green', 'coral', 'grape', 'tangerine', 'section'] as const
+const FILLS = [
+  'navy',
+  'teal',
+  'green',
+  'coral',
+  'sky',
+  'grape',
+  'tangerine',
+  'lilac',
+  'apricot',
+  'section',
+] as const
 const STATES = [
   { label: 'rest', class: '' },
   { label: 'hover', class: 'is-hover' },

@@ -1,40 +1,63 @@
 ---
 /**
- * The styleguide's dark-mode shadow switch: sets data-shadow on <html> and remembers the choice
- * under `rkui-shadow`. SpecimenLayout applies the stored choice before first paint.
+ * The styleguide's dark-mode switches, shadow and highlight: each sets data-shadow or
+ * data-highlight on <html> and remembers the choice under `rkui-shadow` or `rkui-highlight`.
+ * SpecimenLayout applies the stored choices before first paint.
  */
-const modes = [
-  { value: 'slab', label: 'Slab' },
-  { value: 'color', label: 'Colour' },
+const switches = [
+  {
+    name: 'shadow',
+    legend: 'Dark-mode shadow',
+    options: [
+      { value: 'outline', label: 'Outline' },
+      { value: 'block', label: 'Block' },
+      { value: 'color', label: 'Colour' },
+    ],
+  },
+  {
+    name: 'highlight',
+    legend: 'Dark-mode highlight',
+    options: [
+      { value: 'cream', label: 'Cream' },
+      { value: 'dark', label: 'Dark' },
+    ],
+  },
 ]
 ---
 
-<fieldset class="rkui-segmented shadow-switcher">
-  <legend class="rkui-visually-hidden">Dark-mode shadows</legend>
-  {modes.map(({ value, label }) => (
-    <label>
-      <input type="radio" name="rkui-shadow" value={value} />
-      {label}
-    </label>
-  ))}
-</fieldset>
+{switches.map(({ name, legend, options }) => (
+  <fieldset class="rkui-segmented shadow-switcher" data-mode={name}>
+    <legend class="rkui-visually-hidden">{legend}</legend>
+    {options.map(({ value, label }) => (
+      <label>
+        <input type="radio" name={`rkui-${name}`} value={value} />
+        {label}
+      </label>
+    ))}
+  </fieldset>
+))}
 
 <script>
   import { afterSlide } from '@oneonefour/rkui/shared/after-slide.js'
 
-  const STORAGE_KEY = 'rkui-shadow'
   const root = document.documentElement
-  const current = root.dataset.shadow ?? 'slab'
 
-  for (const radio of document.querySelectorAll<HTMLInputElement>('.shadow-switcher input')) {
-    radio.checked = radio.value === current
-    radio.addEventListener('change', () => {
-      afterSlide(radio, () => (root.dataset.shadow = radio.value))
-      try {
-        localStorage.setItem(STORAGE_KEY, radio.value)
-      } catch {
-        // Storage is blocked, so the choice lasts only until the page is left.
-      }
-    })
+  for (const fieldset of document.querySelectorAll<HTMLElement>('.shadow-switcher')) {
+    const name = fieldset.dataset.mode ?? ''
+    const radios = [...fieldset.querySelectorAll('input')]
+    // The stored choice, or the default where there is none or it is no longer an option.
+    const current = radios.find((radio) => radio.value === root.dataset[name]) ?? radios[0]
+
+    for (const radio of radios) {
+      radio.checked = radio === current
+      radio.addEventListener('change', () => {
+        afterSlide(radio, () => (root.dataset[name] = radio.value))
+        try {
+          localStorage.setItem(`rkui-${name}`, radio.value)
+        } catch {
+          // Storage is blocked, so the choice lasts only until the page is left.
+        }
+      })
+    }
   }
 </script>

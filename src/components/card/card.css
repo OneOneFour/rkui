@@ -1,6 +1,13 @@
-/* Cards: a raised panel with optional image, title, meta and body. .rkui-card alone is static.
-   .rkui-card--link makes the whole card one link: its title link stretches over the card, so there
-   is a single tab stop and the link text is the card's accessible name.
+/* Cards: a panel with optional image, title, meta and body. .rkui-card--link makes the whole card
+   one link: its title link stretches over the card, so there is a single tab stop and the link
+   text is the card's accessible name. It is outlined and pops (interactive.css). A static card
+   never lifts; its edge is one of:
+   - .rkui-card--outline, the outline alone (Card.vue's default);
+   - .rkui-card--raised, the outline and a hard shadow;
+   - .rkui-card--shaded, a panel fill with no outline;
+   - .rkui-card--inset, pushed into the page like a drawer's tray.
+   With data-shadow="color" in dark mode a linked or raised card's shadow is the shade of
+   --rkui-card-hue where it is set (shadow-color.css).
 
    <article class="rkui-card rkui-card--link">
      <img class="rkui-card-image" src="…" alt="">
@@ -52,6 +59,40 @@
 
 .rkui-card--link .rkui-card-image {
   border-block-end: var(--rkui-outline-width) solid var(--rkui-line);
+}
+
+/* A static card's outline is the folder sheet's, so it shows on the dark page too. */
+:is(.rkui-card--outline, .rkui-card--raised) {
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+}
+
+:is(.rkui-card--outline, .rkui-card--raised) .rkui-card-image {
+  border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+}
+
+.rkui-card--raised {
+  box-shadow: var(--rkui-shadow);
+}
+
+.rkui-card--shaded {
+  background: var(--rkui-panel);
+}
+
+/* Sunk like a drawer's tray, with the inset (shadows.css). The inner shadow is drawn over the
+   card, so an image doesn't cover it. */
+.rkui-card--inset {
+  --rkui-recess-floor: var(--rkui-folder-back);
+
+  background: var(--rkui-recess-floor);
+}
+
+.rkui-card--inset::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--rkui-shadow-recess);
+  pointer-events: none;
 }
 
 .rkui-card-link {

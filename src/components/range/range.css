@@ -1,16 +1,33 @@
 /* Range slider: a pill track and an outlined thumb that pops. WebKit and Firefox name the parts
    differently and one unknown pseudo-element drops a whole selector list, so each part is styled
-   twice; the states set custom properties that both thumbs read. Put an <output
-   class="rkui-output"> beside it in a .rkui-range-row for a readout. */
+   twice; the states set custom properties that both thumbs read.
 
-.rkui-range {
+   Range.vue puts the input in a .rkui-range-control div. To move smoothly, or to hold the value,
+   the thumb is drawn there as .rkui-range-thumb over the native one, which turns invisible but
+   still takes the pointer. A .rkui-range-popup shows the value over the thumb. Range.vue sets
+   --rkui-range-fraction (0 at min, 1 at max) to place them, and marks the div data-rkui-live once
+   it runs in the browser; until then they stay hidden and the native thumb shows.
+
+   <div class="rkui-range-control" style="--rkui-range-fraction: 0.5">
+     <input class="rkui-range" type="range">
+     <span class="rkui-range-thumb" aria-hidden="true"></span>
+   </div> */
+
+.rkui-range,
+.rkui-range-control {
   --rkui-track-height: 0.75rem;
   --rkui-thumb-size: 1.5rem;
+}
+
+.rkui-range,
+.rkui-range-thumb {
   --rkui-thumb-shadow: var(--rkui-shadow);
   /* How far the thumb sits towards the light. At rest it is one press offset off the track's
      centre, so pressed in, it is centred. */
   --rkui-thumb-shift: calc(-1 * var(--rkui-press-offset));
+}
 
+.rkui-range {
   appearance: none;
   inline-size: 100%;
   block-size: calc(var(--rkui-thumb-size) + var(--rkui-space-2));
@@ -35,17 +52,18 @@
   background: var(--rkui-raised);
 }
 
+/* --rkui-range-thumb-width widens the thumb to hold the value (.rkui-range-control--thumb). */
 .rkui-range::-webkit-slider-thumb {
   appearance: none;
   box-sizing: border-box;
-  inline-size: var(--rkui-thumb-size);
+  inline-size: var(--rkui-range-thumb-width, var(--rkui-thumb-size));
   block-size: var(--rkui-thumb-size);
   /* WebKit puts the thumb at the top of the track's content box, inside the track border. */
   margin-block-start: calc(
     (var(--rkui-track-height) - var(--rkui-thumb-size)) / 2 - var(--rkui-outline-width)
   );
   border: var(--rkui-outline-width) solid var(--rkui-line);
-  border-radius: 50%;
+  border-radius: var(--rkui-radius-pill);
   background: var(--rkui-selected);
   box-shadow: var(--rkui-thumb-shadow);
   translate: calc(var(--rkui-shadow-dx) * var(--rkui-thumb-shift))
@@ -57,10 +75,10 @@
 
 .rkui-range::-moz-range-thumb {
   box-sizing: border-box;
-  inline-size: var(--rkui-thumb-size);
+  inline-size: var(--rkui-range-thumb-width, var(--rkui-thumb-size));
   block-size: var(--rkui-thumb-size);
   border: var(--rkui-outline-width) solid var(--rkui-line);
-  border-radius: 50%;
+  border-radius: var(--rkui-radius-pill);
   background: var(--rkui-selected);
   box-shadow: var(--rkui-thumb-shadow);
   translate: calc(var(--rkui-shadow-dx) * var(--rkui-thumb-shift))
@@ -70,42 +88,228 @@
     box-shadow var(--rkui-duration-fast) ease;
 }
 
-@media (hover: hover) {
-  .rkui-range:hover {
-    --rkui-thumb-shadow: var(--rkui-shadow-hover);
-    --rkui-thumb-shift: calc(-1 * (var(--rkui-press-offset) + var(--rkui-lift-offset)));
+/* The control: the input, with the drawn thumb and the popup over it, and the ticks below. */
+.rkui-range-control {
+  /* How long the drawn thumb and the popup take to reach a new value: at once, or with ticks, a
+     snap with one small overshoot. */
+  --rkui-range-glide: 0s;
+  /* Where the thumb's centre is: its half width in from the track's inner edge, plus its share of
+     the travel. */
+  --rkui-range-thumb-centre: calc(
+    var(--rkui-outline-width) + var(--rkui-range-thumb-width, var(--rkui-thumb-size)) / 2 +
+      var(--rkui-range-fraction, 0) *
+      (100% - 2 * var(--rkui-outline-width) - var(--rkui-range-thumb-width, var(--rkui-thumb-size)))
+  );
+
+  display: grid;
+  inline-size: 100%;
+}
+
+.rkui-range-control:has(> .rkui-range-scale) {
+  --rkui-range-glide: var(--rkui-duration-spring);
+}
+
+.rkui-range-control > * {
+  grid-area: 1 / 1;
+}
+
+.rkui-range-control > .rkui-range-scale {
+  grid-area: 2 / 1;
+}
+
+/* A JetBrains Mono character is 0.6em wide. Only once the Range runs, so the native thumb that
+   shows until then keeps its size. */
+.rkui-range-control--thumb[data-rkui-live] {
+  --rkui-range-thumb-width: max(
+    var(--rkui-thumb-size),
+    calc(
+      var(--rkui-range-chars) * 0.6 * var(--rkui-step--1) + 2 * var(--rkui-space-2) + 2 *
+        var(--rkui-outline-width)
+    )
+  );
+}
+
+/* The drawn thumb, centred on --rkui-range-thumb-centre by its margin, since translate is taken
+   by the pop. */
+.rkui-range-thumb {
+  display: grid;
+  place-items: center;
+  position: relative;
+  inset-inline-start: var(--rkui-range-thumb-centre);
+  align-self: center;
+  justify-self: start;
+  box-sizing: border-box;
+  inline-size: var(--rkui-range-thumb-width, var(--rkui-thumb-size));
+  block-size: var(--rkui-thumb-size);
+  margin-inline-start: calc(var(--rkui-range-thumb-width, var(--rkui-thumb-size)) / -2);
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: var(--rkui-radius-pill);
+  background: var(--rkui-selected);
+  color: var(--rkui-on-selected);
+  box-shadow: var(--rkui-thumb-shadow);
+  font-family: var(--rkui-font-mono);
+  font-size: var(--rkui-step--1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+  visibility: hidden;
+  translate: calc(var(--rkui-shadow-dx) * var(--rkui-thumb-shift))
+    calc(var(--rkui-shadow-dy) * var(--rkui-thumb-shift));
+  transition:
+    translate var(--rkui-duration-fast) ease,
+    box-shadow var(--rkui-duration-fast) ease,
+    inset-inline-start var(--rkui-range-glide) var(--rkui-ease-snap);
+}
+
+.rkui-range-control[data-rkui-live] > .rkui-range-thumb {
+  visibility: visible;
+}
+
+.rkui-range-control[data-rkui-live]:has(> .rkui-range-thumb) > .rkui-range::-webkit-slider-thumb {
+  opacity: 0;
+}
+
+.rkui-range-control[data-rkui-live]:has(> .rkui-range-thumb) > .rkui-range::-moz-range-thumb {
+  opacity: 0;
+}
+
+/* The popup: the value in a bubble with a tail, over the thumb, like a tooltip: raised, with the
+   outline and the hard shadow, or with .rkui-range-popup--flat, in the page's colours swapped with
+   neither. Its centre sits on the thumb's: half its width back along the line, which runs the
+   other way in right-to-left text. */
+.rkui-range-popup {
+  --rkui-range-popup-gap: var(--rkui-space-3);
+  --rkui-range-popup-back: -50%;
+  --rkui-range-popup-fill: var(--rkui-raised);
+  --rkui-range-popup-text: var(--rkui-fg);
+  --rkui-range-popup-edge: var(--rkui-line-unfilled);
+
+  position: relative;
+  inset-inline-start: var(--rkui-range-thumb-centre);
+  z-index: 10;
+  align-self: start;
+  justify-self: start;
+  padding: var(--rkui-space-1) var(--rkui-space-2);
+  border: var(--rkui-outline-width) solid var(--rkui-range-popup-edge);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-range-popup-fill);
+  color: var(--rkui-range-popup-text);
+  font-family: var(--rkui-font-mono);
+  font-size: var(--rkui-step--1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: var(--rkui-line-height-heading);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  /* Its foot sits the gap above the thumb, which starts half the spare height down. */
+  translate: var(--rkui-range-popup-back)
+    calc(-100% - var(--rkui-range-popup-gap) + var(--rkui-space-1));
+  transition:
+    opacity var(--rkui-duration-fast) ease,
+    translate var(--rkui-duration-fast) ease,
+    visibility 0s var(--rkui-duration-fast),
+    inset-inline-start var(--rkui-range-glide) var(--rkui-ease-snap);
+}
+
+.rkui-range-popup:dir(rtl) {
+  --rkui-range-popup-back: 50%;
+}
+
+.rkui-range-popup--flat {
+  --rkui-range-popup-fill: var(--rkui-fg);
+  --rkui-range-popup-text: var(--rkui-surface);
+  --rkui-range-popup-edge: transparent;
+}
+
+/* The shadow and its edge, as on the tooltip: drop-shadow follows the tail too. */
+.rkui-range-popup:not(.rkui-range-popup--flat) {
+  filter: drop-shadow(
+      var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0 var(--rkui-shadow-color)
+    )
+    drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-outline-width))
+        calc(var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0 var(--rkui-shadow-edge)
+    );
+}
+
+/* The tail: a square turned 45°, with its two lower edges outlined. It is placed with left, not
+   inset-inline-start, to match its physical translate in either direction. */
+.rkui-range-popup::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 100%;
+  left: 50%;
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+  border: inherit;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  background: inherit;
+  translate: -50% -50%;
+  rotate: 45deg;
+}
+
+.rkui-range-control[data-rkui-live]:is(
+    [data-rkui-dragging],
+    :has(> .rkui-range:is(:active, :focus-visible))
+  )
+  > .rkui-range-popup {
+  opacity: 1;
+  visibility: visible;
+  translate: var(--rkui-range-popup-back) calc(-100% - var(--rkui-range-popup-gap));
+  transition-delay: 0s;
+}
+
+/* Forced colours outline the tail's transparent edges too, so it is left out. */
+@media (forced-colors: active) {
+  .rkui-range-popup::before {
+    display: none;
   }
 }
 
-.rkui-range:active {
+/* States, for the native thumb and the drawn one. */
+
+@media (hover: hover) {
+  .rkui-range:hover,
+  .rkui-range-control:has(> .rkui-range:hover) > .rkui-range-thumb {
+    --rkui-thumb-shadow: var(--rkui-shadow-hover);
+    --rkui-thumb-shift: calc(-1 * (var(--rkui-press-offset) + var(--rkui-lift-offset)));
+  }
+
+  .rkui-range-control[data-rkui-live]:has(> .rkui-range:not(:disabled):hover) > .rkui-range-popup {
+    opacity: 1;
+    visibility: visible;
+    translate: var(--rkui-range-popup-back) calc(-100% - var(--rkui-range-popup-gap));
+    transition-delay: 0s;
+  }
+}
+
+.rkui-range:active,
+.rkui-range-control:is([data-rkui-dragging], :has(> .rkui-range:active)) > .rkui-range-thumb {
   --rkui-thumb-shadow: var(--rkui-shadow-pressed);
   --rkui-thumb-shift: 0px;
 }
 
 /* The focus band is a spread shadow on the thumb. Forced-colours mode drops shadows, so the
    transparent outline keeps a visible ring there. */
-.rkui-range:focus-visible {
+.rkui-range:focus-visible,
+.rkui-range-control:has(> .rkui-range:focus-visible) > .rkui-range-thumb {
   --rkui-thumb-shadow: 0 0 0 var(--rkui-focus-width) var(--rkui-focus);
+}
+
+.rkui-range:focus-visible {
   outline: var(--rkui-outline-width) solid transparent;
 }
 
-.rkui-range:disabled {
+.rkui-range:disabled,
+.rkui-range-control:has(> .rkui-range:disabled) > .rkui-range-thumb {
   --rkui-thumb-shadow: none;
   --rkui-thumb-shift: 0px;
 }
 
-.rkui-range-row {
-  display: flex;
-  align-items: center;
-  gap: var(--rkui-space-3);
-  inline-size: 100%;
-  max-inline-size: 30rem;
-}
-
-.rkui-output {
-  min-inline-size: 5ch;
-  font-family: var(--rkui-font-mono);
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  text-align: end;
+.rkui-range-control:has(> .rkui-range:disabled) > .rkui-range-thumb {
+  opacity: 0.45;
 }

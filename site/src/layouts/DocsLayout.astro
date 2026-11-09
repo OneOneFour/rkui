@@ -1,30 +1,89 @@
 ---
 /**
- * The page frame for every docs page: the top bar (the logo, the version, search and the theme,
- * palette and shadow switches), the sidebar of pages and the content column. Only the content
- * column is indexed for search (`data-pagefind-body`).
+ * The page frame for every docs page: the top bar (the logo, the version, search, the theme switch
+ * and a settings drawer for the palette, shadow, highlight and scroll dots), the sidebar of pages
+ * and the content column. Only the content column is indexed for search (`data-pagefind-body`).
  *
  * @param page the docs page being shown; its title and description head the content
  */
+// KaTeX's stylesheet comes first, so rkui's maths styles win.
+import 'katex/dist/katex.min.css'
 import '@oneonefour/rkui/styles.css'
 import '../styles/docs.css'
 import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'
-import ThemeToggle from '@oneonefour/rkui/components/theme-toggle/ThemeToggle.astro'
-import Badge from '@oneonefour/rkui/components/badge/Badge.astro'
-import Logo from '@oneonefour/rkui/components/logo/Logo.astro'
-import TopBar from '@oneonefour/rkui/components/topbar/TopBar.astro'
+import tableInit from '@oneonefour/rkui/head-scripts/table-init.js?raw'
+import ThemeToggle from '@oneonefour/rkui/components/theme-toggle/ThemeToggle.vue'
+import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import Drawer from '@oneonefour/rkui/components/drawer/Drawer.vue'
+import GearIcon from '@oneonefour/rkui/icons/gear.vue'
+import GitBranchIcon from '@oneonefour/rkui/icons/git-branch.vue'
+import Logo from '@oneonefour/rkui/components/logo/Logo.vue'
+import TopBar from '@oneonefour/rkui/components/topbar/TopBar.vue'
+import HelperBadge from '../components/HelperBadge.astro'
+import JsBadge from '../components/JsBadge.astro'
 import ModeSwitch from '../components/ModeSwitch.astro'
 import Search from '../components/Search.astro'
 import Sidebar from '../components/Sidebar.astro'
 import { link, type DocsPage } from '../lib/pages'
 import { version } from '../../../package.json'
+import { gitBranch } from '../lib/git-branch.js'
+import type { ComponentProps } from 'astro/types'
 
 interface Props {
   page: DocsPage
 }
 
 const { page } = Astro.props
-const { title, description } = page.data
+const { title, description, component } = page.data
+const branch = gitBranch()
+
+// The settings drawer's switches. The head script restores a stored choice only while it is
+// still one of the options.
+const modes: ComponentProps<typeof ModeSwitch>[] = [
+  {
+    name: 'palette',
+    legend: 'Palette',
+    options: [
+      { value: 'cream', label: 'Cream' },
+      { value: 'slate', label: 'Slate' },
+      { value: 'greige', label: 'Greige' },
+    ],
+  },
+  {
+    name: 'shadow',
+    legend: 'Shadow',
+    note: 'in dark mode',
+    options: [
+      { value: 'outline', label: 'Outline' },
+      { value: 'block', label: 'Block' },
+      { value: 'color', label: 'Colour' },
+    ],
+  },
+  {
+    name: 'highlight',
+    legend: 'Highlight',
+    note: 'in dark mode',
+    options: [
+      { value: 'cream', label: 'Cream' },
+      { value: 'dark', label: 'Dark' },
+    ],
+  },
+  {
+    name: 'dots',
+    attribute: 'data-rkui-dots',
+    legend: 'Scroll dots',
+    options: [
+      { value: 'plain', label: 'Plain' },
+      { value: 'pill', label: 'Pill' },
+    ],
+  },
+]
+const storedModes = modes.map(({ name, attribute = `data-${name}`, options }) => ({
+  name,
+  attribute,
+  values: options.map((option) => option.value),
+}))
 ---
 
 <!doctype html>
@@ -32,19 +91,23 @@ const { title, description } = page.data
   <head>
     <meta charset="utf-8" />
     <script is:inline set:html={themeInit} />
-    <script is:inline>
-      // Inline, like the theme, so a stored palette or shadow mode doesn't flash the default first.
+    <script is:inline set:html={tableInit} />
+    <script is:inline define:vars={{ storedModes }}>
+      // Inline, like the theme, so a stored palette, shadow, highlight or dots look doesn't flash
+      // the default first. Each is stored under rkui-<name> and set as its attribute on <html>,
+      // unless it is no longer one of the options (an old "slab" shadow, say).
       try {
-        const palette = localStorage.getItem('rkui-palette')
-        if (palette) document.documentElement.dataset.palette = palette
-        const shadow = localStorage.getItem('rkui-shadow')
-        if (shadow) document.documentElement.dataset.shadow = shadow
+        for (const { name, attribute, values } of storedModes) {
+          const value = localStorage.getItem(`rkui-${name}`)
+          if (values.includes(value)) document.documentElement.setAttribute(attribute, value)
+        }
       } catch {
         // Storage is blocked, so the page keeps the defaults.
       }
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="" />
     <link rel="icon" type="image/x-icon" href={link('favicon.ico')} />
     <title>{title} · rkui</title>
   </head>
@@ -54,26 +117,32 @@ const { title, description } = page.data
       <Badge tint title="The version these docs describe">
         v{version}
       </Badge>
+      {branch && (
+        <Badge hue="green" title="The git branch these docs were built from">
+          <GitBranchIcon class="rkui-icon" /> {branch}
+        </Badge>
+      )}
       <Search />
       <div class="docs-switches">
-        <ModeSwitch
-          name="shadow"
-          legend="Dark-mode shadows"
-          options={[
-            { value: 'slab', label: 'Slab' },
-            { value: 'color', label: 'Colour' },
-          ]}
-        />
-        <ModeSwitch
-          name="palette"
-          legend="Page palette"
-          options={[
-            { value: 'cream', label: 'Cream' },
-            { value: 'slate', label: 'Slate' },
-            { value: 'greige', label: 'Greige' },
-          ]}
-        />
-        <ThemeToggle />
+        <ThemeToggle client:visible />
+        <Button
+          unfilled
+          popovertarget="docs-settings"
+          aria-label="Settings"
+          class="docs-settings-button"
+        >
+          <GearIcon class="rkui-icon" /> <span class="docs-settings-word">Settings</span>
+        </Button>
+        <Drawer label="Settings" remote overlay id="docs-settings" class="docs-settings">
+          <div class="docs-settings-body">
+            {modes.map((mode) => (
+              <ModeSwitch {...mode} />
+            ))}
+            <Button small unfilled popovertarget="docs-settings" popovertargetaction="hide">
+              Close
+            </Button>
+          </div>
+        </Drawer>
       </div>
     </TopBar>
 
@@ -91,11 +160,32 @@ const { title, description } = page.data
         </details>
 
         <article data-pagefind-body>
+          {page.id === 'index' && <Logo size="min(12rem, 60vw)" />}
           <h1>{title}</h1>
+          {component && (
+            <div class="docs-chips">
+              <JsBadge component={component} />
+              <HelperBadge component={component} />
+            </div>
+          )}
           <p class="docs-lede">{description}</p>
           <slot />
         </article>
       </main>
     </div>
+    <script>
+      import '@oneonefour/rkui/enhance.js'
+    </script>
+    <script is:inline>
+      // The browser bar takes the page's own background, so it follows the theme and palette
+      // switches as well as the OS setting.
+      const themeColor = document.querySelector('meta[name="theme-color"]')
+      const syncThemeColor = () => {
+        themeColor.content = getComputedStyle(document.body).backgroundColor
+      }
+      syncThemeColor()
+      new MutationObserver(syncThemeColor).observe(document.documentElement, { attributes: true })
+      matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncThemeColor)
+    </script>
   </body>
 </html>

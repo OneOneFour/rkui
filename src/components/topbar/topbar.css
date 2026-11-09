@@ -87,7 +87,7 @@
 
   .rkui-topbar--toast {
     animation-name: rkui-topbar-toast-in;
-    animation-timing-function: var(--rkui-ease-spring);
+    animation-timing-function: var(--rkui-ease-snap);
   }
 
   .rkui-topbar--flush {
@@ -97,7 +97,7 @@
 
   .rkui-back-to-top {
     animation-name: rkui-back-to-top-in;
-    animation-timing-function: var(--rkui-ease-spring);
+    animation-timing-function: var(--rkui-ease-snap);
   }
 }
 
