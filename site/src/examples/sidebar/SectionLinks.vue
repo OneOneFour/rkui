@@ -26,7 +26,7 @@ import Rocket from '@oneonefour/rkui/icons/rocket.vue'
       <template #icon><Rocket /></template>
       Projects
     </SidebarLink>
-    <SidebarLink href="#" hue="yellow">
+    <SidebarLink href="#" hue="grape">
       <template #icon><Camera /></template>
       Photos
     </SidebarLink>

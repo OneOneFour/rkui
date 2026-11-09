@@ -78,10 +78,10 @@ markup and stays still. Every other component ships no JavaScript.
 rkui's Astro integration renders Markdown's own syntax in MDX files with rkui's components, with no
 tags to write: a fenced code block as CodeBlock, `$…$` as Maths and `$$…$$` as Equation. The site
 installs `shiki` for the code and `katex` for the maths, and loads KaTeX's stylesheet before
-rkui's ([Equation](../equation/)).
+rkui's ([Equation](equation/)).
 
 ```js
-// astro.config.mjs
+// astro.config.js
 import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import vue from '@astrojs/vue'

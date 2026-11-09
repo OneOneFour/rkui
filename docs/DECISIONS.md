@@ -55,7 +55,7 @@ site's settings drawer under the top bar holds both, with the palette.
 
 **Card** (Rob). A static card has the outline by default (`variant="outline"`). The other three
 edges stay as options: `raised` (the outline and a hard shadow that doesn't lift), `shaded` (a
-slate fill) and `inset` (pushed in like a drawer's tray). Card's `hue` still only colours the
+panel fill, `--rkui-panel`; first written here as a slate fill) and `inset` (pushed in like a drawer's tray). Card's `hue` still only colours the
 shadow in the dark colour shadow mode.
 
 **Sidebar columns, bold links and selected slab** (Rob). Three more options that work with every

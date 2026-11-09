@@ -22,12 +22,8 @@ const HELPERS = {
   },
   // An Alert's opening and closing buttons, and closedby="none", in Safari before 26.2.
   'alert-enhance.js': { label: 'Safari dialog fix', browser: 'safari', serves: ['Alert'] },
-  // A drawer's close animation, in Safari (drawer.css).
-  'drawer-enhance.js': {
-    label: 'Safari close animation',
-    browser: 'safari',
-    serves: ['Cabinet', 'Drawer'],
-  },
+  // A drawer's close animation, in Safari (drawer.css), and Escape to shut a remote drawer.
+  'drawer-enhance.js': { label: 'Escape and Safari close', serves: ['Cabinet', 'Drawer'] },
   // The chosen files' names inside a drop panel, cleared when its form is reset.
   'file-enhance.js': { label: 'Shows the chosen file names', serves: ['File'] },
   // A folder strip's bar while its tabs don't fit, and how many tabs a collapsing strip shows.
@@ -36,7 +32,7 @@ const HELPERS = {
   // before 26 and Firefox before 159.
   'overflow-enhance.js': {
     label: 'Scroll dots in older browsers',
-    serves: ['CodeBlock', 'Folder', 'Pagination', 'Scroll', 'Table'],
+    serves: ['CodeBlock', 'Equation', 'Folder', 'Pagination', 'Scroll', 'Table'],
   },
   // Sets a quote under three lines a step larger.
   'quote-enhance.js': { label: 'Short quotes larger', serves: ['Quote'] },
