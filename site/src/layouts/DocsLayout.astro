@@ -52,6 +52,7 @@ const branch = gitBranch()
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="" />
     <link rel="icon" type="image/x-icon" href={link('favicon.ico')} />
     <title>{title} · rkui</title>
   </head>
@@ -118,6 +119,17 @@ const branch = gitBranch()
     </div>
     <script>
       import '@oneonefour/rkui/enhance.js'
+    </script>
+    <script is:inline>
+      // The browser bar takes the page's own background, so it follows the theme and palette
+      // switches as well as the OS setting.
+      const themeColor = document.querySelector('meta[name="theme-color"]')
+      const syncThemeColor = () => {
+        themeColor.content = getComputedStyle(document.body).backgroundColor
+      }
+      syncThemeColor()
+      new MutationObserver(syncThemeColor).observe(document.documentElement, { attributes: true })
+      matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncThemeColor)
     </script>
   </body>
 </html>
