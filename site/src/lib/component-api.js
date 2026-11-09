@@ -2,8 +2,8 @@
  * A component's API, read from its own `.vue` file when the site is built, so the reference on its
  * docs page can't drift from it. Vue's own SFC parser (`vue/compiler-sfc`) splits the file and
  * parses its script as TypeScript; the reference then reads:
- * - props from `interface Props`: each one's type, its `/** *\/` comment, and its default, from
- *   `defineProps`' destructuring or the comment's "…; X when left out";
+ * - props from `interface Props`: each one's type, its `/** *\/` comment, and its default, the
+ *   value `defineProps`' destructuring gives it (`false` for a boolean it doesn't);
  * - `v-model` from each `defineModel()` and the `/** *\/` comment above it;
  * - slots from the template's `<slot>`s and the `slots.x` and `$slots.x` the component reads,
  *   each described by the header comment's sentences that mention it;
@@ -29,8 +29,9 @@ const sources = import.meta.glob('../../../src/components/*/*.vue', {
  * @typedef {object} Entry one prop, or one `v-model`
  * @property {string} name as a template writes it, e.g. 'value-display' or 'v-model'
  * @property {TypePart[]} type the parts of its type, read as alternatives
- * @property {string} defaultValue its default in words or code, '' when it has none
- * @property {string} description its comment, less the default
+ * @property {string} defaultValue its default as code writes it (`'top'`, `3`, `false`), 'required',
+ *   or '' when it has none
+ * @property {string} description its comment
  */
 
 /**
@@ -95,21 +96,15 @@ function readProps(program, types, text) {
   if (!props) return []
   const defaults = destructuredDefaults(program, text)
   return props.body.body.map((member) => {
-    const { description, defaultValue } = splitDefault(docComment(member))
     const name = member.key.name
     const typeNode = member.typeAnnotation.typeAnnotation
-    // The comment's default says more ("'drawer', a drawer sunk into its parent"), unless the code
-    // gives another one; a boolean left out is false.
-    const fromCode = defaults.get(name)
-    const commentAgrees = !fromCode || fromCode === 'false' || defaultValue.includes(fromCode)
     const boolean = typeNode.type === 'TSBooleanKeyword' ? 'false' : ''
+    const defaultValue = member.optional ? (defaults.get(name) ?? boolean) : 'required'
     return {
       name: kebabCase(name),
       type: typeParts(typeNode, types, text),
-      defaultValue: member.optional
-        ? (commentAgrees && defaultValue) || fromCode || boolean
-        : 'required',
-      description,
+      defaultValue,
+      description: withoutDefault(docComment(member), defaultValue),
     }
   })
 }
@@ -123,14 +118,11 @@ function readModels(program, types, text) {
     if (call?.type !== 'CallExpression' || call.callee.name !== 'defineModel') continue
     const modelName = call.arguments[0]?.type === 'StringLiteral' ? call.arguments[0].value : ''
     const typeNode = call.typeParameters?.params[0]
-    const { description, defaultValue } = splitDefault(
-      docComment(node).replace(/ \(`v-model`\)/, ''),
-    )
     models.push({
       name: modelName ? `v-model:${modelName}` : 'v-model',
       type: typeNode ? typeParts(typeNode, types, text) : [],
-      defaultValue,
-      description,
+      defaultValue: '',
+      description: docComment(node).replace(/ \(`v-model`\)/, ''),
     })
   }
   return models
@@ -228,7 +220,7 @@ function typeParts(node, types, text) {
     if (NAMED_TYPES[name]) return [NAMED_TYPES[name]]
     if (types.has(name)) return typeParts(types.get(name), types, text)
   }
-  if (node.type === 'TSTemplateLiteralType' && text(node) === '`#${string}`') {
+  if (text(node) === '`#${string}`') {
     return [{ words: 'a hex code' }]
   }
   if (node.type === 'TSInterfaceBody') {
@@ -257,14 +249,15 @@ function docComment(node) {
 }
 
 /**
- * Splits a comment's "…; X when left out." off as the default: "The visible label; none when left
- * out." → 'The visible label.' and 'none'. A comment that says it another way is kept whole.
+ * A comment less its "…; X when left out." where X only repeats the default shown beside it: "The
+ * look; 'split' when left out." with `'split'` → 'The look.' Any other "when left out" is kept, as
+ * it says what happens then: "The water level; rising and falling when left out."
  */
-function splitDefault(comment) {
+function withoutDefault(comment, defaultValue) {
   const match = comment.match(/^(.*?);\s*([^;]+?),? when left out\.(.*)$/)
-  if (!match) return { description: comment, defaultValue: '' }
-  const [, before, defaultValue, after] = match
-  return { description: `${before}.${after}`.trim(), defaultValue }
+  const bare = (value) => value.replace(/^(['"`])(.*)\1$/, '$2')
+  if (!match || !defaultValue || bare(match[2]) !== bare(defaultValue)) return comment
+  return `${match[1]}.${match[3]}`.trim()
 }
 
 /**

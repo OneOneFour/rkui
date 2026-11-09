@@ -61,8 +61,8 @@ const {
   title,
   href,
   meta,
-  headingLevel,
-  kind,
+  headingLevel = 3,
+  kind = 'note',
 } = defineProps<Props>()
 
 /** The sticky-note classes, for whichever of Card or Callout is drawn. */

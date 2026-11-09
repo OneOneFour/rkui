@@ -20,9 +20,6 @@ const { component } = Astro.props
 const { props, models, slots, attributes } = componentApi(component)
 const element = elementFor(component)
 const namedSlot = slots.find((slot) => slot.name !== 'default')?.name
-
-/** Whether a default is a value as code would write it (`'top'`, `3`, `false`), not words. */
-const isLiteral = (value: string) => /^(['"].*['"]|-?[\d.]+|true|false)$/.test(value)
 ---
 
 <h3>{component}</h3>
@@ -70,10 +67,10 @@ const isLiteral = (value: string) => /^(['"].*['"]|-?[\d.]+|true|false)$/.test(v
             <td class="docs-reference-text">
               {!entry.defaultValue ? (
                 '—'
-              ) : isLiteral(entry.defaultValue) ? (
-                <code>{entry.defaultValue}</code>
+              ) : entry.defaultValue === 'required' ? (
+                'required'
               ) : (
-                <CodeText text={entry.defaultValue} />
+                <code>{entry.defaultValue}</code>
               )}
             </td>
             <td class="docs-reference-text">
@@ -88,7 +85,7 @@ const isLiteral = (value: string) => /^(['"].*['"]|-?[\d.]+|true|false)$/.test(v
 {models.length > 0 && (
   <p>
     With <code>v-model</code>, the parent's value is the starting value unless it is undefined; then
-    the default applies, and is handed to the parent once the component runs.
+    the value it takes when left out applies, and is handed to the parent once the component runs.
   </p>
 )}
 
