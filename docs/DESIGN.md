@@ -527,7 +527,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Sticky note | `.rkui-sticky-note` (hues, `--tilt`, `--tape`, `--pin`) | |
 | Widget frame | `.rkui-widget-frame` (dashed, lilac tint) | |
 | Figure | `.rkui-figure` | |
-| Quote | `.rkui-quote` (slate panel, slab serif; `--italic`) | upright by default; `slant="italic"` slants it; under three lines, a step larger (`quote-enhance.js`) |
+| Quote | `.rkui-quote` (slate panel, slab serif; `--italic`) | upright by default; `slant="italic"` slants it; one line, two steps larger; two lines, one step (`quote-enhance.js`) |
 | Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
 | Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`), `--top`, `--left`, `--right`, `--remote` (a `<div>` that a button's `popovertarget` opens); `.rkui-cabinet` | drawer by default, pulling out from the bottom |
 | Equations | `.rkui-equation` (`--panel`, `--rule`, `--key`), `.rkui-eqref` | bare by default; §3.3 |

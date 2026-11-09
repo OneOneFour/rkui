@@ -1,5 +1,5 @@
-// Marks a quote whose text is under three lines long, at the normal size, with data-rkui-short, so
-// quote.css sets it a step larger. It is measured at the normal size every time, so the larger
+// Marks a quote whose text is under three lines long, at the normal size, with data-rkui-short:
+// "one" for a single line, which quote.css sets two steps larger, "two" for the rest, a step larger. It is measured at the normal size every time, so the larger
 // size never feeds back into the count. It is checked again when the quote's size changes (one
 // shared ResizeObserver) or its text changes (one shared MutationObserver), including in a Vue
 // app. Without this script every quote keeps the normal size.
@@ -24,7 +24,8 @@ function check(quote) {
   range.selectNodeContents(text)
   const lines = range.getBoundingClientRect().height / parseFloat(getComputedStyle(text).lineHeight)
   // Under three lines' height: two lines with a paragraph gap between them still count.
-  quote.toggleAttribute(SHORT, lines < 2.75)
+  if (lines < 1.5) quote.setAttribute(SHORT, 'one')
+  else if (lines < 2.75) quote.setAttribute(SHORT, 'two')
 }
 
 // A size change is checked in the next frame, not in the observer's callback, where changing the

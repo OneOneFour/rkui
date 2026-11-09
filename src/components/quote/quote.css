@@ -15,7 +15,7 @@
    slants the upright letters; emphasis inside turns upright.
 
    quote-enhance.js marks a quote whose text is under three lines at this size with
-   data-rkui-short, and it is set a step larger. */
+   data-rkui-short: a single line is set two steps larger, two lines a step larger. */
 
 .rkui-quote {
   margin: var(--rkui-space-5) 0;
@@ -39,8 +39,12 @@
 }
 
 /* Its padding and margins are in rem, so a short quote keeps the same space around it. */
-.rkui-quote[data-rkui-short] {
+.rkui-quote[data-rkui-short='two'] {
   font-size: var(--rkui-step-1);
+}
+
+.rkui-quote[data-rkui-short='one'] {
+  font-size: var(--rkui-step-2);
 }
 
 .rkui-quote .rkui-quote {
