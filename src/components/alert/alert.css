@@ -1,7 +1,7 @@
 /* Alert: an urgent message in a box in the middle of the window, a native <dialog> opened as a
    modal. The browser centres it, makes the page behind inert, moves focus in and back, and closes
-   it on Escape. The page behind is shaded with --rkui-scrim, or blurred with --blur. It pops in
-   with one overshoot; it closes at once.
+   it on Escape. The page behind is blurred, and doesn't scroll while the alert is open. It pops
+   in with one overshoot; it closes at once.
 
    --rkui-alert-hue and --rkui-alert-on-hue set the band's fill and text (Alert.vue's `hue`);
    coral (--rkui-coral-solid) when left alone.
@@ -27,6 +27,14 @@
   background: var(--rkui-raised);
   color: var(--rkui-fg);
   box-shadow: var(--rkui-shadow);
+  overscroll-behavior: contain;
+}
+
+/* The page stays still under an open alert. The gutter keeps the space the scrollbar leaves, so
+   the page doesn't shift sideways; the scroll position is untouched, so it is the same on close. */
+:root:has(.rkui-alert:modal) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
 }
 
 .rkui-alert[open] {
@@ -34,10 +42,6 @@
 }
 
 .rkui-alert::backdrop {
-  background: var(--rkui-scrim);
-}
-
-.rkui-alert--blur::backdrop {
   background: none;
   backdrop-filter: blur(var(--rkui-space-1));
 }

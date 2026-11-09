@@ -12,6 +12,10 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-08
 
+**Alert backdrop** (Rob). An open Alert blurs the page behind it, with no shade, the one exception
+to "no blur"; the darken backdrop and `--rkui-scrim` are gone. The page behind stays still while
+the alert is open, and keeps its scroll position when it closes.
+
 **Range value** (Rob). Both stay as options: `value-display="thumb"` shows the value inside the
 thumb, which widens to fit it, and `value-display="popup"` shows it in a bubble over the thumb.
 With neither, the value doesn't show.
@@ -231,7 +235,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
   legend. ("Tile and colour pickers")
 - [ ] `.rkui-progress--flat`: stays, or goes. ("Loading")
 - [ ] Tooltip: A inverted (the default), or B toon. ("Tooltips and popups")
-- [ ] Alert backdrop: darken (the default), or blur, which goes against "no blur". ("Alert")
 - [ ] Corner badge edge: A outline, B ring, or C sticker. ("Badges")
 - [ ] Breadcrumbs: A plain links, B chips, or C path bar. ("Breadcrumbs")
 - [ ] Pagination: A folder tabs, or B tiles between buttons. ("Pagination")

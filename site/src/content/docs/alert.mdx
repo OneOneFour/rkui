@@ -11,8 +11,8 @@ import Alert from '@oneonefour/rkui/components/alert/Alert.vue'
 import Button from '@oneonefour/rkui/components/button/Button.vue'
 import InfoIcon from '@oneonefour/rkui/icons/info.vue'
 
-Click the button to open the alert. The page behind it can't be used until it closes, and Escape
-closes it.
+Click the button to open the alert. The page behind it blurs, stays still and can't be used until
+it closes, and Escape closes it.
 
 <Demo label="Alert with one button">
   <Button command="show-modal" commandfor="alert-basic">
@@ -21,29 +21,6 @@ closes it.
   <Alert id="alert-basic" title="Unsaved changes">
     <p>Pack my box with five dozen liquor jugs.</p>
     <Button slot="actions" command="close" commandfor="alert-basic">
-      OK
-    </Button>
-  </Alert>
-</Demo>
-
-## Backdrop
-
-<Demo label="Alerts that darken or blur the page">
-  <Button command="show-modal" commandfor="alert-darken">
-    Darken
-  </Button>
-  <Alert id="alert-darken" title="Darken">
-    <p>Pack my box with five dozen liquor jugs.</p>
-    <Button slot="actions" command="close" commandfor="alert-darken">
-      OK
-    </Button>
-  </Alert>
-  <Button command="show-modal" commandfor="alert-blur">
-    Blur
-  </Button>
-  <Alert id="alert-blur" title="Blur" backdrop="blur">
-    <p>Pack my box with five dozen liquor jugs.</p>
-    <Button slot="actions" command="close" commandfor="alert-blur">
       OK
     </Button>
   </Alert>
