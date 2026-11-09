@@ -24,8 +24,9 @@ follows the reading order. When they don't fit, a strip either scrolls or collap
   view and a tab is one click away. Pagination collapses by default, with its step tabs on.
 - A collapsing strip shows the first and last tabs, the current one and its neighbours, then fills
   the spare room outwards from the current one, the next one first. A "…" never stands for a single
-  tab. On a narrow screen it goes to its small size, then shows only ‹ current ›, and scrolls only
-  if even that doesn't fit. The script measures this; without JavaScript the strip scrolls.
+  tab. On a narrow screen it goes to its small size, then leaves out the first and last tabs,
+  showing ‹ current › and as many tabs around it as fit, and scrolls only if even ‹ current ›
+  doesn't fit. The script measures this; without JavaScript the strip scrolls.
 - A step tab with nowhere to go, at either end, shows dimmed rather than disappearing.
 - A Folder takes up to 20 tabs. Pagination's tiles go only above or below the content.
 

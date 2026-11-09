@@ -247,9 +247,10 @@ span.rkui-strip-item {
 /* Collapse (folder-enhance.js). The script marks each tab it hides `hidden`, and each "…" it
    shows data-rkui-shown. The chosen tab always shows, even before the script catches up with a
    change it hasn't been told of. When even the fewest tabs don't fit, the strip goes to its small
-   size (data-rkui-small), and then, with steps, shows the chosen tab alone between them; a
-   Folder's neighbouring tabs are then tucked out of sight (data-rkui-tucked) but stay in place, so
-   the arrow keys still reach them. */
+   size (data-rkui-small), and then leaves out the first and last tabs, showing the chosen tab
+   between the step tabs and as many around it as fit. A Folder's neighbouring tabs that don't
+   show are tucked out of sight (data-rkui-tucked) but stay in place, so the arrow keys still reach
+   them. */
 .rkui-strip-item[hidden] {
   display: none;
 }

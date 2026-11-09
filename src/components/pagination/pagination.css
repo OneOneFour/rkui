@@ -37,8 +37,7 @@
 /* On the sides, an upright number's tab is about square, and as wide as the step tabs. */
 :is(.rkui-folder--left, .rkui-folder--right)
   > .rkui-folder-strip
-  .rkui-strip-item
-  > .rkui-folder-tab {
+  .rkui-folder-tab:has(> .rkui-pagination-number) {
   padding-inline: var(--rkui-space-2);
 }
 

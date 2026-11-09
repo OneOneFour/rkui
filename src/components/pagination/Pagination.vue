@@ -10,7 +10,8 @@
   The links never wrap. With `overflow="collapse"` (the default), folder-enhance.js shows as many
   as fit: the first and last pages, the current one and its neighbours, and more pages around it
   as there is room, with "…" for the rest. On a narrow screen the links go to their small size,
-  then show only ‹ current ›, and scroll only if even that doesn't fit. Without the script they
+  then leave out the first and last pages, showing ‹ current › and as many pages around it as fit,
+  and scroll only if even ‹ current › doesn't fit. Without the script they
   scroll. With `overflow="scroll"` the strip links the pages near the current one and scrolls;
   folder-enhance.js puts a thin bar on its outer side while it doesn't fit.
 

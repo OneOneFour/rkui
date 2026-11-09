@@ -9,9 +9,10 @@
    the chosen one and its neighbours, then adds tabs outwards from the chosen one, the one after it
    first and then alternating, each side until one more wouldn't fit; at an end all the room goes
    the other way. A "…" never stands for a single tab: that tab shows instead. When even the fewest
-   don't fit, the strip goes to its small size, then shows only the chosen tab between the ‹ › step
-   tabs (with no step tabs, between its neighbours), and only then scrolls. Without this script a
-   collapsing strip scrolls.
+   don't fit, the strip goes to its small size, then leaves out the first and last tabs: it shows
+   the chosen tab between the ‹ › step tabs (with no step tabs, with its neighbours) and as many
+   around it as fit, added the same way, and only then scrolls. Without this script a collapsing
+   strip scrolls.
 
    Either way it keeps the chosen tab in view while the strip scrolls. It handles strips added after
    the page loads too. */
@@ -67,28 +68,43 @@ const collapse = (strip) => {
   const chosen = items.findIndex((item) => item.querySelector(CHOSEN))
   if (chosen === -1) return
   const last = items.length - 1
+  const neighbours = [chosen - 1, chosen + 1].filter((index) => index >= 0 && index <= last)
+  const radios = Boolean(strip.querySelector('input[type="radio"]'))
 
-  /** The first and last items and those from `low` to `high`, with no gap of a single tab. */
-  const run = (low, high) => {
-    const from = Math.max(low, 0) === 2 ? 1 : Math.max(low, 0)
-    const to = Math.min(high, last) === last - 2 ? last - 1 : Math.min(high, last)
-    const shown = new Set([0, last])
+  /**
+   * The items from `low` to `high`, and with `ends` the first and last items too, with no gap of a
+   * single tab.
+   */
+  const run = (low, high, ends) => {
+    let from = Math.max(low, 0)
+    let to = Math.min(high, last)
+    if (ends && from === 2) from = 1
+    if (ends && to === last - 2) to = last - 1
+    const shown = new Set(ends ? [0, last] : [])
     for (let index = from; index <= to; index++) shown.add(index)
     return { low: from, high: to, shown }
   }
-  /** Shows the run, and whether it fits. */
+  /**
+   * Shows the run, and whether it fits. A Folder's neighbouring tabs that don't show stay in
+   * place, tucked, so the arrow keys still reach their radios.
+   */
   const fits = ({ shown }) => {
-    showOnly(items, shown)
+    const tucked = radios ? neighbours.filter((index) => !shown.has(index)) : []
+    showOnly(items, shown, new Set(tucked))
     return overflowOf(strip) <= 0
   }
-  /** Shows the fewest tabs, then more each side, the one after the chosen tab first. */
-  const fill = () => {
-    let best = run(chosen - 1, chosen + 1)
+  /**
+   * Shows the chosen tab and `reach` tabs either side of it, then more each side, the one after
+   * the chosen tab first, while they fit; whether even the fewest fit.
+   */
+  const fill = (reach, ends) => {
+    let best = run(chosen - reach, chosen + reach, ends)
     if (!fits(best)) return false
     const open = { after: true, before: true }
     while (open.after || open.before) {
       for (const side of ['after', 'before']) {
-        const wider = side === 'after' ? run(best.low, best.high + 1) : run(best.low - 1, best.high)
+        const wider =
+          side === 'after' ? run(best.low, best.high + 1, ends) : run(best.low - 1, best.high, ends)
         const grows = wider.shown.size > best.shown.size
         if (open[side] && grows && fits(wider)) best = wider
         else open[side] = false
@@ -100,14 +116,11 @@ const collapse = (strip) => {
 
   for (const small of [false, true]) {
     strip.toggleAttribute('data-rkui-small', small)
-    if (fill()) return
+    if (fill(1, true)) return
   }
-  // The chosen tab alone between the step tabs, or between its neighbours. A Folder's neighbours
-  // stay in place, tucked, so the arrow keys still reach their radios.
-  const neighbours = [chosen - 1, chosen + 1].filter((index) => index >= 0 && index <= last)
-  const radios = Boolean(strip.querySelector('input[type="radio"]'))
-  if (!hasSteps(strip)) showOnly(items, new Set([chosen, ...neighbours]))
-  else showOnly(items, new Set([chosen]), new Set(radios ? neighbours : []))
+  // Without the first and last tabs: from the chosen tab alone between the step tabs, or with its
+  // neighbours when there are none, as many as fit. If even that doesn't fit, the strip scrolls.
+  fill(hasSteps(strip) ? 0 : 1, false)
 }
 
 /** Scrolls the strip, and nothing else, so that its chosen tab is in view. */

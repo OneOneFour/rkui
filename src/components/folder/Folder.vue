@@ -10,9 +10,9 @@
   they don't fit, the strip scrolls (`overflow="scroll"`), and folder-enhance.js shows a thin bar
   on its outer side. With `overflow="collapse"`, folder-enhance.js shows as many tabs as fit: the
   first and last, the chosen one and its neighbours, and more around it as there is room. On a
-  narrow screen the tabs go to their small size, then show only the chosen one between the ‹ ›
-  step tabs (`steps`), or with its neighbours when there are none, and scroll only if even that
-  doesn't fit. Without the script the strip scrolls. Hidden tabs are reached with the arrow keys or
+  narrow screen the tabs go to their small size, then leave out the first and last: the chosen
+  one between the ‹ › step tabs (`steps`), or with its neighbours when there are none, and as
+  many around it as fit. They scroll only if even that doesn't fit. Without the script the strip scrolls. Hidden tabs are reached with the arrow keys or
   the step tabs, which choose the tab before or after.
 
   In a `.vue` file, `v-model` is the chosen tab's index, counting from 0, so the widget can read
