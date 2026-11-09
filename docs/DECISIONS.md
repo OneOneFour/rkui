@@ -215,6 +215,7 @@ quotes. Each pick is one small change that deletes the losing variant and update
 **Picks among built options**
 - [ ] File input: A framed button and filename, or B drop panel. ("Special inputs")
 - [ ] Search: A icon inside, or B attached button. ("Special inputs")
+- [ ] Range value: A in the thumb, or B a popup over it (`valueDisplay`). ("Range")
 - [ ] Dial: A knob, or B arc. ("Dial")
 - [ ] Dial ramp: blocks lit up to the value (as built), or all lit. ("Dial")
 - [ ] Clock: the hour hand stays longer than the minute hand (as built), or not. ("Clock")

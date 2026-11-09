@@ -133,7 +133,7 @@ Every component follows these, so a site author learns them once:
     reactive.
   - Bind each element's attributes once. Vue joins a written-out `class` or `style` with the
     page's. For any other attribute, `v-bind` comes last, so the page's wins; one the component
-    must keep is left out of `pageAttrs()` (Range's `aria-label`, Dial's and Clock's `id`).
+    must keep is left out of `pageAttrs()` (Dial's and Clock's `id`).
 - **Form fields:** controls take `label`, `hint` and `error` and always render `<Field>`, which
   renders just its slot when all three are empty. A page's own `aria-describedby` is joined with
   the message id, never replaced (`fieldAttrs()` in `src/shared/field-attrs.ts`).

@@ -6,16 +6,16 @@ const INTERACTIVE = new Set(['Clock', 'CodeBlock', 'Dial', 'Stepper', 'ThemeTogg
 
 /**
  * Whether an Astro page gives a library component `client:visible`. A Range needs it only with
- * `readout`, which follows the slider in the browser, a ColorPicker only with `custom`, whose
- * colour input checks its tile in the browser, and a CodeBlock only with its copy button, which
- * `:copy="false"` leaves out.
+ * `ticks` or `value-display`, whose thumb moves or shows the value in the browser, a ColorPicker
+ * only with `custom`, whose colour input checks its tile in the browser, and a CodeBlock only with
+ * its copy button, which `:copy="false"` leaves out.
  * @param {string} component the component's name, e.g. 'Stepper'
  * @param {Record<string, string>} attributes the attributes the page gives it, each with its
- *   value as written: `readout` as '', `:copy="false"` as 'false'
+ *   value as written: `custom` as '', `:copy="false"` as 'false'
  * @returns {boolean}
  */
 export function needsClientVisible(component, attributes) {
-  if (component === 'Range') return 'readout' in attributes
+  if (component === 'Range') return 'ticks' in attributes || 'value-display' in attributes
   if (component === 'ColorPicker') return 'custom' in attributes
   if (component === 'CodeBlock') return attributes.copy !== 'false'
   return INTERACTIVE.has(component)

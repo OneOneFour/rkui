@@ -1,6 +1,6 @@
 ---
 /**
- * The range slider with an output readout, in every state, and the tick mark variants.
+ * The range slider in every state, the two ways it shows its value, and the tick mark variants.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
@@ -27,13 +27,27 @@ const TICK_STATES = [
 ]
 ---
 
-<SpecimenRow title="With readout">
-  <Specimen label="live: the output follows the slider" wide>
+<SpecimenRow title="Value display">
+  <Specimen label="A: in the thumb" wide>
     <Range
       client:visible
-      id={`${theme}-range`}
+      id={`${theme}-range-thumb`}
       label="Label"
-      readout
+      style="flex: 1"
+      value-display="thumb"
+      min="0"
+      max="1"
+      step="0.01"
+      value="0.28"
+    />
+  </Specimen>
+  <Specimen label="B: popup on hover, drag or focus" wide>
+    <Range
+      client:visible
+      id={`${theme}-range-popup`}
+      label="Label"
+      style="flex: 1"
+      value-display="popup"
       min="0"
       max="1"
       step="0.01"

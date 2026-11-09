@@ -239,6 +239,6 @@ function wheel(event: WheelEvent) {
       step="1"
       v-bind="pageAttrs().inner"
     />
-    <output class="rkui-output" :for="id">{{ model }}</output>
+    <output :for="id">{{ model }}</output>
   </div>
 </template>

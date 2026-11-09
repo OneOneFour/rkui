@@ -20,7 +20,7 @@ function isComponent(name) {
 }
 
 /**
- * An element's attributes by name, each with its value as the demo writes it: `readout` as '',
+ * An element's attributes by name, each with its value as the demo writes it: `custom` as '',
  * `copy={false}` as 'false'.
  */
 function attributesOf(node) {

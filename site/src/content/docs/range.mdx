@@ -8,27 +8,73 @@ component: Range
 
 import Demo from '../../components/Demo.astro'
 import Range from '@oneonefour/rkui/components/range/Range.vue'
+import OwnReadout from '../../examples/range/OwnReadout.vue'
+import ownReadoutCode from '../../examples/range/OwnReadout.vue?raw'
 
-<Demo label="Default range">
+<Demo label="Default range" stack>
   <Range label="Volume" />
-</Demo>
-
-## With a readout
-
-<Demo label="Range with a readout, which needs JavaScript" stack>
-  <Range client:visible label="Opacity" readout min="0" max="1" step="0.01" value="0.28" />
 </Demo>
 
 ## Disabled
 
-<Demo label="Disabled range">
+<Demo label="Disabled range" stack>
   <Range label="Volume" disabled />
 </Demo>
 
 ## Ticks
 
-`ticks` lists the values to mark, as a row of ticks and labels under the slider. A plain HTML page writes this slider as the HTML tab shows it: `<rkui-range>` doesn't take `ticks`.
+`ticks` lists the values to mark, as a row of ticks and labels under the slider. In the browser the thumb snaps from tick to tick with one small overshoot, so the Range needs `client:visible`; without it the thumb jumps. A plain HTML page writes this slider as the HTML tab shows it: `<rkui-range>` doesn't take `ticks`.
 
 <Demo label="Range with ticks" stack>
-  <Range label="Volume" step="25" ticks={[0, 25, 50, 75, 100]} />
+  <Range client:visible label="Volume" step="25" ticks={[0, 25, 50, 75, 100]} />
+</Demo>
+
+## Showing the value
+
+`value-display` shows the value as the slider moves: in the thumb (A, `thumb`), which widens to fit it, or in a popup over the thumb (B, `popup`) while it is hovered, dragged or focused from the keyboard. Which one stays is open. Either one needs `client:visible`; without it the Range is a plain slider.
+
+<Demo label="Value in the thumb (A)" stack>
+  <Range
+    client:visible
+    label="Opacity"
+    value-display="thumb"
+    min="0"
+    max="1"
+    step="0.01"
+    value="0.28"
+  />
+  <Range
+    client:visible
+    label="Volume"
+    value-display="thumb"
+    step="25"
+    ticks={[0, 25, 50, 75, 100]}
+  />
+</Demo>
+
+<Demo label="Value in a popup (B)" stack>
+  <Range
+    client:visible
+    label="Opacity"
+    value-display="popup"
+    min="0"
+    max="1"
+    step="0.01"
+    value="0.28"
+  />
+  <Range
+    client:visible
+    label="Volume"
+    value-display="popup"
+    step="25"
+    ticks={[0, 25, 50, 75, 100]}
+  />
+</Demo>
+
+## A readout of your own
+
+To show the value somewhere else, bind the Range with `v-model` in a `.vue` file and write it out yourself.
+
+<Demo vue={ownReadoutCode} label="Range with a readout written beside it" widget>
+  <OwnReadout client:visible />
 </Demo>

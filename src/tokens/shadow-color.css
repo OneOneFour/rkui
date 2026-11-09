@@ -36,8 +36,10 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
-    /* The range thumb and the file button are pseudo-elements, so their inputs carry the colour. */
-    .rkui-range {
+    /* The range's native thumb and the file button are pseudo-elements, so their inputs carry the
+       colour. */
+    .rkui-range,
+    .rkui-range-thumb {
       --rkui-shade-of: var(--rkui-selected);
       --rkui-extrusion: var(--rkui-shade);
     }

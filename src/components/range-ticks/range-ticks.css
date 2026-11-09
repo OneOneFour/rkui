@@ -11,9 +11,8 @@
   display: flex;
   justify-content: space-between;
   inline-size: 100%;
-  /* Half of range.css's --rkui-thumb-size plus the track outline: where the thumb's centre
-     stops. */
-  padding-inline: calc(0.75rem + var(--rkui-outline-width));
+  /* Half the thumb's width (range.css) plus the track outline: where the thumb's centre stops. */
+  padding-inline: calc(var(--rkui-range-thumb-width, 1.5rem) / 2 + var(--rkui-outline-width));
 }
 
 /* Each option is centred on its point: its negative margins cancel its width in the flex row. */
