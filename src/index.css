@@ -22,6 +22,7 @@
 @import './components/switch/switch.css';
 @import './components/range/range.css';
 @import './components/segmented/segmented.css';
+@import './components/theme-toggle/theme-toggle.css';
 @import './components/chip/chip.css';
 @import './components/card/card.css';
 @import './components/callout/callout.css';
@@ -52,6 +53,7 @@
 @import './components/maths/maths.css';
 @import './components/figure/figure.css';
 @import './components/overflow/overflow.css';
+@import './components/table/table.css';
 @import './components/sidebar/sidebar.css';
 @import './components/topbar/topbar.css';
 @import './components/logo/logo.css';

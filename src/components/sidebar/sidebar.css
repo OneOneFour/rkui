@@ -25,6 +25,9 @@
    .rkui-sidebar--note     a taped sticky note (with .rkui-sticky-note .rkui-sticky-note--tape);
                            the current page an ink pill.
 
+   data-rkui-dots="pill" on the sidebar or any ancestor puts the hints in yellow pills, as the
+   card's are (overflow.css).
+
    The hints follow the scroll position with a scroll-driven animation on a timeline the nav
    shares with its scroller. Browsers without one show the scrollbar at all times and no hints. */
 
@@ -104,7 +107,8 @@
   }
 }
 
-/* The current page starts in view: its scroller opens scrolled to it, where supported. */
+/* The current page starts in view: its scroller opens scrolled to it. sidebar-enhance.js does
+   the same in browsers without scroll-initial-target. */
 .rkui-sidebar-link[aria-current='page'] {
   scroll-initial-target: nearest;
   border-color: var(--rkui-line-unfilled);
@@ -247,7 +251,6 @@
    the card's top and bottom edges while there is more that way. The current page is pushed in. */
 .rkui-sidebar--card {
   --rkui-sidebar-panel: var(--rkui-raised);
-  --rkui-sidebar-dot-color: var(--rkui-on-selected);
 
   border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
   border-radius: var(--rkui-radius);
@@ -259,16 +262,33 @@
   --rkui-scroll-track: var(--rkui-surface);
 }
 
+/* The pill look (overflow.css): a card's hints always take it, sitting on its edges. */
 .rkui-sidebar--card .rkui-sidebar-more {
-  --rkui-sidebar-more-size: var(--rkui-space-4);
+  --rkui-sidebar-dot-color: var(--rkui-pill-dot);
+  --rkui-sidebar-more-size: var(--rkui-pill-width);
 
-  inline-size: var(--rkui-space-7);
+  inline-size: var(--rkui-pill-length);
   block-size: var(--rkui-sidebar-more-size);
   margin-inline: auto;
-  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border: var(--rkui-outline-width) solid var(--rkui-pill-edge);
   border-radius: var(--rkui-radius-pill);
-  background-color: var(--rkui-selected);
+  background-color: var(--rkui-pill-fill);
   box-shadow: var(--rkui-shadow);
+}
+
+/* Any other sidebar's hints take it where data-rkui-dots="pill", in their gutters. */
+@scope ([data-rkui-dots='pill']) to ([data-rkui-dots='plain']) {
+  .rkui-sidebar-more {
+    --rkui-sidebar-dot-color: var(--rkui-pill-dot);
+
+    inline-size: var(--rkui-pill-length);
+    block-size: var(--rkui-pill-width);
+    margin-inline: auto;
+    border: var(--rkui-outline-width) solid var(--rkui-pill-edge);
+    border-radius: var(--rkui-radius-pill);
+    background-color: var(--rkui-pill-fill);
+    box-shadow: var(--rkui-shadow);
+  }
 }
 
 .rkui-sidebar--card .rkui-sidebar-more--above {

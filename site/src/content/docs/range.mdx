@@ -3,38 +3,32 @@ title: Range
 description: A slider with a pill track and an outlined thumb.
 group: Form controls
 order: 38
+component: Range
 ---
 
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/range/default.astro'
-import defaultCode from '../../examples/range/default.astro?raw'
-import Readout from '../../examples/range/readout.astro'
-import readoutCode from '../../examples/range/readout.astro?raw'
-import Disabled from '../../examples/range/disabled.astro'
-import disabledCode from '../../examples/range/disabled.astro?raw'
-import Ticks from '../../examples/range/ticks.astro'
-import ticksCode from '../../examples/range/ticks.astro?raw'
+import Range from '@oneonefour/rkui/components/range/Range.vue'
 
-<Demo code={defaultCode} label="Default range">
-  <Default />
+<Demo label="Default range">
+  <Range label="Volume" />
 </Demo>
 
 ## With a readout
 
-<Demo code={readoutCode} label="Range with a readout" stack>
-  <Readout />
+<Demo label="Range with a readout, which needs JavaScript" stack>
+  <Range client:visible label="Opacity" readout min="0" max="1" step="0.01" value="0.28" />
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled range">
-  <Disabled />
+<Demo label="Disabled range">
+  <Range label="Volume" disabled />
 </Demo>
 
 ## Ticks
 
-`ticks` lists the values to mark, as a row of ticks and labels under the slider.
+`ticks` lists the values to mark, as a row of ticks and labels under the slider. A plain HTML page writes this slider as the HTML tab shows it: `<rkui-range>` doesn't take `ticks`.
 
-<Demo code={ticksCode} label="Range with ticks" stack>
-  <Ticks />
+<Demo label="Range with ticks" stack>
+  <Range label="Volume" step="25" ticks={[0, 25, 50, 75, 100]} />
 </Demo>

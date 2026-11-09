@@ -4,7 +4,7 @@
  * equation and a wide table, plus a narrow strip of folder tabs with the default, then code and an
  * equation that fit, which show no hint.
  */
-import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.astro'
+import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
 import JavaScriptLogo from './languages/javascript.svg'
 import Equation from './Equation.astro'
 import Specimen from './Specimen.astro'
@@ -56,7 +56,13 @@ const TABLE_ROWS = [
 {OPTIONS.map((option) => (
   <SpecimenRow title={option.title}>
     <Specimen label="long code line" wide>
-      <CodeBlock code={LORENZ_JS} lang="javascript" label="JavaScript" preClass={option.class}>
+      <CodeBlock
+        client:visible
+        code={LORENZ_JS}
+        lang="javascript"
+        label="JavaScript"
+        preClass={option.class}
+      >
         <JavaScriptLogo slot="logo" class="rkui-icon rkui-icon--small" aria-hidden="true" />
       </CodeBlock>
     </Specimen>
@@ -91,8 +97,8 @@ const TABLE_ROWS = [
       </div>
     </Specimen>
     {option.withFolder && (
-      <Specimen label="folder tabs, 16rem wide: the scrollbar sits above the tabs" wide>
-        <rkui-folder class="narrow rkui-folder">
+      <Specimen label="folder tabs, 16rem wide: the strip scrolls, with dots" wide>
+        <div class="narrow rkui-folder">
           <nav aria-label="Specimen pages">
             <ol class="rkui-folder-tabs rkui-scroll">
               {TABS.map((name, i) => (
@@ -109,7 +115,7 @@ const TABLE_ROWS = [
             </ol>
           </nav>
           <div class="rkui-folder-sheet">Sheet</div>
-        </rkui-folder>
+        </div>
       </Specimen>
     )}
   </SpecimenRow>
@@ -119,7 +125,12 @@ const TABLE_ROWS = [
   {OPTIONS.map((option) => (
     <>
       <Specimen label={`code, ${option.name}`} wide>
-        <CodeBlock code="x = lorenz(1.0, 1.0, 1.0)" lang="python" preClass={option.class} />
+        <CodeBlock
+          client:visible
+          code="x = lorenz(1.0, 1.0, 1.0)"
+          lang="python"
+          preClass={option.class}
+        />
       </Specimen>
       <Specimen label={`equation, ${option.name}`} wide>
         <Equation tex={SHORT_EQUATION} class={option.class} />
@@ -153,7 +164,3 @@ const TABLE_ROWS = [
     max-inline-size: 16rem;
   }
 </style>
-
-<script>
-  import '@oneonefour/rkui/components/folder/folder.js'
-</script>

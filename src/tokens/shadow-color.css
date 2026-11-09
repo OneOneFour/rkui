@@ -2,7 +2,7 @@
    each raised thing with a fill casts its hard shadow in that fill, darkened, instead of the
    outlined slab. Everything else casts --rkui-shadow-lit, lighter than the page. Light mode is
    unchanged. data-shadow="slab" switches back inside it. Browsers without @scope or light-dark()
-   keep the slab. */
+   keep the slab, and Safari 26.0 to 26.3 keep it on checkboxes and radios. */
 
 @supports (color: light-dark(black, white)) {
   @scope ([data-shadow='color']) to ([data-shadow='slab']) {

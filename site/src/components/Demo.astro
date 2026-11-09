@@ -1,77 +1,129 @@
 ---
 /**
- * A live demo in folder tabs: Preview shows the slot rendered, Astro shows the demo's source, and
- * HTML shows what a plain HTML page would write: the markup the slot renders to, formatted with
- * Prettier, followed by the imports of the element scripts it uses.
+ * A live demo in folder tabs. Most demos are written inline, as an Astro page writes them, with
+ * one import per component at the top of the page; a component that runs in the browser gets
+ * `client:visible` on its own tag. At build time demo-source.js copies the text inside the Demo
+ * into `astro`, as an Astro page with those imports:
  *
- * The Astro source comes in as `code`. Each demo is a small .astro file in src/examples/,
- * imported twice: as a component for the slot, and with `?raw` for its source text. The source
- * shown is then exactly the code that runs, with no build plugin: once MDX has compiled a page,
- * Astro can't read back the source of a slot.
+ *   import Stepper from '@oneonefour/rkui/components/number/Stepper.vue'
  *
- *   import Hues from '../../examples/button/hues.astro'
- *   import huesCode from '../../examples/button/hues.astro?raw'
+ *   <Demo label="Split stepper">
+ *     <Stepper client:visible label="Quantity" value="3" />
+ *   </Demo>
  *
- *   <Demo code={huesCode} label="Button hues"><Hues /></Demo>
+ * A demo that needs a `.vue` file (a widget, script logic or its own `<style>`) lives in
+ * src/examples/ and is imported twice: as a component for the slot, and with `?raw` for `vue`.
+ * A demo that runs in the browser gets `client:visible`, which makes the whole demo one island.
+ *
+ *   import Lift from '../../examples/logo/Lift.vue'
+ *   import liftCode from '../../examples/logo/Lift.vue?raw'
+ *
+ *   <Demo vue={liftCode} label="Logo lift"><Lift /></Demo>
+ *
+ * The tabs:
+ * - Preview: the slot, rendered.
+ * - Astro: an inline demo's source, formatted with Prettier. For a `.vue` file, the same demo
+ *   written for an Astro page (astro-source.js), with `client:visible` on each component that
+ *   runs in the browser; such a demo must itself get `client:visible`, or the build stops.
+ * - Vue: a `.vue` file's source. For an inline demo, the same demo written as a Vue file
+ *   (vue-source.js), which stops the build if a component's `client:visible` is missing or not
+ *   needed.
+ * - HTML: what a plain HTML page writes: the markup the demo renders, formatted with Prettier,
+ *   followed by the imports of the element scripts it uses. In a demo that runs in the browser, a
+ *   component with a custom element for plain pages, such as Stepper, is written as that element
+ *   (plain-render.js); one without, such as CodeBlock, shows the markup it renders on the server.
+ *
+ * A `widget` demo uses Vue's reactivity, events or Vue-only components (WidgetTabs), and has no
+ * Astro or plain-HTML form, so it shows only Preview and Vue. A demo that isn't marked `widget`
+ * but can't be written for Astro stops the build.
  *
  * The preview lays its contents out in a wrapping row, or in a column with `stack`.
  *
- * @param code the demo's Astro source
+ * @param astro an inline demo's source, as an Astro page, from demo-source.js
+ * @param vue the text of a demo's `.vue` file; a Demo has this or `astro`
  * @param label what the demo shows, naming its tabs for screen readers
  * @param stack lays the preview out in a column, for text and other wide things
+ * @param widget the demo is a Vue widget with no Astro or plain-HTML form
  */
-import { format } from 'prettier'
-import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.astro'
-import Tab from '@oneonefour/rkui/components/folder/Tab.astro'
-import Tabs from '@oneonefour/rkui/components/folder/Tabs.astro'
+import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
+import Tab from '@oneonefour/rkui/components/folder/Tab.vue'
+import Tabs from '@oneonefour/rkui/components/folder/Tabs.vue'
+import { astroSource } from '../lib/astro-source.js'
 import { scriptsFor } from '../lib/element-scripts.js'
+import { formatCode } from '../lib/format-code.js'
+import { checkImportNames } from '../lib/library-imports.js'
+import { plainRender, usesElement } from '../lib/plain-render.js'
 import { useSprite } from '../lib/icon-sprite.js'
+import { vueSource } from '../lib/vue-source.js'
 
 interface Props {
-  code: string
+  astro?: string
+  vue?: string
   label: string
   stack?: boolean
+  widget?: boolean
 }
 
-const { code, label, stack = false } = Astro.props
+const { astro, vue, label, stack = false, widget = false } = Astro.props
 const rendered = await Astro.slots.render('default')
+const interactive = rendered.includes('<astro-island')
 
 /**
- * The rendered markup as a plain HTML page would write it: no Astro attributes (style ids, and the
- * source locations dev mode adds) and no pre-drawn clock or dial faces (the element draws one
- * itself; a clock's icons move back after its input). Inline icons point at the icon sprite, and
- * Astro's bundled scripts are swapped for the imports of the element scripts the markup uses.
- * Indented.
+ * The demo's markup as a plain HTML page would write it: no Astro or Vue attributes & none of Vue's markers
  */
 async function readableHtml(html: string): Promise<string> {
   const markup = useSprite(
     html
       .replace(/<script\b[\s\S]*?<\/script>/g, '')
       .replace(/<style\b[\s\S]*?<\/style>/g, '')
-      .replace(/\s+data-astro-[\w-]+(="[^"]*")?/g, '')
-      .replace(/<div class="rkui-dial-face"[\s\S]*?<\/div>/g, '')
-      .replace(
-        /<div class="rkui-clock-face"([\s\S]*?)<\/div>(\s*<input[^>]*>)/g,
-        (_, face, input) =>
-          input + (face.match(/<svg[^>]*rkui-clock-\w+-icon[\s\S]*?<\/svg>/g) ?? []).join(''),
-      ),
+      .replace(/<!--(\[|\]|v-if|astro:end)?-->/g, '')
+      .replace(/<\/?astro-static-slot>/g, '')
+      .replace(/\s+data-(astro|v)-[\w-]+(="[^"]*")?/g, '')
+      .replace(/\s+(style|class)=""/g, '')
+      .replace(/<svg\b[^>]*>/g, (svg) => svg.replace(' viewbox=', ' viewBox=')),
   )
   const scripts = scriptsFor(markup)
   const page = scripts.length
     ? `${markup}\n<script type="module">\n${scripts.map((script) => `import '${script}'`).join('\n')}\n</script>`
     : markup
-  try {
-    const formatted = await format(page, {
-      parser: 'html',
-      printWidth: 100,
-      htmlWhitespaceSensitivity: 'ignore',
-      semi: false,
-      singleQuote: true,
-    })
-    return formatted.trim()
-  } catch {
-    return page.trim()
+  return formatCode(page, 'html', { htmlWhitespaceSensitivity: 'ignore' })
+}
+
+/** The Astro and Vue tabs' code. A widget has no Astro tab. */
+async function sourceTabs(): Promise<{ astro?: string; vue: string }> {
+  if (astro && !vue) {
+    checkImportNames(astro)
+    return { astro: await formatCode(astro, 'astro'), vue: await vueSource(astro) }
   }
+  if (!vue || astro) throw new Error('Give it a .vue file as vue={…}, or write the demo inside it')
+  checkImportNames(vue)
+  if (widget) return { vue: vue.trim() }
+  const astroCode = await astroSource(vue)
+  if (astroCode.includes(' client:visible') && !interactive) {
+    throw new Error('It uses a component that runs in the browser; give it client:visible')
+  }
+  return { astro: astroCode, vue: vue.trim() }
+}
+
+/**
+ * The markup a plain page writes for the demo, before readableHtml tidies it. A component with a
+ * custom element is written as that element; anything else is what the preview renders.
+ */
+async function plainMarkup(vueCode: string): Promise<string> {
+  if (interactive && usesElement(vueCode)) return plainRender(vueCode)
+  return rendered.replace(/<astro-island\b[^>]*>([\s\S]*?)<\/astro-island>/g, '$1')
+}
+
+let astroCode: string | undefined
+let vueCode: string
+let html: string | undefined
+try {
+  const tabs = await sourceTabs()
+  astroCode = tabs.astro
+  vueCode = tabs.vue
+  html = widget ? undefined : await readableHtml(await plainMarkup(vueCode))
+} catch (error) {
+  throw new Error(`Demo "${label}": ${(error as Error).message}`)
 }
 ---
 
@@ -81,12 +133,19 @@ async function readableHtml(html: string): Promise<string> {
       <Fragment set:html={rendered} />
     </div>
   </Tab>
-  <Tab label="Astro">
-    <CodeBlock code={code.trim()} lang="astro" />
+  {astroCode && (
+    <Tab label="Astro">
+      <CodeBlock client:visible code={astroCode} lang="astro" />
+    </Tab>
+  )}
+  <Tab label="Vue">
+    <CodeBlock client:visible code={vueCode} lang="vue" />
   </Tab>
-  <Tab label="HTML">
-    <CodeBlock code={await readableHtml(rendered)} lang="html" />
-  </Tab>
+  {html && (
+    <Tab label="HTML">
+      <CodeBlock client:visible code={html} lang="html" />
+    </Tab>
+  )}
 </Tabs>
 
 <style>

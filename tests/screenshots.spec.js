@@ -44,15 +44,23 @@ for (const { path, theme, palette, shadow } of SHOTS) {
     const errors = []
     page.on('pageerror', (error) => errors.push(error.message))
 
-    await page.goto(path)
-    await page.evaluate(
+    // Stored before the page loads, as a reader's choice would be, so the head scripts apply it
+    // before the first paint and nothing switches over while the shot is taken.
+    await page.addInitScript(
       ([theme, palette, shadow]) => {
-        const root = document.documentElement
-        root.dataset.theme = theme
-        root.dataset.palette = palette
-        root.dataset.shadow = shadow
+        localStorage.setItem('rkui-theme', theme)
+        localStorage.setItem('rkui-palette', palette)
+        localStorage.setItem('rkui-shadow', shadow)
       },
       [theme, palette, shadow],
+    )
+    await page.goto(path)
+    // Wait until every island on screen has woken up (Astro drops `ssr` once it has hydrated).
+    await page.waitForFunction(() =>
+      [...document.querySelectorAll('astro-island[ssr]')].every((island) => {
+        const box = island.getBoundingClientRect()
+        return box.bottom < 0 || box.top > innerHeight
+      }),
     )
     await page.screenshot({ path: `screenshots/${name}.png`, fullPage: false })
 

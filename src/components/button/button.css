@@ -62,8 +62,8 @@
 }
 
 .rkui-button--section {
-  --rkui-button-fill: var(--rkui-section);
-  --rkui-button-label: var(--rkui-on-section);
+  --rkui-button-fill: var(--rkui-section, var(--rkui-ink));
+  --rkui-button-label: var(--rkui-on-section, var(--rkui-on-ink));
 }
 
 /* initial unsets --rkui-icon-fill, so an unfilled button's icons keep their own default fills. */

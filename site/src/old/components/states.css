@@ -117,7 +117,9 @@
   .rkui-tile,
   .rkui-color-input,
   .rkui-folder-tab
-).is-focus {
+).is-focus,
+/* A colour picker draws its custom colour tile itself, so the class goes on the picker. */
+.is-custom-focus > .rkui-tile--custom-color {
   outline: var(--rkui-focus-width) solid var(--rkui-focus);
   outline-offset: var(--rkui-focus-offset);
   box-shadow: none;
@@ -184,11 +186,11 @@ a:where(:not(.rkui-button, .rkui-chip, .rkui-tile, .rkui-folder-tab, .rkui-eqref
 
 /* Folder tabs */
 
-.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']).is-focus {
+.rkui-folder-tab:is(:has(:checked), [aria-current='page'], [aria-current='true']).is-focus {
   outline: none;
 }
 
-.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']).is-focus::before {
+.rkui-folder-tab:is(:has(:checked), [aria-current='page'], [aria-current='true']).is-focus::before {
   outline: var(--rkui-focus-width) solid var(--rkui-focus);
   outline-offset: var(--rkui-focus-offset);
   box-shadow: none;

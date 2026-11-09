@@ -78,8 +78,8 @@
 }
 
 .rkui-breadcrumbs--path a[aria-current='page'] {
-  background: var(--rkui-section);
-  color: var(--rkui-on-section);
+  background: var(--rkui-section, var(--rkui-ink));
+  color: var(--rkui-on-section, var(--rkui-on-ink));
 }
 
 /* The marker-pen focus (base.css) wins over the current page's fill. */

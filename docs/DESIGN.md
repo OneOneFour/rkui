@@ -94,7 +94,7 @@ Fills stay vivid in both themes. Each core hue has `-deep` (text and links on th
 |---|---|---|
 | `--rkui-selected` / `--rkui-on-selected` | `--rkui-yellow` / `--rkui-on-fill` | checked and selected controls |
 | `--rkui-selected-tint` | `--rkui-yellow-tint` | the selected option's surroundings |
-| `--rkui-section` / `--rkui-on-section` | `--rkui-ink` / `--rkui-on-ink` | the site's section-hue hook |
+| `--rkui-section` / `--rkui-on-section` | unset; uses fall back to `--rkui-ink` / `--rkui-on-ink` | the site's section-hue hook |
 | `--rkui-note-<hue>` | tint light, vivid fill dark | sticky notes (yellow, sky, tangerine, green, coral, grape) |
 | `--rkui-note-tape` | `--rkui-glint` 60% | sticky-note tape |
 | `--rkui-icon-fill-neutral` | `currentColor` 20% | quiet default fill for interface icons |
@@ -123,6 +123,11 @@ Repeated mixes are named, so the docs page can show them:
   The sticky-note fold and every colour-mode extrusion. Declared on `*`, so each element mixes its
   own.
 - `--rkui-folder-back`: the page 8% towards `--rkui-line`, behind unselected folder tabs.
+- The table's lines (`table.css`), over the paper. The sheet's rules are `--rkui-stripe` in light
+  mode and `--rkui-line-unfilled` at 40% in dark mode. The ledger's rules are `--rkui-sky-deep` at
+  45% (50% dark) and its margin rule `--rkui-coral` at 70% (85% dark), like a notebook's blue rules
+  and red margin.
+- The ledger's shaded rows (`table.css`): `--rkui-raised` 5% towards `--rkui-line`, in oklab.
 - `--rkui-illustration-red-shade` (80% to ink) and `--rkui-wave-line` (60% to `--rkui-line`) keep their own
   mixes, though each is close to a `--rkui-shade`.
 
@@ -281,8 +286,9 @@ light.
 Defined once in `interactive.css` for every clickable component. **Hover** (only under
 `(hover: hover)`) lifts by `--rkui-lift-offset` towards the light and grows the shadow; **press** moves
 by `--rkui-press-offset` onto `--rkui-shadow-pressed`. 120ms, plain `ease`, no springy overshoot. Only
-clickable things lift and sink (whether this stays is open: DECISIONS). Something static shows
-emphasis with its fill and a small pop in place (scale 1.08 on `--rkui-ease-snap`).
+clickable things lift and sink (whether this stays is open: DECISIONS), with one opt-in exception:
+a Table's `lift` option, where the hovered row lifts though it isn't clickable. Something static
+shows emphasis with its fill and a small pop in place (scale 1.08 on `--rkui-ease-snap`).
 
 ### 4.5 Pressed, checked and busy
 
@@ -457,6 +463,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Figure | `.rkui-figure` | |
 | Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
 | Equations | `.rkui-equation`, `.rkui-eqref` | §3.3 |
+| Table | `.rkui-table` (`--ledger`, `--small`, `--messy`, `--still`, `--lift`) | sheet by default; sheet or ledger open |
 | Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on |
 | Sidebar | `.rkui-sidebar` (`--card`, `--folders`, `--deck`, `--note`) | plain by default; open |
 | Badge | `.rkui-badge` (`--tint`, hues, `--corner`, `--dot`); corner `--ring`, `--sticker` | corner edge open |
@@ -471,8 +478,11 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 - Custom elements (vanilla, JSDoc types, each beside its CSS in `src/components/<name>/`) enhance markup the page writes:
   - `<rkui-theme-toggle>`, `<rkui-light-direction>`, `<rkui-motion>`, `<rkui-tabs>`, `<rkui-tooltip>`;
   - `<rkui-stepper>`, `<rkui-color-picker>`, `<rkui-code-block>`, `<rkui-dial>`, `<rkui-clock>`;
-  - helpers: `src/head-scripts/theme-init.js`, `afterSlide()` in
-    `src/shared/after-slide.js`, and `src/components/folder/folder-scrollbar.js`.
+  - helpers: `src/head-scripts/theme-init.js`, `src/head-scripts/table-init.js` (inlined beside it;
+    tables visible on load keep their values hidden until their entrance), `afterSlide()` in
+    `src/shared/after-slide.js`, `src/components/folder/folder-scrollbar.js`, and
+    `src/components/table/table-enhance.js` (plays each table's entrance the first time it is
+    seen, in every browser).
 - Plain CSS and JS, fonts by relative path, icons and sprite. There is no CDN, so pages make no
   third-party requests: plain-HTML sites copy a tagged release into `vendor/`.
 - Layers: tokens → fonts and base → CSS classes → icons → custom elements → thin wrappers.

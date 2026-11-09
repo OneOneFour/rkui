@@ -1,27 +1,45 @@
 /* Folder: tabs standing on a sheet of paper, like a folder's index tabs. The selected tab is joined
    to the sheet in front; the others are tucked behind it.
 
-   The strip of tabs is a scroll region (overflow.css) for when the tabs don't fit. It hides its
-   own scrollbar, which would come between the tabs and the sheet. <rkui-folder> (folder.js) and
-   <rkui-tabs> (tabs.js) add one above the tabs instead.
+   As tabs that switch panels (Tabs.vue), with no JavaScript: each tab is a label around a radio,
+   followed by its panel. The tabs line up in a row, wrapping when they don't fit, and the panels go
+   below them; only the checked tab's panel shows. The radios share a name, so the arrow keys move
+   between the tabs.
+   <div class="rkui-folder rkui-folder--tabs" role="group" aria-label="Topics">
+     <label class="rkui-folder-tab" id="tab-a"><input type="radio" name="topics" checked> One</label>
+     <div class="rkui-folder-sheet" role="group" aria-labelledby="tab-a" tabindex="0">…</div>
+     <label class="rkui-folder-tab" id="tab-b"><input type="radio" name="topics"> Two</label>
+     <div class="rkui-folder-sheet" role="group" aria-labelledby="tab-b" tabindex="0">…</div>
+   </div>
 
-   As tabs, with <rkui-tabs> (tabs.js) for the keyboard. Without JavaScript, every panel shows.
-   <rkui-tabs class="rkui-folder">
+   As ARIA tabs (WidgetTabs.vue, which handles the keyboard and puts a scrollbar above the strip):
+   <div class="rkui-folder">
      <div class="rkui-folder-tabs rkui-scroll" role="tablist" aria-label="Topics">
        <button class="rkui-folder-tab" type="button" role="tab" id="tab-a" aria-controls="panel-a"
-         aria-selected="true">One</button>
+         aria-selected="true" tabindex="0">One</button>
        <button class="rkui-folder-tab" type="button" role="tab" id="tab-b" aria-controls="panel-b"
          aria-selected="false" tabindex="-1">Two</button>
      </div>
      <div class="rkui-folder-sheet" role="tabpanel" id="panel-a" aria-labelledby="tab-a"
        tabindex="0">…</div>
      <div class="rkui-folder-sheet" role="tabpanel" id="panel-b" aria-labelledby="tab-b"
-       tabindex="0"
-       hidden>…</div>
-   </rkui-tabs>
+       tabindex="0" hidden>…</div>
+   </div>
 
-   As pagination or static tabs, with <rkui-folder> in place of <div>. Pagination, with links:
-   <rkui-folder class="rkui-folder">
+   As a static folder (Folder.vue), the current tab marked aria-current. The strip of tabs is a
+   scroll region (overflow.css) for when the tabs don't fit. It hides its own scrollbar, which
+   would come between the tabs and the sheet.
+   <div class="rkui-folder">
+     <ul class="rkui-folder-tabs rkui-scroll" aria-label="Example" tabindex="0">
+       <li><span class="rkui-folder-tab" aria-current="true">One</span></li>
+       <li><span class="rkui-folder-tab">Two</span></li>
+     </ul>
+     <div class="rkui-folder-sheet">…</div>
+   </div>
+
+   As pagination (Pagination.vue), a static folder whose tabs are links. pagination-enhance.js
+   puts a scrollbar above the strip, as WidgetTabs does:
+   <div class="rkui-folder">
      <nav aria-label="Pagination">
        <ol class="rkui-folder-tabs rkui-scroll">
          <li><a class="rkui-folder-tab" href="?page=1">1</a></li>
@@ -29,13 +47,13 @@
        </ol>
      </nav>
      <div class="rkui-folder-sheet">…</div>
-   </rkui-folder>
+   </div>
 
    Add .rkui-folder--tinted for a sheet in --rkui-selected-tint.
 
-   The whole strip sits in front of the sheet, so the join never depends on tabs inside a scroll
-   container stacking either side of something outside it (Safari draws such a strip as one
-   layer). The other tabs look tucked behind the sheet because they are clipped at its top edge. */
+   The tabs sit in front of the sheet, so the join never depends on tabs inside a scroll container
+   stacking either side of something outside it (Safari draws such a strip as one layer). The other
+   tabs look tucked behind the sheet because they are clipped at its top edge. */
 
 .rkui-folder {
   --rkui-folder-sheet: var(--rkui-raised);
@@ -71,7 +89,7 @@
   display: none;
 }
 
-/* The scrollbar above the tabs (folder-scrollbar.js): a scroller with an empty spacer. */
+/* The scrollbar above the tabs (FolderStrip.vue): a scroller with an empty spacer. */
 .rkui-folder-scrollbar {
   block-size: var(--rkui-scroll-bar-size);
   overflow: auto hidden;
@@ -82,6 +100,21 @@
   block-size: 1px;
 }
 
+/* Pagination's strip keeps room above it for the bar that pagination-enhance.js puts there, so
+   nothing moves when it does: the bar sits in the strip's top margin, which the nav holds on to
+   (flow-root) rather than letting it merge with the margin above. */
+.rkui-folder > nav {
+  display: flow-root;
+}
+
+.rkui-folder > nav > .rkui-folder-tabs {
+  margin-block-start: var(--rkui-scroll-bar-size);
+}
+
+.rkui-folder > nav > .rkui-folder-scrollbar {
+  margin-block-end: calc(-1 * var(--rkui-scroll-bar-size));
+}
+
 /* Like a scroll region's own scrollbar, it waits for hover or keyboard focus, on the tabs or on
    itself, wherever the dots can show. */
 @supports (animation-timeline: scroll()) {
@@ -90,6 +123,47 @@
       opacity: 0;
     }
   }
+}
+
+/* Tabs: the tabs and their panels in one wrapping row. Each panel takes a row of its own after
+   all the tabs and reaches up under them, as a strip does; only the checked tab's panel shows.
+   The first tab starts where a strip's would, inside its side padding and its scroll gutter. */
+.rkui-folder--tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  column-gap: calc(var(--rkui-shadow-depth) * var(--rkui-space-3));
+  padding-block-start: var(--rkui-space-2);
+}
+
+.rkui-folder--tabs > .rkui-folder-tab {
+  z-index: 2;
+}
+
+.rkui-folder--tabs > .rkui-folder-tab:first-child {
+  margin-inline-start: calc(
+    var(--rkui-dots-gutter) + var(--rkui-shadow-depth) * var(--rkui-space-2)
+  );
+}
+
+/* A flex item is at least as wide as its content, so wide content (a table, a long code line) would
+   stretch the panel; min-inline-size lets it scroll inside the panel instead. */
+.rkui-folder--tabs > .rkui-folder-sheet {
+  order: 1;
+  flex-basis: 100%;
+  min-inline-size: 0;
+  margin-block-start: calc(-1 * var(--rkui-folder-tuck));
+}
+
+.rkui-folder--tabs > .rkui-folder-tab:not(:has(:checked)) + .rkui-folder-sheet {
+  display: none;
+}
+
+/* The radio is there for its keyboard and its checked state; the tab is what shows. */
+.rkui-folder-tab > input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .rkui-folder-tabs > li {
@@ -135,7 +209,12 @@
 /* The selected tab stops at the sheet's top edge, and its ::after covers the sheet's outline
    between the tab's sides, joining the two. The cover reaches a pixel past the outline each way,
    so a sub-pixel offset never leaves a hairline of it. */
-.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']) {
+.rkui-folder-tab:is(
+  :has(:checked),
+  [aria-selected='true'],
+  [aria-current='page'],
+  [aria-current='true']
+) {
   margin-block-end: var(--rkui-folder-tuck);
   padding-block-end: var(--rkui-space-2);
   background: var(--rkui-folder-sheet);
@@ -144,7 +223,12 @@
   clip-path: none;
 }
 
-.rkui-folder-tab:is([aria-selected='true'], [aria-current='page'])::after {
+.rkui-folder-tab:is(
+    :has(:checked),
+    [aria-selected='true'],
+    [aria-current='page'],
+    [aria-current='true']
+  )::after {
   content: '';
   position: absolute;
   inset-inline: 0;
@@ -156,7 +240,12 @@
 /* The selected tab's shadow is the sheet's, cast by the tab and cut off where it would fall on the
    sheet: at the tab's bottom edge, or higher by the shadow's offset when the light comes from
    below, so that it meets the sheet's own shadow edge to edge. */
-.rkui-folder-tab:is([aria-selected='true'], [aria-current='page'])::before {
+.rkui-folder-tab:is(
+    :has(:checked),
+    [aria-selected='true'],
+    [aria-current='page'],
+    [aria-current='true']
+  )::before {
   content: '';
   position: absolute;
   inset: calc(-1 * var(--rkui-outline-width)) calc(-1 * var(--rkui-outline-width)) 0;
@@ -173,10 +262,4 @@
   border-radius: var(--rkui-radius);
   background: var(--rkui-folder-sheet);
   box-shadow: var(--rkui-shadow);
-}
-
-@media (scripting: none) {
-  .rkui-folder-sheet[role='tabpanel'][hidden] {
-    display: block;
-  }
 }

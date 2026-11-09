@@ -24,9 +24,8 @@ export function tabData(label: string, selected: boolean): string {
 const TAB_TAG = /<rkui-tab-item data-tab="([^"]*)"[^>]*>|<\/rkui-tab-item>/g
 
 /**
- * Reads the tabs out of a group's rendered slot, in order, and everything outside them. When no
- * tab is marked selected, the first one is. Stops the build with a clear message when there are no
- * tabs, or when a Tab sits inside another Tab rather than directly in the group.
+ * Reads the tabs out of a group's rendered slot, in order, and everything outside them. Stops the
+ * build with a clear message when a Tab sits inside another Tab rather than directly in the group.
  */
 export function readTabs(
   html: string | undefined,
@@ -57,9 +56,6 @@ export function readTabs(
     }
   }
   outside += slot.slice(afterLastTab)
-
-  if (tabs.length === 0) throw new Error(`${group} needs at least one Tab.`)
-  if (!tabs.some((t) => t.selected)) tabs[0].selected = true
   return { tabs, outside }
 }
 

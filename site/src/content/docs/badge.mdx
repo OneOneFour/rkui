@@ -3,54 +3,86 @@ title: Badge
 description: A small pill for a status or a count.
 group: Containers
 order: 71
+component: Badge
 ---
 
 import Demo from '../../components/Demo.astro'
-import Inline from '../../examples/badge/inline.astro'
-import inlineCode from '../../examples/badge/inline.astro?raw'
-import Tint from '../../examples/badge/tint.astro'
-import tintCode from '../../examples/badge/tint.astro?raw'
-import Icon from '../../examples/badge/icon.astro'
-import iconCode from '../../examples/badge/icon.astro?raw'
-import Corner from '../../examples/badge/corner.astro'
-import cornerCode from '../../examples/badge/corner.astro?raw'
-import Edges from '../../examples/badge/edges.astro'
-import edgesCode from '../../examples/badge/edges.astro?raw'
-import Dots from '../../examples/badge/dots.astro'
-import dotsCode from '../../examples/badge/dots.astro?raw'
+import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
+import SparkleIcon from '@oneonefour/rkui/icons/sparkle.vue'
+import Corner from '../../examples/badge/Corner.vue'
+import cornerCode from '../../examples/badge/Corner.vue?raw'
+import Edges from '../../examples/badge/Edges.vue'
+import edgesCode from '../../examples/badge/Edges.vue?raw'
+import Dots from '../../examples/badge/Dots.vue'
+import dotsCode from '../../examples/badge/Dots.vue?raw'
 
-<Demo code={inlineCode} label="Solid badges in every hue">
-  <Inline />
+<Demo label="Solid badges in every hue">
+  <Badge>Yellow</Badge>
+  <Badge hue="navy">Navy</Badge>
+  <Badge hue="teal">Teal</Badge>
+  <Badge hue="green">Green</Badge>
+  <Badge hue="coral">Coral</Badge>
+  <Badge hue="grape">Grape</Badge>
+  <Badge hue="tangerine">Tangerine</Badge>
 </Demo>
 
 ## Tint
 
-<Demo code={tintCode} label="Tint badges in every hue">
-  <Tint />
+<Demo label="Tint badges in every hue">
+  <Badge tint>Yellow</Badge>
+  <Badge tint hue="navy">
+    Navy
+  </Badge>
+  <Badge tint hue="teal">
+    Teal
+  </Badge>
+  <Badge tint hue="green">
+    Green
+  </Badge>
+  <Badge tint hue="coral">
+    Coral
+  </Badge>
+  <Badge tint hue="grape">
+    Grape
+  </Badge>
+  <Badge tint hue="tangerine">
+    Tangerine
+  </Badge>
 </Demo>
 
 ## With an icon
 
-<Demo code={iconCode} label="Badges with an icon, in text" stack>
-  <Icon />
+<Demo label="Badges with an icon, in text" stack>
+  <p>
+    Lorem ipsum{' '}
+    <Badge hue="grape">
+      <SparkleIcon class="rkui-icon" /> Label
+    </Badge>
+  </p>
+  <p>
+    Lorem ipsum{' '}
+    <Badge tint hue="tangerine">
+      <SparkleIcon class="rkui-icon" /> Label
+    </Badge>
+  </p>
 </Demo>
 
 ## On a corner
 
 `BadgeHost` wraps the picture and the badge. A `Button` can be its own host.
 
-<Demo code={cornerCode} label="Corner badges on a picture and a button">
+<Demo vue={cornerCode} label="Corner badges on a picture and a button">
   <Corner />
 </Demo>
 
 ## Corner edge
 
-<Demo code={edgesCode} label="Corner badge edges: outline, ring and sticker">
+<Demo vue={edgesCode} label="Corner badge edges: outline, ring and sticker">
   <Edges />
 </Demo>
 
 ## Dots and long counts
 
-<Demo code={dotsCode} label="Status dots and a long count">
+<Demo vue={dotsCode} label="Status dots and a long count">
   <Dots />
 </Demo>

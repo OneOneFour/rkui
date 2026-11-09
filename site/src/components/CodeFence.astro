@@ -6,7 +6,7 @@
  * and the source text back out of it and lets CodeBlock highlight them. MDX's attributes on the
  * <pre> are left out on purpose: CodeBlock draws its own.
  */
-import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.astro'
+import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
 
 /** The characters Astro escapes in text, and what it escapes them to. */
 const ESCAPES: Record<string, string> = {
@@ -25,7 +25,7 @@ const code = escaped.replace(/&(lt|gt|quot|#39|amp);/g, (entity) => ESCAPES[enti
 ---
 
 <div class="fence">
-  <CodeBlock code={code} lang={lang} />
+  <CodeBlock client:visible code={code} lang={lang} />
 </div>
 
 <style>

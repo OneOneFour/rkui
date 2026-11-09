@@ -3,36 +3,49 @@ title: Folder
 description: Tabs standing on a sheet, like a folder's index tabs.
 group: Containers
 order: 74
+component: Folder
 ---
 
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/folder/default.astro'
-import defaultCode from '../../examples/folder/default.astro?raw'
-import Tinted from '../../examples/folder/tinted.astro'
-import tintedCode from '../../examples/folder/tinted.astro?raw'
-import Narrow from '../../examples/folder/narrow.astro'
-import narrowCode from '../../examples/folder/narrow.astro?raw'
+import Folder from '@oneonefour/rkui/components/folder/Folder.vue'
+import Tab from '@oneonefour/rkui/components/folder/Tab.vue'
 
 Each `Tab` is one tab, and the rest of the slot is the sheet. Mark the tab that's showing
 `selected`; the first is when none is. For tabs that switch panels, see Tabs.
 
-<Demo code={defaultCode} label="Folder" stack>
-  <Default />
+<Demo label="Folder" stack>
+  <Folder label="Example">
+    <Tab label="One" />
+    <Tab label="Two" />
+    <Tab label="Three" />
+    <p>The sheet.</p>
+  </Folder>
 </Demo>
 
 ## Tinted
 
 Add `tinted` for a sheet in the selected tint.
 
-<Demo code={tintedCode} label="Tinted folder" stack>
-  <Tinted />
+<Demo label="Tinted folder" stack>
+  <Folder label="Tinted" tinted>
+    <Tab label="One" />
+    <Tab label="Two" />
+    <Tab label="Three" selected />
+    <p>The sheet in the selected tint.</p>
+  </Folder>
 </Demo>
 
 ## Narrow
 
-When the tabs don't fit, the strip scrolls. Its scrollbar sits above the tabs, where a normal one
-would come between the tabs and the sheet.
+When the tabs don't fit, the strip scrolls, with dots at the edge that has more. It has no
+scrollbar, which would come between the tabs and the sheet.
 
-<Demo code={narrowCode} label="Narrow folder" stack>
-  <Narrow />
+<Demo label="Narrow folder" stack>
+  <Folder label="Narrow" style="max-inline-size: 16rem">
+    <Tab label="Tab one" />
+    <Tab label="Tab two" selected />
+    <Tab label="Tab three" />
+    <Tab label="Tab four" />
+    <p>Too narrow for its tabs, so the strip scrolls.</p>
+  </Folder>
 </Demo>

@@ -3,38 +3,55 @@ title: Dial
 description: A rotary dial for setting a number.
 group: Dials and time
 order: 60
+component: Dial
 ---
 
 import Demo from '../../components/Demo.astro'
-import Knob from '../../examples/dial/knob.astro'
-import knobCode from '../../examples/dial/knob.astro?raw'
-import Arc from '../../examples/dial/arc.astro'
-import arcCode from '../../examples/dial/arc.astro?raw'
-import Ramp from '../../examples/dial/ramp.astro'
-import rampCode from '../../examples/dial/ramp.astro?raw'
-import Disabled from '../../examples/dial/disabled.astro'
-import disabledCode from '../../examples/dial/disabled.astro?raw'
+import Dial from '@oneonefour/rkui/components/dial/Dial.vue'
 
-A labelled range drawn as a dial, with a readout. Without its script it stays a plain range.
+A labelled range drawn as a dial, with a readout. Without JavaScript the face stays hidden and the range shows on its own.
 
-<Demo code={knobCode} label="Knob dials">
-  <Knob />
+<Demo label="Knob dials">
+  <Dial client:visible label="Temperature" min="10" max="30" step="0.5" value="20" />
+  <Dial client:visible label="Level" value="40" />
 </Demo>
 
 ## Arc
 
-<Demo code={arcCode} label="Arc dials">
-  <Arc />
+<Demo label="Arc dials">
+  <Dial client:visible variant="arc" label="Temperature" min="10" max="30" step="0.5" value="20" />
+  <Dial client:visible variant="arc" label="Level" value="40" />
 </Demo>
 
 ## Ramp
 
-<Demo code={rampCode} label="Dials with a ramp">
-  <Ramp />
+<Demo label="Dials with a ramp">
+  <Dial client:visible ramp="cool" label="Knob" min="10" max="30" step="0.5" value="21" />
+  <Dial
+    client:visible
+    variant="arc"
+    ramp="cool"
+    label="Arc"
+    min="10"
+    max="30"
+    step="0.5"
+    value="21"
+  />
+  <Dial
+    client:visible
+    variant="arc"
+    ramp="heat"
+    label="Arc, heat"
+    min="10"
+    max="30"
+    step="0.5"
+    value="21"
+  />
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled dials">
-  <Disabled />
+<Demo label="Disabled dials">
+  <Dial client:visible disabled label="Level" value="40" />
+  <Dial client:visible disabled variant="arc" label="Level" value="40" />
 </Demo>

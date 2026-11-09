@@ -3,20 +3,31 @@ title: Loader
 description: A ball hopping along a line, a busy indicator.
 group: Loading
 order: 83
+component: Loader
 ---
 
 import Demo from '../../components/Demo.astro'
-import Colours from '../../examples/loader/colours.astro'
-import coloursCode from '../../examples/loader/colours.astro?raw'
-import Icons from '../../examples/loader/icons.astro'
-import iconsCode from '../../examples/loader/icons.astro?raw'
+import Loader from '@oneonefour/rkui/components/loader/Loader.vue'
+import AtomIcon from '@oneonefour/rkui/icons/atom.vue'
+import LightningIcon from '@oneonefour/rkui/icons/lightning.vue'
+import StarIcon from '@oneonefour/rkui/icons/star.vue'
 
-<Demo code={coloursCode} label="Hop loaders" stack>
-  <Colours />
+<Demo label="Hop loaders" stack>
+  <Loader />
+  <Loader hue="coral" />
+  <Loader hue="grape" />
 </Demo>
 
 ## With an icon
 
-<Demo code={iconsCode} label="Hop loaders with an icon" stack>
-  <Icons />
+<Demo label="Hop loaders with an icon" stack>
+  <Loader hue="yellow">
+    <StarIcon class="rkui-icon" aria-hidden="true" />
+  </Loader>
+  <Loader hue="green">
+    <AtomIcon class="rkui-icon" aria-hidden="true" />
+  </Loader>
+  <Loader hue="navy">
+    <LightningIcon class="rkui-icon" aria-hidden="true" />
+  </Loader>
 </Demo>

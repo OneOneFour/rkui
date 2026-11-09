@@ -10,6 +10,21 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ## Decisions
 
+### 2026-11-08
+
+**Table rows that lift.** Only clickable things lift, with one opt-in exception: a Table's `lift`
+option, where the hovered row lifts though it isn't clickable (Rob).
+
+**Table header band in dark mode.** With no `hue` and no section hue, the band is ink in light mode;
+in dark mode it is the raised surface colour with a line under it, so it reads as a header on the
+dark sheet. A `hue`, or a section hue the page sets, wins in dark mode too (Rob).
+
+**Table entrance plays once.** The first time a table is seen, it plays a short
+entrance through `table-enhance.js` in every browser: the band fills, the rules draw, the values
+are written in and the stickers stamp down. A table in view on load plays it too when the page
+inlines `table-init.js` in `<head>`; without it, that table only draws its rules. The cascade runs
+to the last row (Rob).
+
 ### 2026-11-02
 
 **Prefix changed to `rkui-`, and every custom property takes `--rkui-`** (Rob), to match the
@@ -183,6 +198,7 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Pagination: A folder tabs, or B tiles between buttons. ("Pagination")
 - [ ] Logo: lift (the pop only), or motifs (each tile's motif plays on hover). ("Logo")
 - [ ] Sidebar: A plain (the default), B card, C folders, D deck, or E note. ("Sidebar")
+- [ ] Table: A sheet (the default), or B ledger. ("Table")
 - [ ] Inline maths size (`--rkui-maths-scale`): A 1em, B 1.1em, C 1.15em (proposed, as built), or D
   1.21em (KaTeX's default). ("Maths in text")
 - [ ] Number stepper: split, or stacked. No pick recorded; both may stay as opt-ins.

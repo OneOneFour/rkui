@@ -3,52 +3,49 @@ title: Input
 description: A text input in the toon frame.
 group: Form controls
 order: 41
+component: Input
 ---
 
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/input/default.astro'
-import defaultCode from '../../examples/input/default.astro?raw'
-import Types from '../../examples/input/types.astro'
-import typesCode from '../../examples/input/types.astro?raw'
-import Hint from '../../examples/input/hint.astro'
-import hintCode from '../../examples/input/hint.astro?raw'
-import Disabled from '../../examples/input/disabled.astro'
-import disabledCode from '../../examples/input/disabled.astro?raw'
-import ErrorDemo from '../../examples/input/error.astro'
-import errorCode from '../../examples/input/error.astro?raw'
-import Hover from '../../examples/input/hover.astro'
-import hoverCode from '../../examples/input/hover.astro?raw'
+import Input from '@oneonefour/rkui/components/input/Input.vue'
 
-<Demo code={defaultCode} label="Default input" stack>
-  <Default />
+<Demo label="Default input" stack>
+  <Input label="Name" name="input-name" placeholder="Placeholder" />
 </Demo>
 
 ## Types
 
-<Demo code={typesCode} label="Input types" stack>
-  <Types />
+<Demo label="Input types" stack>
+  <Input label="Email" type="email" name="input-email" />
+  <Input label="URL" type="url" name="input-url" />
+  <Input label="Telephone" type="tel" name="input-tel" />
+  <Input label="Password" type="password" name="input-password" />
+  <Input label="Number" type="number" name="input-number" />
 </Demo>
 
 ## With a hint
 
-<Demo code={hintCode} label="Input with a hint" stack>
-  <Hint />
+<Demo label="Input with a hint" stack>
+  <Input label="Username" name="input-hint" hint="Letters and numbers only" />
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled input" stack>
-  <Disabled />
+<Demo label="Disabled input" stack>
+  <Input label="Name" name="input-disabled" value="Disabled" disabled />
 </Demo>
 
 ## Error
 
-<Demo code={errorCode} label="Input with an error" stack>
-  <ErrorDemo />
+<Demo label="Input with an error" stack>
+  <Input label="Name" name="input-error" value="Not valid" error="Error message" />
 </Demo>
 
 ## Hover cues
 
-<Demo code={hoverCode} label="Hover cue options" stack>
-  <Hover />
+<Demo label="Hover cue options" stack>
+  <Input aria-label="Default" placeholder="Default: the background sinks" />
+  <Input aria-label="Ring" placeholder="hover=ring" hover="ring" />
+  <Input aria-label="Underline" placeholder="hover=underline" hover="underline" />
+  <Input aria-label="None" placeholder="hover=none" hover="none" />
 </Demo>

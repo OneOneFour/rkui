@@ -5,11 +5,11 @@
    Under reduced motion the water stays still and fades in and out instead.
 
    Hosts in this file:
-   water spinner, .rkui-spinner--water with .rkui-water--rise: a flask that fills and drains;
+   water spinner, .rkui-spinner--water: a flask that fills and drains, or holds a set level;
    filling button: a filled .rkui-button with aria-busy="true" and an .rkui-water child fills with
    its own colour. Keep it focusable with aria-disabled="true" rather than disabled, so focus isn't
    lost, ignore its clicks while busy, and say what is happening in its label;
-   pending panel, .rkui-pending with .rkui-water--rise: a dashed panel filling up while it waits.
+   pending panel, .rkui-pending: a dashed panel filling up while it waits, or to a set level.
 
    <span class="rkui-spinner rkui-spinner--water" role="status">
      <span class="rkui-water rkui-water--rise" aria-hidden="true"></span>

@@ -3,20 +3,29 @@ title: Checkbox
 description: A native checkbox that fills when checked.
 group: Form controls
 order: 35
+component: Checkbox
 ---
 
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/checkbox/default.astro'
-import defaultCode from '../../examples/checkbox/default.astro?raw'
-import States from '../../examples/checkbox/states.astro'
-import statesCode from '../../examples/checkbox/states.astro?raw'
+import Checkbox from '@oneonefour/rkui/components/checkbox/Checkbox.vue'
 
-<Demo code={defaultCode} label="Default checkbox">
-  <Default />
+<Demo label="Default checkbox">
+  <Checkbox name="checkbox-default">Label</Checkbox>
 </Demo>
 
 ## States
 
-<Demo code={statesCode} label="Checkbox states">
-  <States />
+<Demo label="Checkbox states">
+  <Checkbox name="checkbox-on" checked>
+    On
+  </Checkbox>
+  <Checkbox name="checkbox-disabled" disabled>
+    Disabled
+  </Checkbox>
+  <Checkbox name="checkbox-disabled-on" checked disabled>
+    Disabled, on
+  </Checkbox>
+  <Checkbox name="checkbox-error" aria-invalid="true">
+    Error
+  </Checkbox>
 </Demo>

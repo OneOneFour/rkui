@@ -2,39 +2,40 @@
 title: Code block
 description: Highlighted code on a slate panel, with an optional caption and a copy button.
 group: Containers
-order: 76
+order: 77
+component: CodeBlock
 ---
 
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/code-block/default.astro'
-import defaultCode from '../../examples/code-block/default.astro?raw'
-import NoTitle from '../../examples/code-block/no-title.astro'
-import noTitleCode from '../../examples/code-block/no-title.astro?raw'
-import NoCopy from '../../examples/code-block/no-copy.astro'
-import noCopyCode from '../../examples/code-block/no-copy.astro?raw'
-import Tab from '../../examples/code-block/tab.astro'
-import tabCode from '../../examples/code-block/tab.astro?raw'
+import Default from '../../examples/code-block/Default.vue'
+import defaultCode from '../../examples/code-block/Default.vue?raw'
+import NoTitle from '../../examples/code-block/NoTitle.vue'
+import noTitleCode from '../../examples/code-block/NoTitle.vue?raw'
+import NoCopy from '../../examples/code-block/NoCopy.vue'
+import noCopyCode from '../../examples/code-block/NoCopy.vue?raw'
+import Tab from '../../examples/code-block/Tab.vue'
+import tabCode from '../../examples/code-block/Tab.vue?raw'
 
-<Demo code={defaultCode} label="Code block" stack>
-  <Default />
+<Demo vue={defaultCode} label="Code block, whose copy button needs JavaScript" stack>
+  <Default client:visible />
 </Demo>
 
 ## No title area
 
 Leave out `label`: the copy button sits in the code's corner.
 
-<Demo code={noTitleCode} label="Code block with no title area" stack>
-  <NoTitle />
+<Demo vue={noTitleCode} label="Code block with no title area" stack>
+  <NoTitle client:visible />
 </Demo>
 
 ## No copy button
 
-<Demo code={noCopyCode} label="Code block with no copy button" stack>
+<Demo vue={noCopyCode} label="Code block with no copy button" stack>
   <NoCopy />
 </Demo>
 
 ## Editor tab
 
-<Demo code={tabCode} label="Code block with an editor tab" stack>
-  <Tab />
+<Demo vue={tabCode} label="Code block with an editor tab" stack>
+  <Tab client:visible />
 </Demo>

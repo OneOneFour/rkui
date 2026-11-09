@@ -1,13 +1,13 @@
 ---
 title: Getting started
-description: Install rkui and set up the basics in an Astro site.
+description: Install rkui and set it up in an Astro site, a plain HTML page or a Vue app.
 group: Start
 order: 0
 ---
 
 import Demo from '../../components/Demo.astro'
-import FirstButton from '../../examples/button/default.astro'
-import firstButtonCode from '../../examples/button/default.astro?raw'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import ComponentTable from '../../components/ComponentTable.astro'
 
 ## Install
 
@@ -17,17 +17,33 @@ npm install @oneonefour/rkui
 
 The package isn't on npm yet.
 
-## Set up the layout
+{/* Draft for Rob to edit: setting up rkui in an Astro site, a plain HTML page and a Vue app. */}
 
-Import the stylesheet in your layout, and inline the theme script at the top of `<head>`. The
-script applies the reader's stored light or dark choice before the page paints, so it never
-flashes the wrong theme.
+## Using rkui
+
+### Astro
+
+Add Vue to the site (`npx astro add vue`). Add this line to `src/env.d.ts`, so `astro check`
+accepts the form and link attributes rkui components hand on to their native elements:
+
+```ts
+/// <reference types="@oneonefour/rkui/astro-attributes" />
+```
+
+In the layout, import the stylesheet, inline the head scripts at the top of `<head>`, and import
+`enhance.js` in a script at the end of `<body>`:
+
+- `theme-init.js` applies the reader's stored light or dark choice before the page paints;
+- `table-init.js` keeps a table that is in view on load blank until its entrance plays;
+- <a id="helper-scripts"></a>`enhance.js` loads every small helper script: browser fallbacks and
+  small extras for the components that need no JavaScript.
 
 ```astro
 ---
 // src/layouts/Layout.astro
 import '@oneonefour/rkui/styles.css'
 import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'
+import tableInit from '@oneonefour/rkui/head-scripts/table-init.js?raw'
 ---
 
 <!doctype html>
@@ -35,43 +51,68 @@ import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'
   <head>
     <meta charset="utf-8" />
     <script is:inline set:html={themeInit} />
+    <script is:inline set:html={tableInit} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My site</title>
   </head>
   <body>
     <slot />
+    <script>
+      import '@oneonefour/rkui/enhance.js'
+    </script>
   </body>
 </html>
+```
+
+An interactive component, such as Stepper, gets `client:visible`; without it, it renders its
+markup and stays still. Every other component ships no JavaScript.
+
+```astro
+<Stepper client:visible label="Quantity" value="3" />
+```
+
+### Plain HTML
+
+Copy the package's `dist/` folder into the site. Paste `theme-init.js` and `table-init.js` (from
+`src/head-scripts/`) inline at the top of `<head>`, link `rkui.css`, and load `rkui.js`, which
+holds the helper scripts and the custom elements, such as `<rkui-stepper>`.
+
+```html
+<head>
+  <meta charset="utf-8" />
+  <script>
+    /* theme-init.js, pasted in */
+  </script>
+  <script>
+    /* table-init.js, pasted in */
+  </script>
+  <link rel="stylesheet" href="vendor/rkui/rkui.css" />
+  <script type="module" src="vendor/rkui/rkui.js"></script>
+</head>
+```
+
+### A Vue app
+
+Import the stylesheet and the helper scripts in the app's entry, and paste the head scripts into
+`index.html` as a plain page does.
+
+```js
+// src/main.js
+import '@oneonefour/rkui/styles.css'
+import '@oneonefour/rkui/enhance.js'
 ```
 
 ## Use a component
 
 The Astro components are thin wrappers over rkui's classes.
 
-<Demo code={firstButtonCode} label="A first button">
-  <FirstButton />
+<Demo label="A first button">
+  <Button>Save</Button>
+  <Button href="#">A link that looks like a button</Button>
 </Demo>
-
-## Add an element's script
-
-Interactive parts are custom elements that enhance markup you write. An Astro component loads its
-element for you; with plain markup, import the element's script yourself.
-
-```astro
-<rkui-code-block>
-  <figure class="rkui-code">
-    <pre class="rkui-scroll" tabindex="0"><code>npm run build</code></pre>
-    <button type="button" class="rkui-button rkui-button--small rkui-code-copy" hidden>
-      <span class="rkui-code-copy-label">Copy</span>
-    </button>
-  </figure>
-</rkui-code-block>
-
-<script>
-  import '@oneonefour/rkui/components/code/code-block.js'
-</script>
-```
 
 ## Coming next
 
 An Astro integration will add the stylesheet and the theme script for you.
+
+<ComponentTable />

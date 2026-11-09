@@ -25,6 +25,33 @@ npm run build       # builds dist/, then type-checks and builds the docs site in
 npm run dev         # builds dist/, then runs the docs site live on port 4321
 ```
 
+## Using the Vue components in Astro
+
+Add `@astrojs/vue` to the site, with an app entrypoint that sets
+`app.config.throwUnhandledErrorInProduction = true` (as `site/src/vue-app.js` does). Without it, a
+component that throws while the site builds, such as a Tabs with no Tab, is left out of the page
+and the build still passes.
+
+Add this line to the site's `src/env.d.ts`, so `astro check` accepts the form and link attributes
+(`name`, `disabled`, `href`) that rkui components hand on to their native elements:
+
+```ts
+/// <reference types="@oneonefour/rkui/astro-attributes" />
+```
+
+Some components have a small helper script, a `*-enhance.js` file beside the component or the
+CSS it serves: a browser fallback (the "more" dots and the sidebar in Safari and Firefox), or a
+small extra the component works without (Pagination's scrollbar, the Table's entrance).
+`src/enhance.js` imports every one, and a site loads them all with one line in its layout:
+
+```astro
+<script>
+  import '@oneonefour/rkui/enhance.js'
+</script>
+```
+
+`dist/rkui.js` includes them for plain HTML pages.
+
 ## Start here
 
 - `docs/DESIGN.md`: the design language: how it looks and behaves, and why.

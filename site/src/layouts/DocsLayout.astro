@@ -9,22 +9,28 @@
 import '@oneonefour/rkui/styles.css'
 import '../styles/docs.css'
 import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'
-import ThemeToggle from '@oneonefour/rkui/components/theme-toggle/ThemeToggle.astro'
-import Badge from '@oneonefour/rkui/components/badge/Badge.astro'
-import Logo from '@oneonefour/rkui/components/logo/Logo.astro'
-import TopBar from '@oneonefour/rkui/components/topbar/TopBar.astro'
+import tableInit from '@oneonefour/rkui/head-scripts/table-init.js?raw'
+import ThemeToggle from '@oneonefour/rkui/components/theme-toggle/ThemeToggle.vue'
+import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
+import GitBranchIcon from '@oneonefour/rkui/icons/git-branch.vue'
+import Logo from '@oneonefour/rkui/components/logo/Logo.vue'
+import TopBar from '@oneonefour/rkui/components/topbar/TopBar.vue'
+import HelperBadge from '../components/HelperBadge.astro'
+import JsBadge from '../components/JsBadge.astro'
 import ModeSwitch from '../components/ModeSwitch.astro'
 import Search from '../components/Search.astro'
 import Sidebar from '../components/Sidebar.astro'
 import { link, type DocsPage } from '../lib/pages'
 import { version } from '../../../package.json'
+import { gitBranch } from '../lib/git-branch.js'
 
 interface Props {
   page: DocsPage
 }
 
 const { page } = Astro.props
-const { title, description } = page.data
+const { title, description, component } = page.data
+const branch = gitBranch()
 ---
 
 <!doctype html>
@@ -32,6 +38,7 @@ const { title, description } = page.data
   <head>
     <meta charset="utf-8" />
     <script is:inline set:html={themeInit} />
+    <script is:inline set:html={tableInit} />
     <script is:inline>
       // Inline, like the theme, so a stored palette or shadow mode doesn't flash the default first.
       try {
@@ -54,6 +61,11 @@ const { title, description } = page.data
       <Badge tint title="The version these docs describe">
         v{version}
       </Badge>
+      {branch && (
+        <Badge hue="green" title="The git branch these docs were built from">
+          <GitBranchIcon class="rkui-icon" /> {branch}
+        </Badge>
+      )}
       <Search />
       <div class="docs-switches">
         <ModeSwitch
@@ -73,7 +85,7 @@ const { title, description } = page.data
             { value: 'greige', label: 'Greige' },
           ]}
         />
-        <ThemeToggle />
+        <ThemeToggle client:visible />
       </div>
     </TopBar>
 
@@ -92,10 +104,19 @@ const { title, description } = page.data
 
         <article data-pagefind-body>
           <h1>{title}</h1>
+          {component && (
+            <div class="docs-chips">
+              <JsBadge component={component} />
+              <HelperBadge component={component} />
+            </div>
+          )}
           <p class="docs-lede">{description}</p>
           <slot />
         </article>
       </main>
     </div>
+    <script>
+      import '@oneonefour/rkui/enhance.js'
+    </script>
   </body>
 </html>

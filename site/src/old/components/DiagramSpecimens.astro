@@ -1,16 +1,15 @@
 ---
 /**
  * Diagrams in the toon style: a neural network whose nodes light their links on hover or focus,
- * and a flow chart whose steps light up in turn. Each pauses off-screen or from its button.
+ * and a flow chart whose steps light up in turn. Each pauses from its button.
  *
  * @param theme the panel's theme, passed on to keep SVG ids unique
  */
-import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Motion from '@oneonefour/rkui/components/motion/Motion.vue'
 import FlowChart from './FlowChart.astro'
 import NeuralNetwork from './NeuralNetwork.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import PauseIcon from '@oneonefour/rkui/icons/pause.svg'
 import './diagram.css'
 
 interface Props {
@@ -25,13 +24,9 @@ const { theme } = Astro.props
     label="pulses travel a layer at a time (--rkui-loop-long); nodes squash as they land"
     wide
   >
-    <rkui-motion class="diagram">
+    <Motion class="diagram">
       <NeuralNetwork theme={theme} />
-      <Button small data-motion-pause aria-pressed="false">
-        <PauseIcon class="rkui-icon" />
-        Pause
-      </Button>
-    </rkui-motion>
+    </Motion>
   </Specimen>
 </SpecimenRow>
 
@@ -40,19 +35,11 @@ const { theme } = Astro.props
     label="one step per sixth of --rkui-loop-panel; step 2 fills with water while it runs"
     wide
   >
-    <rkui-motion class="diagram">
+    <Motion class="diagram">
       <FlowChart theme={theme} />
-      <Button small data-motion-pause aria-pressed="false">
-        <PauseIcon class="rkui-icon" />
-        Pause
-      </Button>
-    </rkui-motion>
+    </Motion>
   </Specimen>
 </SpecimenRow>
-
-<script>
-  import '@oneonefour/rkui/components/motion/motion.js'
-</script>
 
 <style>
   .diagram {

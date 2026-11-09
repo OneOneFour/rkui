@@ -3,56 +3,102 @@ title: Segmented
 description: A pill group of radios, with a fill that slides to the checked option.
 group: Form controls
 order: 30
+component: Segmented
 ---
 
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/segmented/default.astro'
-import defaultCode from '../../examples/segmented/default.astro?raw'
-import Icons from '../../examples/segmented/icons.astro'
-import iconsCode from '../../examples/segmented/icons.astro?raw'
-import Disabled from '../../examples/segmented/disabled.astro'
-import disabledCode from '../../examples/segmented/disabled.astro?raw'
-import Deck from '../../examples/segmented/deck.astro'
-import deckCode from '../../examples/segmented/deck.astro?raw'
-import DeckText from '../../examples/segmented/deck-text.astro'
-import deckTextCode from '../../examples/segmented/deck-text.astro?raw'
-import DeckPlate from '../../examples/segmented/deck-plate.astro'
-import deckPlateCode from '../../examples/segmented/deck-plate.astro?raw'
+import Segmented from '@oneonefour/rkui/components/segmented/Segmented.vue'
+import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.vue'
+import Sun from '@oneonefour/rkui/icons/sun.vue'
+import Moon from '@oneonefour/rkui/icons/moon.vue'
+import CircleHalf from '@oneonefour/rkui/icons/circle-half.vue'
+import Play from '@oneonefour/rkui/icons/play.vue'
+import Pause from '@oneonefour/rkui/icons/pause.vue'
+import Reset from '@oneonefour/rkui/icons/arrow-counter-clockwise.vue'
 
-<Demo code={defaultCode} label="Segmented control">
-  <Default />
+<Demo label="Segmented control">
+  <Segmented legend="Choice">
+    <SegmentedOption value="one" checked>
+      One
+    </SegmentedOption>
+    <SegmentedOption value="two">Two</SegmentedOption>
+    <SegmentedOption value="three">Three</SegmentedOption>
+  </Segmented>
 </Demo>
 
 ## With icons
 
-<Demo code={iconsCode} label="Segmented control with icons">
-  <Icons />
+<Demo label="Segmented control with icons">
+  <Segmented legend="Choice">
+    <SegmentedOption value="one" checked>
+      <Sun slot="icon" /> One
+    </SegmentedOption>
+    <SegmentedOption value="two">
+      <Moon slot="icon" /> Two
+    </SegmentedOption>
+    <SegmentedOption value="three">
+      <CircleHalf slot="icon" /> Three
+    </SegmentedOption>
+  </Segmented>
 </Demo>
 
 ## A disabled option
 
-<Demo code={disabledCode} label="Segmented control with a disabled option">
-  <Disabled />
+<Demo label="Segmented control with a disabled option">
+  <Segmented legend="Choice">
+    <SegmentedOption value="one" checked>
+      One
+    </SegmentedOption>
+    <SegmentedOption value="two" disabled>
+      Two
+    </SegmentedOption>
+  </Segmented>
 </Demo>
 
 ## Deck keys
 
 Add `deck` for a row of raised keys.
 
-<Demo code={deckCode} label="Deck keys">
-  <Deck />
+<Demo label="Deck keys">
+  <Segmented legend="Transport" deck>
+    <SegmentedOption value="play" checked>
+      <Play slot="icon" /> Play
+    </SegmentedOption>
+    <SegmentedOption value="pause">
+      <Pause slot="icon" /> Pause
+    </SegmentedOption>
+    <SegmentedOption value="reset">
+      <Reset slot="icon" /> Reset
+    </SegmentedOption>
+  </Segmented>
 </Demo>
 
 ## Deck keys, text only
 
-<Demo code={deckTextCode} label="Text-only deck keys">
-  <DeckText />
+<Demo label="Text-only deck keys">
+  <Segmented legend="Choice" deck>
+    <SegmentedOption value="one" checked>
+      One
+    </SegmentedOption>
+    <SegmentedOption value="two">Two</SegmentedOption>
+    <SegmentedOption value="three">Three</SegmentedOption>
+  </Segmented>
 </Demo>
 
 ## Deck keys on a plate
 
 Add `plate` to a deck to show its frame.
 
-<Demo code={deckPlateCode} label="Deck keys on a plate">
-  <DeckPlate />
+<Demo label="Deck keys on a plate">
+  <Segmented legend="Transport" deck plate>
+    <SegmentedOption value="play" checked>
+      <Play slot="icon" /> Play
+    </SegmentedOption>
+    <SegmentedOption value="pause">
+      <Pause slot="icon" /> Pause
+    </SegmentedOption>
+    <SegmentedOption value="reset">
+      <Reset slot="icon" /> Reset
+    </SegmentedOption>
+  </Segmented>
 </Demo>

@@ -6,11 +6,17 @@ order: 12
 ---
 
 import Demo from '../../components/Demo.astro'
-import Pause from '../../examples/motion/pause.astro'
-import pauseCode from '../../examples/motion/pause.astro?raw'
+import Pause from '../../examples/motion/Pause.vue'
+import pauseCode from '../../examples/motion/Pause.vue?raw'
+import Groups from '../../examples/motion/Groups.vue'
+import groupsCode from '../../examples/motion/Groups.vue?raw'
 
-The animations inside pause while the wrapper is scrolled out of view, and while Pause is pressed.
+The animations inside pause while Pause is pressed.
 
-<Demo code={pauseCode} label="Motion with a pause button" stack>
+<Demo vue={pauseCode} label="Motion with a pause button" stack>
   <Pause />
+</Demo>
+
+<Demo vue={groupsCode} label="Two Motion groups, each with its own pause button">
+  <Groups />
 </Demo>

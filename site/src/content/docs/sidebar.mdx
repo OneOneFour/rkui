@@ -3,35 +3,48 @@ title: Sidebar
 description: A column of links grouped under headings, which scrolls on its own.
 group: Navigation
 order: 94
+component: Sidebar
 ---
 
 import Demo from '../../components/Demo.astro'
-import Markup from '../../examples/sidebar/markup.astro'
-import markupCode from '../../examples/sidebar/markup.astro?raw'
-import Plain from '../../examples/sidebar/plain.astro'
-import plainCode from '../../examples/sidebar/plain.astro?raw'
-import Card from '../../examples/sidebar/card.astro'
-import cardCode from '../../examples/sidebar/card.astro?raw'
-import Folders from '../../examples/sidebar/folders.astro'
-import foldersCode from '../../examples/sidebar/folders.astro?raw'
-import Deck from '../../examples/sidebar/deck.astro'
-import deckCode from '../../examples/sidebar/deck.astro?raw'
-import Note from '../../examples/sidebar/note.astro'
-import noteCode from '../../examples/sidebar/note.astro?raw'
+import Sidebar from '@oneonefour/rkui/components/sidebar/Sidebar.vue'
+import SidebarGroup from '@oneonefour/rkui/components/sidebar/SidebarGroup.vue'
+import SidebarLink from '@oneonefour/rkui/components/sidebar/SidebarLink.vue'
+import Plain from '../../examples/sidebar/Plain.vue'
+import plainCode from '../../examples/sidebar/Plain.vue?raw'
+import Card from '../../examples/sidebar/Card.vue'
+import cardCode from '../../examples/sidebar/Card.vue?raw'
+import Folders from '../../examples/sidebar/Folders.vue'
+import foldersCode from '../../examples/sidebar/Folders.vue?raw'
+import Deck from '../../examples/sidebar/Deck.vue'
+import deckCode from '../../examples/sidebar/Deck.vue?raw'
+import Note from '../../examples/sidebar/Note.vue'
+import noteCode from '../../examples/sidebar/Note.vue?raw'
 
 Groups of links, each a child component. The page gives the sidebar its height; when its links
 don't fit, it scrolls, with hints at its edges and a scrollbar on hover and focus. `variant`
 picks the look.
 
-<Demo code={markupCode} label="A short sidebar" stack>
-  <Markup />
+<Demo label="A short sidebar" stack>
+  <Sidebar label="Short example" style="max-inline-size: 16rem">
+    <SidebarGroup heading="Start">
+      <SidebarLink href="#" current>
+        Getting started
+      </SidebarLink>
+      <SidebarLink href="#">Install</SidebarLink>
+    </SidebarGroup>
+    <SidebarGroup heading="Form controls">
+      <SidebarLink href="#">Button</SidebarLink>
+      <SidebarLink href="#">Checkbox</SidebarLink>
+    </SidebarGroup>
+  </Sidebar>
 </Demo>
 
 ## A: Plain
 
 The page's own colour, with dots at the edges; the current page is a tinted pill on a slab.
 
-<Demo code={plainCode} label="Plain sidebar" stack>
+<Demo vue={plainCode} label="Plain sidebar" stack>
   <Plain />
 </Demo>
 
@@ -39,7 +52,7 @@ The page's own colour, with dots at the edges; the current page is a tinted pill
 
 A raised card whose headings lift into slabs as they stick, with tabs on its edges.
 
-<Demo code={cardCode} label="Card sidebar" stack>
+<Demo vue={cardCode} label="Card sidebar" stack>
   <Card />
 </Demo>
 
@@ -47,7 +60,7 @@ A raised card whose headings lift into slabs as they stick, with tabs on its edg
 
 Each group is a small folder whose tab sticks to the top while you scroll through it.
 
-<Demo code={foldersCode} label="Folders sidebar" stack>
+<Demo vue={foldersCode} label="Folders sidebar" stack>
   <Folders />
 </Demo>
 
@@ -55,7 +68,7 @@ Each group is a small folder whose tab sticks to the top while you scroll throug
 
 Every link is a raised key that pops on hover; the current page is pushed in.
 
-<Demo code={deckCode} label="Deck sidebar" stack>
+<Demo vue={deckCode} label="Deck sidebar" stack>
   <Deck />
 </Demo>
 
@@ -63,6 +76,6 @@ Every link is a raised key that pops on hover; the current page is pushed in.
 
 A taped sticky note with sticking slab headings; the current page is an ink pill.
 
-<Demo code={noteCode} label="Note sidebar" stack>
+<Demo vue={noteCode} label="Note sidebar" stack>
   <Note />
 </Demo>

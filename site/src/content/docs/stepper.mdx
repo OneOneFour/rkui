@@ -3,36 +3,47 @@ title: Stepper
 description: A number input with step buttons.
 group: Form controls
 order: 44
+component: Stepper
 ---
 
 import Demo from '../../components/Demo.astro'
-import Split from '../../examples/stepper/split.astro'
-import splitCode from '../../examples/stepper/split.astro?raw'
-import Stacked from '../../examples/stepper/stacked.astro'
-import stackedCode from '../../examples/stepper/stacked.astro?raw'
-import Disabled from '../../examples/stepper/disabled.astro'
-import disabledCode from '../../examples/stepper/disabled.astro?raw'
-import ErrorDemo from '../../examples/stepper/error.astro'
-import errorCode from '../../examples/stepper/error.astro?raw'
+import Stepper from '@oneonefour/rkui/components/number/Stepper.vue'
 
-<Demo code={splitCode} label="Split stepper" stack>
-  <Split />
+<Demo label="Split stepper" stack>
+  <Stepper client:visible label="Quantity" name="stepper-split" value="3" min="0" max="10" />
 </Demo>
 
 ## Stacked
 
-<Demo code={stackedCode} label="Stacked stepper" stack>
-  <Stacked />
+<Demo label="Stacked stepper" stack>
+  <Stepper
+    client:visible
+    variant="stacked"
+    label="Quantity"
+    name="stepper-stacked"
+    value="3"
+    min="0"
+    max="10"
+  />
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled steppers" stack>
-  <Disabled />
+<Demo label="Disabled steppers" stack>
+  <Stepper client:visible label="Split" value="3" disabled />
+  <Stepper client:visible variant="stacked" label="Stacked" value="3" disabled />
 </Demo>
 
 ## Error
 
-<Demo code={errorCode} label="Stepper with an error" stack>
-  <ErrorDemo />
+<Demo label="Stepper with an error" stack>
+  <Stepper
+    client:visible
+    label="Quantity"
+    name="stepper-error"
+    value="12"
+    min="0"
+    max="10"
+    error="At most 10"
+  />
 </Demo>

@@ -2,12 +2,12 @@
 /**
  * The motion policy's core patterns side by side (PLAN §5.7): an input response, ambient loops in
  * each easing, a stagger, squash and settle, and the reduced-motion fallbacks. The pause button
- * pauses them all, as does scrolling them out of view.
+ * pauses them all.
  */
-import Button from '@oneonefour/rkui/components/button/Button.astro'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import Motion from '@oneonefour/rkui/components/motion/Motion.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
-import PauseIcon from '@oneonefour/rkui/icons/pause.svg'
 
 const EASINGS = [
   { label: 'ease: input responses', easing: 'ease' },
@@ -20,12 +20,7 @@ const EASINGS = [
 const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green', '--rkui-coral']
 ---
 
-<rkui-motion>
-  <Button small data-motion-pause aria-pressed="false">
-    <PauseIcon class="rkui-icon" />
-    Pause
-  </Button>
-
+<Motion>
   <SpecimenRow title="Input response: hover or press">
     <Specimen label="--rkui-duration-fast, ease: lifts on hover, sinks on press">
       <Button hue="teal">Button</Button>
@@ -80,11 +75,7 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
       </div>
     </Specimen>
   </SpecimenRow>
-</rkui-motion>
-
-<script>
-  import '@oneonefour/rkui/components/motion/motion.js'
-</script>
+</Motion>
 
 <style>
   /* What the tokens become under reduced motion, here at all times. Set on the button itself, as

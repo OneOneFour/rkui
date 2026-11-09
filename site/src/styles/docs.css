@@ -45,6 +45,26 @@
   margin-block-start: 0;
 }
 
+/* A component page's chips under its title: whether it uses JavaScript, and its helper script. */
+.docs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rkui-space-2);
+}
+
+/* The helper script chip links to the setup section, with the focus band around the pill. */
+.docs-chip-link {
+  display: inline-flex;
+  border-radius: var(--rkui-radius-pill);
+  text-decoration: none;
+}
+
+.docs-chip-link:focus-visible {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-focus-offset);
+  background: none;
+}
+
 .docs-lede {
   color: var(--rkui-muted);
   font-size: var(--rkui-step-1);

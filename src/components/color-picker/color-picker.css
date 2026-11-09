@@ -12,19 +12,17 @@
    </fieldset>
 
    To allow any colour as well, end the group with a custom colour tile: a radio, a native colour
-   input and a paint brush icon. Wrap the group in <rkui-color-picker> (rkui-color-picker.js) so
-   that picking a colour also checks the tile's radio. Without the script, the radio is checked only
-   from the keyboard or by clicking the tile's outline.
-   <rkui-color-picker>
-     <fieldset class="rkui-tiles">
-       …
-       <label class="rkui-tile rkui-tile--custom-color">
-         <input type="radio" name="color" value="custom" aria-label="Custom colour">
-         <input type="color" aria-label="Choose custom colour">
-         <svg aria-hidden="true">…paint-brush…</svg>
-       </label>
-     </fieldset>
-   </rkui-color-picker>
+   input and a paint brush icon. Picking a colour checks the tile's radio only where ColorPicker
+   runs in the browser; otherwise the radio is checked from the keyboard or by clicking the tile's
+   outline.
+   <fieldset class="rkui-tiles">
+     …
+     <label class="rkui-tile rkui-tile--custom-color">
+       <input type="radio" name="color" value="custom" aria-label="Custom colour">
+       <input type="color" name="color-custom" aria-label="Choose custom colour">
+       <svg aria-hidden="true">…paint-brush…</svg>
+     </label>
+   </fieldset>
 
    Without a palette: the native colour input on its own, in a frame that pops, with the same
    paint brush.

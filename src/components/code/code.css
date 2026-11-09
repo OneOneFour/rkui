@@ -1,27 +1,25 @@
 /* Code block: a slate panel pressed into the page by a hard inner shadow, with an optional
-   language caption and a copy button. The button starts hidden and <rkui-code-block>
-   (rkui-code-block.js) shows it. It comes after the code so that readers reach the code first, and
+   language caption and a copy button. The button stays hidden until CodeBlock.vue runs in the
+   browser and marks the figure data-rkui-live. It comes after the code so that readers reach the code first, and
    the grid lifts it into the header row. Pre is a scroll region for long lines (overflow.css),
    which the keyboard can scroll (tabindex="0"). The caption may start with a mark for the
    language (the site's logo, a file-type icon, or the file extension as text), coloured by
    --rkui-code-lang-color (default --rkui-muted).
 
-   <rkui-code-block>
-     <figure class="rkui-code">
-       <figcaption class="rkui-code-header">
-         <span class="rkui-code-lang">
-           <svg class="rkui-icon rkui-icon--small" aria-hidden="true">…optional logo or file-type
-             icon…</svg>
-           Python
-         </span>
-       </figcaption>
-       <pre class="rkui-scroll" tabindex="0"><code>…</code></pre>
-       <button type="button" class="rkui-button rkui-button--small rkui-code-copy" hidden>
-         <svg class="rkui-icon rkui-icon--small">…copy icon…</svg>
-         <span class="rkui-code-copy-label">Copy</span>
-       </button>
-     </figure>
-   </rkui-code-block>
+   <figure class="rkui-code">
+     <figcaption class="rkui-code-header">
+       <span class="rkui-code-lang">
+         <svg class="rkui-icon rkui-icon--small" aria-hidden="true">…optional logo or file-type
+           icon…</svg>
+         Python
+       </span>
+     </figcaption>
+     <pre class="rkui-scroll" tabindex="0"><code>…</code></pre>
+     <button type="button" class="rkui-button rkui-button--small rkui-code-copy">
+       <svg class="rkui-icon rkui-icon--small">…copy icon…</svg>
+       <span class="rkui-code-copy-label">Copy</span>
+     </button>
+   </figure>
 
    Without the figcaption there is no title area: the copy button sits in the code's top-right
    corner. The copy button can be left out too.
@@ -30,12 +28,9 @@
    puts the caption in a darker strip, like an editor tab.
    Put .rkui-slate-greige on a block or any ancestor for the greige slate, inline code included.
 
-   Highlighted code is coloured by Shiki's css-variables theme (Astro's <Code>), which paints each
-   token with var(--astro-code-*); .rkui-code maps those onto the --rkui-code-* tokens. */
-
-rkui-code-block {
-  display: block;
-}
+   Highlighted code is coloured by Shiki's css-variables theme (highlight.js), which paints each
+   token with var(--rkui-shiki-token-*); .rkui-code maps those onto the --rkui-code-* colour
+   tokens. */
 
 .rkui-slate-greige {
   --rkui-slate: var(--rkui-slate-greige);
@@ -44,6 +39,9 @@ rkui-code-block {
 
 .rkui-code {
   --rkui-code-inset: var(--rkui-shadow-code-inset);
+  /* Where the caption and the code start: past the scroll region's dot gutter where that is
+     wider (the pill look, overflow.css) */
+  --rkui-code-pad: max(var(--rkui-space-4), var(--rkui-dots-gutter));
 
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -53,17 +51,17 @@ rkui-code-block {
   box-shadow: var(--rkui-code-inset);
   color: var(--rkui-fg);
 
-  --astro-code-foreground: var(--rkui-fg);
-  --astro-code-background: transparent;
-  --astro-code-token-keyword: var(--rkui-code-keyword);
-  --astro-code-token-function: var(--rkui-code-function);
-  --astro-code-token-string: var(--rkui-code-string);
-  --astro-code-token-string-expression: var(--rkui-code-string);
-  --astro-code-token-constant: var(--rkui-code-number);
-  --astro-code-token-comment: var(--rkui-code-comment);
-  --astro-code-token-parameter: var(--rkui-fg);
-  --astro-code-token-punctuation: var(--rkui-fg);
-  --astro-code-token-link: var(--rkui-navy-deep);
+  --rkui-shiki-foreground: var(--rkui-fg);
+  --rkui-shiki-background: transparent;
+  --rkui-shiki-token-keyword: var(--rkui-code-keyword);
+  --rkui-shiki-token-function: var(--rkui-code-function);
+  --rkui-shiki-token-string: var(--rkui-code-string);
+  --rkui-shiki-token-string-expression: var(--rkui-code-string);
+  --rkui-shiki-token-constant: var(--rkui-code-number);
+  --rkui-shiki-token-comment: var(--rkui-code-comment);
+  --rkui-shiki-token-parameter: var(--rkui-fg);
+  --rkui-shiki-token-punctuation: var(--rkui-fg);
+  --rkui-shiki-token-link: var(--rkui-navy-deep);
 }
 
 .rkui-code-header {
@@ -71,7 +69,7 @@ rkui-code-block {
   align-items: center;
   grid-row: 1;
   grid-column: 1 / -1;
-  padding: var(--rkui-space-2) var(--rkui-space-4) 0;
+  padding: var(--rkui-space-2) var(--rkui-code-pad) 0;
 }
 
 .rkui-code-lang {
@@ -100,7 +98,7 @@ rkui-code-block {
   grid-column: 1 / -1;
   margin: 0;
   padding: var(--rkui-space-4);
-  padding-inline: calc(var(--rkui-space-4) - var(--rkui-scroll-gutter));
+  padding-inline: calc(var(--rkui-code-pad) - var(--rkui-scroll-gutter));
   background-color: transparent;
   font-size: var(--rkui-step--1);
   line-height: var(--rkui-line-height-body);
@@ -124,9 +122,10 @@ rkui-code-block {
   margin-block-start: var(--rkui-space-3);
 }
 
-/* .rkui-button's display would otherwise override the hidden attribute. */
-.rkui-code-copy[hidden] {
-  display: none;
+/* Until CodeBlock runs in the browser (it sets data-rkui-live), the button would do nothing. It
+   keeps its space, so the caption row doesn't grow when it shows. */
+.rkui-code:not([data-rkui-live]) > .rkui-code-copy {
+  visibility: hidden;
 }
 
 /* The panel shows the focus band for its scroll region: a ring of the outline colour for the band

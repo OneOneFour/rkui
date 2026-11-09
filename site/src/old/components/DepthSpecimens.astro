@@ -5,8 +5,8 @@
  *
  * @param theme the panel's theme, used to keep ids and names unique across the two panels
  */
-import Button from '@oneonefour/rkui/components/button/Button.astro'
-import Card from '@oneonefour/rkui/components/card/Card.astro'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import Card from '@oneonefour/rkui/components/card/Card.vue'
 import Ballot from './Ballot.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
@@ -83,34 +83,24 @@ const BALLOT = ['teal', 'green'].map((color) => ({
           <input class="rkui-range is-active" type="range" aria-label="Specimen" />
         </Specimen>
         <Specimen label="folder tabs: selected, hover" wide>
-          <rkui-folder class="rkui-folder">
-            <div class="rkui-folder-tabs rkui-scroll" role="tablist" aria-label="Specimen">
-              <button class="rkui-folder-tab" type="button" role="tab" aria-selected="true">
-                One
-              </button>
-              <button
-                class="rkui-folder-tab is-hover"
-                type="button"
-                role="tab"
-                aria-selected="false"
-                tabindex="-1"
-              >
-                Two
-              </button>
-              <button
-                class="rkui-folder-tab"
-                type="button"
-                role="tab"
-                aria-selected="false"
-                tabindex="-1"
-              >
-                Three
-              </button>
-            </div>
-            <div class="rkui-folder-sheet" role="tabpanel">
+          <div class="rkui-folder">
+            <ul class="rkui-folder-tabs rkui-scroll" aria-label="Specimen" tabindex="0">
+              <li>
+                <span class="rkui-folder-tab" aria-current="true">
+                  One
+                </span>
+              </li>
+              <li>
+                <span class="rkui-folder-tab is-hover">Two</span>
+              </li>
+              <li>
+                <span class="rkui-folder-tab">Three</span>
+              </li>
+            </ul>
+            <div class="rkui-folder-sheet">
               <p>Panel.</p>
             </div>
-          </rkui-folder>
+          </div>
         </Specimen>
       </SpecimenRow>
     </div>
@@ -129,7 +119,3 @@ const BALLOT = ['teal', 'green'].map((color) => ({
     margin: 0;
   }
 </style>
-
-<script>
-  import '@oneonefour/rkui/components/folder/folder.js'
-</script>

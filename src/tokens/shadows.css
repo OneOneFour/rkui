@@ -2,7 +2,7 @@
 
 :root {
   /* The way shadows fall, as a multiple of each shadow length on each axis: 1 1 is down and to
-     the right. rkui-light-direction.js sets them on <html>. */
+     the right. LightDirection sets them on <html>. */
   --rkui-shadow-dx: 1;
   --rkui-shadow-dy: 1;
 }

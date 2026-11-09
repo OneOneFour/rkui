@@ -2,21 +2,16 @@
 /**
  * Folder tabs: live tabbed panels on a plain and a tinted sheet, the join with each tab selected,
  * and a tab's states.
- *
- * @param theme the panel's theme, used to keep ids unique across the two panels
  */
+import Tab from '@oneonefour/rkui/components/folder/Tab.vue'
+import Tabs from '@oneonefour/rkui/components/folder/Tabs.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 
-interface Props {
-  theme: 'light' | 'dark'
-}
-
-const { theme } = Astro.props
 const TABS = ['Tab one', 'Tab two', 'Tab three']
 const SHEETS = [
-  { key: 'plain', label: 'live, plain sheet', class: '' },
-  { key: 'tinted', label: 'live, .rkui-folder--tinted', class: 'rkui-folder--tinted' },
+  { label: 'live, plain sheet', tinted: false },
+  { label: 'live, .rkui-folder--tinted', tinted: true },
 ]
 const STATIC_TABS = ['One', 'Two', 'Three']
 
@@ -42,42 +37,17 @@ const STATES: StaticFolder[] = [
 ---
 
 <SpecimenRow title="Live">
-  {SHEETS.map((sheet) => {
-    const id = `${theme}-folder-${sheet.key}`
-    return (
-      <Specimen label={sheet.label} wide>
-        <rkui-tabs class:list={['rkui-folder', sheet.class]}>
-          <div class="rkui-folder-tabs rkui-scroll" role="tablist" aria-label="Specimen">
-            {TABS.map((name, i) => (
-              <button
-                class="rkui-folder-tab"
-                type="button"
-                role="tab"
-                id={`${id}-tab-${i}`}
-                aria-controls={`${id}-panel-${i}`}
-                aria-selected={i === 0 ? 'true' : 'false'}
-                tabindex={i === 0 ? undefined : -1}
-              >
-                {name}
-              </button>
-            ))}
-          </div>
-          {TABS.map((name, i) => (
-            <div
-              class="rkui-folder-sheet"
-              role="tabpanel"
-              id={`${id}-panel-${i}`}
-              aria-labelledby={`${id}-tab-${i}`}
-              tabindex="0"
-              hidden={i !== 0}
-            >
-              <p>Panel for {name.toLowerCase()}.</p>
-            </div>
-          ))}
-        </rkui-tabs>
-      </Specimen>
-    )
-  })}
+  {SHEETS.map((sheet) => (
+    <Specimen label={sheet.label} wide>
+      <Tabs label="Specimen" tinted={sheet.tinted}>
+        {TABS.map((name) => (
+          <Tab label={name}>
+            <p>Panel for {name.toLowerCase()}.</p>
+          </Tab>
+        ))}
+      </Tabs>
+    </Specimen>
+  ))}
 </SpecimenRow>
 
 {[
@@ -87,24 +57,26 @@ const STATES: StaticFolder[] = [
   <SpecimenRow title={row.title}>
     {row.specimens.map((specimen) => (
       <Specimen label={specimen.label}>
-        <rkui-folder class:list={['rkui-folder', { 'rkui-folder--tinted': specimen.tinted }]}>
-          <div class="rkui-folder-tabs rkui-scroll" role="tablist" aria-label="Specimen">
+        <div class:list={['rkui-folder', { 'rkui-folder--tinted': specimen.tinted }]}>
+          <ul class="rkui-folder-tabs rkui-scroll" aria-label="Specimen" tabindex="0">
             {STATIC_TABS.map((name, i) => (
-              <button
-                class:list={['rkui-folder-tab', specimen.state?.tab === i && specimen.state.class]}
-                type="button"
-                role="tab"
-                aria-selected={i === specimen.selected ? 'true' : 'false'}
-                tabindex={i === specimen.selected ? undefined : -1}
-              >
-                {name}
-              </button>
+              <li>
+                <span
+                  class:list={[
+                    'rkui-folder-tab',
+                    specimen.state?.tab === i && specimen.state.class,
+                  ]}
+                  aria-current={i === specimen.selected ? 'true' : undefined}
+                >
+                  {name}
+                </span>
+              </li>
             ))}
-          </div>
-          <div class="rkui-folder-sheet" role="tabpanel">
+          </ul>
+          <div class="rkui-folder-sheet">
             <p>Panel.</p>
           </div>
-        </rkui-folder>
+        </div>
       </Specimen>
     ))}
   </SpecimenRow>
@@ -115,8 +87,3 @@ const STATES: StaticFolder[] = [
     margin: 0;
   }
 </style>
-
-<script>
-  import '@oneonefour/rkui/components/folder/folder.js'
-  import '@oneonefour/rkui/components/folder/tabs.js'
-</script>

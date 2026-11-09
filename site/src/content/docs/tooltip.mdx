@@ -3,30 +3,43 @@ title: Tooltip
 description: A short plain-text description of a control, shown on hover or focus.
 group: Containers
 order: 73
+component: Tooltip
 ---
 
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/tooltip/default.astro'
-import defaultCode from '../../examples/tooltip/default.astro?raw'
-import Toon from '../../examples/tooltip/toon.astro'
-import toonCode from '../../examples/tooltip/toon.astro?raw'
-import IconButton from '../../examples/tooltip/icon-button.astro'
-import iconButtonCode from '../../examples/tooltip/icon-button.astro?raw'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import Tooltip from '@oneonefour/rkui/components/tooltip/Tooltip.vue'
+import CopyIcon from '@oneonefour/rkui/icons/copy.vue'
 
-Hover or focus the button to show the tooltip. Escape hides it.
+Hover or focus the button to show the tooltip. It needs no JavaScript.
 
-<Demo code={defaultCode} label="Inverted tooltip">
-  <Default />
+<Demo label="Inverted tooltip">
+  <div style="padding-block-start: var(--rkui-space-7)">
+    <Tooltip id="tooltip-save" text="Save the file">
+      <Button aria-describedby="tooltip-save">Save</Button>
+    </Tooltip>
+  </div>
 </Demo>
 
 ## Toon
 
-<Demo code={toonCode} label="Toon tooltip">
-  <Toon />
+<Demo label="Toon tooltip">
+  <div style="padding-block-start: var(--rkui-space-7)">
+    <Tooltip id="tooltip-toon" text="Save the file" variant="toon">
+      <Button aria-describedby="tooltip-toon">Save</Button>
+    </Tooltip>
+  </div>
 </Demo>
 
 ## On an icon button
 
-<Demo code={iconButtonCode} label="Tooltip on an icon button">
-  <IconButton />
+<Demo label="Tooltip on an icon button">
+  <div style="padding-block-start: var(--rkui-space-7); min-inline-size: 12rem">
+    <Tooltip id="tooltip-copy" text="Copy to the clipboard">
+      <Button hue="teal" aria-describedby="tooltip-copy">
+        <CopyIcon class="rkui-icon" />
+        <span class="rkui-visually-hidden">Copy</span>
+      </Button>
+    </Tooltip>
+  </div>
 </Demo>

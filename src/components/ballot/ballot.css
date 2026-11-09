@@ -166,7 +166,8 @@
   z-index: 1;
 }
 
-.rkui-ballot--tight .rkui-ballot-option:has(:focus-visible) {
+.rkui-ballot--tight
+  .rkui-ballot-option:has(:focus-visible, :where([data-rkui-focus-visible]):focus) {
   z-index: 2;
 }
 

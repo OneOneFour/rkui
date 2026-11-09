@@ -92,9 +92,8 @@
   /* A panel that carries --rkui-fg text, for the selected option's surroundings */
   --rkui-selected-tint: var(--rkui-yellow-tint);
 
-  /* Section hooks */
-  --rkui-section: var(--rkui-ink);
-  --rkui-on-section: var(--rkui-on-ink);
+  /* Section hooks: --rkui-section and --rkui-on-section are left unset, so a component can tell
+     whether a page chose a section hue; each use falls back to --rkui-ink and --rkui-on-ink. */
 
   /* Code: slate panels and syntax colours. The tab is the code block's editor-tab strip, and
      .rkui-slate-greige (code.css) swaps in the greige pair. */

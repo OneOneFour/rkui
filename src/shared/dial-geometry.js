@@ -1,7 +1,7 @@
 /**
- * Geometry shared by the clock and dial faces, for the elements in the browser and the Astro
- * components at build time. No DOM: every function takes numbers and returns numbers or strings.
- * Angles are degrees clockwise from 12 o'clock.
+ * Geometry shared by the clock and dial faces, which Clock.vue and Dial.vue draw. No DOM: every
+ * function takes numbers and returns numbers, strings or plain objects. Angles are degrees
+ * clockwise from 12 o'clock.
  */
 
 /** A face's SVG is drawn in a square of this many units, centred on (CENTRE, CENTRE). */
@@ -28,13 +28,25 @@ export function nearestTurn(previous, angle) {
 }
 
 /**
+ * @param {number} value
+ * @returns {number} the value to a thousandth of an SVG unit. The server and the browser can
+ *   differ in a sine's last digit; rounded, they write the same markup.
+ */
+function round(value) {
+  return Math.round(value * 1000) / 1000
+}
+
+/**
  * @param {number} radius
  * @param {number} angle
  * @returns {{ x: number, y: number }} the point in the SVG at `radius` and `angle` from the centre
  */
 export function polarToCartesian(radius, angle) {
   const radians = (angle * Math.PI) / 180
-  return { x: CENTRE + radius * Math.sin(radians), y: CENTRE - radius * Math.cos(radians) }
+  return {
+    x: round(CENTRE + radius * Math.sin(radians)),
+    y: round(CENTRE - radius * Math.cos(radians)),
+  }
 }
 
 /**
@@ -45,7 +57,7 @@ export function polarToCartesian(radius, angle) {
  */
 export function percentOfFace(radius, angle) {
   const { x, y } = polarToCartesian(radius, angle)
-  return { x: (x / VIEWBOX) * 100, y: (y / VIEWBOX) * 100 }
+  return { x: (x * 100) / VIEWBOX, y: (y * 100) / VIEWBOX }
 }
 
 /**
@@ -62,14 +74,23 @@ export function arcPath(radius, fromAngle, toAngle) {
 }
 
 /**
- * @param {string} className
  * @param {number} innerRadius
  * @param {number} outerRadius
  * @param {number} angle
- * @returns {string} an SVG `<line>` pointing out from the centre, between the two radii
+ * @returns {{ x1: number, y1: number, x2: number, y2: number }} the ends of an SVG `<line>`
+ *   pointing out from the centre, between the two radii
  */
-export function radialLine(className, innerRadius, outerRadius, angle) {
+export function radialLine(innerRadius, outerRadius, angle) {
   const inner = polarToCartesian(innerRadius, angle)
   const outer = polarToCartesian(outerRadius, angle)
-  return `<line class="${className}" x1="${inner.x}" y1="${inner.y}" x2="${outer.x}" y2="${outer.y}"/>`
+  return { x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y }
+}
+
+/**
+ * @param {number} dx distance right of the centre
+ * @param {number} dy distance below the centre
+ * @returns {number} the angle of that point, from -180 to 180
+ */
+export function pointToAngle(dx, dy) {
+  return (Math.atan2(dx, -dy) * 180) / Math.PI
 }

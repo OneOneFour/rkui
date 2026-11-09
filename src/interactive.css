@@ -99,9 +99,10 @@
   translate: var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y);
 }
 
-/* A checked tile, or the current page's, is pushed in the same way, with an inset shadow
-   instead. */
-.rkui-tile:is(:has(:checked), [aria-current='page']) {
+/* A checked tile, the current page's, or a toggle button that is on, is pushed in the same way,
+   with an inset shadow instead. */
+.rkui-tile:is(:has(:checked), [aria-current='page']),
+.rkui-button:has(:checked) {
   box-shadow: var(--rkui-shadow-inset);
   translate: var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y);
 }
@@ -139,7 +140,12 @@
 /* The selected folder tab is joined to the sheet and doesn't pop; its shadow is on ::before
    (folder.css). It takes the selected state at once, so the press it was clicked with doesn't
    ease back across the join. */
-.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']) {
+.rkui-folder-tab:is(
+  :has(:checked),
+  [aria-selected='true'],
+  [aria-current='page'],
+  [aria-current='true']
+) {
   --rkui-folder-tab-x: 0px;
   --rkui-folder-tab-y: 0px;
 
@@ -147,9 +153,11 @@
   transition: none;
 }
 
-/* Focus band. Chips, cards, tiles, colour input frames and segmented groups (deck keys included)
-   show it for the input or link inside them; a segmented group shows it on the group, never on
-   one option. Chips and tiles can also be links, focused themselves. */
+/* Focus band. Toggle buttons, chips, cards, tiles, colour input frames, segmented groups (deck
+   keys included) and folder tabs show it for the input or link inside them; a segmented group
+   shows it on the group, never on one option. Chips and tiles can also be links, focused
+   themselves. A radio marked data-rkui-focus-visible counts as :focus-visible: Safari drops it
+   after an arrow key (interactive-enhance.js). */
 :is(
   .rkui-button,
   .rkui-chip,
@@ -161,10 +169,14 @@
   .rkui-select,
   .rkui-logo
 ):focus-visible,
+/* :where() keeps each selector's specificity what it was, so the cascade doesn't change. */
+.rkui-radio:where([data-rkui-focus-visible]):focus,
 :is(.rkui-folder-tab, .rkui-folder-sheet):focus-visible,
+.rkui-folder-tab:has(:focus-visible, :where([data-rkui-focus-visible]):focus),
 .rkui-sidebar--deck .rkui-sidebar-link:focus-visible,
-:is(.rkui-chip, .rkui-card--link, .rkui-segmented, .rkui-tile, .rkui-color-input):has(
-  :focus-visible
+:is(.rkui-button, .rkui-chip, .rkui-card--link, .rkui-segmented, .rkui-tile, .rkui-color-input):has(
+  :focus-visible,
+  :where([data-rkui-focus-visible]):focus
 ) {
   outline: var(--rkui-focus-width) solid var(--rkui-focus);
   outline-offset: var(--rkui-focus-offset);
@@ -173,11 +185,21 @@
 
 /* The selected folder tab's band is drawn by its ::before in place of its shadow, and stops at
    the sheet's edge like the tab's outline does. */
-.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']):focus-visible {
+.rkui-folder-tab:is(
+    :has(:checked),
+    [aria-selected='true'],
+    [aria-current='page'],
+    [aria-current='true']
+  ):is(:focus-visible, :has(:focus-visible, :where([data-rkui-focus-visible]):focus)) {
   outline: none;
 }
 
-.rkui-folder-tab:is([aria-selected='true'], [aria-current='page']):focus-visible::before {
+.rkui-folder-tab:is(
+    :has(:checked),
+    [aria-selected='true'],
+    [aria-current='page'],
+    [aria-current='true']
+  ):is(:focus-visible, :has(:focus-visible, :where([data-rkui-focus-visible]):focus))::before {
   outline: var(--rkui-focus-width) solid var(--rkui-focus);
   outline-offset: var(--rkui-focus-offset);
   box-shadow: none;
@@ -190,6 +212,7 @@
   z-index: 3;
 }
 
+.rkui-folder:has(> .rkui-folder-sheet:focus-visible) > .rkui-folder-tab::before,
 .rkui-folder:has(> .rkui-folder-sheet:focus-visible) > .rkui-folder-tabs .rkui-folder-tab::before {
   box-shadow: none;
 }
@@ -204,7 +227,7 @@
   .rkui-select,
   .rkui-range
 ):disabled,
-:is(.rkui-chip, .rkui-segmented label, .rkui-tile, .rkui-color-input):has(:disabled),
+:is(.rkui-button, .rkui-chip, .rkui-segmented label, .rkui-tile, .rkui-color-input):has(:disabled),
 .rkui-ballot-option:has(:disabled) > .rkui-ballot-text {
   opacity: 0.45;
   cursor: not-allowed;

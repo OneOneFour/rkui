@@ -3,22 +3,35 @@ title: Scroll
 description: A region that scrolls sideways when its content is too wide.
 group: Navigation
 order: 92
+component: Scroll
 ---
 
 import Demo from '../../components/Demo.astro'
-import Table from '../../examples/scroll/table.astro'
-import tableCode from '../../examples/scroll/table.astro?raw'
-import Bar from '../../examples/scroll/bar.astro'
-import barCode from '../../examples/scroll/bar.astro?raw'
+import Table from '../../examples/scroll/Table.vue'
+import tableCode from '../../examples/scroll/Table.vue?raw'
+import Bar from '../../examples/scroll/Bar.vue'
+import barCode from '../../examples/scroll/Bar.vue?raw'
+import Looks from '../../examples/scroll/Looks.vue'
+import looksCode from '../../examples/scroll/Looks.vue?raw'
 
 Three dots at each edge show there is more to see. The scrollbar shows on hover and focus.
 
-<Demo code={tableCode} label="Scroll region with dots" stack>
+<Demo vue={tableCode} label="Scroll region with dots" stack>
   <Table />
 </Demo>
 
 ## Always-on bar
 
-<Demo code={barCode} label="Scroll region with a bar" stack>
+<Demo vue={barCode} label="Scroll region with a bar" stack>
   <Bar />
+</Demo>
+
+## Plain or pill dots
+
+Set `data-rkui-dots="pill"` on `<html>`, a container or one region to put the dots in a raised
+pill, and `data-rkui-dots="plain"` to switch back inside it. Sidebars, code blocks and folder tabs
+take it too.
+
+<Demo vue={looksCode} label="Plain and pill dots" stack>
+  <Looks />
 </Demo>

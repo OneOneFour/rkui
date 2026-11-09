@@ -3,48 +3,50 @@ title: Button
 description: A filled button, or a link that looks like one.
 group: Actions
 order: 20
+component: Button
 ---
 
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/button/default.astro'
-import defaultCode from '../../examples/button/default.astro?raw'
-import Hues from '../../examples/button/hues.astro'
-import huesCode from '../../examples/button/hues.astro?raw'
-import Small from '../../examples/button/small.astro'
-import smallCode from '../../examples/button/small.astro?raw'
-import Unfilled from '../../examples/button/unfilled.astro'
-import unfilledCode from '../../examples/button/unfilled.astro?raw'
-import Busy from '../../examples/button/busy.astro'
-import busyCode from '../../examples/button/busy.astro?raw'
-import BusyLevel from '../../examples/button/busy-level.astro'
-import busyLevelCode from '../../examples/button/busy-level.astro?raw'
-import BusyScript from '../../examples/button/busy-script.astro'
-import busyScriptCode from '../../examples/button/busy-script.astro?raw'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import PauseIcon from '@oneonefour/rkui/icons/pause.vue'
+import BusyScript from '../../examples/button/BusyScript.vue'
+import busyScriptCode from '../../examples/button/BusyScript.vue?raw'
 
 Buttons are yellow by default. Give `Button` an `href` and it renders a link instead.
 
-<Demo code={defaultCode} label="Default button">
-  <Default />
+<Demo label="Default button">
+  <Button>Save</Button>
+  <Button href="#">A link that looks like a button</Button>
 </Demo>
 
 ## Hues
 
-<Demo code={huesCode} label="Button hues">
-  <Hues />
+<Demo label="Button hues">
+  <Button>Yellow</Button>
+  <Button hue="navy">Navy</Button>
+  <Button hue="teal">Teal</Button>
+  <Button hue="green">Green</Button>
+  <Button hue="coral">Coral</Button>
+  <Button hue="grape">Grape</Button>
+  <Button hue="tangerine">Tangerine</Button>
 </Demo>
 
 ## Small
 
-<Demo code={smallCode} label="Small buttons">
-  <Small />
+<Demo label="Small buttons">
+  <Button small>Small</Button>
+  <Button small hue="teal">
+    Small teal
+  </Button>
 </Demo>
 
 ## Unfilled
 
 The outline-only button is for a secondary action beside a filled one.
 
-<Demo code={unfilledCode} label="Unfilled button">
-  <Unfilled />
+<Demo label="Unfilled button">
+  <Button>Save</Button>
+  <Button unfilled>Cancel</Button>
 </Demo>
 
 ## Busy
@@ -52,8 +54,20 @@ The outline-only button is for a secondary action beside a filled one.
 `busy` starts a button in its busy state: it fills with water, is marked `aria-busy` and
 `aria-disabled`, and stays focusable. Say what is happening in the label.
 
-<Demo code={busyCode} label="Busy buttons">
-  <Busy />
+<Demo label="Busy buttons">
+  <Button busy>Saving…</Button>
+  <Button busy hue="teal">
+    Saving…
+  </Button>
+  <Button busy hue="navy">
+    Saving…
+  </Button>
+  <Button busy hue="coral">
+    Saving…
+  </Button>
+  <Button busy hue="grape">
+    Saving…
+  </Button>
 </Demo>
 
 ## Busy at a level
@@ -61,8 +75,16 @@ The outline-only button is for a secondary action beside a filled one.
 `level` holds the water at a fixed height from 0 to 1, for a wait with known progress. It works
 with `busy` or `water`.
 
-<Demo code={busyLevelCode} label="Busy buttons at a level">
-  <BusyLevel />
+<Demo label="Busy buttons at a level">
+  <Button busy hue="teal" level={0.25}>
+    Uploading<span class="rkui-visually-hidden"> 25%</span>
+  </Button>
+  <Button busy hue="teal" level={0.5}>
+    Uploading<span class="rkui-visually-hidden"> 50%</span>
+  </Button>
+  <Button busy hue="teal" level={0.85}>
+    Uploading<span class="rkui-visually-hidden"> 85%</span>
+  </Button>
 </Demo>
 
 ## Busy from a script
@@ -70,6 +92,15 @@ with `busy` or `water`.
 `water` includes the water without starting busy, so a script can set `aria-busy` later. Click the
 button to toggle it. A busy button does not stop its own clicks; the script decides what to ignore.
 
-<Demo code={busyScriptCode} label="A button a script makes busy">
-  <BusyScript />
+<Demo vue={busyScriptCode} label="A button a script makes busy" widget>
+  <BusyScript client:visible />
+</Demo>
+
+<Demo label="Toggle buttons">
+  <Button toggle small>
+    <PauseIcon class="rkui-icon" /> Pause
+  </Button>
+  <Button toggle hue="teal" checked>
+    Bold
+  </Button>
 </Demo>

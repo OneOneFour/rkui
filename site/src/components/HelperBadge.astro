@@ -1,0 +1,26 @@
+---
+/**
+ * "Small helper script", as a badge that links to the setup section, for a component that uses
+ * one of the library's helper scripts (helper-scripts.js). Its title names them. Nothing when the
+ * component uses none.
+ *
+ * @param component the component's name, e.g. 'Scroll'
+ */
+import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
+import { helpersFor } from '../lib/helper-scripts.js'
+import { link } from '../lib/pages'
+
+interface Props {
+  component: string
+}
+
+const { component } = Astro.props
+const scripts = helpersFor(component)
+const title = `Helper scripts: ${scripts.join(' and ')}. Each is a browser fallback or a small extra the component works without. import '@oneonefour/rkui/enhance.js' loads them all, and rkui.js includes them.`
+---
+
+{scripts.length > 0 && (
+  <a class="docs-chip-link" href={link('#helper-scripts')} title={title}>
+    <Badge>{scripts.length > 1 ? 'Small helper scripts' : 'Small helper script'}</Badge>
+  </a>
+)}

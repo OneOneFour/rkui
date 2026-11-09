@@ -6,75 +6,67 @@ order: 32
 ---
 
 import Demo from '../../components/Demo.astro'
-import Palette from '../../examples/color-picker/palette.astro'
-import paletteCode from '../../examples/color-picker/palette.astro?raw'
-import Choose from '../../examples/color-picker/choose.astro'
-import chooseCode from '../../examples/color-picker/choose.astro?raw'
-import Custom from '../../examples/color-picker/custom.astro'
-import customCode from '../../examples/color-picker/custom.astro?raw'
-import Disabled from '../../examples/color-picker/disabled.astro'
-import disabledCode from '../../examples/color-picker/disabled.astro?raw'
-import FlairBrush from '../../examples/color-picker/flair-brush.astro'
-import flairBrushCode from '../../examples/color-picker/flair-brush.astro?raw'
-import FlairDrops from '../../examples/color-picker/flair-drops.astro'
-import flairDropsCode from '../../examples/color-picker/flair-drops.astro?raw'
-import FlairStroke from '../../examples/color-picker/flair-stroke.astro'
-import flairStrokeCode from '../../examples/color-picker/flair-stroke.astro?raw'
-import Input from '../../examples/color-picker/input.astro'
-import inputCode from '../../examples/color-picker/input.astro?raw'
+import ColorPicker from '@oneonefour/rkui/components/color-picker/ColorPicker.vue'
+import ColorTile from '@oneonefour/rkui/components/color-picker/ColorTile.vue'
+import ColorInput from '@oneonefour/rkui/components/color-picker/ColorInput.vue'
 
-<Demo code={paletteCode} label="Palette tiles">
-  <Palette />
+<Demo label="Palette tiles">
+  <ColorPicker legend="Colour" value="teal" />
 </Demo>
 
 ## Choosing the tiles
 
 With no children the picker shows every hue. Give it ColorTile children for a smaller palette.
 
-<Demo code={chooseCode} label="Colour picker with chosen tiles">
-  <Choose />
+<Demo label="Colour picker with chosen tiles">
+  <ColorPicker legend="Colour">
+    <ColorTile value="teal" checked />
+    <ColorTile value="coral" />
+    <ColorTile value="grape" />
+    <ColorTile value="yellow" />
+  </ColorPicker>
 </Demo>
 
 ## With a custom colour
 
 The last tile opens the browser's colour picker.
 
-<Demo code={customCode} label="Palette with a custom colour tile">
-  <Custom />
+<Demo label="Palette with a custom colour tile">
+  <ColorPicker client:visible legend="Colour" value="teal" custom />
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled colour picker">
-  <Disabled />
+<Demo label="Disabled colour picker">
+  <ColorPicker client:visible legend="Colour" value="teal" custom disabled />
 </Demo>
 
 ## Flair A: paint brush
 
 Open, see DECISIONS.
 
-<Demo code={flairBrushCode} label="Colour picker, brush flair">
-  <FlairBrush />
+<Demo label="Colour picker, brush flair">
+  <ColorPicker client:visible legend="Colour" value="teal" custom flair="brush" />
 </Demo>
 
 ## Flair B: paint drops
 
 Open, see DECISIONS.
 
-<Demo code={flairDropsCode} label="Colour picker, drops flair">
-  <FlairDrops />
+<Demo label="Colour picker, drops flair">
+  <ColorPicker client:visible legend="Colour" value="teal" custom flair="drops" />
 </Demo>
 
 ## Flair C: palette and stroke
 
 Open, see DECISIONS.
 
-<Demo code={flairStrokeCode} label="Colour picker, stroke flair">
-  <FlairStroke />
+<Demo label="Colour picker, stroke flair">
+  <ColorPicker client:visible legend="Colour" value="teal" custom flair="stroke" />
 </Demo>
 
 ## Colour input on its own
 
-<Demo code={inputCode} label="Colour input">
-  <Input />
+<Demo label="Colour input">
+  <ColorInput label="Colour" />
 </Demo>

@@ -1,21 +1,9 @@
 ---
-/** Turns the light for the whole page (rkui's `<rkui-light-direction>`), to check every shadow. */
+/** Turns the light for the whole page (rkui's LightDirection), to check every shadow. */
+import LightDirection from '@oneonefour/rkui/components/light-direction/LightDirection.vue'
 ---
 
-<rkui-light-direction class="light-direction">
-  <div class="rkui-field">
-    <label for="light-angle">Light from (degrees clockwise from the top)</label>
-    <input class="rkui-range" type="range" id="light-angle" min="0" max="359" value="315" />
-  </div>
-  <label class="rkui-check">
-    <input class="rkui-switch" type="checkbox" role="switch" />
-    Follow the time of day
-  </label>
-</rkui-light-direction>
-
-<script>
-  import '@oneonefour/rkui/components/light-direction/light-direction.js'
-</script>
+<LightDirection client:visible class="light-direction" />
 
 <style>
   .light-direction {

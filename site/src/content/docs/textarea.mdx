@@ -3,28 +3,28 @@ title: Textarea
 description: A multi-line text input.
 group: Form controls
 order: 42
+component: Textarea
 ---
 
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/textarea/default.astro'
-import defaultCode from '../../examples/textarea/default.astro?raw'
-import Disabled from '../../examples/textarea/disabled.astro'
-import disabledCode from '../../examples/textarea/disabled.astro?raw'
-import ErrorDemo from '../../examples/textarea/error.astro'
-import errorCode from '../../examples/textarea/error.astro?raw'
+import Textarea from '@oneonefour/rkui/components/input/Textarea.vue'
 
-<Demo code={defaultCode} label="Default textarea" stack>
-  <Default />
+<Demo label="Default textarea" stack>
+  <Textarea label="Message" name="textarea-message" placeholder="Placeholder" />
 </Demo>
 
 ## Disabled
 
-<Demo code={disabledCode} label="Disabled textarea" stack>
-  <Disabled />
+<Demo label="Disabled textarea" stack>
+  <Textarea label="Message" name="textarea-disabled" disabled>
+    Disabled
+  </Textarea>
 </Demo>
 
 ## Error
 
-<Demo code={errorCode} label="Textarea with an error" stack>
-  <ErrorDemo />
+<Demo label="Textarea with an error" stack>
+  <Textarea label="Message" name="textarea-error" error="Error message">
+    Not valid
+  </Textarea>
 </Demo>

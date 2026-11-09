@@ -1,14 +1,13 @@
 /* Tooltip: a short plain-text description of a control, shown above it while it is hovered or
-   focused. The control points at the bubble with aria-describedby; anything interactive belongs
-   in a popup instead. <rkui-tooltip> (rkui-tooltip.js) lets Escape hide it; without the script the
-   rest still works. A parent with overflow: hidden clips the bubble.
+   focused, with no JavaScript. The control points at the bubble with aria-describedby; anything
+   interactive belongs in a popup instead. A parent with overflow: hidden clips the bubble.
    A, the default: an inverted bubble, in the page's colours swapped.
    B, .rkui-tooltip--toon: a raised bubble with the outline and the hard shadow.
 
-   <rkui-tooltip class="rkui-tooltip">
+   <span class="rkui-tooltip">
      <button class="rkui-button" aria-describedby="save-tip">Save</button>
      <span class="rkui-tooltip-bubble" id="save-tip" role="tooltip">Text</span>
-   </rkui-tooltip> */
+   </span> */
 
 .rkui-tooltip {
   --rkui-tooltip-fill: var(--rkui-fg);
@@ -101,11 +100,6 @@
 /* A short wait on hover, so a pointer passing over doesn't flash the bubble. */
 .rkui-tooltip:hover:not(:has(:focus-visible)) > .rkui-tooltip-bubble {
   transition-delay: 300ms;
-}
-
-.rkui-tooltip[data-dismissed] > .rkui-tooltip-bubble {
-  opacity: 0;
-  visibility: hidden;
 }
 
 /* Forced colours outline the tail's transparent edges too, so it is left out. */

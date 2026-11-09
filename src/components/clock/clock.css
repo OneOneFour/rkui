@@ -1,12 +1,19 @@
-/* Clock: a settable clock face over a time input. Needs rkui-clock.js, which draws the face
-   or adopts one drawn at build time; without it, the label and the time input show on their own.
+/* Clock: a settable clock face over a time input, drawn by Clock.vue. It marks the clock
+   data-rkui-live once it runs in the browser; until then the face stays hidden, holding its
+   place, and the time input works on its own.
 
-   <rkui-clock class="rkui-clock">
+   <div class="rkui-clock">
      <label for="t">Label</label>
+     <div class="rkui-clock-face" aria-hidden="true">
+       <svg>…</svg>                                         (the ring and the ticks)
+       <svg class="rkui-icon rkui-clock-day-icon">…</svg>   (icons/sun.svg)
+       <svg class="rkui-icon rkui-clock-night-icon">…</svg> (icons/moon.svg)
+       <span class="rkui-clock-hand rkui-clock-hand--hour">…</span>
+       <span class="rkui-clock-hand rkui-clock-hand--minute">…</span>
+       <span class="rkui-clock-hub"></span>
+     </div>
      <input class="rkui-input" id="t" type="time" step="300" value="07:30">
-     <svg class="rkui-icon rkui-clock-day-icon">…</svg>    (optional, e.g. icons/sun.svg)
-     <svg class="rkui-icon rkui-clock-night-icon">…</svg>  (optional, e.g. icons/moon.svg)
-   </rkui-clock>
+   </div>
 
    The face's SVG is 200 units square. The hands turn, but each tag turns back by its hand's
    angle, so it stays upright with its shadow on the light's side. */
@@ -17,6 +24,8 @@
   --rkui-clock-night: var(--rkui-navy);
 
   display: grid;
+  grid-template-columns: var(--rkui-clock-size);
+  justify-items: center;
   gap: var(--rkui-space-2);
   max-inline-size: 30rem;
 }
@@ -25,16 +34,9 @@
   font-weight: 600;
 }
 
-/* Until rkui-clock.js puts them on the face. A face in the markup stays hidden until the element
-   is defined. */
-.rkui-clock > :is(.rkui-clock-day-icon, .rkui-clock-night-icon),
-.rkui-clock:not(:defined) > .rkui-clock-face {
-  display: none;
-}
-
-.rkui-clock:defined:has(> .rkui-clock-face) {
-  grid-template-columns: var(--rkui-clock-size);
-  justify-items: center;
+/* Until Clock.vue runs in the browser, the face would do nothing. */
+.rkui-clock:not([data-rkui-live]) > .rkui-clock-face {
+  visibility: hidden;
 }
 
 .rkui-clock-face {

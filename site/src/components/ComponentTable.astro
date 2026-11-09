@@ -1,0 +1,42 @@
+---
+/**
+ * The table of components on the home page: one row per component page (a page whose frontmatter
+ * names its `component`), with whether the component uses JavaScript and the custom element a
+ * plain HTML page writes for it.
+ */
+import Table from '@oneonefour/rkui/components/table/Table.vue'
+import JsBadge from './JsBadge.astro'
+import { elementFor } from '../lib/element-scripts.js'
+import { pageUrl, sortedPages } from '../lib/pages'
+
+const pages = (await sortedPages())
+  .filter((page) => page.data.component)
+  .sort((a, b) => a.data.title.localeCompare(b.data.title))
+---
+
+<Table caption="Components">
+  <thead>
+    <tr>
+      <th scope="col">Component</th>
+      <th scope="col">JavaScript</th>
+      <th scope="col">Plain HTML element</th>
+    </tr>
+  </thead>
+  <tbody>
+    {pages.map((page) => {
+      const component = page.data.component as string
+      const element = elementFor(component)
+      return (
+        <tr>
+          <th scope="row">
+            <a href={pageUrl(page)}>{page.data.title}</a>
+          </th>
+          <td>
+            <JsBadge component={component} />
+          </td>
+          <td>{element ? <code>{`<${element}>`}</code> : '—'}</td>
+        </tr>
+      )
+    })}
+  </tbody>
+</Table>

@@ -4,6 +4,7 @@
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
+import Range from '@oneonefour/rkui/components/range/Range.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
 
@@ -12,7 +13,6 @@ interface Props {
 }
 
 const { theme } = Astro.props
-const id = `${theme}-range`
 const STATES = [
   { label: 'rest', class: '' },
   { label: 'hover', class: 'is-hover' },
@@ -28,28 +28,17 @@ const TICK_STATES = [
 ---
 
 <SpecimenRow title="With readout">
-  <Specimen label="live: the inline oninput updates the output" wide>
-    <form
-      class="rkui-field"
-      oninput={`this.elements['${id}-out'].value = this.elements['${id}'].value`}
-    >
-      <label for={id}>Label</label>
-      <div class="rkui-range-row">
-        <input
-          class="rkui-range"
-          type="range"
-          id={id}
-          name={id}
-          min="0"
-          max="1"
-          step="0.01"
-          value="0.28"
-        />
-        <output class="rkui-output" name={`${id}-out`} for={id}>
-          0.28
-        </output>
-      </div>
-    </form>
+  <Specimen label="live: the output follows the slider" wide>
+    <Range
+      client:visible
+      id={`${theme}-range`}
+      label="Label"
+      readout
+      min="0"
+      max="1"
+      step="0.01"
+      value="0.28"
+    />
   </Specimen>
 </SpecimenRow>
 

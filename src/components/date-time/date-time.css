@@ -1,7 +1,9 @@
 /* Date and time inputs (date, time, month, week, datetime-local) on the text input frame. The
    focused part of the value fills with --rkui-selected. The picker icon is a calendar (a clock for
    time), drawn as a mask in currentColor the way search draws its icons. The popup picker and
-   Firefox's icon are the browser's own and can't be styled.
+   Firefox's icon are the browser's own and can't be styled. Safari on macOS draws no picker icon
+   and shows an empty date as today's date in grey; it and Firefox show month and week as plain
+   text boxes.
 
    <input class="rkui-input" type="date"> */
 

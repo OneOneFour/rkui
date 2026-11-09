@@ -3,35 +3,42 @@ title: Pagination
 description: Page links as folder tabs over the page's sheet.
 group: Navigation
 order: 93
+component: Pagination
 ---
 
 import Demo from '../../components/Demo.astro'
-import Default from '../../examples/pagination/default.astro'
-import defaultCode from '../../examples/pagination/default.astro?raw'
-import First from '../../examples/pagination/first.astro'
-import firstCode from '../../examples/pagination/first.astro?raw'
-import Narrow from '../../examples/pagination/narrow.astro'
-import narrowCode from '../../examples/pagination/narrow.astro?raw'
+import Pagination from '@oneonefour/rkui/components/pagination/Pagination.vue'
 
 Give it the `current` page, the `total` and an `href` function that returns a page's link. It
 links the first and last pages, the current one and its neighbours, with previous and next.
 
-<Demo code={defaultCode} label="Pagination" stack>
-  <Default />
+<Demo label="Pagination" stack>
+  <Pagination current={2} total={9} href={(page) => `#page-${page}`}>
+    <p>Page 2.</p>
+  </Pagination>
 </Demo>
 
 ## On the first page
 
 There is no previous link on the first page, and no next link on the last.
 
-<Demo code={firstCode} label="Pagination on the first page" stack>
-  <First />
+<Demo label="Pagination on the first page" stack>
+  <Pagination current={1} total={3} href={(page) => `#page-${page}`}>
+    <p>Page 1: no previous link.</p>
+  </Pagination>
 </Demo>
 
 ## Narrow
 
-The scrollbar for the tabs sits above them.
+When the tabs don't fit, the strip scrolls, with dots at the edge that has more and a scrollbar above it.
 
-<Demo code={narrowCode} label="Narrow pagination" stack>
-  <Narrow />
+<Demo label="Narrow pagination" stack>
+  <Pagination
+    current={5}
+    total={12}
+    href={(page) => `#page-${page}`}
+    style="max-inline-size: 16rem"
+  >
+    <p>Page 5, in a narrow folder: the tabs scroll sideways.</p>
+  </Pagination>
 </Demo>

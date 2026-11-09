@@ -1,0 +1,600 @@
+/* Table: a data table on a toon sheet, a raised panel with the outline and the slab shadow. The
+   header row is a band in the section's hue, with an outline and round ends; the body rows are
+   ruled. The sheet holds a scroll region (overflow.css), so a wide table scrolls sideways inside
+   it, with the region's edge dots.
+
+   <div class="rkui-table">
+     <div class="rkui-scroll" tabindex="0" role="region" aria-label="Runs">
+       <table>
+         <caption><span>Runs</span></caption>
+         <thead><tr><th scope="col">Run</th><th scope="col">σ</th></tr></thead>
+         <tbody><tr><th scope="row">a</th><td>10</td></tr></tbody>
+       </table>
+     </div>
+   </div>
+
+   <table class="rkui-table"> alone is the same sheet, without the scrolling.
+
+   Inside the sheet the header row sticks to the top once the sheet has a height
+   (max-block-size), and the first column sticks to the start edge while the table scrolls
+   sideways. Both are always on; they do nothing while the table fits.
+
+   A badge in a body cell is a sticker: outlined, with a small shadow.
+
+   Options:
+   - .rkui-table--ledger: a notebook page. Faint blue rules, every other row shaded, binder holes
+     down the start margin, a red margin rule after the first column and a double red rule under
+     the header. The margin rule is --rkui-coral at 70% over the paper.
+   - .rkui-table--small: the compact density.
+   - .rkui-table--still: no entrance; the table just shows, with or without JavaScript.
+   - .rkui-table--messy: the stickers are slightly tilted, the other way on every other cell, like
+     a checkerboard; straight without it.
+   - .rkui-table--lift: the hovered row pops up out of the sheet by the press offset and the lift
+     offset, onto a shadow as long, so its shadow's edge stays where the row sat. It moves with
+     position offsets, not translate, because it sits in a join of rows.
+   - --rkui-table-hue and --rkui-table-on-hue set the band's fill and text (Table.vue's `hue`).
+     Left alone, the band is the page's section hue (--rkui-section) if it sets one; with none, it
+     is ink in light mode, and in dark mode the sheet's colour with a line under it.
+
+   The first time the sheet is seen, on load or when scrolled to, it plays a short entrance (see
+   the end of this file), which table-enhance.js (in rkui.js) starts. Without it, or under reduced
+   motion, or in print, everything just shows, as does a table added after the page loads. */
+
+/* How far each ruled line is drawn across its row, and the column rule down its cell. */
+@property --rkui-table-ink {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 100%;
+}
+
+@property --rkui-table-drop {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 100%;
+}
+
+/* With no hue on the table and no section hue on the page (--rkui-section is left unset), the
+   band is ink in light mode; in dark mode its fill is transparent, so the sheet's colour shows,
+   with a line along its foot in the colour of an outline without a fill, which any fill covers.
+   In dark mode the rules are --rkui-line-unfilled at 40%, as --rkui-stripe's near-black is lost on
+   the dark sheet. */
+.rkui-table {
+  --rkui-table-hue: var(--rkui-section, light-dark(var(--rkui-ink), transparent));
+  --rkui-table-on-hue: var(--rkui-on-section, light-dark(var(--rkui-on-ink), var(--rkui-fg)));
+  --rkui-table-band-underline: light-dark(transparent, var(--rkui-line-unfilled));
+  --rkui-table-rule: light-dark(
+    var(--rkui-stripe),
+    color-mix(in srgb, var(--rkui-line-unfilled) 40%, transparent)
+  );
+  --rkui-table-rule-width: var(--rkui-outline-width);
+  --rkui-table-column-rule: var(--rkui-table-rule);
+  --rkui-table-column-rule-width: var(--rkui-table-rule-width);
+  --rkui-table-row: var(--rkui-raised);
+  --rkui-table-row-alt: var(--rkui-raised);
+  --rkui-table-pad-block: var(--rkui-space-2);
+  --rkui-table-pad-inline: var(--rkui-space-3);
+  --rkui-table-tilt: 0deg;
+
+  box-sizing: border-box;
+  padding-block: var(--rkui-space-3) var(--rkui-space-1);
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: var(--rkui-radius);
+  background-color: var(--rkui-raised);
+  box-shadow: var(--rkui-shadow);
+  color: var(--rkui-fg);
+}
+
+/* The sheet around a scroll region: never wider than its container, which the region scrolls
+   inside instead. A column, so a height given to the sheet passes to the region, which then
+   scrolls down as well. */
+.rkui-table:not(table) {
+  display: flex;
+  flex-direction: column;
+  max-inline-size: 100%;
+}
+
+/* The region's focus band moves to the sheet's outline. */
+.rkui-table > .rkui-scroll:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.rkui-table:has(> .rkui-scroll:focus-visible) {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: 0;
+  box-shadow: none;
+}
+
+:is(table.rkui-table, .rkui-table > .rkui-scroll > table) {
+  inline-size: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A table on its own has no scroll region, whose gutters would hold it off the sides. */
+table.rkui-table {
+  padding-inline: var(--rkui-space-3);
+}
+
+/* The caption's text stays at the start while the table scrolls sideways. */
+.rkui-table caption {
+  padding: 0 var(--rkui-table-pad-inline) var(--rkui-space-2);
+  font-family: var(--rkui-font-display);
+  font-size: var(--rkui-step-1);
+  font-weight: 800;
+  line-height: var(--rkui-line-height-heading);
+  text-align: start;
+}
+
+.rkui-table caption > span {
+  position: sticky;
+  inset-inline-start: var(--rkui-table-pad-inline);
+}
+
+.rkui-table :is(th, td) {
+  padding: var(--rkui-table-pad-block) var(--rkui-table-pad-inline);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.rkui-table th {
+  font-weight: 700;
+}
+
+/* The header row's cells stick to the top, above the first column's. */
+.rkui-table thead th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 3;
+}
+
+.rkui-table thead th:first-child {
+  z-index: 4;
+}
+
+/* The sheet's header band. */
+.rkui-table:not(.rkui-table--ledger) thead th {
+  --rkui-table-fill: clamp(
+    0%,
+    (var(--rkui-table-band) - var(--rkui-table-band-start, 0)) /
+      (var(--rkui-table-band-end, 1) - var(--rkui-table-band-start, 0)) * 100%,
+    100%
+  );
+  --rkui-table-band-fill: linear-gradient(var(--rkui-table-hue), var(--rkui-table-hue)) left /
+    var(--rkui-table-fill) 100% no-repeat;
+  --rkui-table-band-foot: linear-gradient(
+      var(--rkui-table-band-underline),
+      var(--rkui-table-band-underline)
+    )
+    bottom / 100% var(--rkui-outline-width) no-repeat;
+
+  border-block: var(--rkui-outline-width) solid var(--rkui-line);
+  background: var(--rkui-table-band-fill), var(--rkui-table-band-foot), var(--rkui-raised);
+  color: var(--rkui-table-on-hue);
+}
+
+/* The band's round ends. Each end cell is square and opaque in the sheet's colour, so cells
+   scrolling under it stay hidden behind its corners, with the round end drawn on ::before. */
+.rkui-table:not(.rkui-table--ledger) thead th:is(:first-child, :last-child) {
+  border-color: var(--rkui-raised);
+  background: var(--rkui-raised);
+}
+
+.rkui-table:not(.rkui-table--ledger) thead th:is(:first-child, :last-child)::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--rkui-outline-width)) 0;
+  z-index: -1;
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  background: var(--rkui-table-band-fill), var(--rkui-table-band-foot), var(--rkui-raised);
+}
+
+.rkui-table:not(.rkui-table--ledger) thead th:first-child {
+  border-inline-start: var(--rkui-outline-width) solid var(--rkui-raised);
+}
+
+.rkui-table:not(.rkui-table--ledger) thead th:last-child {
+  border-inline-end: var(--rkui-outline-width) solid var(--rkui-raised);
+}
+
+.rkui-table:not(.rkui-table--ledger) thead th:first-child::before {
+  inset-inline-start: calc(-1 * var(--rkui-outline-width));
+  border-inline-end: 0;
+  border-start-start-radius: var(--rkui-radius);
+  border-end-start-radius: var(--rkui-radius);
+}
+
+.rkui-table:not(.rkui-table--ledger) thead th:last-child::before {
+  inset-inline-end: calc(-1 * var(--rkui-outline-width));
+  border-inline-start: 0;
+  border-start-end-radius: var(--rkui-radius);
+  border-end-end-radius: var(--rkui-radius);
+}
+
+/* The rules, drawn on the rows so that each one is a single line across the table. Each row
+   carries the rule under it; the last row has none. */
+.rkui-table tbody tr {
+  background:
+    linear-gradient(var(--rkui-table-rule), var(--rkui-table-rule)) left bottom /
+      var(--rkui-table-ink) var(--rkui-table-rule-width) no-repeat,
+    var(--rkui-table-row);
+}
+
+.rkui-table tbody tr:nth-child(even) {
+  --rkui-table-row: var(--rkui-table-row-alt);
+}
+
+.rkui-table tbody tr:last-child {
+  background: var(--rkui-table-row);
+}
+
+/* The first column sticks to the start edge. Its cells need their own fill, which stops short of
+   the rule under the row, and the column rule after them, drawn over a transparent border down
+   to --rkui-table-drop. */
+.rkui-table tr > :first-child {
+  position: sticky;
+  inset-inline-start: 0;
+}
+
+.rkui-table tbody tr > :first-child {
+  --rkui-table-row-foot: var(--rkui-table-rule-width);
+
+  z-index: 1;
+  border-inline-end: var(--rkui-table-column-rule-width) solid transparent;
+  background:
+    linear-gradient(var(--rkui-table-column-rule), var(--rkui-table-column-rule)) right top /
+      var(--rkui-table-column-rule-width) var(--rkui-table-drop) no-repeat border-box,
+    linear-gradient(var(--rkui-table-row), var(--rkui-table-row)) top / 100%
+      calc(100% - var(--rkui-table-row-foot)) no-repeat padding-box;
+}
+
+.rkui-table tbody tr:last-child > :first-child {
+  --rkui-table-row-foot: 0px;
+}
+
+/* Stickers, straight, or tilted in a messy table. The tilt turns the shadow with the badge, so
+   the shadow's offset is turned back by the same angle and still falls away from the light (as
+   on a tilted sticky note). */
+.rkui-table td > .rkui-badge {
+  --rkui-table-sticker-x: calc(
+    var(--rkui-shadow-dx) * var(--rkui-shadow-offset-pressed) * cos(var(--rkui-table-tilt)) +
+      var(--rkui-shadow-dy) * var(--rkui-shadow-offset-pressed) * sin(var(--rkui-table-tilt))
+  );
+  --rkui-table-sticker-y: calc(
+    var(--rkui-shadow-dy) * var(--rkui-shadow-offset-pressed) * cos(var(--rkui-table-tilt)) -
+      var(--rkui-shadow-dx) * var(--rkui-shadow-offset-pressed) * sin(var(--rkui-table-tilt))
+  );
+
+  --rkui-table-sticker-shadow:
+    var(--rkui-table-sticker-x) var(--rkui-table-sticker-y) 0 var(--rkui-shadow-color),
+    var(--rkui-table-sticker-x) var(--rkui-table-sticker-y) 0 var(--rkui-outline-width)
+      var(--rkui-shadow-edge);
+
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  rotate: var(--rkui-table-tilt);
+  box-shadow: var(--rkui-table-sticker-shadow);
+}
+
+.rkui-table--messy {
+  --rkui-table-tilt: -3deg;
+}
+
+.rkui-table--messy
+  :is(tr:nth-child(odd) > td:nth-child(even), tr:nth-child(even) > td:nth-child(odd)) {
+  --rkui-table-tilt: 2deg;
+}
+
+.rkui-table--small {
+  --rkui-table-pad-block: var(--rkui-space-1);
+  --rkui-table-pad-inline: var(--rkui-space-2);
+
+  font-size: var(--rkui-step--1);
+}
+
+.rkui-table--small caption {
+  font-size: var(--rkui-step-0);
+}
+
+/* The ledger: a notebook page, with binder holes in the start margin. A hole shows the page
+   through it, ringed like anything without a fill. */
+.rkui-table--ledger {
+  --rkui-table-rule: light-dark(
+    color-mix(in srgb, var(--rkui-sky-deep) 45%, transparent),
+    color-mix(in srgb, var(--rkui-sky-deep) 50%, transparent)
+  );
+  --rkui-table-rule-width: 1px;
+  --rkui-table-margin-rule: light-dark(
+    color-mix(in srgb, var(--rkui-coral) 70%, transparent),
+    color-mix(in srgb, var(--rkui-coral) 85%, transparent)
+  );
+  --rkui-table-column-rule: var(--rkui-table-margin-rule);
+  --rkui-table-column-rule-width: var(--rkui-outline-width);
+  --rkui-table-row-alt: color-mix(in oklab, var(--rkui-raised), var(--rkui-line) 5%);
+  --rkui-table-hole-margin: var(--rkui-space-6);
+  --rkui-table-hole-size: 0.875rem;
+
+  padding-inline-start: var(--rkui-table-hole-margin);
+  background:
+    radial-gradient(
+        circle closest-side,
+        var(--rkui-surface) calc(100% - var(--rkui-outline-width) - 0.5px),
+        var(--rkui-line-unfilled) calc(100% - var(--rkui-outline-width)) calc(100% - 0.5px),
+        transparent
+      )
+      left calc((var(--rkui-table-hole-margin) - var(--rkui-table-hole-size)) / 2) top
+      var(--rkui-space-3) / var(--rkui-table-hole-size) var(--rkui-space-7) no-repeat space,
+    var(--rkui-raised);
+}
+
+table.rkui-table--ledger {
+  padding-inline-start: var(--rkui-table-hole-margin);
+}
+
+.rkui-table--ledger thead th {
+  border-block-end: 4px double var(--rkui-table-margin-rule);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+}
+
+.rkui-table--ledger thead th:first-child {
+  border-inline-end: var(--rkui-outline-width) solid var(--rkui-table-margin-rule);
+}
+
+/* Lift. The rows are positioned at rest, so the hovered one can rise above its neighbours, and
+   above the sticky header, and settle back. The row draws its outline and its shadow itself, so
+   there is no seam where cells meet. The shadow is a drop-shadow, which Safari draws on a
+   positioned row where it draws no box-shadow; its edge is a second drop-shadow, as on the toon
+   tooltip. The sticky first cell covers the row, so it draws its own piece of the outline. The
+   scroll region keeps room at the sides for the outline and the shadow, and the first column
+   sticks at the edge of that room, so it covers what scrolls under it and can move with its
+   row. */
+.rkui-table--lift {
+  --rkui-table-lift: calc(var(--rkui-shadow-offset-pressed) + var(--rkui-lift-offset));
+  --rkui-table-lift-x: calc(var(--rkui-shadow-dx) * var(--rkui-table-lift));
+  --rkui-table-lift-y: calc(var(--rkui-shadow-dy) * var(--rkui-table-lift));
+}
+
+.rkui-table--lift > .rkui-scroll {
+  --rkui-table-lift-room: calc(2 * var(--rkui-outline-width) + var(--rkui-table-lift));
+
+  padding-inline: var(--rkui-table-lift-room);
+}
+
+.rkui-table--lift tr > :first-child {
+  inset-inline-start: calc(-1 * var(--rkui-table-lift-room, 0px));
+}
+
+@media (hover: hover) {
+  .rkui-table--lift tbody tr {
+    position: relative;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 0;
+    transition:
+      inset-block-start var(--rkui-duration-fast) ease,
+      inset-inline-start var(--rkui-duration-fast) ease,
+      filter var(--rkui-duration-fast) ease,
+      z-index var(--rkui-duration-fast) step-end;
+  }
+
+  .rkui-table--lift tbody tr:hover {
+    --rkui-table-row: var(--rkui-raised);
+
+    inset-block-start: calc(-1 * (var(--rkui-press-offset-y) + var(--rkui-lift-offset-y)));
+    inset-inline-start: calc(-1 * (var(--rkui-press-offset-x) + var(--rkui-lift-offset-x)));
+    z-index: 5;
+    outline: var(--rkui-outline-width) solid var(--rkui-line);
+    outline-offset: calc(-1 * var(--rkui-outline-width));
+    background: var(--rkui-raised);
+    filter: drop-shadow(
+        var(--rkui-table-lift-x) var(--rkui-table-lift-y) 0 var(--rkui-shadow-color)
+      )
+      drop-shadow(
+        calc(var(--rkui-shadow-dx) * var(--rkui-outline-width))
+          calc(var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0 var(--rkui-shadow-edge)
+      );
+    transition-timing-function: ease, ease, ease, step-start;
+  }
+
+  .rkui-table--lift tbody tr:hover > :first-child {
+    box-shadow:
+      inset var(--rkui-outline-width) 0 var(--rkui-line),
+      inset 0 var(--rkui-outline-width) var(--rkui-line),
+      inset 0 calc(-1 * var(--rkui-outline-width)) var(--rkui-line);
+  }
+}
+
+/* The entrance, once, the first time the sheet is seen. table-enhance.js marks a sheet out of view
+   "waiting"; when it comes into view it is "arrived". A sheet in view on load is "arrived" too
+   when table-init.js marked the page in <head>: until then it waits like one out of view, so its
+   values are never painted early. Without the mark it is "on-load" and only draws its rules.
+   1. The band fills with its colour from the start edge, as one bar, with ease-in-out: the header
+      animates how far along the band the fill is, and each header cell fills its own share,
+      which table-enhance.js measures.
+   2. Each row is written in by one wipe across it, while its rule draws across and its piece of
+      the column rule draws down over the row's step, so the column rule grows down as one line.
+   3. Stickers stamp down as the wipe reaches them: they drop from slightly larger (and more tilted
+      in a messy table) with no shadow, land with a small squash as the shadow appears, and
+      settle.
+   The rows start in turn, 0.4s shared out between them plus 0.01s each, so a long table keeps
+   cascading to its last row and still finishes soon (21 rows in about 0.6s). Without
+   sibling-index() the rows start together. Nothing stays clipped once it is done. */
+
+/* How far along the band its fill is, from 0 to 1. Each header cell's own fill (--rkui-table-fill)
+   comes from it and the cell's share of the band: --rkui-table-band-start and -end, the fractions
+   of the band's width where the cell starts and ends. */
+@property --rkui-table-band {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+
+/* Each row's step and place in the stagger, and each cell's along its row. Without
+   sibling-index(), their declarations below are invalid and they fall back to these. */
+@property --rkui-table-row-step {
+  syntax: '<time>';
+  inherits: true;
+  initial-value: 0.1s;
+}
+
+@property --rkui-table-row-delay {
+  syntax: '<time>';
+  inherits: true;
+  initial-value: 0s;
+}
+
+@property --rkui-table-column-delay {
+  syntax: '<time>';
+  inherits: true;
+  initial-value: 0s;
+}
+
+@keyframes rkui-table-band {
+  from {
+    --rkui-table-band: 0;
+  }
+
+  to {
+    --rkui-table-band: 1;
+  }
+}
+
+@keyframes rkui-table-ink {
+  from {
+    --rkui-table-ink: 0%;
+  }
+
+  to {
+    --rkui-table-ink: 100%;
+  }
+}
+
+@keyframes rkui-table-drop {
+  from {
+    --rkui-table-drop: 0%;
+  }
+
+  to {
+    --rkui-table-drop: 100%;
+  }
+}
+
+/* The clip reaches a little above and below the row, so a sticker stamping down isn't cut off. */
+@keyframes rkui-table-write {
+  from {
+    clip-path: inset(-1rem 100% -1rem 0);
+  }
+
+  to {
+    clip-path: inset(-1rem 0 -1rem 0);
+  }
+}
+
+@keyframes rkui-table-stamp {
+  from {
+    opacity: 0;
+    scale: 1.25;
+    rotate: calc(1.6 * var(--rkui-table-tilt));
+    box-shadow: none;
+    animation-timing-function: ease-in;
+  }
+
+  55% {
+    opacity: 1;
+    scale: 1.08 0.92;
+    rotate: var(--rkui-table-tilt);
+    box-shadow: none;
+    animation-timing-function: var(--rkui-ease-spring);
+  }
+
+  65% {
+    box-shadow: var(--rkui-table-sticker-shadow);
+  }
+
+  80% {
+    scale: 0.97 1.03;
+  }
+
+  to {
+    scale: 1;
+    box-shadow: var(--rkui-table-sticker-shadow);
+  }
+}
+
+/* Screen only, so a printed page shows every table in full. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .rkui-table {
+    --rkui-table-entrance: var(--rkui-duration-slide);
+  }
+
+  /* Waiting, out of view or under table-init.js's mark: the band empty and the rows hidden. The
+     rules and the column rule start undrawn from their animations' first frames. */
+  .rkui-table:is(
+    [data-rkui-entrance='waiting'],
+    :root[data-rkui-tables] :not([data-rkui-entrance], .rkui-table--still)
+  ) {
+    --rkui-table-band: 0;
+  }
+
+  .rkui-table:is(
+      [data-rkui-entrance='waiting'],
+      :root[data-rkui-tables] :not([data-rkui-entrance], .rkui-table--still)
+    )
+    tbody
+    tr {
+    clip-path: inset(-1rem 100% -1rem 0);
+  }
+
+  .rkui-table:is([data-rkui-entrance='arrived'], [data-rkui-entrance='on-load']) tbody tr {
+    --rkui-table-row-step: calc(0.4s / sibling-count() + 0.01s);
+    --rkui-table-row-delay: calc((sibling-index() - 1) * var(--rkui-table-row-step));
+
+    animation-name: rkui-table-ink;
+    animation-duration: var(--rkui-table-entrance);
+    animation-timing-function: linear;
+    animation-fill-mode: backwards;
+    animation-delay: calc(0.2s + var(--rkui-table-row-delay));
+  }
+
+  /* An arrived row is written in by one wipe from its start edge, which uncovers its cells in turn
+     as it passes, while its rule draws across and its piece of the column rule draws down. */
+  .rkui-table[data-rkui-entrance='arrived'] tbody tr {
+    animation-name: rkui-table-ink, rkui-table-write;
+    animation-timing-function: linear, ease-out;
+  }
+
+  .rkui-table[data-rkui-entrance='arrived'] tbody tr > :first-child {
+    animation-name: rkui-table-drop;
+    animation-duration: var(--rkui-table-row-step);
+    animation-timing-function: linear;
+    animation-fill-mode: backwards;
+    animation-delay: calc(0.2s + var(--rkui-table-row-delay));
+  }
+
+  .rkui-table[data-rkui-entrance='arrived'] tbody tr > * {
+    --rkui-table-column-delay: calc((sibling-index() - 1) / sibling-count() * 0.15s);
+  }
+
+  .rkui-table[data-rkui-entrance='arrived'] td > .rkui-badge {
+    animation-name: rkui-table-stamp;
+    animation-duration: var(--rkui-table-entrance);
+    animation-fill-mode: backwards;
+    animation-delay: calc(0.2s + var(--rkui-table-row-delay) + var(--rkui-table-column-delay));
+  }
+
+  .rkui-table:not(.rkui-table--ledger)[data-rkui-entrance='arrived'] thead {
+    animation-name: rkui-table-band;
+    animation-duration: calc(1.5 * var(--rkui-table-entrance));
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: backwards;
+  }
+}
+
+/* Forced colours: the band and the stickers keep an edge in system colours. */
+@media (forced-colors: active) {
+  .rkui-table thead th,
+  .rkui-table td > .rkui-badge {
+    border-color: CanvasText;
+  }
+}

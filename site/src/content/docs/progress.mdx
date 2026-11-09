@@ -3,22 +3,22 @@ title: Progress
 description: A progress bar on the native element.
 group: Loading
 order: 84
+component: Progress
 ---
 
 import Demo from '../../components/Demo.astro'
-import Striped from '../../examples/progress/striped.astro'
-import stripedCode from '../../examples/progress/striped.astro?raw'
-import Flat from '../../examples/progress/flat.astro'
-import flatCode from '../../examples/progress/flat.astro?raw'
+import Progress from '@oneonefour/rkui/components/progress/Progress.vue'
 
 Without a value the bar is indeterminate.
 
-<Demo code={stripedCode} label="Striped progress bars" stack>
-  <Striped />
+<Demo label="Striped progress bars" stack>
+  <Progress label="Uploading" value={65} />
+  <Progress label="Loading" />
 </Demo>
 
 ## Flat
 
-<Demo code={flatCode} label="Flat progress bars" stack>
-  <Flat />
+<Demo label="Flat progress bars" stack>
+  <Progress flat label="Uploading" value={40} />
+  <Progress flat label="Loading" />
 </Demo>
