@@ -302,9 +302,11 @@ A near-black shadow is hard to see on night blue, so dark mode has three shadow 
   - Wired up: buttons, checked checkboxes, radios and switches, the arc dial's face, the clock's
     hour tag, the range thumb, the file button, colour tiles, badges (a table's stickers too),
     the three-dot spinners, the blind's pull, the scroll and sidebar pills, sticky notes.
+  - A tinted folder's sheet and selected tab cast the shade of `--rkui-selected`, the solid colour
+    of their tint, since the tint's own shade sits too close to the page.
   - Checked chips and section buttons take `--rkui-section` where it is set.
   - Navy buttons and badges, tinted badges, chips and section buttons on the default ink, and
-    things without a fill (the page, panels, tints, the folder and the blind) cast
+    things without a fill (the page, panels, tints, the untinted folder and the blind) cast
     `--rkui-shadow-lit`: their darkened fills sit too close to the page.
   - An element's extrusion is its own (`--rkui-extrusion` doesn't inherit), so the controls on a
     sticky note cast their own shadows, not the note's.

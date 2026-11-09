@@ -91,6 +91,16 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
+    /* A tinted folder's sheet, and the selected tab that joins it, take the solid colour of their
+       tint: the tint's own shade is too close to the page. */
+    .rkui-folder--tinted > .rkui-folder-sheet,
+    .rkui-folder--tinted
+      > .rkui-folder-strip
+      .rkui-folder-tab:is(:has(:checked), [aria-current='page']) {
+      --rkui-shade-of: var(--rkui-selected);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
     /* sticky-note.css sets the note's --rkui-shade-of, for its fold. */
     .rkui-sticky-note {
       --rkui-extrusion: var(--rkui-shade);
