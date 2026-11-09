@@ -1,6 +1,6 @@
 ---
 title: Equation
-description: Display and inline maths from TeX, with numbered equations and references to them.
+description: Display and inline maths, written in TeX.
 group: Containers
 order: 79
 component: Equation
@@ -14,16 +14,14 @@ import Maths from '@oneonefour/rkui/components/maths/Maths.vue'
 import TryIt from '../../examples/equation/TryIt.vue'
 import tryItCode from '../../examples/equation/TryIt.vue?raw'
 
-KaTeX turns the TeX into HTML when the page is built, so the page runs no maths JavaScript. A site
-that uses these components installs `katex` and loads its stylesheet before rkui's:
+A site that uses these components installs `katex` and loads its stylesheet before rkui's:
 
 ```js
 import 'katex/dist/katex.min.css'
 import '@oneonefour/rkui/styles.css'
 ```
 
-Write the TeX in `tex` as a quoted attribute, which keeps backslashes, braces and underscores as
-they are. In MDX the slot would be Markdown, which changes them. A TeX error stops the build.
+The TeX goes in the `tex` attribute. A TeX error stops the build.
 
 <Demo label="Display equation" stack>
   <Equation
@@ -34,9 +32,7 @@ they are. In MDX the slot would be Markdown, which changes them. A TeX error sto
 
 ## Try it
 
-Type TeX to see it render. This demo runs KaTeX in the browser, so this page loads its
-JavaScript; a page with only `Equation` and `Maths` loads none. While the TeX has an error, the
-error shows under the box and the equation stays as it last rendered.
+Type TeX to see it render.
 
 <Demo vue={tryItCode} label="Equation that renders as you type" stack widget>
   <TryIt client:visible />
@@ -44,8 +40,7 @@ error shows under the box and the equation stays as it last rendered.
 
 ## Frames
 
-The bare equation is the default. `variant` puts it on a `panel`, beside a `rule` down the
-left, or on a raised dashed panel, `key`, for a key result.
+`variant` sets the frame: `panel`, `rule` or `key`.
 
 <Demo label="Equation frames" stack>
   <Equation variant="panel" tex="\dot{x} = \sigma (y - x)" />
@@ -71,8 +66,7 @@ left, or on a raised dashed panel, `key`, for a key result.
 
 ## References
 
-`EquationReference` links to an equation by its `id`, as a pill like the equation's number. The
-equation it jumps to flashes. `long` leads with an icon and the word, for the start of a sentence.
+`EquationReference` links to an equation by its `id`. `long` adds an icon and the word "Equation".
 
 <Demo label="Equation references" stack>
   <p>
@@ -96,8 +90,7 @@ equation it jumps to flashes. `long` leads with an icon and the word, for the st
 
 ## Colour-coded terms
 
-`\teal{…}` puts the hue's tint behind a term. Teal, yellow, navy, green, sky, coral, grape,
-tangerine, lilac and apricot each have one.
+`\teal{…}`, `\coral{…}` and the other palette hues each tint a term.
 
 <Demo label="Colour-coded terms" stack>
   <Equation tex="\frac{\partial E}{\partial t} = \teal{-\nabla \cdot \mathbf{F}} + \coral{Q} - \navy{\varepsilon}" />
@@ -105,8 +98,7 @@ tangerine, lilac and apricot each have one.
 
 ## Long equations
 
-An equation too wide for the column scrolls sideways (see [Scroll](../scroll/)). Tab to it and use
-the arrow keys, or swipe. `dots="pill"` puts the dots at its edges in pills.
+An equation too wide for its column scrolls sideways (see [Scroll](../scroll/)).
 
 <Demo label="Long equation" stack>
   <Equation tex="\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y} + w \frac{\partial u}{\partial z} - f v = -\frac{1}{\rho} \frac{\partial p}{\partial x} + \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2} \right) \tag{6}" />

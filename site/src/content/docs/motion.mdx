@@ -1,6 +1,6 @@
 ---
 title: Motion
-description: When things move, how long they take, how they ease, and how a reader pauses them.
+description: The motion tokens, and the Motion component that pauses animations.
 group: Foundations
 order: 13
 ---
@@ -21,36 +21,15 @@ import Spinner from '@oneonefour/rkui/components/spinner/Spinner.vue'
 import Dots from '@oneonefour/rkui/components/spinner-dots/Dots.vue'
 import Flask from '@oneonefour/rkui/components/water/Flask.vue'
 import Loader from '@oneonefour/rkui/components/loader/Loader.vue'
+import TextToCome from '../../components/TextToCome.astro'
 
-Things move to explain: to answer the reader's input, to show work under way, or to show how a
-change happens. Nothing moves for decoration. This page covers the timing tokens, the easing
-curves, reduced motion, and the Motion component, which gives a group of animations a Pause
-button.
-
-## What never moves
-
-- Readable text, the layout and the scroll position. Smooth scrolling is only for jumps within the
-  page. A few moves carry text with them, briefly and in answer to the reader: a drawer's slam
-  jolts the card around it, text and all, by about 2px; a newly checked Segmented option and an
-  opening Alert pop; and a Range's value rides over its thumb.
-- The light, the outline width and the focus band.
-- Nothing turns while it casts a shadow, so shadows always fall away from the light. Parts that
-  turn have no shadow: the spinner's wedge, the dial's notch and the clock's hands.
+<TextToCome />
 
 ## Input responses
 
-An input response starts in the same frame as the input, eases with plain `ease`, and plays once.
-It never plays when the page loads: an option that is checked on load shows checked at once. Its
-length is a duration token:
-
-- `--rkui-duration-fast`, 120ms: hover and press.
-- `--rkui-duration-spring`, 180ms: toggles and snapping.
-- `--rkui-duration-slide`, 320ms: travel and panels.
-
-Clickable things lift on hover and sink on press; things that can't be clicked stay still. Two
-options lift on hover without a click: a Table's `lift` and a StickyNote's `animated`. A Logo with
-no link doesn't lift either: it plays its motifs once as the page loads, then again while the
-pointer is over it.
+- `--rkui-duration-fast`: 120ms
+- `--rkui-duration-spring`: 180ms
+- `--rkui-duration-slide`: 320ms
 
 <Demo vue={responseCode} label="A button's input response, and the same under reduced motion">
   <Response />
@@ -58,32 +37,16 @@ pointer is over it.
 
 ## Ambient loops
 
-An ambient loop starts by itself and runs while a state lasts, until the state ends or the reader
-pauses it. Every loop in rkui is timed with a loop token, one cycle per token. A loop that steps
-between poses, such as a hop or a bounce, holds still for at least a third of its cycle; one that
-travels steadily, such as a turn or a rolling wave, never stops. Under reduced motion a loop that
-shows a state fades instead (below).
-
-- `--rkui-loop-quick`, 0.6s: a hop, or a stripe's march.
-- `--rkui-loop-short`, 0.9s: small busy marks.
-- `--rkui-loop-steady`, 1.2s: a turn, or a rolling wave.
-- `--rkui-loop-medium`, 1.8s: a circuit, and the reduced-motion fade.
-- `--rkui-loop-long`, 2.4s: fills and sloshes.
-- `--rkui-loop-panel`, 4s: large areas and diagrams.
+- `--rkui-loop-quick`: 0.6s
+- `--rkui-loop-short`: 0.9s
+- `--rkui-loop-steady`: 1.2s
+- `--rkui-loop-medium`: 1.8s
+- `--rkui-loop-long`: 2.4s
+- `--rkui-loop-panel`: 4s
 
 ## Easing
 
-- `ease` for input responses, `linear` for steady travel, `ease-out` going up and `ease-in` coming
-  down under gravity, and `ease-in-out` with `alternate` for fills.
-- `--rkui-ease-spring` recovers from a squash or a press.
-- `--rkui-ease-snap` jumps to a new place or state, with one visible overshoot of about 4%.
-
-There are no other curves and no elastic easing, with two exceptions:
-
-- the ring spinner's wedge eases each half turn with its own pair of curves, so it slows over the
-  top and speeds through the bottom without a jerk;
-- a drawer's tray opens with `ease-out` and closes with `ease-in`, like a drawer pulled out and
-  pushed home.
+The library's two curves are `--rkui-ease-spring` and `--rkui-ease-snap`.
 
 <Demo vue={easingCode} label="One hop in each easing, over one --rkui-loop-medium cycle" stack>
   <Easing />
@@ -91,13 +54,7 @@ There are no other curves and no elastic easing, with two exceptions:
 
 ## Toon phases
 
-A move winds up, goes, overshoots and settles, with holds between. A sequence takes equal steps of
-0.6 to 1s and ends on a held step.
-
-- **Squash:** up to 1.3 × 0.7 on impact, 0.8–0.9 × 1.1–1.25 in flight, and 0.95 × 1.05 to settle.
-  The area stays within about 10%, pinned to the point of contact. The library's `rkui-squash`
-  keyframes do this.
-- **Overshoot:** one swing only, 10% at most, from the snap curve or one keyframe past the target.
+<TextToCome />
 
 <Demo vue={squashCode} label="Squash and settle with rkui-squash">
   <Squash />
@@ -105,9 +62,7 @@ A move winds up, goes, overshoots and settles, with holds between. A sequence ta
 
 ## Stagger
 
-Neighbours start `--rkui-stagger` (0.15s) apart, the nth one `calc(n * var(--rkui-stagger))` after
-the first, in reading order or in the order a cause travels. An entrance spreads over 0.6s at most,
-and staggered loops share one period.
+`--rkui-stagger` is 0.15s.
 
 <Demo
   vue={staggerCode}
@@ -118,16 +73,9 @@ and staggered loops share one period.
 
 ## Reduced motion
 
-When the reader asks for reduced motion (`prefers-reduced-motion: reduce`):
+Under `prefers-reduced-motion: reduce` the duration tokens become 0ms.
 
-- the duration tokens become 0ms and the press and lift offsets 0px, so a transition timed with
-  them happens at once and only the shadow changes;
-- loops that show a state (spinners, loaders, progress bars, water and pending panels) stay in
-  place and fade in and out, with `rkui-spinner-fade` over `--rkui-loop-medium`;
-- loops that only illustrate something stop.
-
-The loop tokens stay the same, so each looping animation has its own `prefers-reduced-motion`
-rule, as each loop on this page does.
+<TextToCome />
 
 <Demo vue={reducedCode} label="The hop and the bounce under reduced motion">
   <Reduced />
@@ -135,15 +83,8 @@ rule, as each loop on this page does.
 
 ## Pausing: the Motion component
 
-Anything that moves by itself for more than five seconds, other than a loader, needs a way to
-pause it (WCAG 2.2.2). Wrap it in `<Motion>`, which puts a Pause button above it. While Pause is
-pressed, every CSS animation inside the group pauses, including ones the page writes itself;
-animations elsewhere on the page keep running. A group inside another pauses with it, and its own
-Pause button pauses only itself.
-
-Motion works without JavaScript, so in an Astro page it needs no `client:` directive. It pauses CSS
-animations only: transitions, animations started from a script (`element.animate()`), SVG
-`<animate>` and canvas drawing keep running.
+`<Motion>` puts a Pause button above its contents that pauses their CSS animations. It needs no
+JavaScript.
 
 <Demo label="A Motion group with its Pause button">
   <Motion>
@@ -158,14 +99,4 @@ animations only: transitions, animations started from a script (`element.animate
 
 ## Your own animations
 
-- Time transitions with the duration tokens, so that reduced motion stops them.
-- Time loops with the loop tokens, and give each one a `prefers-reduced-motion` rule.
-- Move a shadow's offsets with `--rkui-shadow-dx` and `--rkui-shadow-dy`, never fixed numbers, and
-  multiply lengths that go with a shadow by `--rkui-shadow-depth`.
-- Animate `transform` and `opacity`, and never animate the layout in a loop. The one exception in
-  rkui is an indeterminate progress bar, which moves its stripes with `background-position`: a
-  native progress bar has no part that `transform` could move.
-- Where two pieces meet, move them with inset offsets rather than `translate`: a `translate`
-  transition can open a hairline seam between them.
-- Colour a chart or canvas library's marks with the tokens, and turn off its own animations or time
-  them with the tokens.
+<TextToCome />

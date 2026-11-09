@@ -20,3 +20,17 @@ export function needsClientVisible(component, attributes) {
   if (component === 'CodeBlock') return attributes.copy !== 'never'
   return INTERACTIVE.has(component)
 }
+
+/**
+ * When a component needs `client:visible`, for its page's badge: '' when it always does, the
+ * options that need it ('with ticks or value-display'), or undefined when it never does. Keep it
+ * in step with needsClientVisible() above.
+ * @param {string} component the component's name, e.g. 'Range'
+ * @returns {string | undefined}
+ */
+export function clientVisibleWhen(component) {
+  if (component === 'Range') return 'with ticks or value-display'
+  if (component === 'ColorPicker') return 'with custom'
+  if (component === 'CodeBlock') return 'unless copy="never"'
+  return INTERACTIVE.has(component) ? '' : undefined
+}

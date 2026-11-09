@@ -12,8 +12,7 @@ import Alert from '@oneonefour/rkui/components/alert/Alert.vue'
 import Button from '@oneonefour/rkui/components/button/Button.vue'
 import InfoIcon from '@oneonefour/rkui/icons/info.vue'
 
-Click the button to open the alert. The page behind it blurs, stays still and can't be used until
-it closes, and Escape closes it.
+The button opens the alert; Escape closes it.
 
 <Demo label="Alert with one button">
   <Button command="show-modal" commandfor="alert-basic">
@@ -29,9 +28,7 @@ it closes, and Escape closes it.
 
 ## An answer it must have
 
-With `closedby="none"`, Escape leaves it open, so one of its buttons must close it. The button's
-`value` becomes the dialog's `returnValue`, which a script reads on its `close` event. `autofocus`
-starts focus on the safer button.
+With `closedby="none"`, Escape leaves it open, so one of its buttons must close it.
 
 <Demo label="Alert that waits for an answer">
   <Button command="show-modal" commandfor="alert-answer">
@@ -67,8 +64,8 @@ starts focus on the safer button.
 
 ## From a script
 
-A script opens an alert with `document.getElementById('alert-basic').showModal()`, as it would
-call `alert()`, and closes it with `close()`.
+A script opens an alert with `showModal()` and closes it with `close()`. The closing button's
+`value` becomes the dialog's `returnValue`.
 
 ## Reference
 

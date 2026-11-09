@@ -13,9 +13,7 @@ import Tab from '@oneonefour/rkui/components/folder/Tab.vue'
 import StepFolder from '../../examples/folder/StepFolder.vue'
 import stepCode from '../../examples/folder/StepFolder.vue?raw'
 
-Each `Tab` is one tab, and its slot is that tab's panel. Click a tab, or move between them with the
-arrow keys. The first tab starts selected; mark another `selected` to start there. Each tab is a
-native radio, so Folder needs no JavaScript.
+Each `Tab` is one tab, and its slot is that tab's panel. Mark a tab `selected` to start there.
 
 <Demo label="Folder" stack>
   <Folder label="Topics">
@@ -90,8 +88,7 @@ native radio, so Folder needs no JavaScript.
 
 ## Scroll
 
-Tabs that don't fit scroll, with dots at the strip's ends; `dots="pill"` puts them in pills (see
-[Scroll](../scroll/)).
+Tabs that don't fit scroll (see [Scroll](../scroll/)).
 
 <Demo label="Narrow folder that scrolls" stack>
   <Folder label="Scroll" style="max-inline-size: 16rem">
@@ -261,9 +258,7 @@ Tabs that don't fit scroll, with dots at the strip's ends; `dots="pill"` puts th
 
 ## With v-model
 
-In a `.vue` file, `v-model` is the selected tab's index, so the widget can read and set it.
-
-The widget below is rendered with `client:visible`.
+In a `.vue` file, `v-model` is the selected tab's index, from 0.
 
 <Demo vue={stepCode} label="Folder with v-model" stack widget>
   <StepFolder client:visible />

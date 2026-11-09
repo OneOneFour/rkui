@@ -15,17 +15,13 @@ import staticCode from '../../examples/logo/Static.vue?raw'
 import Motifs from '../../examples/logo/Motifs.vue'
 import motifsCode from '../../examples/logo/Motifs.vue?raw'
 
-`Logo` renders the rkui logo as a home link, raised on the hard shadow. It lifts on hover and sinks
-when pressed.
-
 <Demo vue={liftCode} label="Logo">
   <Lift />
 </Demo>
 
 ## Motifs
 
-With `variant="motifs"`, hover and keyboard focus play each tile's motif: the folded corner lifts,
-the wave rolls, the stripes march and the dot of the i hops.
+With `variant="motifs"`, hover and focus play each tile's motif.
 
 <Demo vue={motifsCode} label="Logo with motifs">
   <Motifs />
@@ -33,9 +29,7 @@ the wave rolls, the stripes march and the dot of the i hops.
 
 ## Without a link
 
-Leave out `href` and the logo is a plain `<span>` named "rkui". It doesn't pop, since it can't be
-clicked. It plays every motif once as the page loads, then again while the pointer is over it.
-Under reduced motion it stays still.
+Without `href` the logo is a plain `<span>` that doesn't pop.
 
 <Demo vue={staticCode} label="Logo without a link">
   <Static />

@@ -80,7 +80,7 @@ article > .rkui-logo {
   margin-block-end: var(--rkui-space-5);
 }
 
-/* A component page's chips under its title: whether it uses JavaScript, and its helper script. */
+/* A component page's chips under its title: when it needs client:visible, and its helper scripts. */
 .docs-chips {
   display: flex;
   flex-wrap: wrap;
@@ -98,13 +98,6 @@ article > .rkui-logo {
   outline: var(--rkui-focus-width) solid var(--rkui-focus);
   outline-offset: var(--rkui-focus-offset);
   background: none;
-}
-
-/* A browser's logo on a helper script's badge, flat in the badge's text colour. */
-.docs-browser-logo {
-  inline-size: 1em;
-  block-size: 1em;
-  fill: currentColor;
 }
 
 .docs-lede {

@@ -24,9 +24,8 @@ The package isn't on npm yet.
 ### Astro
 
 Add Vue to the site (`npx astro add vue`). A site that uses CodeBlock also installs `shiki`
-(`^4.0.0`), which highlights the code: it is an optional peer, so npm leaves it out. Add this line
-to `src/env.d.ts`, so `astro check` accepts the form and link attributes rkui components hand on to
-their native elements:
+(`^4.0.0`), an optional peer. Add this line to `src/env.d.ts`, so `astro check` accepts the
+attributes rkui components hand on to their native elements:
 
 ```ts
 /// <reference types="@oneonefour/rkui/astro-attributes" />
@@ -35,10 +34,9 @@ their native elements:
 In the layout, import the stylesheet, inline the head scripts at the top of `<head>`, and import
 `enhance.js` in a script at the end of `<body>`:
 
-- `theme-init.js` applies the reader's stored light or dark choice before the page paints;
-- `table-init.js` keeps a table that is in view on load blank until its entrance plays;
-- <a id="helper-scripts"></a>`enhance.js` loads every small helper script: browser fallbacks and
-  small extras for the components that need no JavaScript.
+- `theme-init.js` applies the stored light or dark theme before the page paints;
+- `table-init.js` holds back a table's entrance until it plays;
+- <a id="helper-scripts"></a>`enhance.js` loads every helper script (`*-enhance.js`).
 
 ```astro
 ---
@@ -66,8 +64,7 @@ import tableInit from '@oneonefour/rkui/head-scripts/table-init.js?raw'
 </html>
 ```
 
-An interactive component, such as Stepper, gets `client:visible`; without it, it renders its
-markup and stays still. Every other component ships no JavaScript.
+A component that runs in the browser, such as Stepper, gets `client:visible`.
 
 ```astro
 <Stepper client:visible label="Quantity" value="3" />
@@ -75,10 +72,9 @@ markup and stays still. Every other component ships no JavaScript.
 
 ### Fenced code and maths in MDX
 
-rkui's Astro integration renders Markdown's own syntax in MDX files with rkui's components, with no
-tags to write: a fenced code block as CodeBlock, `$…$` as Maths and `$$…$$` as Equation. The site
-installs `shiki` for the code and `katex` for the maths, and loads KaTeX's stylesheet before
-rkui's ([Equation](equation/)).
+rkui's Astro integration renders, in MDX files, a fenced code block as CodeBlock, `$…$` as Maths and
+`$$…$$` as Equation. It needs `shiki` for the code and `katex` for the maths, with KaTeX's
+stylesheet loaded before rkui's ([Equation](equation/)).
 
 ```js
 // astro.config.js
@@ -106,22 +102,18 @@ print('Hello')
 
 - A fence's language is CodeBlock's `lang` (`plaintext` when there is none), and the rest of its
   first line is the `label`.
-- Each fence's CodeBlock gets `client:visible`, for its copy button.
-- `rkui({ code: { copy: 'hover' } })` gives every fence's CodeBlock those attributes, and
-  `code: false` or `maths: false` leaves fences or dollars as Markdown has them.
+- `rkui({ code: { copy: 'hover' } })` gives every fence's CodeBlock those attributes; `code: false`
+  or `maths: false` turns either off.
 - `\$` is a dollar sign in text.
-- An equation that an EquationReference links to needs an `id`, so it is written as a tag:
+- An equation that an EquationReference links to is written as a tag, with an `id`:
   `<Equation id="eq-flow" tex="…" />`.
-- The integration adds a plugin to Sätteri, Astro's Markdown processor, on `markdown.processor`,
-  which MDX inherits. With `mdx({ processor })` or `mdx({ extendMarkdownConfig: false })`, MDX has
-  a processor of its own, so fences and dollars stay as they are and the build warns: move those
-  plugins to `markdown.processor` instead. `.md` files are left as they were, dollars included.
+- `.md` files are left as they are.
 
 ### Plain HTML
 
 Copy the package's `dist/` folder into the site. Paste `theme-init.js` and `table-init.js` (from
-`src/head-scripts/`) inline at the top of `<head>`, link `rkui.css`, and load `rkui.js`, which
-holds the helper scripts and the custom elements, such as `<rkui-stepper>`.
+`src/head-scripts/`) inline at the top of `<head>`, link `rkui.css`, and load `rkui.js`, which holds
+the helper scripts and the custom elements, such as `<rkui-stepper>`.
 
 ```html
 <head>
@@ -157,8 +149,6 @@ Each component is one Vue file, written the same way in an Astro page, MDX and a
   <Button href="#">A link that looks like a button</Button>
 </Demo>
 
-## Coming next
-
-The Astro integration will also add the stylesheet and the theme script for you.
+## Components
 
 <ComponentTable />

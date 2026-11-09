@@ -1,13 +1,10 @@
 ---
 /**
- * One badge for each of the library's helper scripts a component uses (helper-scripts.js), saying
- * what the script does and linking to the setup section. A script that only matters in one browser
- * shows that browser's logo from Simple Icons, flat in the badge's text colour. Nothing when the
- * component uses none.
+ * One badge for each of the library's helper scripts a component uses (helper-scripts.js), named
+ * by its file and linking to the setup section. Nothing when the component uses none.
  *
  * @param component the component's name, e.g. 'Scroll'
  */
-import { siSafari } from 'simple-icons'
 import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
 import { helpersFor } from '../lib/helper-scripts.js'
 import { link } from '../lib/pages'
@@ -17,20 +14,10 @@ interface Props {
 }
 
 const { component } = Astro.props
-const LOGOS: Record<string, { path: string }> = { safari: siSafari }
-const about =
-  "Each helper script is a browser fallback or a small extra the component works without. import '@oneonefour/rkui/enhance.js' loads every helper script, and rkui.js includes them."
 ---
 
-{helpersFor(component).map(({ script, label, browser }) => (
-  <a class="docs-chip-link" href={link('#helper-scripts')} title={`${script}. ${about}`}>
-    <Badge>
-      {browser && (
-        <svg class="docs-browser-logo" viewBox="0 0 24 24" aria-hidden="true">
-          <path d={LOGOS[browser].path} />
-        </svg>
-      )}
-      {label}
-    </Badge>
+{helpersFor(component).map((script) => (
+  <a class="docs-chip-link" href={link('#helper-scripts')}>
+    <Badge>{script}</Badge>
   </a>
 ))}

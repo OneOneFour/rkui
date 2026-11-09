@@ -1,6 +1,6 @@
 ---
 title: Table
-description: A data table on a toon sheet, with a header band, ruled rows and sticker cells.
+description: A data table with a header band and ruled rows.
 group: Containers
 order: 78
 component: Table
@@ -92,10 +92,9 @@ import XIcon from '@oneonefour/rkui/icons/x.vue'
   </Table>
 </Demo>
 
-A table wider than its sheet scrolls sideways inside it, with dots at the edges; `dots="pill"` puts
-them in pills (see [Scroll](../scroll/)).
-`bar` keeps the scrollbar in view instead, with no dots; a plain HTML page writes it as the class
-`rkui-scroll--bar` on the scroll region.
+## Scrollbar
+
+`bar` keeps the scrollbar in view, with no dots.
 
 <Demo label="Table with a scrollbar that stays" stack>
   <Table caption="Lorenz parameters" hue="sky" bar style="max-inline-size: min(24rem, 100%)">

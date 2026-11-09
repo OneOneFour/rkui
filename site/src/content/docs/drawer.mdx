@@ -13,6 +13,7 @@ import Card from '@oneonefour/rkui/components/card/Card.vue'
 import Cabinet from '@oneonefour/rkui/components/drawer/Cabinet.vue'
 import Drawer from '@oneonefour/rkui/components/drawer/Drawer.vue'
 import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
+import TextToCome from '../../components/TextToCome.astro'
 
 <Demo label="Drawer in a card">
   <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
@@ -53,6 +54,8 @@ import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
 </Demo>
 
 ## Exclusive cabinet
+
+With `exclusive`, opening one drawer closes the others.
 
 <Demo label="Cabinet with one drawer open at a time">
   <div style="min-inline-size: 0; padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
@@ -99,7 +102,7 @@ import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
 
 ## Colour
 
-With `hue`, a palette hue or a hex code, the drawer's tray, or the blind's screen, takes the hue's pale tint, and the pull, and the blind's hem, its solid fill. The text inside keeps the page's text colour.
+`hue` takes a palette hue or a hex code.
 
 <Demo label="Drawers and blinds in colour">
   <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
@@ -151,7 +154,9 @@ With `hue`, a palette hue or a hex code, the drawer's tray, or the blind's scree
 
 ## On other sides
 
-A drawer pulls out from the edge `placement` names. On top it comes first in its parent. On the left and right it hangs beyond the parent's side, as tall as the parent, so the parent's content stays put: leave room beside the parent for its handle and its tray. The tray opens as wide as its contents, up to `--rkui-drawer-width` (`min(12rem, 35vw)` when left out). A card holding one doesn't clip it; another parent needs `position: relative`, and mustn't clip it either.
+`placement` sets the edge the drawer pulls out from.
+
+<TextToCome />
 
 <Demo label="Drawers on the top, left and right">
   <div style="overflow-x: auto; display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
@@ -205,7 +210,9 @@ A drawer pulls out from the edge `placement` names. On top it comes first in its
 
 ## Remote
 
-A remote drawer is opened by a button elsewhere on the page, with no JavaScript: the button's `popovertarget` names the drawer's `id`, and the browser tells screen readers whether it is open. The drawer's own front is no button: it shows only an arrow, and a blind's cord ends in an empty ring. A remote drawer always starts shut; a button inside it can shut it with `popovertargetaction="hide"`. With the helper script, Escape shuts it too, wherever the focus is, and when it shuts with the focus inside, the focus goes back to the button that opens it.
+With `remote`, a button whose `popovertarget` names the drawer's `id` opens and shuts it.
+
+<TextToCome />
 
 <Demo label="Drawer and blind opened by buttons elsewhere">
   <div style="display: grid; gap: var(--rkui-space-4); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
@@ -259,7 +266,9 @@ A remote drawer is opened by a button elsewhere on the page, with no JavaScript:
 
 ## Over the page
 
-With `overlay` a drawer on the top or bottom hangs over what lies beyond its parent's edge instead of pushing it away, with its own fill, outline and shadow, as one on the left or right always does. It is placed against the edge of its containing block, so give the parent `position: relative`, and don't let the parent clip it (a card does, so this suits a bar or a panel). It is as wide as the parent; set its `inset` to make it narrower or move it along the edge. The docs site's settings drawer is one, opened by the Settings button in the top bar.
+With `overlay`, a drawer on the top or bottom hangs over the page instead of pushing it away.
+
+<TextToCome />
 
 <Demo label="Drawer hanging over the page">
   <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">

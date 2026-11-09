@@ -15,6 +15,7 @@ import Segmented from '@oneonefour/rkui/components/segmented/Segmented.vue'
 import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.vue'
 import { onHue, type Hue } from '@oneonefour/rkui/shared/hues.ts'
 import Swatch from './Swatch.astro'
+import TextToCome from './TextToCome.astro'
 
 /** A colour block: the token it shows and the token its text is set in, both without `--rkui-`. */
 interface Swatch {
@@ -127,11 +128,7 @@ const CODE: { token: string; job: string }[] = [
 
   <div class="auxiliary">
     <h2>Panels and shading</h2>
-    <p class="note">
-      The panel and its tab follow the page palette. The inset's grey step is its floor 60% of the
-      way to the outline colour. Stripe is translucent, the outline colour over whatever it crosses,
-      shown over the page colour.
-    </p>
+    <TextToCome />
     <div class="hues">
       {PANELS.map(({ token, text, job, floor }) => (
         <div class="column panel" style={floor && `--rkui-recess-floor: var(--rkui-${floor})`}>
@@ -189,10 +186,6 @@ const CODE: { token: string; job: string }[] = [
 
   .auxiliary .column.panel {
     grid-template-rows: 7rem auto;
-  }
-
-  .note {
-    margin: 0 0 var(--palette-gap);
   }
 
   .sample {

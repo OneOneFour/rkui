@@ -8,6 +8,7 @@ component: Scroll
 
 import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
+import TextToCome from '../../components/TextToCome.astro'
 import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
 import Table from '../../examples/scroll/Table.vue'
 import tableCode from '../../examples/scroll/Table.vue?raw'
@@ -16,12 +17,7 @@ import barCode from '../../examples/scroll/Bar.vue?raw'
 import Looks from '../../examples/scroll/Looks.vue'
 import looksCode from '../../examples/scroll/Looks.vue?raw'
 
-Every scrollbar on the page takes the toon colours, a yellow thumb on a raised track, in the
-browser's own shape. Scroll is for the page's own wide content, such as a table or a diagram: a
-region the keyboard can reach and scroll, named for screen readers. Three dots at each edge show
-there is more to see, and a toon scrollbar, a pill track with an outlined thumb, shows on hover and
-focus. Code blocks, folder tabs, tables and sidebars have the same scrolling built in, so they
-don't need wrapping.
+<TextToCome />
 
 <Demo vue={tableCode} label="Scroll region with dots" stack>
   <Table />
@@ -29,8 +25,7 @@ don't need wrapping.
 
 ## Always-on bar
 
-`bar` keeps the scrollbar in view, with no dots, for content with side borders of its own; a plain
-HTML page writes it as the class `rkui-scroll--bar`. CodeBlock and Table take the same `bar`.
+`bar` keeps the scrollbar in view, with no dots.
 
 <Demo vue={barCode} label="Scroll region with a bar" stack>
   <Bar />
@@ -38,17 +33,13 @@ HTML page writes it as the class `rkui-scroll--bar`. CodeBlock and Table take th
 
 ## Plain or pill dots
 
-`dots="pill"` puts the dots in a raised pill that slides in from the edge. To give the whole site
-pills, set `data-rkui-dots="pill"` on `<html>` or a container instead: sidebars, code blocks, folder
-tabs and tables take it too, and `data-rkui-dots="plain"` switches back inside it.
+`dots="pill"` puts the dots in a raised pill.
 
 <Demo vue={looksCode} label="Plain and pill dots" stack>
   <Looks />
 </Demo>
 
-Every component that scrolls takes the same `dots`: CodeBlock, Table, Folder, Pagination, Sidebar
-and Equation as well as Scroll. It writes `data-rkui-dots` on the component's outer element, so a
-plain HTML page sets the attribute there.
+CodeBlock, Table, Folder, Pagination, Sidebar and Equation take the same `dots`.
 
 <Demo label="Code block with pill dots" stack>
   <CodeBlock lang="shell" copy="never" dots="pill">
@@ -58,11 +49,7 @@ plain HTML page sets the attribute there.
 
 ## Scrollbar colours
 
-The scrollbar's colours pass down: set them on `<html>`, a container or a component, and every
-scroll region inside it takes them. They are `--rkui-scroll-track`, `--rkui-scroll-track-edge`,
-`--rkui-scroll-thumb`, `--rkui-scroll-thumb-edge` and `--rkui-scroll-bar-size` for the scrollbar,
-and `--rkui-pill-fill`, `--rkui-pill-edge` and `--rkui-pill-dot` for the pill. Every other
-scrollbar, such as the page's own or a textarea's, takes the ones set on `<html>`.
+<TextToCome />
 
 ## Reference
 

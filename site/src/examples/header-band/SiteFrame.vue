@@ -56,10 +56,7 @@ import Rocket from '@oneonefour/rkui/icons/rocket.vue'
           <h2>A page title, in its section's colour</h2>
         </HeaderBand>
         <div class="page-body">
-          <p>
-            The page sets its section hue once. The header band, the current link and the chosen
-            chip all take it, so the colour says which part of the site this is.
-          </p>
+          <p>Pack my box with five dozen liquor jugs. How vexingly quick daft zebras jump.</p>
           <ChipGroup legend="Topic">
             <Chip value="all" checked>All</Chip>
             <Chip value="one">One</Chip>
