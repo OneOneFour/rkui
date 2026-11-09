@@ -65,8 +65,10 @@ Rob King's toon component library. Rob reviews every diff by hand.
 - **Enhance scripts:** a `<name>-enhance.js` beside the component or the CSS it serves adds what a
   no-JavaScript component can't do in CSS: a browser fallback (it then does nothing where the CSS
   already works), or a small optional extra the component works without (a folder strip's bar
-  and collapse, the Table's entrance). Plain JavaScript (no Vue), with as few listeners and observers as it
-  needs, delegated or shared where it can be. It finds its elements with `eachElement()`
+  and collapse, the Table's entrance). Plain JavaScript (no Vue), with as few listeners and
+  observers as it needs. A script that only reacts to events uses one delegated listener on the
+  document (File's chosen name, the Safari focus fix), which also covers elements a Vue app adds
+  later. A script that must set elements up finds them with `eachElement()`
   (`src/shared/each-element.js`), so it also sets up ones a Vue app adds after it runs. A new script
   joins the list in `src/enhance.js` (the build checks the list) and in
   `site/src/lib/helper-scripts.js`; sites, the docs layout and `dist/rkui.js` load them through
