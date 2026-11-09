@@ -45,8 +45,10 @@ For coral, set `--rkui-coral-solid` and `--rkui-on-coral`, as small text sits on
 
 ## In a site frame
 
-The band with a Sidebar beside it: the plain look on a sky panel, in slab type, where each link
-has its section's colour (`hue`) and an icon, and the current one is filled with it. The frame
+The band with a Sidebar beside it: the plain look on a sky panel, in slab type with bold links,
+where each link has its section's colour (`hue`) and an icon, and the current one is filled with
+it. When the frame is narrow and the nav stacks above the page, its links flow into columns
+(`columns`). The frame
 itself is the site's own layout, a few lines of CSS grid in the example's `<style>`: the nav column
 beside the page, stacked above it when the frame is narrow. On a real page the column would also
 be `position: sticky` with a `max-block-size` of `100dvh`, so it scrolls on its own.

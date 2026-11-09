@@ -22,6 +22,8 @@ import Note from '../../examples/sidebar/Note.vue'
 import noteCode from '../../examples/sidebar/Note.vue?raw'
 import EveryLook from '../../examples/sidebar/EveryLook.vue'
 import everyLookCode from '../../examples/sidebar/EveryLook.vue?raw'
+import SelectedSlab from '../../examples/sidebar/SelectedSlab.vue'
+import selectedSlabCode from '../../examples/sidebar/SelectedSlab.vue?raw'
 import Flask from '@oneonefour/rkui/icons/flask.vue'
 import House from '@oneonefour/rkui/icons/house.vue'
 import PenNib from '@oneonefour/rkui/icons/pen-nib.vue'
@@ -29,7 +31,7 @@ import Rocket from '@oneonefour/rkui/icons/rocket.vue'
 
 Groups of links, each a child component. The page gives the sidebar its height; when its links
 don't fit, it scrolls, with hints at its edges and a scrollbar on hover and focus. `variant`
-picks the look; slab type, link colours and icons work with any of them. `dots="pill"` puts the
+picks the look; slab type, bold links, columns, link colours and icons work with any of them. `dots="pill"` puts the
 hints in pills, as the card's are (see [Scroll](../scroll/)).
 
 <Demo label="A short sidebar" stack>
@@ -92,6 +94,11 @@ A taped sticky note with sticking slab headings; the current page is an ink pill
 Each look also takes these:
 
 - `slab` on the Sidebar sets its header, headings and links in the slab serif.
+- `selected-slab` on the Sidebar sets only the current page's link in the slab serif, and the
+  other links in the UI font. Headings keep the look's own type.
+- `bold` on the Sidebar sets its links bolder (weight 600).
+- `columns` on the Sidebar lets each group's links flow into several columns when the sidebar is
+  wide, as when it stacks above the page on a phone; a narrow sidebar keeps one column.
 - `hue` on a SidebarLink gives the link its own colour, such as the section colour of the page it
   leads to. It fills the link's icon, and the link itself when it is the current page, in the
   look's own shape. Other links keep the page's text colour.
@@ -103,17 +110,25 @@ Each look also takes these:
   <EveryLook />
 </Demo>
 
+<Demo vue={selectedSlabCode} label="Every look with only the current page in slab type">
+  <SelectedSlab />
+</Demo>
+
 ## A site's own nav
 
-The plain look on a sky panel (`--rkui-sidebar-panel`), with slab type, a header, one group with
-no heading, and a colour and an icon for each link. The [header band](../header-band/) page shows
-it in a site frame.
+The plain look on a sky panel (`--rkui-sidebar-panel`), with slab type, bold links, a header, one
+group with no heading, and a colour and an icon for each link. With `columns` the links flow into
+columns here, where the sidebar is as wide as the demo; in a narrow column they stay in one. In a flex column,
+like this demo's, the sidebar needs an inline size, or the browser keeps the height of one column. The
+[header band](../header-band/) page shows it in a site frame.
 
 <Demo label="A site's own nav" stack>
   <Sidebar
     label="Site nav example"
     slab
-    style="--rkui-sidebar-panel: var(--rkui-sky-tint); padding-inline: var(--rkui-space-2); max-inline-size: 16rem"
+    bold
+    columns
+    style="--rkui-sidebar-panel: var(--rkui-sky-tint); padding-inline: var(--rkui-space-2); inline-size: 100%"
   >
     <Fragment slot="header">
       <strong style="font-size: var(--rkui-step-1)">Site name</strong>

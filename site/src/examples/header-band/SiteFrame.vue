@@ -19,7 +19,7 @@ import Rocket from '@oneonefour/rkui/icons/rocket.vue'
     style="--rkui-section: var(--rkui-coral-solid); --rkui-on-section: var(--rkui-on-coral)"
   >
     <div class="shell">
-      <Sidebar label="Example site" slab class="site-nav">
+      <Sidebar label="Example site" slab bold columns class="site-nav">
         <template #header>
           <strong class="site-name">Site name</strong>
           <span>A short tagline</span>

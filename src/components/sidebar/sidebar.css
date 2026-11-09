@@ -27,6 +27,11 @@
 
    With any look:
    .rkui-sidebar--slab     sets the header, headings and links in the slab serif;
+   .rkui-sidebar--selected-slab
+                           sets only the current page's link in the slab serif;
+   .rkui-sidebar--bold     bolder links (weight 600; the current page keeps its own);
+   .rkui-sidebar--columns  the links flow into columns when the sidebar is wide, one column
+                           when it is narrow;
    .rkui-sidebar-link--hue a link with its own colour, --rkui-sidebar-hue with --rkui-sidebar-on-hue
                            text, set in its style: it fills the link's icon, and the link itself
                            when it is the current page.
@@ -469,6 +474,22 @@
 /* Slab: the header, headings and links in the slab serif, in any look. */
 .rkui-sidebar--slab {
   font-family: var(--rkui-font-display);
+}
+
+/* Selected slab: only the current page's link in the slab serif. */
+.rkui-sidebar--selected-slab .rkui-sidebar-link[aria-current='page'] {
+  font-family: var(--rkui-font-display);
+}
+
+/* Bold: links at 600, in any look. :where() keeps the current page's own weight. */
+:where(.rkui-sidebar--bold) .rkui-sidebar-link {
+  font-weight: 600;
+}
+
+/* Columns: each group's links fill as many columns of at least 7.5rem as fit, so a narrow
+   sidebar keeps one. */
+.rkui-sidebar--columns .rkui-sidebar-list {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 7.5rem), 1fr));
 }
 
 /* A link with its own colour, in any look: its icon is filled with it, and as the current page

@@ -20,6 +20,11 @@ edges stay as options: `raised` (the outline and a hard shadow that doesn't lift
 slate fill) and `inset` (pushed in like a drawer's tray). Card's `hue` still only colours the
 shadow in the dark colour shadow mode.
 
+**Sidebar columns, bold links and selected slab** (Rob). Three more options that work with every
+look: `columns`, where each group's links flow into columns when the sidebar is wide and stay in
+one when it is narrow; `bold`, links at weight 600; and `selected-slab`, only the current page's
+link in the slab serif. The site nav demos use the first two, as the sections look did.
+
 **Block mode outlines** (Rob). In dark mode with `data-shadow="block"`, things with no fill of
 their own (inputs, chips, tiles, folder tabs, unchecked controls) take the near-black outline too,
 like the mockup's Surface card, though their edges are then hard to see on the dark page.
