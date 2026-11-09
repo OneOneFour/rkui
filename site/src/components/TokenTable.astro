@@ -1,0 +1,104 @@
+---
+/**
+ * A table of one group of tokens from a token file (tokens.js): each token's name, its value, and
+ * a sample drawn with it: a bar as long as a space, a corner in a radius, a border or a focus band
+ * as wide as a line width. A token with nothing to draw shows a dash.
+ *
+ * @param file the token file, e.g. 'space'
+ * @param group the comment above the group in that file, e.g. 'Spacing'
+ * @param caption the table's caption
+ */
+import Table from '@oneonefour/rkui/components/table/Table.vue'
+import { tokenGroup } from '../lib/tokens.js'
+
+interface Props {
+  file: string
+  group: string
+  caption: string
+}
+
+const { file, group, caption } = Astro.props
+const tokens = tokenGroup(file, group)
+
+/** The sample's class for a token, by its name; none for a token with nothing to draw. */
+function sampleFor(name: string): string | undefined {
+  if (name.startsWith('--rkui-space-')) return 'bar'
+  if (name.startsWith('--rkui-radius')) return 'corner'
+  if (name === '--rkui-outline-width') return 'border'
+  if (name === '--rkui-focus-width') return 'focus'
+  return undefined
+}
+---
+
+<Table caption={caption} small class="token-table">
+  <thead>
+    <tr>
+      <th scope="col">Token</th>
+      <th scope="col">Value</th>
+      <th scope="col">Sample</th>
+    </tr>
+  </thead>
+  <tbody>
+    {tokens.map(({ name, value }) => {
+      const sample = sampleFor(name)
+      return (
+        <tr>
+          <th scope="row">
+            <code>{name}</code>
+          </th>
+          <td>
+            <code>{value}</code>
+          </td>
+          <td>
+            {sample ? (
+              <span class={`sample sample--${sample}`} style={`--token: var(${name})`} />
+            ) : (
+              '—'
+            )}
+          </td>
+        </tr>
+      )
+    })}
+  </tbody>
+</Table>
+
+<style>
+  .token-table {
+    margin-block: var(--rkui-space-5);
+  }
+
+  .sample {
+    display: block;
+  }
+
+  .sample--bar {
+    inline-size: var(--token);
+    block-size: var(--rkui-space-4);
+    background: var(--rkui-sky);
+  }
+
+  .sample--corner,
+  .sample--border,
+  .sample--focus {
+    inline-size: var(--rkui-space-8);
+    block-size: var(--rkui-space-7);
+    border: var(--rkui-outline-width) solid var(--rkui-line);
+    background: var(--rkui-yellow);
+  }
+
+  .sample--corner {
+    border-radius: var(--token);
+  }
+
+  .sample--border {
+    border-width: var(--token);
+    border-radius: var(--rkui-radius);
+  }
+
+  .sample--focus {
+    margin: var(--rkui-focus-width);
+    border-radius: var(--rkui-radius);
+    outline: var(--token) solid var(--rkui-focus);
+    outline-offset: var(--rkui-focus-offset);
+  }
+</style>

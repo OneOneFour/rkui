@@ -1,0 +1,30 @@
+---
+title: Space and shape
+description: The spacing scale, the corner radii and the line widths.
+group: Foundations
+order: 12
+---
+
+import Demo from '../../components/Demo.astro'
+import TokenTable from '../../components/TokenTable.astro'
+
+## Spacing
+
+Padding, margins and gaps take these steps.
+
+<TokenTable file="space" group="Spacing" caption="Spacing" />
+
+## Radius and lines
+
+<TokenTable file="space" group="Shape" caption="Radius and line widths" />
+
+## In use
+
+A panel of your own takes the same tokens as the library's.
+
+<Demo label="A panel built from the tokens" stack>
+  <div style="display: grid; gap: var(--rkui-space-3); max-inline-size: 20rem; padding: var(--rkui-space-4); border: var(--rkui-outline-width) solid var(--rkui-line); border-radius: var(--rkui-radius); background: var(--rkui-raised); box-shadow: var(--rkui-shadow)">
+    <strong>Panel</strong>
+    <span>Padding space-4, gap space-3.</span>
+  </div>
+</Demo>
