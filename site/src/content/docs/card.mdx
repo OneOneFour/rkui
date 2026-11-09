@@ -1,0 +1,58 @@
+---
+title: Card
+description: A raised panel with a title and a body, optionally an image or one link.
+group: Containers
+order: 74
+component: Card
+---
+
+import Demo from '../../components/Demo.astro'
+import Card from '@oneonefour/rkui/components/card/Card.vue'
+
+`Card` is an `<article>` with a title and a body. On its own it is a static panel. With `href` the whole card is one link: the title is the link text, and there is a single tab stop.
+
+<Demo label="A static card">
+  <Card title="Field notes" meta="Updated today" style="inline-size: 20rem">
+    <p>Pack my box with five dozen liquor jugs.</p>
+  </Card>
+</Demo>
+
+## Linked
+
+<Demo label="A linked card">
+  <Card title="Field notes" href="#linked" meta="Updated today" style="inline-size: 20rem">
+    <p>The quick brown fox jumps over the lazy dog.</p>
+  </Card>
+</Demo>
+
+## Image
+
+The `image` slot sits above the body. Give it an `<img class="rkui-card-image">`, or any element with that class.
+
+<Demo label="Cards with an image">
+  <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-6)">
+    <Card title="Static" meta="Updated today" style="inline-size: 20rem">
+      <div slot="image" class="rkui-card-image" style="background: var(--rkui-teal-tint)"></div>
+      <p>Sphinx of black quartz, judge my vow.</p>
+    </Card>
+    <Card title="Linked" href="#image" meta="Updated today" style="inline-size: 20rem">
+      <div slot="image" class="rkui-card-image" style="background: var(--rkui-teal-tint)"></div>
+      <p>How vexingly quick daft zebras jump.</p>
+    </Card>
+  </div>
+</Demo>
+
+## Heading level
+
+`headingLevel` (2, 3 or 4) sets the title's heading, to fit the page outline. It is 3 when left out.
+
+<Demo label="Cards with heading levels">
+  <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-6)">
+    <Card title="Level 2" headingLevel={2} style="inline-size: 12rem">
+      <p>An h2 title.</p>
+    </Card>
+    <Card title="Level 4" headingLevel={4} style="inline-size: 12rem">
+      <p>An h4 title.</p>
+    </Card>
+  </div>
+</Demo>
