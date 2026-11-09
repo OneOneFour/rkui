@@ -205,7 +205,7 @@ back inside it.
 |---|---|---|---|
 | Theme | `data-theme` on `<html>` | `light`, `dark`, none = system | sets `color-scheme`; any container can set `color-scheme` itself |
 | Palette | `data-palette` | `cream`, `slate`, `greige` | redeclares page colours and their mixes |
-| Shadow | `data-shadow` | `slab`, `color` | `tokens/shadow-color.css`: `@scope` from `color` to `slab` |
+| Shadow | `data-shadow` | `slab`, `color`, `block` | `tokens/shadows.css` for `slab` and `block`; `tokens/shadow-color.css`: `@scope` from `color` to `slab` or `block` |
 | Depth | `data-depth` | `normal`, `deep` | `--rkui-shadow-depth` 1 or 1.5 |
 | Light | `style` on `<html>` | `--rkui-shadow-dx`/`-dy`, default 1, 1 | `<rkui-light-direction>` |
 
@@ -285,9 +285,9 @@ KaTeX renders at build time; there is no runtime maths JavaScript.
   drives every shadow and pop; glints sit opposite. SVG uses `drop-shadow()` from the same tokens,
   plus a second in `--rkui-shadow-edge`.
 
-### 4.2 Dark-mode shadows: slab and colour
+### 4.2 Dark-mode shadows: slab, colour and block
 
-A near-black shadow is hard to see on night blue, so dark mode has two shadow modes.
+A near-black shadow is hard to see on night blue, so dark mode has three shadow modes.
 - **The outlined slab is the default:** the shadow sits on a copy widened by the outline in
   `--rkui-shadow-edge`, cream in dark mode, transparent in light.
 - **Own-colour extrusion is a supported mode** (`data-shadow="color"`). In dark mode a raised
@@ -302,6 +302,9 @@ A near-black shadow is hard to see on night blue, so dark mode has two shadow mo
   - An element's extrusion is its own (`--rkui-extrusion` doesn't inherit), so the controls on a
     sticky note cast their own shadows, not the note's.
   - Without `@scope` or `light-dark()`, browsers keep the slab.
+- **Block is a rarely used mode** (`data-shadow="block"`): the slab with no rim, so the near-black
+  shadow sits straight on the page, as in the first mockup. `--rkui-shadow-edge` is transparent;
+  light mode is unchanged. Things with no fill keep their `--rkui-line-unfilled` outline.
 
 ### 4.3 Depth
 

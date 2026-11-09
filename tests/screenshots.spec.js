@@ -14,7 +14,7 @@ const SHOTS = [
     { path, theme: 'light', palette: 'cream', shadow: 'slab' },
     { path, theme: 'dark', palette: 'cream', shadow: 'slab' },
   ]),
-  // The palette page in every palette, and in dark mode with both shadow modes.
+  // The palette page in every palette, and in dark mode with every shadow mode.
   ...['slate', 'greige'].map((palette) => ({
     path: 'colors/',
     theme: 'light',
@@ -33,6 +33,7 @@ const SHOTS = [
     palette,
     shadow: 'color',
   })),
+  { path: 'colors/', theme: 'dark', palette: 'cream', shadow: 'block' },
   { path: 'old/', theme: 'light', palette: 'cream', shadow: 'slab' },
 ]
 

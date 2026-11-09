@@ -1,8 +1,8 @@
 /* The colour shadow mode: set data-shadow="color" on <html> or any container, and in dark mode
    each raised thing with a fill casts its hard shadow in that fill, darkened, instead of the
    outlined slab. Everything else casts --rkui-shadow-lit, lighter than the page. Light mode is
-   unchanged. data-shadow="slab" switches back inside it. Browsers without @scope or light-dark()
-   keep the slab, and Safari 26.0 to 26.3 keep it on checkboxes, radios and switches. */
+   unchanged. data-shadow="slab" or "block" switches back inside it. Browsers without @scope or
+   light-dark() keep the slab, and Safari 26.0 to 26.3 keep it on checkboxes, radios and switches. */
 
 /* An element's extrusion is its own: a child doesn't inherit it, so a note's shade never reaches
    the controls on it. */
@@ -12,7 +12,7 @@
 }
 
 @supports (color: light-dark(black, white)) {
-  @scope ([data-shadow='color']) to ([data-shadow='slab']) {
+  @scope ([data-shadow='color']) to ([data-shadow='slab'], [data-shadow='block']) {
     /* Declared on every element, so each one resolves its own --rkui-extrusion. The shadow tokens
        are built on every element too (shadows.css), from these. */
     * {

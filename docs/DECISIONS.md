@@ -60,7 +60,8 @@ The library holds no brand logos. The one logo it holds is its own (`Logo`).
 
 **Dark-mode shadows.** The outlined slab (option B) is the default; own-colour extrusion (option
 D) is a supported mode, `data-shadow="color"`. A near-black shadow is hard to see on night blue.
-Four options were tried at Gate 1b and narrowed to these two.
+Four options were tried at Gate 1b and narrowed to these two. Block, the slab with no rim
+(`data-shadow="block"`), is a third, rarely used mode, kept at Rob's request.
 
 **Unfilled buttons, pressed** (Gate 1b). They fill with `--rkui-raised`, so the near-black inset shows
 in dark mode. `--rkui-shadow-inset` is the pressed offset in `--rkui-line`, near-black in both themes.

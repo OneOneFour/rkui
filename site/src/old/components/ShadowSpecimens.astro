@@ -1,7 +1,7 @@
 ---
 /**
- * The two dark-mode shadow modes, the default slab and color, each on a few raised things: fills
- * that cast their own shade, and things that cast the lit shadow instead.
+ * The three dark-mode shadow modes, the default slab, color and block, each on a few raised things:
+ * fills that cast their own shade in color, and things that cast the lit shadow instead.
  *
  * @param theme the panel's theme, used to keep ids and names unique across the two panels
  */
@@ -22,6 +22,7 @@ const { theme } = Astro.props
 const MODES = [
   { mode: 'slab', title: 'data-shadow="slab" (the default)' },
   { mode: 'color', title: 'data-shadow="color"' },
+  { mode: 'block', title: 'data-shadow="block"' },
 ]
 const FILLS = ['navy', 'coral', 'grape', 'teal'] as const
 const KEYS = ['One', 'Two', 'Three']

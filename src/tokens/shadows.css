@@ -70,13 +70,20 @@
 }
 
 /* The shadow colours, the outlined slab. The edge is a light rim in dark mode, so the near-black
-   shadow shows on the page, and transparent in light mode. Set data-shadow="color" on <html> or
-   any container for the colour shadow mode (shadow-color.css), or "slab" to switch back inside
-   it. */
+   shadow shows on the page, and transparent in light mode. Set data-shadow on <html> or any
+   container for another dark-mode shadow mode: "block", or "color" (shadow-color.css). "slab"
+   switches back inside it. */
 :root,
 [data-shadow='slab'] {
   --rkui-shadow-color: var(--rkui-line);
   --rkui-shadow-edge: light-dark(transparent, var(--rkui-line-unfilled));
+}
+
+/* The block shadow mode: the slab with no rim, so in dark mode the near-black shadow sits straight
+   on the page. Light mode is unchanged. */
+[data-shadow='block'] {
+  --rkui-shadow-color: var(--rkui-line);
+  --rkui-shadow-edge: transparent;
 }
 
 /* Nothing moves under reduced motion; shadows still change. */
