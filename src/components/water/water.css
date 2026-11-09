@@ -41,12 +41,17 @@
   --rkui-wave-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 12' preserveAspectRatio='none'%3E%3Cpath d='M0 6Q10 0 20 6T40 6V12H0Z'/%3E%3C/svg%3E");
 
   position: absolute;
-  inset: 0 0 calc(-1 * var(--rkui-wave-height));
+  inset: 0;
   z-index: -1;
-  /* The top edge is the water's surface: level 0 puts the wave just below the host, 1 just
-     above it. */
+  /* The wave sits just above the top edge, its crests a quarter of the wave height below the top
+     of the wave and its troughs a quarter above the bottom. Level 0 puts the outlined crests just
+     below the host, so it shows empty; 1 puts the troughs at its top, so it shows full. */
   translate: 0
-    calc((1 - var(--rkui-water-level)) * 100% - var(--rkui-water-level) * var(--rkui-wave-height));
+    calc(
+      (1 - var(--rkui-water-level)) *
+        (100% + var(--rkui-outline-width) + 0.75 * var(--rkui-wave-height)) +
+        var(--rkui-water-level) * 0.25 * var(--rkui-wave-height)
+    );
   transition: translate var(--rkui-duration-slide) var(--rkui-ease-spring);
   pointer-events: none;
 }
@@ -91,11 +96,11 @@
 
 @keyframes rkui-water-rise {
   from {
-    --rkui-water-level: 0.1;
+    --rkui-water-level: 0.15;
   }
 
   to {
-    --rkui-water-level: 0.9;
+    --rkui-water-level: 1;
   }
 }
 
