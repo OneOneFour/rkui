@@ -56,10 +56,8 @@
     --rkui-note-coral: var(--rkui-coral-tint);
     --rkui-note-grape: var(--rkui-grape-tint);
 
-    --rkui-slate: #e7ebf3;
-    --rkui-slate-tab: #dbe0ea;
-    --rkui-slate-greige: #eae7e2;
-    --rkui-slate-greige-tab: #e0dcd6;
+    --rkui-panel: #f0ead7;
+    --rkui-panel-tab: #e6dfc8;
   }
 
   /* The light theme's shadows have no rim, whatever data-shadow and data-highlight say. */

@@ -23,7 +23,7 @@ interface Props {
    */
   tex: string
   /**
-   * The frame: 'panel' (a slate panel), 'rule' (a rule down the left) or 'key' (a raised dashed
+   * The frame: 'panel' (a panel), 'rule' (a rule down the left) or 'key' (a raised dashed
    * panel, for a key result); none when left out.
    */
   variant?: 'panel' | 'rule' | 'key'

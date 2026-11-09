@@ -114,15 +114,13 @@ vivid partner's tint is a stronger wash than the pale fill.
 | `--rkui-note-<hue>` | tint light, vivid fill dark | sticky notes (every hue but navy and teal); sky, lilac and apricot are their fill in both themes |
 | `--rkui-note-tape` | `--rkui-glint` 60% | sticky-note tape |
 | `--rkui-icon-fill-neutral` | `currentColor` 20% | quiet default fill for interface icons |
-| `--rkui-slate` / `--rkui-slate-tab` | `#e7ebf3` / `#dbe0ea`; dark `#2c323d` / `#333946` | code panels, shaded static cards, editor-tab strip |
-| `--rkui-slate-greige` / `-tab` | `#eae7e2` / `#e0dcd6`; dark `#35332e` / `#3d3a34` | greige code, opt-in |
+| `--rkui-panel` / `--rkui-panel-tab` | set by the page palette (§2.6) | code blocks, quotes, shaded static cards, the equation panel, inline code; the tab is the editor-tab strip and a nested quote |
 
 Syntax colours are deep steps: keyword `--rkui-navy-deep`, function `--rkui-teal-deep`, string
 `--rkui-green-deep`, number `--rkui-tangerine-deep`, comment `--rkui-muted`, through Shiki's `css-variables`
 theme. The language label is `--rkui-code-lang-color` (default `--rkui-muted`). The caption's mark
 comes from the site (the `logo` slot), else Phosphor's file-type icon for the language, else the
-file extension as grey text. Cool slate is the code
-panel under every palette; `.rkui-slate-greige` opts in to greige.
+file extension as grey text. Code sits on the page palette's panel.
 
 ### 2.4 Spacing and shape
 
@@ -163,16 +161,22 @@ Repeated mixes are named, so the docs page can show them:
 Cream is the default. Slate (cool grey) and greige (warm grey) are opt-ins on `<html>` or any
 container, and `"cream"` switches back inside one.
 
-| Palette | `--rkui-surface` (light / dark) | `--rkui-raised` (light / dark) |
-|---|---|---|
-| cream | `#f7f3e5` / `#1a1f2b` | `#fffaf0` / `#232a39` |
-| slate | `#f1f3f8` / `#1f232b` | `#f9fafc` / `#282d37` |
-| greige | `#f2f1ee` / `#252420` | `#faf9f8` / `#302e29` |
+| Palette (light / dark) | `--rkui-surface` | `--rkui-raised` | `--rkui-panel` | `--rkui-panel-tab` |
+|---|---|---|---|---|
+| cream | `#f7f3e5` / `#1a1f2b` | `#fffaf0` / `#232a39` | `#f0ead7` / `#272e3e` | `#e6dfc8` / `#2d3548` |
+| slate | `#f1f3f8` / `#1f232b` | `#f9fafc` / `#282d37` | `#e7ebf3` / `#2c323d` | `#dbe0ea` / `#333946` |
+| greige | `#f2f1ee` / `#252420` | `#faf9f8` / `#302e29` | `#eae7e2` / `#35332e` | `#e0dcd6` / `#3d3a34` |
 
-- Only the page colours change. The greys come from the code slates (light page 60% slate, 40%
-  white; raised 25% slate; dark page 70% slate, 30% black; raised 90% slate).
-- Code keeps the cool slate under every palette: on slate it sits the same luminance step from the
-  page as on cream, and on greige it differs in hue too.
+- Only the page colours and the panel change. The slate and greige pages come from their panels
+  (light page 60% panel, 40% white; raised 25% panel; dark page 70% panel, 30% black; raised 90%
+  panel).
+- The panel is one step from its page, with the page's hue and a little more chroma: in OKLCH
+  about 0.027 darker in light mode and 0.06 lighter in dark. The tab is the next step (about 0.033
+  darker, 0.028 lighter). Cream's panel is built the same way from the cream page, so it reads as
+  a panel without turning grey. Each panel is the same contrast from its page in every palette
+  (about 1.08:1 light, 1.22:1 dark).
+- There is one panel, the palette's: a container with `data-palette` switches it with the page
+  colours.
 - **A token that mixes `--rkui-surface` must be redeclared on `[data-palette]`**, because a custom
   property resolves its `var()`s where it is declared: today `--rkui-folder-back` and the docs site's
   `--rkui-div-mid`.
@@ -276,7 +280,7 @@ is an optional peer dependency, installed by the sites that use them.
   to the dark page.
 - **Numbering:** both styles. A `\label` per `align` row numbers each row; one `\label` on an
   `aligned` or `gathered` display numbers the block once.
-- **Wrappers:** `.rkui-equation` bare (default), `--panel` (slate), `--rule` (a grape rule down the
+- **Wrappers:** `.rkui-equation` bare (default), `--panel` (the palette's panel), `--rule` (a grape rule down the
   left), `--key` (raised dashed panel on `--rkui-yellow-tint`, for a key result). `\boxed` keeps a
   thicker toon border. Wrappers are scroll regions for wide equations.
 - **Colour-coded terms:** `rkui-maths-<hue>` always puts the hue's tint behind `--rkui-fg` text, never
@@ -298,7 +302,7 @@ is an optional peer dependency, installed by the sites that use them.
   plus a second in `--rkui-shadow-edge`.
 - A static card never lifts, and needs an edge so it doesn't vanish on the raised surface: by
   default the folder sheet's `--rkui-line-unfilled` outline. Three other edges are options: that
-  outline and the hard shadow (`raised`), a `--rkui-slate` fill like the quote and the code panel
+  outline and the hard shadow (`raised`), a `--rkui-panel` fill like the quote and the code panel
   (`shaded`), or pushed in like a drawer's tray (`inset`: `--rkui-folder-back` with a
   `--rkui-recess` inner shadow, a resting offset deep).
 
@@ -538,7 +542,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Sticky note | `.rkui-sticky-note` (hues, `--tilt`, `--tape`, `--pin`) | |
 | Widget frame | `.rkui-widget-frame` (dashed, lilac tint) | |
 | Figure | `.rkui-figure` | |
-| Quote | `.rkui-quote` (slate panel, slab serif; `--italic`) | upright by default; `slant="italic"` slants it; one line, two steps larger; two lines, one step (`quote-enhance.js`); `--short` always two steps |
+| Quote | `.rkui-quote` (panel, slab serif; `--italic`) | upright by default; `slant="italic"` slants it; one line, two steps larger; two lines, one step (`quote-enhance.js`); `--short` always two steps |
 | Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
 | Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`), `--top`, `--left`, `--right`, `--remote` (a `<div>` that a button's `popovertarget` opens), `--overlay` (hangs over the page beyond its parent); `.rkui-cabinet` | drawer by default, pulling out from the bottom |
 | Equations | `.rkui-equation` (`--panel`, `--rule`, `--key`), `.rkui-eqref` | bare by default; §3.3 |

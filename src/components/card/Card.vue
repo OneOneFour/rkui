@@ -23,7 +23,7 @@ interface Props {
   headingLevel?: 2 | 3 | 4
   /**
    * A static card's edge: 'raised' (the outline and a hard shadow that doesn't lift), 'shaded' (a
-   * slate fill with no outline) or 'inset' (pushed into the page); 'outline' when left out. A
+   * panel fill with no outline) or 'inset' (pushed into the page); 'outline' when left out. A
    * linked card ignores it.
    */
   variant?: 'outline' | 'raised' | 'shaded' | 'inset'

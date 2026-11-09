@@ -116,12 +116,7 @@
   /* Section hooks: --rkui-section and --rkui-on-section are left unset, so a component can tell
      whether a page chose a section hue; each use falls back to --rkui-ink and --rkui-on-ink. */
 
-  /* Code: slate panels and syntax colours. The tab is the code block's editor-tab strip, and
-     .rkui-slate-greige (code.css) swaps in the greige pair. */
-  --rkui-slate: light-dark(#e7ebf3, #2c323d);
-  --rkui-slate-tab: light-dark(#dbe0ea, #333946);
-  --rkui-slate-greige: light-dark(#eae7e2, #35332e);
-  --rkui-slate-greige-tab: light-dark(#e0dcd6, #3d3a34);
+  /* Code: syntax colours, on the page palette's panel (palettes.css) */
   --rkui-code-keyword: var(--rkui-navy-deep);
   --rkui-code-function: var(--rkui-teal-deep);
   --rkui-code-string: var(--rkui-green-deep);

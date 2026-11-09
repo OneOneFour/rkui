@@ -305,8 +305,8 @@
    Each part is outlined, so its slab, widened by the outline in dark mode, lines up with its edge.
    Shut, the roller, hem and pull show. */
 .rkui-drawer--blind {
-  --rkui-drawer-screen: var(--rkui-slate);
-  --rkui-drawer-roller: var(--rkui-slate-tab);
+  --rkui-drawer-screen: var(--rkui-panel);
+  --rkui-drawer-roller: var(--rkui-panel-tab);
   --rkui-drawer-roller-size: 0.875rem;
   --rkui-drawer-stripe-gap: 0.375rem;
   /* The stripes run across the roller, and move the way the screen unrolls as it turns. */

@@ -1,7 +1,7 @@
 ---
 /**
  * Code blocks with live copy buttons: the default box in each language with a logo, the two
- * fallbacks (file icon, extension text), the editor tab, the greige slate, and inline code in a
+ * fallbacks (file icon, extension text), the editor tab, the greige palette's panel, and inline code in a
  * sentence.
  */
 import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
@@ -79,15 +79,15 @@ import { LORENZ_PYTHON } from './code-samples'
   </Specimen>
 </SpecimenRow>
 
-<SpecimenRow title="Greige slate (.rkui-slate-greige)">
+<SpecimenRow title={'Greige palette (data-palette="greige")'}>
   <Specimen label="default box" wide>
-    <CodeBlock client:visible lang="python" label="Python" class="rkui-slate-greige">
+    <CodeBlock client:visible lang="python" label="Python" data-palette="greige">
       {LORENZ_PYTHON}
       <LanguageLogo slot="logo" icon={siPython} />
     </CodeBlock>
   </Specimen>
   <Specimen label="inline code" wide>
-    <p class="rkui-slate-greige">
+    <p data-palette="greige">
       Call <code>lorenz(x, y, z)</code> for the derivatives, then <code>step(state, dt)</code> once
       per frame with <code>Δt = 0.01</code>.
     </p>

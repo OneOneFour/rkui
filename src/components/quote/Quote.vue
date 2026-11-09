@@ -1,5 +1,5 @@
 <!--
-  An rkui quote: a `<blockquote>` on a slate panel, in the slab serif, as wide as the column it sits
+  An rkui quote: a `<blockquote>` on a panel, in the slab serif, as wide as the column it sits
   in, its edges in line with the text around it. The slot is the quoted text. With `by` it is a
   `<figure>` with the attribution in a `<figcaption>` under the quote, since an attribution belongs
   outside the `<blockquote>`. `class`, `style` and other attributes go on the outer element. It

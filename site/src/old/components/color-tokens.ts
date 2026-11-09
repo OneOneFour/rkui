@@ -37,11 +37,12 @@ export interface ColorPair {
 }
 
 const SURFACES = ['--rkui-surface', '--rkui-raised']
-const CODE_PANELS = ['--rkui-slate', '--rkui-slate-greige']
+/** Code sits on the page palette's panel. */
+const CODE_PANELS = ['--rkui-panel']
 
-/** A panel carries --rkui-fg text: the page surfaces, the tints and the code slates. */
+/** A panel carries --rkui-fg text: the page surfaces and the tints. */
 function isPanel(name: string): boolean {
-  return SURFACES.includes(name) || name.endsWith('-tint') || name.startsWith('--rkui-slate')
+  return SURFACES.includes(name) || name.endsWith('-tint')
 }
 
 /**
@@ -75,7 +76,7 @@ function labelFor(fill: string): string {
 
 /**
  * The pairs a colour token's swatch shows: panels carry --rkui-fg; fills carry their label; a label
- * is shown on every fill that uses it; syntax colours are read on the code slates, and any other
+ * is shown on every fill that uses it; syntax colours are read on the page palette's panel, and any other
  * colour on --rkui-surface and --rkui-raised.
  *
  * @param name a token, e.g. `--rkui-teal`

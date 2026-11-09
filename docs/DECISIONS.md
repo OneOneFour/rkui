@@ -12,6 +12,12 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-08
 
+**One panel, the palette's** (Rob). Panels follow the page palette instead of offering a choice:
+`--rkui-panel` and `--rkui-panel-tab` replace `--rkui-slate` and `--rkui-slate-tab`, and each
+palette sets its own pair. The slate palette keeps the cool slate panel, greige takes the greige
+one, and cream, the default, gets a new cream panel a step from the cream page. The greige opt-in
+(`.rkui-slate-greige`) is gone; a `data-palette="greige"` container gives the greige panel.
+
 **Shadow and highlight, two settings** (Rob). The four dark-mode shadow modes become two settings
 that work on their own. Shadow (`data-shadow`) is `outline` (the default, the near-black shadow on a
 rim), `block` (no rim) or `color` (each fill casts its own shade). Highlight (`data-highlight`) is

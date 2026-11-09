@@ -1,4 +1,4 @@
-/* Code block: a slate panel pressed into the page by a hard inner shadow, with an optional
+/* Code block: a panel pressed into the page by a hard inner shadow, with an optional
    language caption and a copy button. The button stays hidden until CodeBlock.vue runs in the
    browser and marks the figure data-rkui-live. It comes after the code so that readers reach the code first, and
    the grid lifts it into the header row. Pre is a scroll region for long lines (overflow.css),
@@ -31,16 +31,10 @@
    (CodeBlock.vue's `bar`), .rkui-code--editor
    puts the caption in a darker strip, like an editor tab, and .rkui-code--copy-hover shows the
    copy button only while the pointer is over the block or focus is inside it.
-   Put .rkui-slate-greige on a block or any ancestor for the greige slate, inline code included.
 
    Highlighted code is coloured by Shiki's css-variables theme (highlight.js), which paints each
    token with var(--rkui-shiki-token-*); .rkui-code maps those onto the --rkui-code-* colour
    tokens. */
-
-.rkui-slate-greige {
-  --rkui-slate: var(--rkui-slate-greige);
-  --rkui-slate-tab: var(--rkui-slate-greige-tab);
-}
 
 .rkui-code {
   --rkui-code-inset: var(--rkui-shadow-code-inset);
@@ -52,7 +46,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
   margin: var(--rkui-space-5) 0;
   border-radius: var(--rkui-radius);
-  background: var(--rkui-slate);
+  background: var(--rkui-panel);
   box-shadow: var(--rkui-code-inset);
   color: var(--rkui-fg);
 
@@ -182,7 +176,7 @@
 .rkui-code--editor .rkui-code-header {
   padding-block: var(--rkui-space-2);
   border-radius: var(--rkui-radius) var(--rkui-radius) 0 0;
-  background: var(--rkui-slate-tab);
+  background: var(--rkui-panel-tab);
 }
 
 .rkui-code--editor .rkui-code-copy {

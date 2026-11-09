@@ -8,7 +8,7 @@
      <span class="katex-display">…KaTeX output, with \tag{1}…</span>
    </div>
 
-   A bare wrapper is the default. Modifiers on .rkui-equation: --panel (a slate panel), --rule (a
+   A bare wrapper is the default. Modifiers on .rkui-equation: --panel (a panel), --rule (a
    rule down the left) and --key (a raised dashed panel for a key result). --rule and --key have
    side borders of their own, so they take .rkui-scroll--bar too, in place of the dots. Equation
    numbers, and references to them in prose (.rkui-eqref), are small lilac pills.
@@ -79,7 +79,7 @@
 }
 
 .rkui-equation--panel {
-  background: var(--rkui-slate);
+  background: var(--rkui-panel);
 }
 
 .rkui-equation--panel > .katex-display {

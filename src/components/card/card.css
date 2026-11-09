@@ -4,7 +4,7 @@
    never lifts; its edge is one of:
    - .rkui-card--outline, the outline alone (Card.vue's default);
    - .rkui-card--raised, the outline and a hard shadow;
-   - .rkui-card--shaded, a slate fill with no outline;
+   - .rkui-card--shaded, a panel fill with no outline;
    - .rkui-card--inset, pushed into the page like a drawer's tray.
    With data-shadow="color" in dark mode a linked or raised card's shadow is the shade of
    --rkui-card-hue where it is set (shadow-color.css).
@@ -75,7 +75,7 @@
 }
 
 .rkui-card--shaded {
-  background: var(--rkui-slate);
+  background: var(--rkui-panel);
 }
 
 /* Sunk like a drawer's tray, a resting shadow deep. The inner shadow is drawn over the card, so

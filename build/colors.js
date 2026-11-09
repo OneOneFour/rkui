@@ -1,5 +1,6 @@
 // Writes dist/colors.js and its types: every colour token that is a plain hex, as light and dark
-// values, read from src/tokens/colors.css and the default (cream) page palette in palettes.css.
+// values, read from src/tokens/colors.css and the default (cream) page palette in palettes.css, so
+// the palette colours (surface, raised, panel, panel tab) are the cream ones.
 // `--rkui-navy-deep` becomes `colors.navyDeep`. Tokens that are mixes (color-mix()) or left unset
 // are not included.
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
