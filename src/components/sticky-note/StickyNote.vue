@@ -6,7 +6,7 @@
   go on the outer element.
 
   @example
-  <StickyNote title="Remember" hue="grape" tilt hold="pin"><p>Bring the charger.</p></StickyNote>
+  <StickyNote title="Remember" color="grape" tilt hold="pin"><p>Bring the charger.</p></StickyNote>
   <StickyNote as="callout" kind="warning" hold="tape"><p>Back up first.</p></StickyNote>
   <StickyNote title="Steeper" tilt style="--rkui-note-tilt: 4deg"><p>A custom tilt.</p></StickyNote>
 -->
@@ -14,15 +14,23 @@
 import { computed } from 'vue'
 import Callout from '../callout/Callout.vue'
 import Card from '../card/Card.vue'
+import { colorVars, isHex } from '../../shared/hues'
 
-/** The hues sticky-note.css has a paper colour for: every hue but navy and teal. */
-type NoteHue = 'yellow' | 'sky' | 'tangerine' | 'green' | 'coral' | 'grape' | 'lilac' | 'apricot'
+/**
+ * The colours a note comes in: the hues sticky-note.css has a paper colour for (every hue but
+ * navy and teal), or a hex code.
+ */
+type NoteColor =
+  'yellow' | 'sky' | 'tangerine' | 'green' | 'coral' | 'grape' | 'lilac' | 'apricot' | `#${string}`
 
 interface Props {
   /** 'card' or 'callout'; 'card' when left out. A card needs a `title`, or the build stops. */
   as?: 'card' | 'callout'
-  /** The note's colour: yellow, but sky for a note callout and tangerine for a warning one. */
-  hue?: NoteHue
+  /**
+   * The note's colour, a hue or a hex code: yellow when left out, but sky for a note callout and
+   * tangerine for a warning one.
+   */
+  color?: NoteColor
   /** Turns the note slightly, by -2deg; set `--rkui-note-tilt` in `style` for another angle; upright when left out. */
   tilt?: boolean
   /** How the note is held to the page: 'tape' or 'pin'; neither when left out. */
@@ -39,15 +47,30 @@ interface Props {
   kind?: 'note' | 'warning'
 }
 
-const { as = 'card', hue, tilt, hold, title, href, meta, headingLevel, kind } = defineProps<Props>()
+const {
+  as = 'card',
+  color,
+  tilt,
+  hold,
+  title,
+  href,
+  meta,
+  headingLevel,
+  kind,
+} = defineProps<Props>()
 
 /** The sticky-note classes, for whichever of Card or Callout is drawn. */
 const noteClasses = computed(() => [
   'rkui-sticky-note',
-  hue && `rkui-sticky-note--${hue}`,
+  color && !isHex(color) && `rkui-sticky-note--${color}`,
   hold && `rkui-sticky-note--${hold}`,
   { 'rkui-sticky-note--tilt': tilt },
 ])
+
+/** A hex colour's paper and text as custom properties; a hue sets them by its class. */
+const vars = computed(() =>
+  isHex(color) ? colorVars(color, { fill: '--rkui-note-fill', text: '--rkui-note-text' }) : {},
+)
 
 /** Throws, so the build stops, when a card has no title. */
 function cardTitle(): string {
@@ -57,12 +80,13 @@ function cardTitle(): string {
 </script>
 
 <template>
-  <Callout v-if="as === 'callout'" :class="noteClasses" :title="title" :kind="kind">
+  <Callout v-if="as === 'callout'" :class="noteClasses" :style="vars" :title="title" :kind="kind">
     <slot />
   </Callout>
   <Card
     v-else
     :class="noteClasses"
+    :style="vars"
     :title="cardTitle()"
     :href="href"
     :meta="meta"

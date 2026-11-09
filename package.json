@@ -15,6 +15,10 @@
     "./base/*": "./src/base/*",
     "./rkui.css": "./dist/rkui.css",
     "./rkui.js": "./dist/rkui.js",
+    "./colors.js": {
+      "types": "./dist/colors.d.ts",
+      "default": "./dist/colors.js"
+    },
     "./enhance.js": "./src/enhance.js",
     "./components/*.js": {
       "types": "./dist/types/components/*.d.ts",

@@ -24,13 +24,13 @@ function vueOnly(what) {
   return new Error(`A Vue demo with ${what} has no Astro form; mark its Demo \`widget\``)
 }
 
-/** The expression a bound prop holds: `x` for `:hue="x"`, and `hue` for the shorthand `:hue`. */
+/** The expression a bound prop holds: `x` for `:color="x"`, and `color` for the shorthand `:color`. */
 function boundValue(prop) {
   return prop.exp?.loc.source ?? camelize(prop.arg.content)
 }
 
 /**
- * One attribute or prop written for Astro: `:hue="x"` as `hue={x}`, and `:class` on an element as
+ * One attribute or prop written for Astro: `:color="x"` as `color={x}`, and `:class` on an element as
  * `class:list={x}`. Vue's `ref` and `key`, any other directive, a modifier such as `.camel`, and a
  * `v-bind` with no attribute name throw.
  */

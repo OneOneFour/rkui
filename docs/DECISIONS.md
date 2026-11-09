@@ -27,9 +27,9 @@ follows the reading order. When they don't fit, a strip either scrolls or collap
 **Table rows that lift.** Only clickable things lift, with one opt-in exception: a Table's `lift`
 option, where the hovered row lifts though it isn't clickable (Rob).
 
-**Table header band in dark mode.** With no `hue` and no section hue, the band is ink in light mode;
+**Table header band in dark mode.** With no `color` and no section hue, the band is ink in light mode;
 in dark mode it is the raised surface colour with a line under it, so it reads as a header on the
-dark sheet. A `hue`, or a section hue the page sets, wins in dark mode too (Rob).
+dark sheet. A `color`, or a section hue the page sets, wins in dark mode too (Rob).
 
 **Table entrance plays once.** The first time a table is seen, it plays a short
 entrance through `table-enhance.js` in every browser: the band fills, the rules draw, the values

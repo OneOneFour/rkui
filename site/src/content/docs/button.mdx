@@ -19,26 +19,29 @@ Buttons are yellow by default. Give `Button` an `href` and it renders a link ins
   <Button href="#">A link that looks like a button</Button>
 </Demo>
 
-## Hues
+## Colours
 
-<Demo label="Button hues">
+Give `color` a hue, or a hex code for a colour outside the palette (the Colours page says what a
+hex code can't do).
+
+<Demo label="Button colours">
   <Button>Yellow</Button>
-  <Button hue="navy">Navy</Button>
-  <Button hue="teal">Teal</Button>
-  <Button hue="green">Green</Button>
-  <Button hue="coral">Coral</Button>
-  <Button hue="sky">Sky</Button>
-  <Button hue="grape">Grape</Button>
-  <Button hue="tangerine">Tangerine</Button>
-  <Button hue="lilac">Lilac</Button>
-  <Button hue="apricot">Apricot</Button>
+  <Button color="navy">Navy</Button>
+  <Button color="teal">Teal</Button>
+  <Button color="green">Green</Button>
+  <Button color="coral">Coral</Button>
+  <Button color="sky">Sky</Button>
+  <Button color="grape">Grape</Button>
+  <Button color="tangerine">Tangerine</Button>
+  <Button color="lilac">Lilac</Button>
+  <Button color="apricot">Apricot</Button>
 </Demo>
 
 ## Small
 
 <Demo label="Small buttons">
   <Button small>Small</Button>
-  <Button small hue="teal">
+  <Button small color="teal">
     Small teal
   </Button>
 </Demo>
@@ -59,16 +62,16 @@ The outline-only button is for a secondary action beside a filled one.
 
 <Demo label="Busy buttons">
   <Button busy>Saving…</Button>
-  <Button busy hue="teal">
+  <Button busy color="teal">
     Saving…
   </Button>
-  <Button busy hue="navy">
+  <Button busy color="navy">
     Saving…
   </Button>
-  <Button busy hue="coral">
+  <Button busy color="coral">
     Saving…
   </Button>
-  <Button busy hue="grape">
+  <Button busy color="grape">
     Saving…
   </Button>
 </Demo>
@@ -79,13 +82,13 @@ The outline-only button is for a secondary action beside a filled one.
 with `busy` or `water`.
 
 <Demo label="Busy buttons at a level">
-  <Button busy hue="teal" level={0.25}>
+  <Button busy color="teal" level={0.25}>
     Uploading<span class="rkui-visually-hidden"> 25%</span>
   </Button>
-  <Button busy hue="teal" level={0.5}>
+  <Button busy color="teal" level={0.5}>
     Uploading<span class="rkui-visually-hidden"> 50%</span>
   </Button>
-  <Button busy hue="teal" level={0.85}>
+  <Button busy color="teal" level={0.85}>
     Uploading<span class="rkui-visually-hidden"> 85%</span>
   </Button>
 </Demo>
@@ -103,7 +106,7 @@ button to toggle it. A busy button does not stop its own clicks; the script deci
   <Button toggle small>
     <PauseIcon class="rkui-icon" /> Pause
   </Button>
-  <Button toggle hue="teal" checked>
+  <Button toggle color="teal" checked>
     Bold
   </Button>
 </Demo>

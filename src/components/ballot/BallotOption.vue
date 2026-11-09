@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { computed, useAttrs, useSlots } from 'vue'
 import Tile from '../tiles/Tile.vue'
-import type { Hue } from '../../shared/hues'
+import { colorVars, type Color } from '../../shared/hues'
 import { splitAttrs } from '../../shared/split-attrs'
 
 defineOptions({ inheritAttrs: false })
@@ -22,11 +22,11 @@ interface Props {
   /** A letter or number for the tile; none when left out, and with no icon the tile is empty. */
   mark?: string
   /**
-   * A hue: the tile is filled with it when it holds no mark or icon, and `tint` uses it; none when
-   * left out.
+   * A hue or hex code: the tile is filled with it when it holds no mark or icon, and `tint` uses
+   * it; none when left out.
    */
-  hue?: Hue
-  /** Fill the box with the hue's tint when checked; the usual tint when left out. */
+  color?: Color
+  /** Fill the box with the colour's tint when checked; the usual tint when left out. */
   tint?: boolean
   /** The input's name; its group's name when left out. */
   name?: string
@@ -36,20 +36,18 @@ interface Props {
   disabled?: boolean
 }
 
-const { value, text, mark, hue, tint, name, checked, disabled } = defineProps<Props>()
+const { value, text, mark, color, tint, name, checked, disabled } = defineProps<Props>()
 
 const attrs = useAttrs()
 const slots = useSlots()
 
-/** Whether the tile is a plain colour: a hue with no mark or icon. */
+/** Whether the tile is a plain colour: a colour with no mark or icon. */
 function swatch() {
-  return hue !== undefined && !mark && !slots.icon
+  return color !== undefined && !mark && !slots.icon
 }
 
-/** The hue's tint as a custom property, with `tint` and a hue. */
-const vars = computed(() =>
-  tint && hue ? { '--rkui-selected-tint': `var(--rkui-${hue}-tint)` } : {},
-)
+/** The colour's tint as a custom property, with `tint` and a colour. */
+const vars = computed(() => (tint ? colorVars(color, { tint: '--rkui-selected-tint' }) : {}))
 
 /**
  * The page's attributes: `class` and `style` for the label (`outer`), the rest for the Tile, which
@@ -69,7 +67,7 @@ function pageAttrs() {
       :name
       :checked
       :disabled
-      :hue="swatch() ? hue : undefined"
+      :color="swatch() ? color : undefined"
       v-bind="pageAttrs().inner"
     >
       <template v-if="!swatch()" #default>

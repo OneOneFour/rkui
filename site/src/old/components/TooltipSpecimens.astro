@@ -36,7 +36,7 @@ const OPTIONS = [
   {OPTIONS.map((option, index) => (
     <Specimen label={`${option.label}, icon button`}>
       <Tooltip id={`${theme}-icon-tip-${index}`} text={SPECIMEN_TEXT} variant={option.variant}>
-        <Button hue="teal" aria-describedby={`${theme}-icon-tip-${index}`}>
+        <Button color="teal" aria-describedby={`${theme}-icon-tip-${index}`}>
           <CopyIcon class="rkui-icon" />
           <span class="rkui-visually-hidden">Copy</span>
         </Button>
@@ -79,7 +79,7 @@ const OPTIONS = [
     </div>
   </Specimen>
   <Specimen label="toggletip">
-    <Button small hue="teal" popovertarget={`${theme}-toggletip`}>
+    <Button small color="teal" popovertarget={`${theme}-toggletip`}>
       <InfoIcon class="rkui-icon rkui-icon--small" />
       <span class="rkui-visually-hidden">More information</span>
     </Button>

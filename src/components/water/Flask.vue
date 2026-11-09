@@ -4,31 +4,30 @@
   out, not shown. `class`, `style` and other attributes go on the `<span>`.
 
   @example
-  <Flask label="Uploading…" size="3rem" hue="teal" />
+  <Flask label="Uploading…" size="3rem" color="teal" />
   <Flask label="Uploading…" :level="progress" />
 -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Hue } from '../../shared/hues'
+import { colorVars, type Color } from '../../shared/hues'
 
 interface Props {
   /** What is happening, for screen readers; "Loading…" when left out. */
   label?: string
   /** The flask's size as a CSS length; 2rem when left out. */
   size?: string
-  /** The water's colour; sky when left out. */
-  hue?: Hue
+  /** The water's colour, a hue or a hex code; sky when left out. */
+  color?: Color
   /** A fixed water level from 0 to 1; rising and falling when left out. */
   level?: number
 }
 
-const { label = 'Loading…', size, hue, level } = defineProps<Props>()
+const { label = 'Loading…', size, color, level } = defineProps<Props>()
 
 /** The custom properties for the props that are set. */
 const vars = computed(() => {
-  const style: Record<string, string | number> = {}
+  const style: Record<string, string | number> = colorVars(color, { fill: '--rkui-spinner-fill' })
   if (size) style['--rkui-spinner-size'] = size
-  if (hue) style['--rkui-spinner-fill'] = `var(--rkui-${hue})`
   if (level !== undefined) style['--rkui-water-level'] = level
   return style
 })

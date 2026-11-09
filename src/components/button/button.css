@@ -1,6 +1,7 @@
 /* Buttons: filled by default, with fill modifiers, a small size and an unfilled secondary.
    Works on <button> and on <a>. Put an .rkui-icon before the label for icon + label; the icon's
-   fill matches the button's. */
+   fill matches the button's. For a colour with no modifier, set --rkui-button-fill and
+   --rkui-button-label. */
 
 .rkui-button {
   --rkui-button-fill: var(--rkui-yellow);

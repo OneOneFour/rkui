@@ -26,7 +26,7 @@
   sheet without the scrolling.
 
   @example
-  <Table caption="Runs" hue="teal">
+  <Table caption="Runs" color="teal">
     <thead><tr><th scope="col">Run</th><th scope="col">σ</th></tr></thead>
     <tbody><tr><th scope="row">a</th><td>10</td></tr></tbody>
   </Table>
@@ -35,7 +35,7 @@
 import { computed, useAttrs, useSlots } from 'vue'
 import Scroll from '../overflow/Scroll.vue'
 import { useComponentId } from '../../shared/component-id'
-import { onHue, type Hue } from '../../shared/hues'
+import { colorVars, type Color } from '../../shared/hues'
 import { unwrappedSlot } from '../../shared/slot-html'
 import { splitAttrs } from '../../shared/split-attrs'
 
@@ -45,10 +45,11 @@ interface Props {
   /** The table's caption, which also names its scroll region. */
   caption: string
   /**
-   * The header band's fill in the sheet. When left out, the page's section hue (`--rkui-section`);
-   * with none, ink in light mode, and the sheet's colour with a line under it in dark mode.
+   * The header band's fill in the sheet, a hue or a hex code. When left out, the page's section
+   * hue (`--rkui-section`); with none, ink in light mode, and the sheet's colour with a line under
+   * it in dark mode.
    */
-  hue?: Hue
+  color?: Color
   /**
    * The look: 'ledger', a ruled notebook page; 'sheet' when left out, a raised panel with a header
    * band. Open, see DECISIONS ("Table").
@@ -67,22 +68,17 @@ interface Props {
   lift?: boolean
 }
 
-const { caption, hue, variant = 'sheet', small, messy, still, lift } = defineProps<Props>()
+const { caption, color, variant = 'sheet', small, messy, still, lift } = defineProps<Props>()
 
 const attrs = useAttrs()
 const slots = useSlots()
 /** The caption's id, which names the scroll region. */
 const captionId = `${useComponentId('table')}-caption`
 
-/** The header band's colours. Coral's band takes `--rkui-coral-solid`, which carries small text. */
-const vars = computed(() => {
-  if (!hue) return {}
-  const fill = hue === 'coral' ? 'coral-solid' : hue
-  return {
-    '--rkui-table-hue': `var(--rkui-${fill})`,
-    '--rkui-table-on-hue': `var(${onHue(hue)})`,
-  }
-})
+/** The header band's colours. The band carries small text, so coral takes `--rkui-coral-solid`. */
+const vars = computed(() =>
+  colorVars(color, { fill: '--rkui-table-hue', text: '--rkui-table-on-hue', solid: true }),
+)
 
 /** The page's attributes: `class` and `style` for the outer div (`outer`), the rest for the `<table>`. */
 function pageAttrs() {

@@ -38,11 +38,8 @@ const STATES = [
       </Chip>
     </ChipGroup>
   </Specimen>
-  <Specimen label="single select (radios), --rkui-section set to teal, with icons">
-    <ChipGroup
-      legend="Specimen"
-      style="--rkui-section: var(--rkui-teal); --rkui-on-section: var(--rkui-on-fill)"
-    >
+  <Specimen label="single select (radios), color teal, with icons">
+    <ChipGroup legend="Specimen" color="teal">
       <Chip type="radio" name={`${theme}-single`} value="one" checked>
         <FlaskIcon class="rkui-icon rkui-icon--small" />
         One
@@ -57,11 +54,8 @@ const STATES = [
       </Chip>
     </ChipGroup>
   </Specimen>
-  <Specimen label="--rkui-section set to coral">
-    <ChipGroup
-      legend="Specimen"
-      style="--rkui-section: var(--rkui-coral-solid); --rkui-on-section: var(--rkui-on-coral)"
-    >
+  <Specimen label="color coral">
+    <ChipGroup legend="Specimen" color="coral">
       <Chip name={`${theme}-coral`} value="one" checked>
         One
       </Chip>

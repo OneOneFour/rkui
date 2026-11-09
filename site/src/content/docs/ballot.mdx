@@ -55,17 +55,17 @@ import Leaf from '@oneonefour/rkui/icons/leaf.vue'
 
 ## Icons, several choices
 
-Add `multiple` for checkboxes. Give an option a `hue` and `tint` to colour its checked box.
+Add `multiple` for checkboxes. Give an option a `color` and `tint` to colour its checked box.
 
 <Demo label="Ballot with icons" stack>
   <Ballot legend="Weather" multiple>
-    <BallotOption value="sun" hue="yellow" tint checked>
+    <BallotOption value="sun" color="yellow" tint checked>
       <Sun slot="icon" /> Sun
     </BallotOption>
-    <BallotOption value="moon" hue="lilac" tint>
+    <BallotOption value="moon" color="lilac" tint>
       <Moon slot="icon" /> Moon
     </BallotOption>
-    <BallotOption value="leaf" hue="green" tint checked>
+    <BallotOption value="leaf" color="green" tint checked>
       <Leaf slot="icon" /> Leaf
     </BallotOption>
   </Ballot>
@@ -73,20 +73,20 @@ Add `multiple` for checkboxes. Give an option a `hue` and `tint` to colour its c
 
 ## Colours
 
-A `hue` on an option with no icon or mark fills its tile with that colour.
+A `color` on an option with no icon or mark fills its tile with that colour.
 
 <Demo label="Ballot with colour tiles" stack>
   <Ballot legend="Colour">
-    <BallotOption value="teal" hue="teal" tint checked>
+    <BallotOption value="teal" color="teal" tint checked>
       Teal
     </BallotOption>
-    <BallotOption value="green" hue="green" tint>
+    <BallotOption value="green" color="green" tint>
       Green
     </BallotOption>
-    <BallotOption value="sky" hue="sky" tint>
+    <BallotOption value="sky" color="sky" tint>
       Sky
     </BallotOption>
-    <BallotOption value="coral" hue="coral" tint>
+    <BallotOption value="coral" color="coral" tint>
       Coral
     </BallotOption>
   </Ballot>

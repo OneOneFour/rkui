@@ -22,3 +22,12 @@ Without a value the bar is indeterminate.
   <Progress flat label="Uploading" value={40} />
   <Progress flat label="Loading" />
 </Demo>
+
+## Colour
+
+The bar is the selected colour unless you give it a `color`.
+
+<Demo label="Progress bars in other colours" stack>
+  <Progress label="Uploading" value={65} color="teal" />
+  <Progress flat label="Copying" value={30} color="grape" />
+</Demo>

@@ -1,32 +1,32 @@
 <!--
-  The hop loader: a ball hops back and forth along a line, squashing as it lands. Give it a hue, or
+  The hop loader: a ball hops back and forth along a line, squashing as it lands. Give it a `color`, or
   an icon to ride in a bigger ball (the slot: an icon with class "rkui-icon"). A busy indicator with
   `role="status"`; the label is read out, not shown. `class`, `style` and other attributes go on the
   `<div>`.
 
   @example
-  <Loader hue="coral" label="Fetching…"><StarIcon class="rkui-icon" aria-hidden="true" /></Loader>
+  <Loader color="coral" label="Fetching…"><StarIcon class="rkui-icon" aria-hidden="true" /></Loader>
 -->
 <script setup lang="ts">
 import { useSlots } from 'vue'
-import { onHue, type Hue } from '../../shared/hues'
+import { colorVars, type Color } from '../../shared/hues'
 
 interface Props {
   /** What is happening, for screen readers; "Loading…" when left out. */
   label?: string
-  /** The ball's colour; teal when left out. */
-  hue?: Hue
+  /** The ball's colour, a hue or a hex code; teal when left out. */
+  color?: Color
 }
 
-const { label = 'Loading…', hue } = defineProps<Props>()
+const { label = 'Loading…', color } = defineProps<Props>()
 const slots = useSlots()
 
 /** The custom properties for what is set: the fill, and the text colour only with an icon. */
 function vars() {
-  const style: Record<string, string> = {}
-  if (hue) style['--rkui-loader-fill'] = `var(--rkui-${hue})`
-  if (hue && slots.default) style['--rkui-loader-on-fill'] = `var(${onHue(hue)})`
-  return style
+  return colorVars(color, {
+    fill: '--rkui-loader-fill',
+    text: slots.default ? '--rkui-loader-on-fill' : undefined,
+  })
 }
 </script>
 

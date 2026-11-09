@@ -10,11 +10,12 @@
     <Chip value="fruit" checked>Fruit</Chip>
     <Chip value="veg">Veg</Chip>
   </ChipGroup>
-  <ChipGroup v-model="topics" legend="Topics" multiple>…</ChipGroup>
+  <ChipGroup v-model="topics" legend="Topics" color="teal">…</ChipGroup>
 -->
 <script setup lang="ts">
 import { computed, provide, useSlots } from 'vue'
 import { useComponentId } from '../../shared/component-id'
+import { colorVars, type Color } from '../../shared/hues'
 import { modelWithStart } from '../../shared/model-start'
 import { checkedValue, fillSlot, OPTION_GROUP } from '../../shared/option-slot'
 
@@ -25,9 +26,14 @@ interface Props {
   name?: string
   /** Checkboxes instead of radios; radios when left out. */
   multiple?: boolean
+  /**
+   * The checked chips' fill, a hue or a hex code; the page's section hue (`--rkui-section`), or
+   * ink, when left out.
+   */
+  color?: Color
 }
 
-const { legend, name, multiple } = defineProps<Props>()
+const { legend, name, multiple, color } = defineProps<Props>()
 
 /**
  * The chosen value, or values with `multiple` (`v-model`); the `checked` chips' when left out.
@@ -38,10 +44,15 @@ const selection = modelWithStart(model, () => checkedValue(slots.default?.() ?? 
 const generatedName = useComponentId('chips')
 const group = computed(() => ({ name: name ?? generatedName, multiple, model: selection }))
 provide(OPTION_GROUP, group)
+
+/** The checked chips' fill and text as custom properties, when `color` is set. */
+const vars = computed(() =>
+  colorVars(color, { fill: '--rkui-section', text: '--rkui-on-section', solid: true }),
+)
 </script>
 
 <template>
-  <fieldset class="rkui-chip-group">
+  <fieldset class="rkui-chip-group" :style="vars">
     <legend class="rkui-visually-hidden">{{ legend }}</legend>
     <component :is="chip" v-for="(chip, i) in fillSlot($slots.default?.() ?? [], group)" :key="i" />
   </fieldset>

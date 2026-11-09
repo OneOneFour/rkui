@@ -6,7 +6,7 @@ const busy = ref(false)
 </script>
 
 <template>
-  <Button water hue="teal" :aria-busy="busy" :aria-disabled="busy" @click="busy = !busy">
+  <Button water color="teal" :aria-busy="busy" :aria-disabled="busy" @click="busy = !busy">
     Save
   </Button>
 </template>

@@ -11,20 +11,24 @@
   the starting value; `checked` applies only without one.
 
   @example
-  <Button hue="teal">Save</Button>
+  <Button color="teal">Save</Button>
+  <Button color="#ff8800">Custom</Button>
   <Button toggle small>Pause</Button>
 -->
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue'
 import { vLiveChecked } from '../../shared/live-value'
-import type { Hue } from '../../shared/hues'
+import { colorVars, isHex, type Color } from '../../shared/hues'
 import { splitAttrs } from '../../shared/split-attrs'
 
 defineOptions({ inheritAttrs: false })
 
 interface Props {
-  /** The fill colour, or 'section' for the section's colour; yellow when left out. */
-  hue?: Hue | 'section'
+  /**
+   * The fill: a palette hue, a hex code, or 'section' for the section's colour; yellow when left
+   * out.
+   */
+  color?: Color | 'section'
   /** The outline-only secondary style; filled when left out. */
   unfilled?: boolean
   /** The small size; the regular size when left out. */
@@ -52,7 +56,7 @@ interface Props {
 }
 
 const {
-  hue,
+  color,
   unfilled,
   small,
   href,
@@ -75,12 +79,17 @@ const attrs = useAttrs()
 /** The button's classes, for its hue, style and size. */
 const classes = computed(() => [
   'rkui-button',
-  hue && `rkui-button--${hue}`,
+  color && !isHex(color) && `rkui-button--${color}`,
   { 'rkui-button--unfilled': unfilled, 'rkui-button--small': small },
 ])
 
-/** The water level as a custom property, when it is set. */
-const vars = computed(() => (level === undefined ? {} : { '--rkui-water-level': level }))
+/** The custom properties that are set: a hex fill and its label, and the water level. */
+const vars = computed(() => ({
+  ...(isHex(color)
+    ? colorVars(color, { fill: '--rkui-button-fill', text: '--rkui-button-label' })
+    : {}),
+  ...(level === undefined ? {} : { '--rkui-water-level': level }),
+}))
 
 /**
  * The page's attributes, for a toggle: `class` and `style` for the label (`outer`), the rest for

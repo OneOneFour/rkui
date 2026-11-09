@@ -24,5 +24,5 @@ const { value, checked, disabled } = defineProps<Props>()
 
 <template>
   <!-- The Tile finds its ColorPicker by inject, for its input's name and checked state. -->
-  <Tile :value :hue="value" :checked :disabled>{{ value }}</Tile>
+  <Tile :value :color="value" :checked :disabled>{{ value }}</Tile>
 </template>

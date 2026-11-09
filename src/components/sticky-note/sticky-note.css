@@ -1,8 +1,9 @@
 /* Sticky notes: a card or a callout drawn as a sticky note, with the outline, the hard shadow and
    a folded bottom-left corner. Yellow by default; a note callout is sky and a warning tangerine,
-   and the hue modifiers set any colour. Options: .rkui-sticky-note--tilt turns the note slightly
-   (--rkui-note-tilt sets the angle), and .rkui-sticky-note--tape or --pin holds it to the page. A
-   linked card's corner lifts as it pops.
+   and the hue modifiers set another (for any other colour, set --rkui-note-fill and
+   --rkui-note-text). Options: .rkui-sticky-note--tilt turns the note slightly (--rkui-note-tilt
+   sets the angle), and .rkui-sticky-note--tape or --pin holds it to the page. A linked card's
+   corner lifts as it pops.
 
    <article class="rkui-card rkui-card--link rkui-sticky-note">…</article>
    <div class="rkui-callout rkui-callout--warning rkui-sticky-note rkui-sticky-note--tape"
@@ -12,6 +13,7 @@
 
 .rkui-sticky-note {
   --rkui-note-fill: var(--rkui-note-yellow);
+  --rkui-note-text: var(--rkui-on-fill);
   --rkui-shade-of: var(--rkui-note-fill);
   --rkui-note-fold: var(--rkui-space-4);
   --rkui-note-pin: var(--rkui-coral);
@@ -21,7 +23,7 @@
   overflow: visible;
   border: var(--rkui-outline-width) solid var(--rkui-line);
   background: var(--rkui-note-fill);
-  color: var(--rkui-on-fill);
+  color: var(--rkui-note-text);
   box-shadow: var(--rkui-shadow);
   /* Cuts the folded corner off along the fold, reaching far past the box elsewhere so the shadow,
      the focus band and the tape aren't cut. The light falls along the fold by default, so the

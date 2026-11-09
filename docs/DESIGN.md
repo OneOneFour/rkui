@@ -89,7 +89,17 @@ apricot.
 - **Auxiliary colours** have set jobs and are **never section colours**: grape (interactive
   accents, code and maths highlights), lilac (widget frames, equation pills), tangerine (warnings,
   work in progress, focus), apricot (`<mark>`, callouts, the `:target` flash). Every component that
-  takes a `hue` takes them too.
+  takes a `color` takes them too.
+- **Recolouring a component:** every component with a colour takes it in one prop, `color`: a
+  hue's name, which brings its label, `-tint` and dark-mode values, or a hex code for a colour
+  outside the palette. A hex code is one colour in both themes, with no dark-mode value and no
+  `-deep` step; its label and tint are worked out from it (§2.5), and its contrast is the author's
+  to check. `colorVars()` in `src/shared/hues.ts` turns either into the component's custom
+  properties. On a plain HTML page a hue is a modifier class, and any other colour is the custom
+  properties the component's stylesheet names.
+- **In JavaScript:** `import { colors } from '@oneonefour/rkui/colors.js'` gives every colour token
+  that is a plain hex, light and dark (`colors.tealDeep.dark`). The build reads it from the token
+  files (`build/colors.js`), so there is no second copy to drift.
 
 ### 2.3 Roles and code
 
@@ -128,6 +138,14 @@ Repeated mixes are named, so the docs page can show them:
   The sticky-note fold and every colour-mode extrusion. Declared on `*`, so each element mixes its
   own.
 - `--rkui-folder-back`: the page 8% towards `--rkui-line`, behind unselected folder tabs.
+- A hex `color`'s label: `--rkui-on-fill` (ink), unless `--rkui-on-ink` has more contrast on it in
+  both themes, worked out from the hex's WCAG luminance (`colorVars()`). It is the better of the
+  two, not always AA: a mid-tone can fall short with both.
+- A hex `color`'s tint: `light-dark(color-mix(in srgb, <hex> 35%, var(--rkui-raised)),
+  color-mix(in srgb, <hex> 25%, var(--rkui-raised)))`. Pale enough in light mode, and dark enough
+  in dark mode, to carry `--rkui-fg` at AA whatever the hex.
+- A hex `color`'s colour-mode shadow is its `--rkui-shade`, as a hue's is. A dark hex's shade can
+  be too close to the dark page to read, as navy's is; navy's is switched off, a hex's isn't.
 - The table's lines (`table.css`), over the paper. The sheet's rules are `--rkui-stripe` in light
   mode and `--rkui-line-unfilled` at 40% in dark mode. The ledger's rules are `--rkui-sky-deep` at
   45% (50% dark) and its margin rule `--rkui-coral` at 70% (85% dark), like a notebook's blue rules

@@ -7,25 +7,25 @@ import StickyNote from '@oneonefour/rkui/components/sticky-note/StickyNote.vue'
     <StickyNote title="Yellow">
       <p>Pack my box with five dozen liquor jugs.</p>
     </StickyNote>
-    <StickyNote title="Sky" hue="sky">
+    <StickyNote title="Sky" color="sky">
       <p>Pack my box with five dozen liquor jugs.</p>
     </StickyNote>
-    <StickyNote title="Tangerine" hue="tangerine">
+    <StickyNote title="Tangerine" color="tangerine">
       <p>Pack my box with five dozen liquor jugs.</p>
     </StickyNote>
-    <StickyNote title="Green" hue="green">
+    <StickyNote title="Green" color="green">
       <p>Pack my box with five dozen liquor jugs.</p>
     </StickyNote>
-    <StickyNote title="Coral" hue="coral">
+    <StickyNote title="Coral" color="coral">
       <p>Pack my box with five dozen liquor jugs.</p>
     </StickyNote>
-    <StickyNote title="Grape" hue="grape">
+    <StickyNote title="Grape" color="grape">
       <p>Pack my box with five dozen liquor jugs.</p>
     </StickyNote>
-    <StickyNote title="Lilac" hue="lilac">
+    <StickyNote title="Lilac" color="lilac">
       <p>Pack my box with five dozen liquor jugs.</p>
     </StickyNote>
-    <StickyNote title="Apricot" hue="apricot">
+    <StickyNote title="Apricot" color="apricot">
       <p>Pack my box with five dozen liquor jugs.</p>
     </StickyNote>
   </div>

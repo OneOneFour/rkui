@@ -10,7 +10,7 @@ import StickyNote from '@oneonefour/rkui/components/sticky-note/StickyNote.vue'
     <StickyNote as="callout" kind="warning" title="Warning">
       <p>A warning callout is tangerine by default. <a href="#">A link</a>.</p>
     </StickyNote>
-    <StickyNote as="callout" hue="yellow">
+    <StickyNote as="callout" color="yellow">
       <p>A callout in another hue, without a title.</p>
     </StickyNote>
   </div>

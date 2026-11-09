@@ -32,7 +32,7 @@
    - .rkui-table--lift: the hovered row pops up out of the sheet by the press offset and the lift
      offset, onto a shadow as long, so its shadow's edge stays where the row sat. It moves with
      position offsets, not translate, because it sits in a join of rows.
-   - --rkui-table-hue and --rkui-table-on-hue set the band's fill and text (Table.vue's `hue`).
+   - --rkui-table-hue and --rkui-table-on-hue set the band's fill and text (Table.vue's `color`).
      Left alone, the band is the page's section hue (--rkui-section) if it sets one; with none, it
      is ink in light mode, and in dark mode the sheet's colour with a line under it.
 
@@ -53,7 +53,7 @@
   initial-value: 100%;
 }
 
-/* With no hue on the table and no section hue on the page (--rkui-section is left unset), the
+/* With no colour on the table and no section hue on the page (--rkui-section is left unset), the
    band is ink in light mode; in dark mode its fill is transparent, so the sheet's colour shows,
    with a line along its foot in the colour of an outline without a fill, which any fill covers.
    In dark mode the rules are --rkui-line-unfilled at 40%, as --rkui-stripe's near-black is lost on

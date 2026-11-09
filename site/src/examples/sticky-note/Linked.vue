@@ -8,7 +8,7 @@ import ImageIcon from '@oneonefour/rkui/icons/image.vue'
     <StickyNote title="Linked note" href="#" meta="Meta line">
       <p>Body text.</p>
     </StickyNote>
-    <StickyNote title="With an image" href="#" meta="Meta line" hue="green">
+    <StickyNote title="With an image" href="#" meta="Meta line" color="green">
       <template #image>
         <div class="rkui-card-image placeholder">
           <ImageIcon class="rkui-icon" />

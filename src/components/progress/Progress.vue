@@ -4,9 +4,12 @@
   `<progress>`.
 
   @example
-  <Progress label="Uploading" :value="65" />
+  <Progress label="Uploading" :value="65" color="teal" />
 -->
 <script setup lang="ts">
+import { computed } from 'vue'
+import { colorVars, type Color } from '../../shared/hues'
+
 defineOptions({ inheritAttrs: false })
 
 interface Props {
@@ -18,9 +21,14 @@ interface Props {
   max?: number
   /** A plain fill instead of stripes; striped when left out. Open, see DECISIONS ("Loading"). */
   flat?: boolean
+  /** The bar's colour, a hue or a hex code; the selected colour when left out. */
+  color?: Color
 }
 
-const { label, value, max = 100, flat } = defineProps<Props>()
+const { label, value, max = 100, flat, color } = defineProps<Props>()
+
+/** The bar's colour as a custom property, when `color` is set. */
+const vars = computed(() => colorVars(color, { fill: '--rkui-progress-fill' }))
 </script>
 
 <template>
@@ -28,6 +36,7 @@ const { label, value, max = 100, flat } = defineProps<Props>()
     {{ label }}
     <progress
       :class="['rkui-progress', { 'rkui-progress--flat': flat }]"
+      :style="vars"
       :max="value === undefined ? undefined : max"
       :value="value"
       v-bind="$attrs"
