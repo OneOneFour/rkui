@@ -9,9 +9,11 @@
  *   export default defineConfig({ integrations: [mdx(), vue(), rkui()] })
  *
  * It adds a plugin to Sätteri, Astro's Markdown processor, on `markdown.processor`, which MDX
- * inherits: options given to `mdx({ processor })` instead are out of its reach. `.md` files are
- * left as they were, dollars included.
+ * inherits: options given to `mdx({ processor })` instead are out of its reach, and it warns when
+ * MDX compiles without it. `.md` files are left as they were, dollars included.
  */
+
+import { pathToFileURL } from 'node:url'
 
 const CODE_BLOCK = '@oneonefour/rkui/components/code/CodeBlock.vue'
 const MATHS = '@oneonefour/rkui/components/maths/Maths.vue'
@@ -78,6 +80,31 @@ function mdxPlugin({ code, maths }) {
   }
 }
 
+/**
+ * A Vite plugin that warns, once, when an `.mdx` file compiles without rkui's plugin: when
+ * `mdx({ extendMarkdownConfig: false })` or `mdx({ processor })` gives MDX a processor of its own.
+ * MDX keeps its options to itself, so this shows only as the files compile. `seen` holds the
+ * files rkui's plugin ran on.
+ */
+function mdxCheck(seen, logger) {
+  let warned = false
+  return {
+    name: 'rkui-mdx-check',
+    transform: {
+      filter: { id: /\.mdx$/ },
+      handler(code, id) {
+        if (warned || seen.has(pathToFileURL(id).href)) return
+        warned = true
+        logger.warn(
+          `${id} compiled without rkui's plugin, so fenced code and $…$ maths in MDX stay as ` +
+            "Markdown has them. MDX isn't using markdown.processor: remove extendMarkdownConfig " +
+            'and processor from mdx(), and give their plugins to markdown.processor instead.',
+        )
+      },
+    },
+  }
+}
+
 /** For a `.md` file, which the integration leaves alone: maths written in dollars stays text. */
 const markdownDollars = {
   name: 'rkui-markdown-dollars',
@@ -102,7 +129,7 @@ export default function rkui({ code = true, maths = true } = {}) {
   return {
     name: '@oneonefour/rkui',
     hooks: {
-      'astro:config:setup': ({ config }) => {
+      'astro:config:setup': ({ config, logger, updateConfig }) => {
         const { processor } = config.markdown
         if (processor.name !== 'satteri') {
           throw new Error(
@@ -113,9 +140,13 @@ export default function rkui({ code = true, maths = true } = {}) {
         // Unless the site already parses maths in its .md files.
         const keepDollars = maths && !options.features.math
         if (maths) options.features.math = true
-        options.mdastPlugins.push(({ sourceFormat }) =>
-          sourceFormat === 'mdx' ? mdxPlugin({ code, maths }) : keepDollars && markdownDollars,
-        )
+        const seen = new Set()
+        options.mdastPlugins.push(({ sourceFormat, fileURL }) => {
+          if (sourceFormat !== 'mdx') return keepDollars && markdownDollars
+          if (fileURL) seen.add(fileURL.href)
+          return mdxPlugin({ code, maths })
+        })
+        updateConfig({ vite: { plugins: [mdxCheck(seen, logger)] } })
       },
     },
   }

@@ -113,8 +113,9 @@ print('Hello')
 - An equation that an EquationReference links to needs an `id`, so it is written as a tag:
   `<Equation id="eq-flow" tex="…" />`.
 - The integration adds a plugin to Sätteri, Astro's Markdown processor, on `markdown.processor`,
-  which MDX inherits. A site that gives MDX a processor of its own (`mdx({ processor })`) moves it
-  to `markdown.processor`. `.md` files are left as they were, dollars included.
+  which MDX inherits. With `mdx({ processor })` or `mdx({ extendMarkdownConfig: false })`, MDX has
+  a processor of its own, so fences and dollars stay as they are and the build warns: move those
+  plugins to `markdown.processor` instead. `.md` files are left as they were, dollars included.
 
 ### Plain HTML
 
