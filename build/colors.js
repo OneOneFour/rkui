@@ -8,12 +8,15 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 const TOKENS = new URL('../src/tokens/', import.meta.url)
 const OUT_DIR = new URL('../dist/', import.meta.url)
 
-/** The `--rkui-*` declarations in `css`, as a map from name (without `--rkui-`) to value. */
+/**
+ * The `--rkui-*` declarations in `css`, as a map from name (without `--rkui-`) to value. A token
+ * declared more than once keeps its first value, the default on `:root`.
+ */
 function declarations(css) {
   const withoutComments = css.replaceAll(/\/\*[\s\S]*?\*\//g, '')
   const found = new Map()
   for (const [, name, value] of withoutComments.matchAll(/--rkui-([a-z0-9-]+):\s*([^;]+);/g)) {
-    found.set(name, value.replaceAll(/\s+/g, ' ').trim())
+    if (!found.has(name)) found.set(name, value.replaceAll(/\s+/g, ' ').trim())
   }
   return found
 }
