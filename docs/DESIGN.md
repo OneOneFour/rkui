@@ -57,10 +57,10 @@ All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`,
 | `--rkui-fg` | `#1d232f` | `#f2eee2` | body text |
 | `--rkui-muted` | `#5b6070` | `#a3a8b6` | captions, meta |
 | `--rkui-line` | `#1d232f` | `#05070b` | outlines and hard shadows |
-| `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` (= `--rkui-line` in the block mode) | outlines of things with no fill |
+| `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` (= `--rkui-line` in the block and block colour modes) | outlines of things with no fill |
 | `--rkui-ink` | `#1d232f` | `#1d232f` | ink, same in both themes |
 | `--rkui-on-ink`, `--rkui-glint` | `#f7f3e5` | `#f2eee2` | text on ink; highlights on fills |
-| `--rkui-shadow-lit` | = `--rkui-line` | `#6e7891` | colour mode: shadow of things without a fill |
+| `--rkui-shadow-lit` | = `--rkui-line` | `#6e7891` | colour and block colour modes: shadow of things without a fill |
 | `--rkui-focus` / `--rkui-focus-alt` | `--rkui-tangerine` / `--rkui-yellow` | same | focus band; where tangerine surrounds it |
 
 ### 2.2 Hues
@@ -209,7 +209,7 @@ back inside it.
 |---|---|---|---|
 | Theme | `data-theme` on `<html>` | `light`, `dark`, none = system | sets `color-scheme`; any container can set `color-scheme` itself |
 | Palette | `data-palette` | `cream`, `slate`, `greige` | redeclares page colours and their mixes |
-| Shadow | `data-shadow` | `slab`, `color`, `block` | `tokens/shadows.css` for `slab` and `block`; `tokens/shadow-color.css`: `@scope` from `color` to `slab` or `block` |
+| Shadow | `data-shadow` | `slab`, `color`, `block`, `block-color` | `tokens/shadows.css` for `slab`, `block` and `block-color`'s outlines; `tokens/shadow-color.css`: `@scope` from `color` or `block-color` to `slab` or `block` |
 | Depth | `data-depth` | `normal`, `deep` | `--rkui-shadow-depth` 1 or 1.5 |
 | Light | `style` on `<html>` | `--rkui-shadow-dx`/`-dy`, default 1, 1 | `<rkui-light-direction>` |
 | Scroll dots | `data-rkui-dots`; a component's `dots` writes it on its outer element | `plain`, `pill` | `@scope` from `pill` to `plain` (`overflow.css`) |
@@ -300,9 +300,9 @@ is an optional peer dependency, installed by the sites that use them.
   panel), or D pushed in like a drawer's tray (`--rkui-folder-back` with a `--rkui-recess` inner
   shadow, a resting offset deep).
 
-### 4.2 Dark-mode shadows: slab, colour and block
+### 4.2 Dark-mode shadows: slab, colour, block and block colour
 
-A near-black shadow is hard to see on night blue, so dark mode has three shadow modes.
+A near-black shadow is hard to see on night blue, so dark mode has four shadow modes.
 - **The outlined slab is the default:** the shadow sits on a copy widened by the outline in
   `--rkui-shadow-edge`, cream in dark mode, transparent in light.
 - **Own-colour extrusion is a supported mode** (`data-shadow="color"`). In dark mode a raised
@@ -326,6 +326,10 @@ A near-black shadow is hard to see on night blue, so dark mode has three shadow 
   and `--rkui-line-unfilled` is `--rkui-line`, so things with no fill (inputs, chips, tiles, folder
   tabs, unchecked controls) take the near-black outline too, like the mockup's Surface card. Their
   edges are hard to see on the dark page; that is accepted. Light mode is unchanged.
+- **Block colour is a mode to try** (`data-shadow="block-color"`): the colour mode's shadows, with
+  block's near-black outline on things with no fill (`--rkui-line-unfilled` is `--rkui-line`)
+  instead of cream. Things without a fill still cast `--rkui-shadow-lit`. Without `@scope` or
+  `light-dark()`, browsers show it as block. Light mode is unchanged.
 
 ### 4.3 Depth
 

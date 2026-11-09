@@ -34,6 +34,7 @@ const SHOTS = [
     shadow: 'color',
   })),
   { path: 'colors/', theme: 'dark', palette: 'cream', shadow: 'block' },
+  { path: 'colors/', theme: 'dark', palette: 'cream', shadow: 'block-color' },
   { path: 'old/', theme: 'light', palette: 'cream', shadow: 'slab' },
 ]
 

@@ -260,6 +260,9 @@ quotes. Each pick is one small change that deletes the losing variant and update
   1.21em (KaTeX's default). ("Maths in text")
 - [ ] Number stepper: split, or stacked. No pick recorded; both may stay as opt-ins.
 - [ ] Segmented control: pill, or deck. No pick recorded; both may stay as opt-ins.
+- [ ] Block colour shadow mode (`data-shadow="block-color"`, Rob's, to try): the colour mode's
+  shadows with block's near-black outlines instead of cream; stays, or goes. ("Shape, shadow and
+  depth" in the old styleguide, or the header switch)
 
 **Docs site only**
 - [ ] Heatmap layout: A side by side with ink gutters, or B tiles. ("Charts")

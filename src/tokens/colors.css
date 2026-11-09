@@ -21,8 +21,8 @@
   --rkui-focus: var(--rkui-tangerine);
   /* Where tangerine surrounds the focused element, set --rkui-focus: var(--rkui-focus-alt) */
   --rkui-focus-alt: var(--rkui-yellow);
-  /* The colour shadow mode's shadow for things without a fill: lighter than the page in dark
-     mode */
+  /* The colour and block colour shadow modes' shadow for things without a fill: lighter than the
+     page in dark mode */
   --rkui-shadow-lit: light-dark(var(--rkui-line), #6e7891);
 
   /* Fills: vivid in both themes */

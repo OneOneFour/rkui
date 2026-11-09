@@ -6,7 +6,7 @@
    - .rkui-card--raised (B), the outline and a hard shadow;
    - .rkui-card--shaded (C), a slate fill with no outline;
    - .rkui-card--inset (D), pushed into the page like a drawer's tray.
-   In the dark colour shadow mode a linked or raised card's shadow is the shade of --rkui-card-hue
+   In the dark colour and block colour shadow modes a linked or raised card's shadow is the shade of --rkui-card-hue
    where it is set (shadow-color.css).
 
    <article class="rkui-card rkui-card--link">

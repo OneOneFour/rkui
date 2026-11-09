@@ -28,8 +28,8 @@ interface Props {
    */
   variant?: 'outline' | 'raised' | 'shaded' | 'inset'
   /**
-   * The colour its hard shadow takes in the dark colour shadow mode, such as one from its image:
-   * a palette hue or a hex code. Only a linked or raised card has a hard shadow, and other modes
+   * The colour its hard shadow takes in the dark colour and block colour shadow modes, such as one
+   * from its image: a palette hue or a hex code. Only a linked or raised card has a hard shadow, and other modes
    * keep theirs; `--rkui-shadow-lit` when left out.
    */
   hue?: HueOrHex
