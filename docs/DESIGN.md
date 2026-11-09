@@ -502,7 +502,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Sticky note | `.rkui-sticky-note` (hues, `--tilt`, `--tape`, `--pin`) | |
 | Widget frame | `.rkui-widget-frame` (dashed, lilac tint) | |
 | Figure | `.rkui-figure` | |
-| Quote | `.rkui-quote` (slate panel, slab serif; `--italic`) | upright by default; slant open |
+| Quote | `.rkui-quote` (slate panel, slab serif; `--italic`) | upright by default; `slant="italic"` slants it |
 | Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
 | Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`); `.rkui-cabinet` | drawer by default |
 | Equations | `.rkui-equation` (`--panel`, `--rule`, `--key`), `.rkui-eqref` | bare by default; §3.3 |

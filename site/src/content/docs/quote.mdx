@@ -8,6 +8,8 @@ component: Quote
 
 import Demo from '../../components/Demo.astro'
 import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
+import TryIt from '../../examples/quote/TryIt.vue'
+import tryItCode from '../../examples/quote/TryIt.vue?raw'
 
 `Quote` renders a `<blockquote>` on a slate panel, in Roboto Slab. It is as wide as its column,
 with no indent, so its edges line up with the text around it, and it keeps the same space above
@@ -20,6 +22,14 @@ and below. With `by`, the attribution goes under the quote in a `<figcaption>`.
       leaves.
     </p>
   </Quote>
+</Demo>
+
+## Try it
+
+Type a quote and an attribution to see them render. A blank line starts a new paragraph.
+
+<Demo vue={tryItCode} label="Quote that renders as you type" stack widget>
+  <TryIt client:visible />
 </Demo>
 
 ## In running text
@@ -37,16 +47,16 @@ and below. With `by`, the attribution goes under the quote in a `<figcaption>`.
 
 ## Slant
 
-Roboto Slab has no italic, so `slant="italic"` has the browser slant its upright letters. Emphasis
-inside an italic quote turns upright.
+A quote is upright by default. Roboto Slab has no italic, so `slant="italic"` has the browser slant
+its upright letters. Emphasis inside an italic quote turns upright.
 
 <Demo label="Upright and italic quotes" stack>
-  <Quote by="A, upright">
+  <Quote by="Upright">
     <p>
       Sphinx of black quartz, <em>judge</em> my vow.
     </p>
   </Quote>
-  <Quote slant="italic" by="B, italic">
+  <Quote slant="italic" by="Italic">
     <p>
       Sphinx of black quartz, <em>judge</em> my vow.
     </p>
@@ -64,6 +74,8 @@ A site does the same by mapping `blockquote` to `Quote` where it renders its Mar
 ```astro
 ---
 import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
+import TryIt from '../../examples/quote/TryIt.vue'
+import tryItCode from '../../examples/quote/TryIt.vue?raw'
 const { Content } = await render(entry)
 ---
 
@@ -74,6 +86,8 @@ or in one MDX file:
 
 ```mdx
 import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
+import TryIt from '../../examples/quote/TryIt.vue'
+import tryItCode from '../../examples/quote/TryIt.vue?raw'
 export const components = { blockquote: Quote }
 ```
 

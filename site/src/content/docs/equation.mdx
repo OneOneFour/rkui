@@ -10,6 +10,8 @@ import Demo from '../../components/Demo.astro'
 import Equation from '@oneonefour/rkui/components/maths/Equation.vue'
 import EquationReference from '@oneonefour/rkui/components/maths/EquationReference.vue'
 import Maths from '@oneonefour/rkui/components/maths/Maths.vue'
+import TryIt from '../../examples/equation/TryIt.vue'
+import tryItCode from '../../examples/equation/TryIt.vue?raw'
 
 KaTeX turns the TeX into HTML when the page is built, so the page runs no maths JavaScript. A site
 that uses these components installs `katex` and loads its stylesheet before rkui's:
@@ -27,6 +29,16 @@ they are. In MDX the slot would be Markdown, which changes them. A TeX error sto
     id="eq-flow"
     tex="\frac{\mathrm{d}\mathbf{x}}{\mathrm{d}t} = \mathbf{f}(\mathbf{x};\, \sigma, \rho, \beta) \tag{1}"
   />
+</Demo>
+
+## Try it
+
+Type TeX to see it render. This demo runs KaTeX in the browser, so this page loads its
+JavaScript; a page with only `Equation` and `Maths` loads none. While the TeX has an error, the
+error shows under the box and the equation stays as it last rendered.
+
+<Demo vue={tryItCode} label="Equation that renders as you type" stack widget>
+  <TryIt client:visible />
 </Demo>
 
 ## Frames

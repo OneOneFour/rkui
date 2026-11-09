@@ -16,7 +16,7 @@ interface Props {
   by?: string
   /**
    * 'italic' slants the quote (the browser slants Roboto Slab, which has no italic); 'upright'
-   * when left out. Open, see DECISIONS ("Quote").
+   * when left out.
    */
   slant?: 'upright' | 'italic'
 }

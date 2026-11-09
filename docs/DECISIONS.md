@@ -12,6 +12,9 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-08
 
+**Quote slant** (Rob). Both stay: a quote is upright by default, and `slant="italic"` slants it,
+with the browser slanting Roboto Slab, which has no italic.
+
 **Select's open list** (Rob). Every select draws its open list in the toon look where the browser
 supports `appearance: base-select`, and shows the browser's own list elsewhere; there is no
 `picker` option to turn it on. The checked option is filled with `--rkui-selected`, like every
@@ -233,7 +236,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Header band, built as a prototype with the sections sidebar: stays, changes, or goes. A
   site's frame (nav column beside the page) stays a recipe in the site. ("Header band")
 - [ ] Table: A sheet (the default), or B ledger. ("Table")
-- [ ] Quote: A upright (the default), or B italic (`slant="italic"`, slanted by the browser). ("Quote")
 - [ ] Inline maths size (`--rkui-maths-scale`): A 1em, B 1.1em, C 1.15em (proposed, as built), or D
   1.21em (KaTeX's default). ("Maths in text")
 - [ ] Number stepper: split, or stacked. No pick recorded; both may stay as opt-ins.
