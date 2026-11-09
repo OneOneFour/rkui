@@ -381,8 +381,9 @@ Defined once in `interactive.css` for every clickable component. **Hover** (only
 by `--rkui-press-offset` onto `--rkui-shadow-pressed`. 120ms, plain `ease`, no springy overshoot. Only
 clickable things lift and sink (whether this stays is open: DECISIONS), with two opt-in exceptions:
 a Table's `lift` option, where the hovered row lifts though it isn't clickable, and a StickyNote's
-`animated` option, where the fold lifts on hover on a note that isn't a link. Something static
-shows emphasis with its fill and a small pop in place (scale 1.08 on `--rkui-ease-snap`).
+`animated` option, where the fold lifts on hover on a note that isn't a link. A Logo with no link
+doesn't lift: it plays its motifs once on load, then while hovered. Something static shows
+emphasis with its fill and a small pop in place (scale 1.08 on `--rkui-ease-snap`).
 
 ### 4.5 Pressed, checked and busy
 
@@ -432,15 +433,17 @@ Hover cue: the background sinks to the page by default; `.rkui-hover-ring`, `.rk
 **When.** Motion explains: it answers input, shows work under way, or shows how a change happens.
 Never decoration.
 - **Never moves:** readable text, layout, scroll position (smooth scrolling only for in-page jumps),
-  the light, the outline width, the focus band. One accepted exception: a drawer's slam jolts its
-  parent, text and all, by about 2px (DECISIONS, 2026-11-08).
+  the light, the outline width, the focus band. Accepted exceptions, each brief and in answer to
+  the reader: a drawer's slam jolts its parent, text and all, by about 2px (DECISIONS,
+  2026-11-08); a newly checked Segmented option and an opening Alert pop; a Range's value rides
+  over its thumb.
 - **Never turns**, so shadows stay on the light's side. Parts that turn have no shadow: the spinner
   wedge, the dial's notch (the knob stays still), the clock hands, whose tags counter-turn. The
   orbit spinner's dots counter-turn too.
 
 | | Input response | Ambient loop |
 |---|---|---|
-| Starts | on input, same frame | by itself, while a state lasts |
+| Starts | on input, same frame; never on page load | by itself, while a state lasts |
 | Length | `--rkui-duration-fast` 120ms (hover, press); `--rkui-duration-spring` 180ms (toggles, snapping); `--rkui-duration-slide` 320ms (travel, panels) | `--rkui-loop-quick` 0.6s (a hop); `--rkui-loop-short` 0.9s (small busy marks); `--rkui-loop-steady` 1.2s (a turn, a rolling wave); `--rkui-loop-medium` 1.8s (a circuit, the reduced-motion fade); `--rkui-loop-long` 2.4s (fills); `--rkui-loop-panel` 4s (diagrams) |
 | Repeats | never | until the state ends or the reader pauses it |
 
@@ -448,10 +451,13 @@ Never decoration.
 `ease-in` down for gravity; `ease-in-out` `alternate` for fills. `--rkui-ease-spring`
 (`cubic-bezier(0.34, 1.56, 0.64, 1)`) recovers from a squash or press. `--rkui-ease-snap`
 (`cubic-bezier(0.38, 1.35, 0.52, 1)`, about 4% overshoot, 90% there at 35% of the time) is a jump
-to a new place or state with one visible overshoot. No other curves and no elastic easing.
+to a new place or state with one visible overshoot. No other curves and no elastic easing, except
+the ring spinner's wedge, which eases each half turn with its own mirrored pair of curves, and a
+drawer's tray, which opens `ease-out` and closes `ease-in`.
 
-**Toon phases.** Wind-up, go, overshoot, settle, with holds; a loop holds for a third or more of its
-cycle. A sequence uses equal steps of 0.6–1s and ends on a held step.
+**Toon phases.** Wind-up, go, overshoot, settle, with holds; a loop that steps between poses holds
+for a third or more of its cycle (steady travel, a turn or a rolling wave, never stops). A
+sequence uses equal steps of 0.6–1s and ends on a held step.
 - **Squash:** up to 1.3 × 0.7 on impact, 0.8–0.9 × 1.1–1.25 in flight, 0.95 × 1.05 to settle.
   Area within about 10%, pinned to the contact point.
 - **Overshoot:** one swing only, from the snap curves or one keyframe past the target (10% at most).
@@ -461,8 +467,8 @@ cycle. A sequence uses equal steps of 0.6–1s and ends on a held step.
 **Shadows while moving.** Offsets from `--rkui-shadow-dx`/`-dy`, never literal; lengths that go with a
 shadow multiply by `--rkui-shadow-depth`.
 
-**Stagger.** Neighbours start `--rkui-stagger` (0.15s) apart (`calc(var(--rkui-i) * var(--rkui-stagger))`), in
-reading order or the order a cause travels. An entrance spreads over 0.6s at most; staggered loops
+**Stagger.** Neighbours start `--rkui-stagger` (0.15s) apart (the nth `calc(n * var(--rkui-stagger))`
+after the first), in reading order or the order a cause travels. An entrance spreads over 0.6s at most; staggered loops
 share one period.
 
 **Third-party widgets and canvases.**
@@ -475,14 +481,15 @@ share one period.
 
 **Reduced motion, forced colours, pausing.**
 - Reduced motion: the tokens zero durations and press/lift offsets. State loops (spinners, loaders,
-  pending panels) become a fade (`rkui-spinner-fade`, `--rkui-loop-medium`); illustrative loops stop (this split is
-  open: DECISIONS).
+  progress bars, water, pending panels) become a fade (`rkui-spinner-fade`, `--rkui-loop-medium`);
+  illustrative loops stop (this split is open: DECISIONS).
 - Forced colours: `CanvasText` outlines, `Highlight` for lit parts, `Canvas` behind.
 - Self-moving content over five seconds, other than a loader, gets a pause control (WCAG 2.2.2):
   the Motion component's Pause button. JS loops stop when paused, off-screen or hidden.
 
 **Performance.** Animate `transform` and `opacity`; never layout in a loop; no permanent
-`will-change`. **At a join, move with inset offsets, not `translate`:** a `translate` transition
+`will-change`. The one exception: an indeterminate progress bar moves its stripes with
+`background-position`, as a native progress bar has no part to transform. **At a join, move with inset offsets, not `translate`:** a `translate` transition
 gets its own compositor layer, which snaps to whole pixels and can open a hairline seam.
 
 ## 6. Iconography

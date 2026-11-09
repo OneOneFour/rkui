@@ -30,7 +30,9 @@ button.
 ## What never moves
 
 - Readable text, the layout and the scroll position. Smooth scrolling is only for jumps within the
-  page.
+  page. A few moves carry text with them, briefly and in answer to the reader: a drawer's slam
+  jolts the card around it, text and all, by about 2px; a newly checked Segmented option and an
+  opening Alert pop; and a Range's value rides over its thumb.
 - The light, the outline width and the focus band.
 - Nothing turns while it casts a shadow, so shadows always fall away from the light. Parts that
   turn have no shadow: the spinner's wedge, the dial's notch and the clock's hands.
@@ -38,14 +40,17 @@ button.
 ## Input responses
 
 An input response starts in the same frame as the input, eases with plain `ease`, and plays once.
-Its length is a duration token:
+It never plays when the page loads: an option that is checked on load shows checked at once. Its
+length is a duration token:
 
 - `--rkui-duration-fast`, 120ms: hover and press.
 - `--rkui-duration-spring`, 180ms: toggles and snapping.
 - `--rkui-duration-slide`, 320ms: travel and panels.
 
 Clickable things lift on hover and sink on press; things that can't be clicked stay still. Two
-options lift on hover without a click: a Table's `lift` and a StickyNote's `animated`.
+options lift on hover without a click: a Table's `lift` and a StickyNote's `animated`. A Logo with
+no link doesn't lift either: it plays its motifs once as the page loads, then again while the
+pointer is over it.
 
 <Demo vue={responseCode} label="A button's input response, and the same under reduced motion">
   <Response />
@@ -54,7 +59,10 @@ options lift on hover without a click: a Table's `lift` and a StickyNote's `anim
 ## Ambient loops
 
 An ambient loop starts by itself and runs while a state lasts, until the state ends or the reader
-pauses it. One cycle is a loop token, and the loop holds still for at least a third of it:
+pauses it. Every loop in rkui is timed with a loop token, one cycle per token. A loop that steps
+between poses, such as a hop or a bounce, holds still for at least a third of its cycle; one that
+travels steadily, such as a turn or a rolling wave, never stops. Under reduced motion a loop that
+shows a state fades instead (below).
 
 - `--rkui-loop-quick`, 0.6s: a hop, or a stripe's march.
 - `--rkui-loop-short`, 0.9s: small busy marks.
@@ -70,7 +78,12 @@ pauses it. One cycle is a loop token, and the loop holds still for at least a th
 - `--rkui-ease-spring` recovers from a squash or a press.
 - `--rkui-ease-snap` jumps to a new place or state, with one visible overshoot of about 4%.
 
-There are no other curves and no elastic easing.
+There are no other curves and no elastic easing, with two exceptions:
+
+- the ring spinner's wedge eases each half turn with its own pair of curves, so it slows over the
+  top and speeds through the bottom without a jerk;
+- a drawer's tray opens with `ease-out` and closes with `ease-in`, like a drawer pulled out and
+  pushed home.
 
 <Demo vue={easingCode} label="One hop in each easing, over one --rkui-loop-medium cycle" stack>
   <Easing />
@@ -92,9 +105,9 @@ A move winds up, goes, overshoots and settles, with holds between. A sequence ta
 
 ## Stagger
 
-Neighbours start `--rkui-stagger` (0.15s) apart, with `calc(var(--rkui-i) * var(--rkui-stagger))`,
-in reading order or in the order a cause travels. An entrance spreads over 0.6s at most, and
-staggered loops share one period.
+Neighbours start `--rkui-stagger` (0.15s) apart, the nth one `calc(n * var(--rkui-stagger))` after
+the first, in reading order or in the order a cause travels. An entrance spreads over 0.6s at most,
+and staggered loops share one period.
 
 <Demo
   vue={staggerCode}
@@ -109,8 +122,8 @@ When the reader asks for reduced motion (`prefers-reduced-motion: reduce`):
 
 - the duration tokens become 0ms and the press and lift offsets 0px, so a transition timed with
   them happens at once and only the shadow changes;
-- loops that show a state (spinners, loaders, pending panels) stay in place and fade in and out,
-  with `rkui-spinner-fade` over `--rkui-loop-medium`;
+- loops that show a state (spinners, loaders, progress bars, water and pending panels) stay in
+  place and fade in and out, with `rkui-spinner-fade` over `--rkui-loop-medium`;
 - loops that only illustrate something stop.
 
 The loop tokens stay the same, so each looping animation has its own `prefers-reduced-motion`
@@ -149,7 +162,9 @@ animations only: transitions, animations started from a script (`element.animate
 - Time loops with the loop tokens, and give each one a `prefers-reduced-motion` rule.
 - Move a shadow's offsets with `--rkui-shadow-dx` and `--rkui-shadow-dy`, never fixed numbers, and
   multiply lengths that go with a shadow by `--rkui-shadow-depth`.
-- Animate `transform` and `opacity`, and never animate the layout in a loop.
+- Animate `transform` and `opacity`, and never animate the layout in a loop. The one exception in
+  rkui is an indeterminate progress bar, which moves its stripes with `background-position`: a
+  native progress bar has no part that `transform` could move.
 - Where two pieces meet, move them with inset offsets rather than `translate`: a `translate`
   transition can open a hairline seam between them.
 - Colour a chart or canvas library's marks with the tokens, and turn off its own animations or time
