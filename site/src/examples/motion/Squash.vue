@@ -19,8 +19,12 @@ import Motion from '@oneonefour/rkui/components/motion/Motion.vue'
   border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
 }
 
-/* The library's rkui-squash keyframes: squash on landing, stretch in flight, settle. */
+/* The library's rkui-squash keyframes: squash on landing, stretch in flight, settle. The colour
+   shadow casts the shadow in the fill, darkened (shadow-color.css). */
 .ball {
+  --rkui-shade-of: var(--rkui-coral);
+  --rkui-extrusion: var(--rkui-shade);
+
   position: relative;
   box-sizing: border-box;
   inline-size: 1.75rem;

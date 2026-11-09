@@ -52,8 +52,12 @@ figcaption {
   border-radius: var(--rkui-radius);
 }
 
-/* Hold, move, hold and move back over one loop; each move takes 15% of it. */
+/* Hold, move, hold and move back over one loop; each move takes 15% of it. The colour shadow
+   casts the shadow in the fill, darkened (shadow-color.css). */
 .block {
+  --rkui-shade-of: var(--rkui-yellow);
+  --rkui-extrusion: var(--rkui-shade);
+
   display: block;
   box-sizing: border-box;
   inline-size: 1.5rem;

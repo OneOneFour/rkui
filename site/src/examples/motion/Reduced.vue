@@ -54,9 +54,12 @@ figcaption {
   border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
 }
 
-/* What a state loop does under reduced motion: it stays in place and fades. */
+/* What a state loop does under reduced motion: it stays in place and fades. The colour shadow
+   casts the shadow in the fill, darkened (shadow-color.css). */
 .block,
 .ball {
+  --rkui-extrusion: var(--rkui-shade);
+
   display: block;
   box-sizing: border-box;
   border: var(--rkui-outline-width) solid var(--rkui-line);
@@ -64,6 +67,8 @@ figcaption {
 }
 
 .block {
+  --rkui-shade-of: var(--rkui-yellow);
+
   inline-size: 1.5rem;
   block-size: 1.5rem;
   border-radius: calc(var(--rkui-radius) / 2);
@@ -72,6 +77,8 @@ figcaption {
 }
 
 .ball {
+  --rkui-shade-of: var(--rkui-coral);
+
   inline-size: 1.75rem;
   block-size: 1.75rem;
   border-radius: 50%;
