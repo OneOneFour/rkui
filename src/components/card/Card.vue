@@ -22,9 +22,9 @@ interface Props {
   /** The title's heading level, to fit the page outline; 3 when left out. */
   headingLevel?: 2 | 3 | 4
   /**
-   * A static card's edge: 'outline' (A), 'raised' (B, the outline and a hard shadow that doesn't
-   * lift) or 'inset' (D, pushed into the page); 'shaded' (C, a slate fill) when left out. A linked
-   * card ignores it. Open, see DECISIONS ("Card").
+   * A static card's edge: 'raised' (the outline and a hard shadow that doesn't lift), 'shaded' (a
+   * slate fill with no outline) or 'inset' (pushed into the page); 'outline' when left out. A
+   * linked card ignores it.
    */
   variant?: 'outline' | 'raised' | 'shaded' | 'inset'
   /**
@@ -35,7 +35,7 @@ interface Props {
   hue?: HueOrHex
 }
 
-const { title, href, meta, headingLevel = 3, variant = 'shaded', hue } = defineProps<Props>()
+const { title, href, meta, headingLevel = 3, variant = 'outline', hue } = defineProps<Props>()
 
 /** The card's modifier: the link, or a static card's variant. */
 const look = computed(() => (href ? 'rkui-card--link' : `rkui-card--${variant}`))

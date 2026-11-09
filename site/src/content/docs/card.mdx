@@ -19,34 +19,34 @@ import Card from '@oneonefour/rkui/components/card/Card.vue'
 
 ## Static edges
 
-A static card never lifts, but it needs an edge, or it vanishes on a raised surface such as this demo's. Which edge is still open, so `variant` offers four: A `outline`, B `raised` (the outline and a hard shadow that doesn't lift), C `shaded` (a slate fill, the default) and D `inset` (pushed into the page). Each is shown here in light and in dark, on the page colour.
+A static card never lifts, but it needs an edge, or it vanishes on a raised surface such as this demo's. It has an outline by default; `variant` picks one of the others: `raised` (the outline and a hard shadow that doesn't lift), `shaded` (a slate fill with no outline) or `inset` (pushed into the page). Each is shown here in light and in dark, on the page colour.
 
 <Demo label="Static card edges" stack>
   <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-4); padding: var(--rkui-space-5); color-scheme: light; background: var(--rkui-surface); color: var(--rkui-fg)">
-    <Card title="A outline" variant="outline" style="inline-size: 9rem">
+    <Card title="Outline" meta="The default" style="inline-size: 9rem">
       <p>Outline only.</p>
     </Card>
-    <Card title="B raised" variant="raised" style="inline-size: 9rem">
+    <Card title="Raised" variant="raised" style="inline-size: 9rem">
       <p>Outline and shadow.</p>
     </Card>
-    <Card title="C shaded" meta="The default" style="inline-size: 9rem">
+    <Card title="Shaded" variant="shaded" style="inline-size: 9rem">
       <p>A slate fill.</p>
     </Card>
-    <Card title="D inset" variant="inset" style="inline-size: 9rem">
+    <Card title="Inset" variant="inset" style="inline-size: 9rem">
       <p>Pushed in.</p>
     </Card>
   </div>
   <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-4); padding: var(--rkui-space-5); color-scheme: dark; background: var(--rkui-surface); color: var(--rkui-fg)">
-    <Card title="A outline" variant="outline" style="inline-size: 9rem">
+    <Card title="Outline" meta="The default" style="inline-size: 9rem">
       <p>Outline only.</p>
     </Card>
-    <Card title="B raised" variant="raised" style="inline-size: 9rem">
+    <Card title="Raised" variant="raised" style="inline-size: 9rem">
       <p>Outline and shadow.</p>
     </Card>
-    <Card title="C shaded" meta="The default" style="inline-size: 9rem">
+    <Card title="Shaded" variant="shaded" style="inline-size: 9rem">
       <p>A slate fill.</p>
     </Card>
-    <Card title="D inset" variant="inset" style="inline-size: 9rem">
+    <Card title="Inset" variant="inset" style="inline-size: 9rem">
       <p>Pushed in.</p>
     </Card>
   </div>

@@ -23,8 +23,8 @@ ink, not white. It draws on neo-brutalist graphics
   small text on the page: use the `-deep` step.
 - **Every interactive thing has the 2px outline and the pop**, from one shared rule set
   (`src/interactive.css`), never per component. Static panels (callouts, code,
-  equations) have no outline; text inputs are outlined but flat. A static card's edge is open
-  (§4.1).
+  equations) have no outline; text inputs are outlined but flat. A static card is outlined but
+  never lifts (§4.1).
 - **Hard shadows only:** zero blur, opaque, offsets always from `--rkui-shadow-dx`/`--rkui-shadow-dy`.
 - **Focus is the tangerine highlighter band** hugging the outline, shadow off. Never removed.
 - **Things move but never turn.** A shadowed thing only translates; parts that turn carry no
@@ -294,11 +294,11 @@ is an optional peer dependency, installed by the sites that use them.
 - Hard shadow at 4px, zero blur, away from the light: the single biggest toon signal. One light
   drives every shadow and pop; glints sit opposite. SVG uses `drop-shadow()` from the same tokens,
   plus a second in `--rkui-shadow-edge`.
-- A static card never lifts, and needs an edge so it doesn't vanish on the raised surface. Which
-  one is open (DECISIONS, "Card"): A the folder sheet's `--rkui-line-unfilled` outline, B that
-  outline and the hard shadow, C a `--rkui-slate` fill (the default, like the quote and the code
-  panel), or D pushed in like a drawer's tray (`--rkui-folder-back` with a `--rkui-recess` inner
-  shadow, a resting offset deep).
+- A static card never lifts, and needs an edge so it doesn't vanish on the raised surface: by
+  default the folder sheet's `--rkui-line-unfilled` outline. Three other edges are options: that
+  outline and the hard shadow (`raised`), a `--rkui-slate` fill like the quote and the code panel
+  (`shaded`), or pushed in like a drawer's tray (`inset`: `--rkui-folder-back` with a
+  `--rkui-recess` inner shadow, a resting offset deep).
 
 ### 4.2 Dark-mode shadows: slab, colour, block and block colour
 
@@ -517,7 +517,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Popup | `.rkui-popup` (Popover API) | |
 | Alert | `.rkui-alert` (modal `<dialog>`) | coral band; blurs the page behind, which stays still |
 | Tooltip | `.rkui-tooltip`, `--flat` | toon by default; flat swaps the page's colours |
-| Card | `.rkui-card`, `--link`; static A `--outline`, B `--raised`, C `--shaded`, D `--inset` | C by default; static edge open; content variants proposed (DECISIONS) |
+| Card | `.rkui-card`, `--link`; static `--outline`, `--raised`, `--shaded`, `--inset` | outline by default; content variants proposed (DECISIONS) |
 | Callout | `.rkui-callout--note` (sky tint), `--warning` (apricot tint) | |
 | Sticky note | `.rkui-sticky-note` (hues, `--tilt`, `--tape`, `--pin`) | |
 | Widget frame | `.rkui-widget-frame` (dashed, lilac tint) | |

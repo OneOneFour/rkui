@@ -15,6 +15,11 @@ new entry and update DESIGN.md; don't rewrite the old one.
 **Tooltip** (Rob). The toon bubble, raised with the outline and hard shadow, is the default;
 `variant="flat"` gives the bubble in the page's colours swapped.
 
+**Card** (Rob). A static card has the outline by default (`variant="outline"`). The other three
+edges stay as options: `raised` (the outline and a hard shadow that doesn't lift), `shaded` (a
+slate fill) and `inset` (pushed in like a drawer's tray). Card's `hue` still only colours the
+shadow in the dark colour shadow mode.
+
 **Block mode outlines** (Rob). In dark mode with `data-shadow="block"`, things with no fill of
 their own (inputs, chips, tiles, folder tabs, unchecked controls) take the near-black outline too,
 like the mockup's Surface card, though their edges are then hard to see on the dark page.
@@ -249,8 +254,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Corner badge edge: A outline, B ring, or C sticker. ("Badges")
 - [ ] Breadcrumbs: A plain links, B chips, or C path bar. ("Breadcrumbs")
 - [ ] Pagination: A folder tabs, or B tiles between buttons. ("Pagination")
-- [ ] Static card edge: A outline, B outline and hard shadow, C slate fill (the default), or D
-  pushed in. ("Card")
 - [ ] Logo: lift (the pop only), or motifs (each tile's motif plays on hover). ("Logo")
 - [ ] Sidebar: A plain (the default), B card, C folders, D deck, or E note. ("Sidebar")
 - [ ] Header band, built as a prototype beside a sidebar: stays, changes, or goes. A
