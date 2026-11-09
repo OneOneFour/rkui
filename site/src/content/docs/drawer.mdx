@@ -96,6 +96,40 @@ import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
   </div>
 </Demo>
 
+## Colour
+
+With `hue`, a palette hue or a hex code, the drawer's tray, or the blind's screen, takes the hue's pale tint, and the pull, and the blind's hem, its solid fill. The text inside keeps the page's text colour.
+
+<Demo label="Drawers and blinds in colour">
+  <div style="display: flex; flex-wrap: wrap; align-items: start; gap: var(--rkui-space-6); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <Card title="Teal" style="inline-size: 14rem">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Tools" hue="teal" open>
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+    </Card>
+    <Card title="Coral" style="inline-size: 14rem">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Tools" hue="coral" open>
+        <SlidersIcon slot="handle" class="rkui-icon rkui-icon--small" />
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+    </Card>
+    <Card title="Grape" style="inline-size: 14rem">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Screen" variant="blind" hue="grape" showLabel open>
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+    </Card>
+    <Card title="A hex code" style="inline-size: 14rem">
+      <p>Pack my box with five dozen liquor jugs.</p>
+      <Drawer label="Screen" variant="blind" hue="#2e8b57" open>
+        <p>How vexingly quick daft zebras jump.</p>
+      </Drawer>
+    </Card>
+  </div>
+</Demo>
+
 ## On other sides
 
 A drawer pulls out from the edge `placement` names. On top it comes first in its parent. On the left and right it hangs beyond the parent's side, as tall as the parent, so the parent's content stays put: leave room beside the parent for its handle and its tray. The tray opens as wide as its contents, up to `--rkui-drawer-width` (`min(12rem, 35vw)` when left out). A card holding one doesn't clip it; another parent needs `position: relative`, and mustn't clip it either.

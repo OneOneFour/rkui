@@ -139,6 +139,16 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
+    /* A coloured drawer or blind: its own shadow, its handle's, its remote tray's and its pull's.
+       The tray's inset, the roller, the screen and the hem are pseudo-elements, which take their
+       element's shadow colour. */
+    .rkui-drawer--hue,
+    .rkui-drawer--hue > :is(.rkui-drawer-handle, .rkui-drawer-tray),
+    .rkui-drawer--hue > .rkui-drawer-handle .rkui-drawer-pull {
+      --rkui-shade-of: var(--rkui-drawer-hue);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
     .rkui-equation--key {
       --rkui-shade-of: var(--rkui-yellow);
       --rkui-extrusion: var(--rkui-shade);

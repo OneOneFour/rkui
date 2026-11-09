@@ -55,6 +55,12 @@
 
    The caret points the way the drawer will move, and turns half a turn as it opens and closes.
 
+   A coloured drawer, .rkui-drawer--hue, sets three custom properties (Drawer.vue's `hue`):
+   --rkui-drawer-tint, a pale tint for the drawer's tray or the blind's screen, which carry
+   --rkui-fg text; --rkui-drawer-hue, a solid fill for the pull and the blind's hem; and
+   --rkui-drawer-on-hue, the pull's text on it. In the colour shadow mode it casts the solid
+   hue's shade (shadow-color.css).
+
    In a card's body it reaches the card's sides, and the last one its bottom edge. In another
    parent, set --rkui-drawer-bleed to the parent's padding for the same, and clip the parent's
    corners (overflow: hidden) as a card does. A drawer on top reaches the parent's top edge when
@@ -152,6 +158,10 @@
   color: var(--rkui-fg);
   font-size: var(--rkui-step--1);
   font-weight: 600;
+}
+
+.rkui-drawer-pull .rkui-icon {
+  color: inherit;
 }
 
 /* The caret points the way the drawer will move: out when shut, in when open. It has no shadow,
@@ -460,10 +470,6 @@
   border-radius: var(--rkui-radius-pill);
 }
 
-.rkui-drawer--blind > .rkui-drawer-handle .rkui-icon {
-  color: inherit;
-}
-
 .rkui-drawer--blind > .rkui-drawer-handle :is(.rkui-drawer-pull, .rkui-drawer-ring)::before {
   content: '';
   position: absolute;
@@ -478,6 +484,24 @@
    from the cord's end at its middle. */
 .rkui-drawer--show-label > .rkui-drawer-handle .rkui-drawer-pull {
   padding-inline: var(--rkui-space-2);
+}
+
+/* A coloured drawer: the tray or screen takes the tint, and the inset's grey step is mixed from
+   it; the pull, and the blind's hem, take the solid hue, outlined as fills are. */
+.rkui-drawer--hue {
+  --rkui-recess-floor: var(--rkui-drawer-tint);
+  --rkui-drawer-screen: var(--rkui-drawer-tint);
+}
+
+.rkui-drawer--hue > .rkui-drawer-handle .rkui-drawer-pull {
+  border-color: var(--rkui-line);
+  background: var(--rkui-drawer-hue);
+  color: var(--rkui-drawer-on-hue);
+}
+
+.rkui-drawer--hue.rkui-drawer--blind > .rkui-drawer-handle::before {
+  border-color: var(--rkui-line);
+  background: var(--rkui-drawer-hue);
 }
 
 /* On top, the drawer is turned round: the handle comes first, then the tray, whose contents keep

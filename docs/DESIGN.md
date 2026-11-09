@@ -135,8 +135,8 @@ Repeated mixes are named, so the docs page can show them:
   the line above a drawer's handle, the table's rules in light mode.
 - `--rkui-recess-shade`: `color-mix(in srgb, var(--rkui-recess-floor), var(--rkui-line) 60%)`, opaque;
   the inset's grey step (§2.7). The component sets `--rkui-recess-floor` to its fill: `--rkui-panel`
-  for a code block, `--rkui-folder-back` for a drawer's tray and an inset card. Declared on `*`, so
-  each recess mixes its own.
+  for a code block, `--rkui-folder-back` for a drawer's tray (its hue's tint with `hue`) and an
+  inset card. Declared on `*`, so each recess mixes its own.
 - `--rkui-shade`: `color-mix(in oklab, var(--rkui-shade-of) 75%, var(--rkui-line))`; set `--rkui-shade-of` to a fill.
   The sticky-note fold and every colour-mode extrusion. Declared on `*`, so each element mixes its
   own.
@@ -337,7 +337,9 @@ or any container. Light mode is the same in every combination.
     (a table's lifted row too), the search bar its button's yellow.
   - Tints take the solid colour of their tint, since a tint's own shade sits too close to the
     page: a tinted folder's sheet and selected tab and a sidebar's current page take
-    `--rkui-selected`, the key equation's panel `--rkui-yellow`, a tinted badge its hue.
+    `--rkui-selected`, the key equation's panel `--rkui-yellow`, a tinted badge its hue, and a
+    coloured drawer or blind (`hue`) its hue: the overlay or side drawer, the roller, screen,
+    hem and pull, and the first step of the tray's inset.
   - A linked or raised card casts the shade of its `hue`, such as a colour from its image; without
     one it casts `--rkui-shadow-lit`. The hue changes nothing with the other shadows.
   - Checked chips, section buttons and a table with no `hue` take `--rkui-section` where it is set.
@@ -348,7 +350,8 @@ or any container. Light mode is the same in every combination.
       fills sit too close to the page;
     - neutral things with no colour of their own: the page, panels, plain cards, popups and
       tooltips, the untinted folder, inputs, unchecked controls and tiles, the drawer and the
-      blind's roller and screen, the top bar, the sidebar's card, folders and deck keys;
+      blind's roller and screen with no `hue`, the top bar, the sidebar's card, folders and deck
+      keys;
     - things with more than one colour: the clock face (day and night), the logo;
     - the custom colour tile and the colour input, whose colour CSS can't read.
   - An element's extrusion is its own (`--rkui-extrusion` doesn't inherit), so the controls on a
@@ -554,7 +557,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Figure | `.rkui-figure` | |
 | Quote | `.rkui-quote` (panel, slab serif; `--italic`) | upright by default; `slant="italic"` slants it; one line, two steps larger; two lines, one step (`quote-enhance.js`); `--short` always two steps |
 | Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
-| Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`), `--top`, `--left`, `--right`, `--remote` (a `<div>` that a button's `popovertarget` opens), `--overlay` (hangs over the page beyond its parent, as `--left` and `--right` always do); `.rkui-cabinet` | drawer by default, pulling out from the bottom |
+| Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`), `--top`, `--left`, `--right`, `--remote` (a `<div>` that a button's `popovertarget` opens), `--overlay` (hangs over the page beyond its parent, as `--left` and `--right` always do), `--hue` (`hue`: the tray or screen in the hue's tint, carrying `--rkui-fg`, with the inset's grey step mixed from it; the pull and the blind's hem in its solid fill); `.rkui-cabinet` | drawer by default, pulling out from the bottom |
 | Equations | `.rkui-equation` (`--panel`, `--rule`, `--key`), `.rkui-eqref` | bare by default; §3.3 |
 | Table | `.rkui-table` (`--ledger`, `--small`, `--messy`, `--still`, `--lift`) | sheet by default; sheet or ledger open |
 | Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on; its colours (`--rkui-scroll-*`, `--rkui-pill-*`) pass down from wherever they are set; every other scrollbar takes the page's |

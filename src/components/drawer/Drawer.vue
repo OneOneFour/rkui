@@ -13,7 +13,8 @@
   unless `showLabel` grows it into a pill with the label beside the caret. `class`, `style` and
   other attributes go on the `<details>`, or the `<div>` with `remote`. A card or cabinet jolts
   as a drawer slams shut in it; another parent does with the class `rkui-drawer-host`. A closed
-  drawer's contents don't print.
+  drawer's contents don't print. With `hue`, a drawer's tray, or a blind's screen, takes the hue's
+  pale tint, and the pull, and the blind's hem, its solid fill.
 
   With `remote`, a button elsewhere on the page opens and shuts it, with no JavaScript: give the
   drawer an `id` and the button `popovertarget` set to it. The drawer is then a `<div>` holding an
@@ -39,6 +40,7 @@
 <script setup lang="ts">
 import { computed, inject, provide, type ComputedRef } from 'vue'
 import CaretDownIcon from '@oneonefour/rkui/icons/caret-down.vue'
+import { hueVars, type HueOrHex } from '../../shared/hues'
 
 interface Props {
   /** The handle's text; with `remote`, the drawer's name for screen readers. */
@@ -48,6 +50,11 @@ interface Props {
    * left out.
    */
   variant?: 'drawer' | 'blind'
+  /**
+   * Its colour, a palette hue or a hex code: the tray or screen takes its pale tint, the pull and
+   * the blind's hem its solid fill; no colour when left out.
+   */
+  hue?: HueOrHex
   /** The edge of its parent it pulls out from; 'bottom' when left out. */
   placement?: 'top' | 'bottom' | 'left' | 'right'
   /** Opened by a button elsewhere that names its `id`; by its own handle when left out. */
@@ -77,6 +84,7 @@ interface Props {
 const {
   label,
   variant = 'drawer',
+  hue,
   placement = 'bottom',
   remote = false,
   overlay = false,
@@ -96,18 +104,28 @@ const classes = computed(() => [
   'rkui-drawer',
   {
     'rkui-drawer--blind': variant === 'blind',
+    'rkui-drawer--hue': hue !== undefined,
     [`rkui-drawer--${placement}`]: placement !== 'bottom',
     'rkui-drawer--remote': remote,
     'rkui-drawer--overlay': overlay,
     'rkui-drawer--show-label': labelInPill.value,
   },
 ])
+/** The tint, solid fill and its text, as custom properties, when `hue` is set. */
+const vars = computed(() =>
+  hueVars(hue, {
+    fill: '--rkui-drawer-hue',
+    text: '--rkui-drawer-on-hue',
+    tint: '--rkui-drawer-tint',
+    solid: true,
+  }),
+)
 // Drawers inside this one aren't the cabinet's.
 provide('rkui-cabinet-name', null)
 </script>
 
 <template>
-  <div v-if="remote" :class="classes" role="group" :aria-label="label">
+  <div v-if="remote" :class="classes" :style="vars" role="group" :aria-label="label">
     <div :id class="rkui-drawer-switch" popover="manual"></div>
     <div class="rkui-drawer-handle" aria-hidden="true">
       <span v-if="variant === 'blind'" class="rkui-drawer-ring"></span>
@@ -119,7 +137,7 @@ provide('rkui-cabinet-name', null)
       </div>
     </div>
   </div>
-  <details v-else :id :class="classes" :name="groupName" :open>
+  <details v-else :id :class="classes" :style="vars" :name="groupName" :open>
     <summary class="rkui-drawer-handle">
       <span class="rkui-drawer-pull">
         <slot name="handle" />
