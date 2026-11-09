@@ -58,8 +58,9 @@ to "no blur"; the darken backdrop and `--rkui-scrim` are gone. The page behind s
 the alert is open, and keeps its scroll position when it closes.
 
 **Range value** (Rob). Both stay as options: `value-display="thumb"` shows the value inside the
-thumb, which widens to fit it, and `value-display="popup"` shows it in a bubble over the thumb.
-With neither, the value doesn't show.
+thumb, which widens to fit it, and `value-display="popup"` shows it in a bubble over the thumb,
+raised like a Tooltip; `value-display="flat-popup"` is the same bubble flat. With none of them,
+the value doesn't show.
 
 **Sidebar options, not a sections look** (Rob). There is no separate sections look. What it
 brought works with every look instead: slab type (`slab`), a colour for each link (`hue`), which

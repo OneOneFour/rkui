@@ -32,7 +32,7 @@ import ownReadoutCode from '../../examples/range/OwnReadout.vue?raw'
 
 ## Showing the value
 
-`value-display` shows the value as the slider moves: in the thumb (`thumb`), which widens to fit it, or in a popup over the thumb (`popup`) while it is hovered, dragged or focused from the keyboard. Either one needs `client:visible`; without it the Range is a plain slider.
+`value-display` shows the value as the slider moves: in the thumb (`thumb`), which widens to fit it, or in a popup over the thumb while it is hovered, dragged or focused from the keyboard, raised like a Tooltip (`popup`) or flat (`flat-popup`). Each one needs `client:visible`; without it the Range is a plain slider.
 
 <Demo label="Value in the thumb" stack>
   <Range
@@ -69,6 +69,18 @@ import ownReadoutCode from '../../examples/range/OwnReadout.vue?raw'
     value-display="popup"
     step="25"
     ticks={[0, 25, 50, 75, 100]}
+  />
+</Demo>
+
+<Demo label="Value in a flat popup" stack>
+  <Range
+    client:visible
+    label="Opacity"
+    value-display="flat-popup"
+    min="0"
+    max="1"
+    step="0.01"
+    value="0.28"
   />
 </Demo>
 

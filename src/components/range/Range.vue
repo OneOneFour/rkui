@@ -6,11 +6,11 @@
 
   With `ticks` a row of tick marks and value labels sits under the slider; match them to min, max
   and step so the thumb lands on them. In the browser the thumb then snaps from tick to tick with
-  one small overshoot. `valueDisplay` shows the value in the thumb or in a popup over it. Both
-  follow the slider only in the browser, so in an Astro page a Range with `ticks` or
-  `valueDisplay` needs `client:visible`; without it, it is a plain slider: the thumb jumps, and the
-  value doesn't show. A plain HTML page's `<rkui-range>` doesn't take `ticks`; the page writes the
-  slider's HTML.
+  one small overshoot. `valueDisplay` shows the value in the thumb or in a popup over it, raised
+  like a Tooltip or flat. Both follow the slider only in the browser, so in an Astro page a Range
+  with `ticks` or `valueDisplay` needs `client:visible`; without it, it is a plain slider: the
+  thumb jumps, and the value doesn't show. A plain HTML page's `<rkui-range>` doesn't take
+  `ticks`; the page writes the slider's HTML.
 
   In a `.vue` file, `v-model` is the slider's value, a number. Without one, `value` is the
   starting value; the middle of the range when left out.
@@ -39,10 +39,11 @@ interface Props {
   ticks?: number[]
   /**
    * Where the value shows while the slider runs in the browser: 'thumb' (inside the thumb, which
-   * widens to fit it) or 'popup' (in a bubble over the thumb while it is hovered, dragged or
-   * focused from the keyboard); not shown when left out.
+   * widens to fit it), 'popup' (in a raised bubble over the thumb, like a Tooltip, while it is
+   * hovered, dragged or focused from the keyboard) or 'flat-popup' (the same bubble in the page's
+   * colours swapped, with no outline or shadow); not shown when left out.
    */
-  valueDisplay?: 'thumb' | 'popup'
+  valueDisplay?: 'thumb' | 'popup' | 'flat-popup'
 }
 
 const { label, hint, error, ticks, valueDisplay } = defineProps<Props>()
@@ -67,6 +68,13 @@ const dragging = ref(false)
 
 /** Whether the Range draws its own thumb over the native one, which can't move smoothly. */
 const drawsThumb = computed(() => Boolean(ticks) || valueDisplay === 'thumb')
+
+/** The popup's look, or undefined when the value shows in the thumb or not at all. */
+const popup = computed<'toon' | 'flat' | undefined>(() => {
+  if (valueDisplay === 'popup') return 'toon'
+  if (valueDisplay === 'flat-popup') return 'flat'
+  return undefined
+})
 
 /** How many decimals the value shows: as many as `step` has. */
 function decimals() {
@@ -146,7 +154,11 @@ function pageAttrs() {
       <span v-if="drawsThumb" class="rkui-range-thumb" aria-hidden="true">
         {{ valueDisplay === 'thumb' ? shownValue() : '' }}
       </span>
-      <span v-if="valueDisplay === 'popup'" class="rkui-range-popup" aria-hidden="true">
+      <span
+        v-if="popup"
+        :class="['rkui-range-popup', popup === 'flat' && 'rkui-range-popup--flat']"
+        aria-hidden="true"
+      >
         {{ shownValue() }}
       </span>
       <datalist v-if="ticks" :id="`${id}-ticks`" class="rkui-range-scale">

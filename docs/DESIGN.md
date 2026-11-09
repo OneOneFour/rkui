@@ -525,7 +525,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Text input, textarea | `.rkui-input` | hover cues opt-in (§4.8) |
 | Select | `.rkui-select` | toon open list where `appearance: base-select` works, the browser's own elsewhere |
 | Checkbox, radio, switch | `.rkui-checkbox`, `.rkui-radio`, `.rkui-switch` | |
-| Range | `.rkui-range`, `.rkui-range-control`, `.rkui-range-thumb`, `.rkui-range-popup` | value shown in the thumb (`--thumb`) or a popup, both opt-in |
+| Range | `.rkui-range`, `.rkui-range-control`, `.rkui-range-thumb`, `.rkui-range-popup` | value shown in the thumb (`--thumb`) or a popup (raised, or `--flat`), all opt-in |
 | Range ticks | `.rkui-range-scale` (`ticks`) | |
 | Segmented | `.rkui-segmented`; `--deck`, `--plate` | deck keys opt-in; pill or deck open |
 | Tiles | `.rkui-tiles`, `.rkui-tile` (`--compact`, `--vertical`) | |
