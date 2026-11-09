@@ -20,7 +20,14 @@
   empty popover the button shows and hides, and the browser keeps the button's expanded state in
   step. Its front is no button: a drawer shows only an arrow, a blind's cord ends in an empty
   ring (the `handle` slot and `showLabel` do nothing), and its label names it for screen readers.
-  A remote drawer starts shut, and drawers sharing a name don't close it.
+  A remote drawer starts shut, and drawers sharing a name don't close it. With its helper script
+  (`drawer-enhance.js`), Escape inside it shuts it, and focus goes back to the button as it shuts.
+
+  With `overlay`, the drawer hangs over the page beyond its parent's edge instead of pushing the
+  page away: it is placed against the edge of its containing block (give the parent `position:
+  relative`) and as wide as it, or as tall on the left and right, and has its own fill, outline
+  and shadow. Its parent mustn't clip it (no `overflow: hidden`), so it suits a bar or panel
+  rather than a card; set its `inset` to place it elsewhere.
 
   @example
   <Card title="Field notes">
@@ -45,6 +52,11 @@ interface Props {
   /** Opened by a button elsewhere that names its `id`; by its own handle when left out. */
   remote?: boolean
   /**
+   * Hangs over what lies beyond its parent's edge instead of pushing it away, with its own fill,
+   * outline and shadow; in the flow when left out.
+   */
+  overlay?: boolean
+  /**
    * The blind's pull shows the label beside its caret, as a pill. A ring with only the caret when
    * left out; a drawer's pull always shows it.
    */
@@ -65,6 +77,7 @@ const {
   variant = 'drawer',
   placement = 'bottom',
   remote = false,
+  overlay = false,
   showLabel = false,
   open = false,
   name,
@@ -83,6 +96,7 @@ const classes = computed(() => [
     'rkui-drawer--blind': variant === 'blind',
     [`rkui-drawer--${placement}`]: placement !== 'bottom',
     'rkui-drawer--remote': remote,
+    'rkui-drawer--overlay': overlay,
     'rkui-drawer--show-label': labelInPill.value,
   },
 ])

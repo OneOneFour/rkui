@@ -31,6 +31,10 @@
    </div>
    <button popovertarget="tools">Tools</button>
 
+   An overlay drawer, .rkui-drawer--overlay, hangs over the page beyond its parent's edge rather
+   than pushing it away: it is placed absolutely against that edge of its containing block (give
+   the parent position: relative, and don't clip it), and the page may set its inset.
+
    Where it pulls out: from the bottom edge by default, or .rkui-drawer--top, --left or --right.
    The rules below are written down the page, from the parent's edge towards the handle; the
    sections near the end turn them round for the top, and sideways for the left and right. On the
@@ -215,6 +219,65 @@
 
 .rkui-drawer--remote > .rkui-drawer-handle {
   cursor: default;
+}
+
+/* An overlay drawer hangs over what lies beyond its parent's edge instead of pushing it away: it
+   is placed against that edge of its containing block, as wide as it (as tall on the left and
+   right), above the page that follows. A drawer has its own fill, outline and shadow, with no
+   outline along the parent's edge, so the parent seems to bulge out; a blind already hangs in
+   front with its own. */
+.rkui-drawer--overlay {
+  position: absolute;
+  z-index: 1;
+  inset: 100% 0 auto;
+}
+
+.rkui-drawer--overlay.rkui-drawer--top {
+  inset: auto 0 100%;
+}
+
+.rkui-drawer--overlay.rkui-drawer--left {
+  inset-block: 0;
+  inset-inline: auto 100%;
+}
+
+.rkui-drawer--overlay.rkui-drawer--right {
+  inset-block: 0;
+  inset-inline: 100% auto;
+}
+
+.rkui-drawer--overlay:not(.rkui-drawer--blind) {
+  overflow: clip;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-block-start: none;
+  border-end-start-radius: var(--rkui-radius);
+  border-end-end-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+  box-shadow: var(--rkui-shadow);
+}
+
+.rkui-drawer--overlay.rkui-drawer--top:not(.rkui-drawer--blind) {
+  border-block-start: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-block-end: none;
+  border-radius: var(--rkui-radius) var(--rkui-radius) 0 0;
+}
+
+.rkui-drawer--overlay:is(.rkui-drawer--left, .rkui-drawer--right):not(.rkui-drawer--blind) {
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: 0;
+}
+
+.rkui-drawer--overlay.rkui-drawer--left:not(.rkui-drawer--blind) {
+  border-inline-end: none;
+  border-start-start-radius: var(--rkui-radius);
+  border-end-start-radius: var(--rkui-radius);
+}
+
+.rkui-drawer--overlay.rkui-drawer--right:not(.rkui-drawer--blind) {
+  border-inline-start: none;
+  border-start-end-radius: var(--rkui-radius);
+  border-end-end-radius: var(--rkui-radius);
 }
 
 /* A cabinet: drawers stacked as one on a raised panel, each front its width. The top drawer's

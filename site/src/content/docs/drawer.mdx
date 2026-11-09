@@ -180,7 +180,7 @@ A drawer pulls out from the edge `placement` names. On top it comes first in its
 
 ## Remote
 
-A remote drawer is opened by a button elsewhere on the page, with no JavaScript: the button's `popovertarget` names the drawer's `id`, and the browser tells screen readers whether it is open. The drawer's own front is no button: it shows only an arrow, and a blind's cord ends in an empty ring. A remote drawer always starts shut; a button inside it can shut it with `popovertargetaction="hide"`.
+A remote drawer is opened by a button elsewhere on the page, with no JavaScript: the button's `popovertarget` names the drawer's `id`, and the browser tells screen readers whether it is open. The drawer's own front is no button: it shows only an arrow, and a blind's cord ends in an empty ring. A remote drawer always starts shut; a button inside it can shut it with `popovertargetaction="hide"`. With the helper script, Escape inside it shuts it too, and when it shuts with the focus inside, the focus goes back to the button that opens it.
 
 <Demo label="Drawer and blind opened by buttons elsewhere">
   <div style="display: grid; gap: var(--rkui-space-4); padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
@@ -232,6 +232,29 @@ A remote drawer is opened by a button elsewhere on the page, with no JavaScript:
         </Drawer>
       </div>
     </div>
+  </div>
+</Demo>
+
+## Over the page
+
+With `overlay` a drawer hangs over what lies beyond its parent's edge instead of pushing it away, with its own fill, outline and shadow. It is placed against the edge of its containing block, so give the parent `position: relative`, and don't let the parent clip it (a card does, so this suits a bar or a panel). It is as wide as the parent; set its `inset` to make it narrower or move it along the edge. The docs site's settings drawer is one, opened by the Settings button in the top bar.
+
+<Demo label="Drawer hanging over the page">
+  <div style="padding: var(--rkui-space-6); border-radius: var(--rkui-radius); background: var(--rkui-surface)">
+    <div style="position: relative; display: flex; align-items: center; padding: var(--rkui-space-3) var(--rkui-space-4); border: var(--rkui-outline-width) solid var(--rkui-line-unfilled); border-radius: var(--rkui-radius); background: var(--rkui-raised)">
+      <strong>Field notes</strong>
+      <Drawer
+        label="Tools"
+        overlay
+        style="inset-inline: auto var(--rkui-space-4); inline-size: 10rem"
+      >
+        <Button small>Export</Button>
+      </Drawer>
+    </div>
+    <p style="margin-block-end: 0">
+      Pack my box with five dozen liquor jugs. How vexingly quick daft zebras jump. The five boxing
+      wizards jump quickly. Sphinx of black quartz, judge my vow.
+    </p>
   </div>
 </Demo>
 

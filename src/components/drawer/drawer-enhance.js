@@ -5,6 +5,9 @@
 // moved. Opening a drawer closes the open ones sharing its name the same way: each loses its name
 // while it closes, so the browser doesn't shut it at once. One listener serves every drawer on
 // the page, including drawers added later. Enter and Space on a summary are clicks too.
+//
+// It also lets a remote drawer behave like a popover from the keyboard: Escape inside it shuts it,
+// and when it shuts with focus inside, focus goes back to the button that opens it.
 
 const CLOSING = 'data-rkui-closing'
 /** @type {WeakMap<HTMLDetailsElement, { timer: number, name: string }>} each closing drawer */
@@ -85,3 +88,32 @@ document.addEventListener('click', (event) => {
     closeOthers(drawer, drawer.getAttribute('name'))
   }
 })
+
+/** The button outside a remote drawer that opens it, found by its popovertarget. */
+function opener(drawer, id) {
+  const buttons = document.querySelectorAll(`[popovertarget="${CSS.escape(id)}"]`)
+  return [...buttons].find((button) => !drawer.contains(button))
+}
+
+// A remote drawer shuts on Escape while focus is inside it, as a popover does.
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape' || event.defaultPrevented) return
+  const drawer = event.target instanceof Element && event.target.closest('.rkui-drawer--remote')
+  const toggle = drawer && drawer.querySelector(':scope > .rkui-drawer-switch:popover-open')
+  if (toggle) toggle.hidePopover()
+})
+
+// A remote drawer that shuts with focus inside it hands focus back to its button, as a popover
+// does, so the focus isn't lost as the tray hides. The toggle event doesn't bubble, so this
+// listens as it passes down to the switch.
+document.addEventListener(
+  'toggle',
+  (event) => {
+    const toggle = event.target
+    if (event.newState !== 'closed' || !(toggle instanceof Element)) return
+    if (!toggle.matches('.rkui-drawer--remote > .rkui-drawer-switch')) return
+    const drawer = toggle.parentElement
+    if (drawer.contains(document.activeElement)) opener(drawer, toggle.id)?.focus()
+  },
+  true,
+)
