@@ -2,7 +2,14 @@
    each raised thing with a fill casts its hard shadow in that fill, darkened, instead of the
    outlined slab. Everything else casts --rkui-shadow-lit, lighter than the page. Light mode is
    unchanged. data-shadow="slab" switches back inside it. Browsers without @scope or light-dark()
-   keep the slab, and Safari 26.0 to 26.3 keep it on checkboxes and radios. */
+   keep the slab, and Safari 26.0 to 26.3 keep it on checkboxes, radios and switches. */
+
+/* An element's extrusion is its own: a child doesn't inherit it, so a note's shade never reaches
+   the controls on it. */
+@property --rkui-extrusion {
+  syntax: '*';
+  inherits: false;
+}
 
 @supports (color: light-dark(black, white)) {
   @scope ([data-shadow='color']) to ([data-shadow='slab']) {
@@ -21,9 +28,10 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
-    :is(.rkui-checkbox, .rkui-radio):checked,
+    :is(.rkui-checkbox, .rkui-radio, .rkui-switch):checked,
     .rkui-dial--arc .rkui-dial-face,
-    .rkui-clock-hand--hour .rkui-clock-tag {
+    .rkui-clock-hand--hour .rkui-clock-tag,
+    .rkui-drawer--blind > .rkui-drawer-handle .rkui-drawer-pull {
       --rkui-shade-of: var(--rkui-selected);
       --rkui-extrusion: var(--rkui-shade);
     }
@@ -44,8 +52,34 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
-    .rkui-badge--sticker {
+    /* Every badge, so a table's stickers take it as well as .rkui-badge--sticker. */
+    .rkui-badge {
       --rkui-shade-of: var(--rkui-badge-fill);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    .rkui-spinner-dot {
+      --rkui-shade-of: var(--rkui-spinner-dot-fill);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    .rkui-sidebar-more {
+      --rkui-shade-of: var(--rkui-pill-fill);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    /* A scroll region's pills are drawn in its background, so they take their own colour
+       (overflow.css). */
+    .rkui-scroll {
+      --rkui-shade-of: var(--rkui-pill-fill);
+      --rkui-pill-shadow-color: light-dark(var(--rkui-line), var(--rkui-shade));
+    }
+
+    /* Checked chips and section buttons take --rkui-section where it is set. Where it isn't, their
+       fill is ink, --rkui-shade-of is left without a value and they cast --rkui-shadow-lit. */
+    .rkui-chip:is(:has(:checked), [aria-current='page']),
+    .rkui-button--section {
+      --rkui-shade-of: var(--rkui-section);
       --rkui-extrusion: var(--rkui-shade);
     }
 
@@ -54,9 +88,8 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
-    /* Darkened, these fills are too close to the page to read as a shadow. Checked chips are left
-       out for the same reason, since their default --rkui-section is ink. */
-    :is(.rkui-button--navy, .rkui-button--section) {
+    /* Darkened, these fills are too close to the page to read as a shadow. */
+    :is(.rkui-button--navy, .rkui-badge--navy, .rkui-badge--tint) {
       --rkui-extrusion: initial;
     }
   }

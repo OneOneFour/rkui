@@ -140,6 +140,12 @@
   --rkui-pill-dot: var(--rkui-on-selected);
 }
 
+/* A scroll region draws its pills' shadows itself, in this colour: the region's own shadow colour,
+   which the colour shadow mode turns to the pill's shade (shadow-color.css). */
+.rkui-scroll {
+  --rkui-pill-shadow-color: var(--rkui-shadow-color);
+}
+
 /* The pill's size across and along it (shorter in a scroll region, to sit on a strip of tabs
    clear of the sheet), and the width of a scroll region's dot gutters in each look. Inherited,
    so the nearest data-rkui-dots wins; a code block's caption and Folder's tabs line up with them. */
@@ -212,14 +218,14 @@
       );
       --rkui-pill-shadow-cap: radial-gradient(
         closest-side,
-        var(--rkui-shadow-color) calc(100% - var(--rkui-pill-line)),
+        var(--rkui-pill-shadow-color) calc(100% - var(--rkui-pill-line)),
         var(--rkui-shadow-edge) calc(100% - var(--rkui-pill-line)) calc(100% - 0.5px),
         transparent
       );
       --rkui-pill-shadow-middle: linear-gradient(
         to right,
         var(--rkui-shadow-edge) var(--rkui-pill-line),
-        var(--rkui-shadow-color) var(--rkui-pill-line) calc(100% - var(--rkui-pill-line)),
+        var(--rkui-pill-shadow-color) var(--rkui-pill-line) calc(100% - var(--rkui-pill-line)),
         var(--rkui-shadow-edge) calc(100% - var(--rkui-pill-line))
       );
 

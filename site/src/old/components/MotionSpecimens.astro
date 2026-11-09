@@ -49,7 +49,7 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
     >
       <div class="stagger">
         {STAGGERED.map((fill, i) => (
-          <span class="block enter" style={`--rkui-i: ${i}; background: var(${fill})`} />
+          <span class="block enter" style={`--rkui-i: ${i}; --rkui-block-fill: var(${fill})`} />
         ))}
       </div>
     </Specimen>
@@ -94,14 +94,20 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
     border-radius: var(--rkui-radius);
   }
 
+  /* The colour shadow mode casts each block's and ball's shadow in its own fill, darkened
+     (shadow-color.css). */
   .block {
+    --rkui-block-fill: var(--rkui-yellow);
+    --rkui-shade-of: var(--rkui-block-fill);
+    --rkui-extrusion: var(--rkui-shade);
+
     display: block;
     box-sizing: border-box;
     inline-size: 1.5rem;
     block-size: 1.5rem;
     border: var(--rkui-outline-width) solid var(--rkui-line);
     border-radius: calc(var(--rkui-radius) / 2);
-    background: var(--rkui-yellow);
+    background: var(--rkui-block-fill);
     box-shadow: var(--rkui-shadow);
   }
 
@@ -170,6 +176,9 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
 
   /* A glint on the side the light comes from, opposite the shadow. */
   .ball {
+    --rkui-shade-of: var(--rkui-coral);
+    --rkui-extrusion: var(--rkui-shade);
+
     position: relative;
     box-sizing: border-box;
     inline-size: 1.75rem;

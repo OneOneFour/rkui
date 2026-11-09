@@ -61,23 +61,27 @@
 }
 
 .rkui-spinner-dot {
+  --rkui-spinner-dot-fill: var(--rkui-teal);
+
   box-sizing: border-box;
   inline-size: calc(var(--rkui-spinner-size) / 3.5);
   block-size: calc(var(--rkui-spinner-size) / 3.5);
   border: var(--rkui-outline-width) solid var(--rkui-line);
   border-radius: 50%;
-  background: var(--rkui-teal);
+  background: var(--rkui-spinner-dot-fill);
   box-shadow: var(--rkui-shadow-pressed);
   animation: rkui-bounce 0.9s ease-in-out infinite;
 }
 
 .rkui-spinner-dot:nth-child(2) {
-  background: var(--rkui-yellow);
+  --rkui-spinner-dot-fill: var(--rkui-yellow);
+
   animation-delay: 0.15s;
 }
 
 .rkui-spinner-dot:nth-child(3) {
-  background: var(--rkui-coral);
+  --rkui-spinner-dot-fill: var(--rkui-coral);
+
   animation-delay: 0.3s;
 }
 

@@ -292,10 +292,15 @@ A near-black shadow is hard to see on night blue, so dark mode has two shadow mo
   `--rkui-shadow-edge`, cream in dark mode, transparent in light.
 - **Own-colour extrusion is a supported mode** (`data-shadow="color"`). In dark mode a raised
   thing with a fill casts `--rkui-shade` of it, with no rim; light mode is unchanged.
-  - Wired up: buttons, checked checkboxes and radios, the arc dial's face, the clock's hour tag,
-    the range thumb, the file button, colour tiles, sticker badges, sticky notes.
-  - Navy and section buttons, checked chips and things without a fill cast `--rkui-shadow-lit`: their
-    darkened fills sit too close to the page.
+  - Wired up: buttons, checked checkboxes, radios and switches, the arc dial's face, the clock's
+    hour tag, the range thumb, the file button, colour tiles, badges (a table's stickers too),
+    the three-dot spinners, the blind's pull, the scroll and sidebar pills, sticky notes.
+  - Checked chips and section buttons take `--rkui-section` where it is set.
+  - Navy buttons and badges, tinted badges, chips and section buttons on the default ink, and
+    things without a fill (the page, panels, tints, the folder and the blind) cast
+    `--rkui-shadow-lit`: their darkened fills sit too close to the page.
+  - An element's extrusion is its own (`--rkui-extrusion` doesn't inherit), so the controls on a
+    sticky note cast their own shadows, not the note's.
   - Without `@scope` or `light-dark()`, browsers keep the slab.
 
 ### 4.3 Depth
