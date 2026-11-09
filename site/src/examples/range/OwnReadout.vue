@@ -17,6 +17,7 @@ const opacity = ref(0.28)
   display: flex;
   align-items: end;
   gap: var(--rkui-space-3);
+  inline-size: 100%;
   max-inline-size: 30rem;
 }
 
