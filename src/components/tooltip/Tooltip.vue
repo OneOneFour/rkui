@@ -16,15 +16,15 @@ interface Props {
   id: string
   /** The tooltip's text. */
   text: string
-  /** 'toon'; 'inverted' when left out. Open, see DECISIONS ("Tooltips and popups"). */
-  variant?: 'inverted' | 'toon'
+  /** 'flat' for a bubble in the page's colours swapped, with no outline or shadow; 'toon' when left out. */
+  variant?: 'toon' | 'flat'
 }
 
-const { id, text, variant = 'inverted' } = defineProps<Props>()
+const { id, text, variant = 'toon' } = defineProps<Props>()
 </script>
 
 <template>
-  <span :class="['rkui-tooltip', { 'rkui-tooltip--toon': variant === 'toon' }]">
+  <span :class="['rkui-tooltip', { 'rkui-tooltip--flat': variant === 'flat' }]">
     <slot />
     <span :id class="rkui-tooltip-bubble" role="tooltip">{{ text }}</span>
   </span>

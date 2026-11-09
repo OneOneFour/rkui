@@ -512,7 +512,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Top bar | `.rkui-topbar--toast`, `--flush` | toast by default; flush for full-width headers |
 | Popup | `.rkui-popup` (Popover API) | |
 | Alert | `.rkui-alert` (modal `<dialog>`) | coral band; blurs the page behind, which stays still |
-| Tooltip | `<rkui-tooltip>` A inverted, B `--toon` | A by default; open |
+| Tooltip | `.rkui-tooltip`, `--flat` | toon by default; flat swaps the page's colours |
 | Card | `.rkui-card`, `--link`; static A `--outline`, B `--raised`, C `--shaded`, D `--inset` | C by default; static edge open; content variants proposed (DECISIONS) |
 | Callout | `.rkui-callout--note` (sky tint), `--warning` (apricot tint) | |
 | Sticky note | `.rkui-sticky-note` (hues, `--tilt`, `--tape`, `--pin`) | |

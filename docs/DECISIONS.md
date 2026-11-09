@@ -12,6 +12,9 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-08
 
+**Tooltip** (Rob). The toon bubble, raised with the outline and hard shadow, is the default;
+`variant="flat"` gives the bubble in the page's colours swapped.
+
 **Block mode outlines** (Rob). In dark mode with `data-shadow="block"`, things with no fill of
 their own (inputs, chips, tiles, folder tabs, unchecked controls) take the near-black outline too,
 like the mockup's Surface card, though their edges are then hard to see on the dark page.
@@ -243,7 +246,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Colour-tile flair: none, A paint brush, B paint drops, or C palette and brush stroke with
   legend. ("Tile and colour pickers")
 - [ ] `.rkui-progress--flat`: stays, or goes. ("Loading")
-- [ ] Tooltip: A inverted (the default), or B toon. ("Tooltips and popups")
 - [ ] Corner badge edge: A outline, B ring, or C sticker. ("Badges")
 - [ ] Breadcrumbs: A plain links, B chips, or C path bar. ("Breadcrumbs")
 - [ ] Pagination: A folder tabs, or B tiles between buttons. ("Pagination")
