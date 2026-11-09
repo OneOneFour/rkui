@@ -45,6 +45,11 @@
   margin-block-start: 0;
 }
 
+/* The big logo above the Getting started title. */
+article > .rkui-logo {
+  margin-block-end: var(--rkui-space-5);
+}
+
 /* A component page's chips under its title: whether it uses JavaScript, and its helper script. */
 .docs-chips {
   display: flex;

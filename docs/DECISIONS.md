@@ -174,8 +174,8 @@ yet; see [Open decisions](#open-decisions).
 **Font pairing A:** Roboto Slab headings, Xmind body and UI, self-hosted (reasons in DESIGN §3.1).
 Xmind had been on Google Fonts only since 2026-10-20.
 
-**Auxiliary colours** (approved direction): grape, lilac, tangerine and apricot have set jobs and
-are never section colours.
+**Auxiliary colours** (approved direction): grape, lilac, tangerine and apricot have set jobs. As
+of v0.0.3 they may also mark sections.
 
 **Iconography** (approved after Rob saw the icons on the mood board): Phosphor duotone from the
 GitHub sources, Tabler for gaps.

@@ -107,6 +107,7 @@ const branch = gitBranch()
         </details>
 
         <article data-pagefind-body>
+          {page.id === 'index' && <Logo size="min(12rem, 60vw)" />}
           <h1>{title}</h1>
           {component && (
             <div class="docs-chips">

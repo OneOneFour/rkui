@@ -15,7 +15,7 @@ export default defineConfig({
     mdx(),
     vue({ appEntrypoint: '/src/vue-app.js' }),
     // Fenced code renders as rkui's CodeBlock, and dollar maths as Maths and Equation.
-    rkui(),
+    rkui({ code: { copy: 'hover' } }),
     pagefindIndex(),
   ],
   markdown: {

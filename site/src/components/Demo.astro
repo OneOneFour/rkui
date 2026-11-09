@@ -135,19 +135,19 @@ try {
   </Tab>
   {astroCode && (
     <Tab label="Astro">
-      <CodeBlock client:visible lang="astro">
+      <CodeBlock client:visible lang="astro" copy="hover">
         {astroCode}
       </CodeBlock>
     </Tab>
   )}
   <Tab label="Vue">
-    <CodeBlock client:visible lang="vue">
+    <CodeBlock client:visible lang="vue" copy="hover">
       {vueCode}
     </CodeBlock>
   </Tab>
   {html && (
     <Tab label="HTML">
-      <CodeBlock client:visible lang="html">
+      <CodeBlock client:visible lang="html" copy="hover">
         {html}
       </CodeBlock>
     </Tab>

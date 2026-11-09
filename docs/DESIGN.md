@@ -87,9 +87,9 @@ vivid partner's tint is a stronger wash than the pale fill.
   Bright `--rkui-coral` under white passes only as large text, so it is for display blocks and bands.
   Coral is the only hue with a `-solid` step.
 - **`--rkui-coral-deep` `#c8322a`** is 4.79:1 as text on cream and 5.32:1 under white.
-- **Auxiliary colours** have set jobs and are **never section colours**: grape (interactive
-  accents, code and maths highlights), lilac (widget frames, equation pills), tangerine (warnings,
-  work in progress, focus), apricot (`<mark>`, callouts, the `:target` flash). Every component that
+- **Auxiliary colours** are grape (interactive accents, code and maths highlights), lilac (widget
+  frames, equation pills), tangerine (warnings, work in progress, focus) and apricot (`<mark>`,
+  callouts, the `:target` flash). They can mark a section like any core hue. Every component that
   takes a `hue` takes them too.
 - **Recolouring a component:** every component with a colour takes it in one prop, `hue`: a
   palette hue's name, which brings its label, `-tint` and dark-mode values, or a hex code for a
