@@ -38,9 +38,9 @@ interface Props {
   /** The values to mark with a tick and a label under the slider; no ticks when left out. */
   ticks?: number[]
   /**
-   * Where the value shows while the slider runs in the browser: 'thumb' (A, inside the thumb,
-   * which widens to fit it) or 'popup' (B, in a bubble over the thumb while it is hovered,
-   * dragged or focused from the keyboard); not shown when left out. Open, see DECISIONS ("Range").
+   * Where the value shows while the slider runs in the browser: 'thumb' (inside the thumb, which
+   * widens to fit it) or 'popup' (in a bubble over the thumb while it is hovered, dragged or
+   * focused from the keyboard); not shown when left out.
    */
   valueDisplay?: 'thumb' | 'popup'
 }

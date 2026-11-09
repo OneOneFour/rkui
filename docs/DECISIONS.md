@@ -12,6 +12,10 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-08
 
+**Range value** (Rob). Both stay as options: `value-display="thumb"` shows the value inside the
+thumb, which widens to fit it, and `value-display="popup"` shows it in a bubble over the thumb.
+With neither, the value doesn't show.
+
 **Quote slant** (Rob). Both stay: a quote is upright by default, and `slant="italic"` slants it,
 with the browser slanting Roboto Slab, which has no italic.
 
@@ -220,7 +224,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
 **Picks among built options**
 - [ ] File input: A framed button and filename, or B drop panel. ("Special inputs")
 - [ ] Search: A icon inside, or B attached button. ("Special inputs")
-- [ ] Range value: A in the thumb, or B a popup over it (`valueDisplay`). ("Range")
 - [ ] Dial: A knob, or B arc. ("Dial")
 - [ ] Dial ramp: blocks lit up to the value (as built), or all lit. ("Dial")
 - [ ] Clock: the hour hand stays longer than the minute hand (as built), or not. ("Clock")
