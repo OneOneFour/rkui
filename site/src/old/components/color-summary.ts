@@ -139,7 +139,7 @@ export const SUMMARY: SummaryGroup[] = [
   {
     title: 'Shading',
     caption:
-      "Hard shadows: the outline shadow's colour and rim, and the colour shadow's shadow for things without a fill. Hatching stripes and tape are translucent.",
+      "Hard shadows: the outline shadow's colour and rim, and the colour shadow's shadow for things without a colour of their own. Hatching stripes and tape are translucent.",
     rows: [
       { color: color('--rkui-shadow-color'), shades: [] },
       { color: color('--rkui-shadow-edge'), shades: [] },

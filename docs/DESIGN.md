@@ -60,7 +60,7 @@ All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`,
 | `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` (= `--rkui-line` with the dark highlight) | outlines of things with no fill |
 | `--rkui-ink` | `#1d232f` | `#1d232f` | ink, same in both themes |
 | `--rkui-on-ink`, `--rkui-glint` | `#f7f3e5` | `#f2eee2` | text on ink; highlights on fills |
-| `--rkui-shadow-lit` | = `--rkui-line` | `#6e7891` | colour shadow: shadow of things without a fill |
+| `--rkui-shadow-lit` | = `--rkui-line` | `#6e7891` | colour shadow: shadow of things without a colour of their own |
 | `--rkui-focus` / `--rkui-focus-alt` | `--rkui-tangerine` / `--rkui-yellow` | same | focus band; where tangerine surrounds it |
 
 ### 2.2 Hues
@@ -313,19 +313,30 @@ or any container. Light mode is the same in every combination.
   in light mode.
 - **Block** (`block`): the near-black shadow with no rim, sitting straight on the page, as in the
   first mockup.
-- **Colour** (`color`): in dark mode a raised thing with a fill casts `--rkui-shade` of it, with
-  no rim.
-  - Wired up: buttons, checked checkboxes, radios and switches, the arc dial's face, the clock's
-    hour tag, the range thumb, the file button, colour tiles, badges (a table's stickers too),
-    the three-dot spinners, the blind's pull, the scroll and sidebar pills, sticky notes.
+- **Colour** (`color`): in dark mode a raised thing with a colour of its own casts `--rkui-shade`
+  of that colour, with no rim. The colour is its fill, or the colour it shows on a neutral body.
+  - Fills: buttons, checked checkboxes, radios and switches, the range thumb, the file button,
+    colour tiles, badges (a table's stickers too), the three-dot spinners, the blind's pull, the
+    scroll and sidebar pills, sticky notes, the clock's hour tag.
+  - Colours on a neutral body: the ring spinner and the flask take their fill (`hue`), the knob and
+    arc dials `--rkui-selected` (the notch, the thumb), the alert and the table their band's hue
+    (a table's lifted row too), the search bar its button's yellow.
+  - Tints take the solid colour of their tint, since a tint's own shade sits too close to the
+    page: a tinted folder's sheet and selected tab and a sidebar's current page take
+    `--rkui-selected`, the key equation's panel `--rkui-yellow`, a tinted badge its hue.
   - A linked or raised card casts the shade of its `hue`, such as a colour from its image; without
     one it casts `--rkui-shadow-lit`. The hue changes nothing with the other shadows.
-  - A tinted folder's sheet and selected tab cast the shade of `--rkui-selected`, the solid colour
-    of their tint, since the tint's own shade sits too close to the page.
-  - Checked chips and section buttons take `--rkui-section` where it is set.
-  - Navy buttons and badges, tinted badges, chips and section buttons on the default ink, and
-    things without a fill (the page, panels, tints, the untinted folder and the blind) cast
-    `--rkui-shadow-lit`: their darkened fills sit too close to the page.
+  - Checked chips, section buttons and a table with no `hue` take `--rkui-section` where it is set.
+  - A page's own filled element joins in by setting `--rkui-shade-of` to its fill and
+    `--rkui-extrusion: var(--rkui-shade)`, as the motion page's blocks do.
+  - These cast `--rkui-shadow-lit`:
+    - navy buttons and badges, and chips and section buttons on the default ink: their darkened
+      fills sit too close to the page;
+    - neutral things with no colour of their own: the page, panels, plain cards, popups and
+      tooltips, the untinted folder, inputs, unchecked controls and tiles, the drawer and the
+      blind's roller and screen, the top bar, the sidebar's card, folders and deck keys;
+    - things with more than one colour: the clock face (day and night), the logo;
+    - the custom colour tile and the colour input, whose colour CSS can't read.
   - An element's extrusion is its own (`--rkui-extrusion` doesn't inherit), so the controls on a
     sticky note cast their own shadows, not the note's.
   - Without `@scope` or `light-dark()`, browsers draw the outline shadow.

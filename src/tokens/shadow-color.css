@@ -1,6 +1,8 @@
 /* The colour shadow: set data-shadow="color" on <html> or any container, and in dark mode each
-   raised thing with a fill casts its hard shadow in that fill, darkened, with no rim. Everything
-   else casts --rkui-shadow-lit, lighter than the page. Light mode is unchanged.
+   raised thing with a colour of its own casts its hard shadow in that colour, darkened, with no
+   rim: its fill, or the colour it shows on a neutral body (a flask's water, a dial's notch, a
+   table's band). Everything else casts --rkui-shadow-lit, lighter than the page. Light mode is
+   unchanged.
    data-shadow="outline" or "block" switches back inside it. Browsers without @scope or
    light-dark() draw the outline shadow instead, and Safari 26.0 to 26.3 keep it on checkboxes,
    radios and switches. */
@@ -30,7 +32,7 @@
     }
 
     :is(.rkui-checkbox, .rkui-radio, .rkui-switch):checked,
-    .rkui-dial--arc .rkui-dial-face,
+    .rkui-dial-face,
     .rkui-clock-hand--hour .rkui-clock-tag,
     .rkui-drawer--blind > .rkui-drawer-handle .rkui-drawer-pull {
       --rkui-shade-of: var(--rkui-selected);
@@ -72,6 +74,32 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
+    /* The ring's wedge and the flask's water. */
+    :is(.rkui-spinner--ring, .rkui-spinner--water) {
+      --rkui-shade-of: var(--rkui-spinner-fill);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    /* The band's hue. */
+    .rkui-alert {
+      --rkui-shade-of: var(--rkui-alert-hue);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    /* The band's hue, and the lifted row's too: the table's hue, or the section's. With neither,
+       --rkui-shade-of is left without a value and they cast --rkui-shadow-lit. */
+    .rkui-table,
+    .rkui-table--lift tbody tr {
+      --rkui-shade-of: var(--rkui-table-hue, var(--rkui-section));
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    /* Its button's fill. */
+    .rkui-search-bar {
+      --rkui-shade-of: var(--rkui-yellow);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
     .rkui-sidebar-more {
       --rkui-shade-of: var(--rkui-pill-fill);
       --rkui-extrusion: var(--rkui-shade);
@@ -99,13 +127,20 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
-    /* A tinted folder's sheet, and the selected tab that joins it, take the solid colour of their
-       tint: the tint's own shade is too close to the page. */
+    /* Tints take the solid colour of their tint, as the tint's own shade is too close to the page:
+       a tinted folder's sheet and the selected tab that joins it, a sidebar's current page and the
+       key equation's panel. */
     .rkui-folder--tinted > .rkui-folder-sheet,
     .rkui-folder--tinted
       > .rkui-folder-strip
-      .rkui-folder-tab:is(:has(:checked), [aria-current='page']) {
+      .rkui-folder-tab:is(:has(:checked), [aria-current='page']),
+    .rkui-sidebar-link[aria-current='page'] {
       --rkui-shade-of: var(--rkui-selected);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
+    .rkui-equation--key {
+      --rkui-shade-of: var(--rkui-yellow);
       --rkui-extrusion: var(--rkui-shade);
     }
 
@@ -121,7 +156,7 @@
     }
 
     /* Darkened, these fills are too close to the page to read as a shadow. */
-    :is(.rkui-button--navy, .rkui-badge--navy, .rkui-badge--tint) {
+    :is(.rkui-button--navy, .rkui-badge--navy) {
       --rkui-extrusion: initial;
     }
   }

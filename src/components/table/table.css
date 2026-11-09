@@ -55,13 +55,18 @@
   initial-value: 100%;
 }
 
-/* With no hue on the table and no section hue on the page (--rkui-section is left unset), the
-   band is ink in light mode; in dark mode its fill is transparent, so the sheet's colour shows,
-   with a line along its foot in the colour of an outline without a fill, which any fill covers.
+/* The band's fill is --rkui-table-hue where it is set, else the section hue. With neither
+   (--rkui-section is left unset), the band is ink in light mode; in dark mode its fill is
+   transparent, so the sheet's colour shows, with a line along its foot in the colour of an outline
+   without a fill, which any fill covers. --rkui-table-hue is left unset here, so the colour shadow
+   can tell (shadow-color.css).
    In dark mode the rules are --rkui-line-unfilled at 40%, as --rkui-stripe's near-black is lost on
    the dark sheet. */
 .rkui-table {
-  --rkui-table-hue: var(--rkui-section, light-dark(var(--rkui-ink), transparent));
+  --rkui-table-band-hue: var(
+    --rkui-table-hue,
+    var(--rkui-section, light-dark(var(--rkui-ink), transparent))
+  );
   --rkui-table-on-hue: var(--rkui-on-section, light-dark(var(--rkui-on-ink), var(--rkui-fg)));
   --rkui-table-band-underline: light-dark(transparent, var(--rkui-line-unfilled));
   --rkui-table-rule: light-dark(
@@ -178,8 +183,8 @@ table.rkui-table {
       (var(--rkui-table-band-end, 1) - var(--rkui-table-band-start, 0)) * 100%,
     100%
   );
-  --rkui-table-band-fill: linear-gradient(var(--rkui-table-hue), var(--rkui-table-hue)) left /
-    var(--rkui-table-fill) 100% no-repeat;
+  --rkui-table-band-fill: linear-gradient(var(--rkui-table-band-hue), var(--rkui-table-band-hue))
+    left / var(--rkui-table-fill) 100% no-repeat;
   --rkui-table-band-foot: linear-gradient(
       var(--rkui-table-band-underline),
       var(--rkui-table-band-underline)
