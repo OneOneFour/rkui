@@ -2,8 +2,8 @@
    a folded bottom-left corner. Yellow by default; a note callout is sky and a warning tangerine,
    and the hue modifiers set another (for any other colour, set --rkui-note-fill and
    --rkui-note-text). Options: .rkui-sticky-note--tilt turns the note slightly (--rkui-note-tilt
-   sets the angle), and .rkui-sticky-note--tape or --pin holds it to the page. A linked card's
-   corner lifts as it pops.
+   sets the angle), .rkui-sticky-note--tape or --pin holds it to the page, and
+   .rkui-sticky-note--animated lifts the corner on hover. A linked card's corner lifts as it pops.
 
    <article class="rkui-card rkui-card--link rkui-sticky-note">…</article>
    <div class="rkui-callout rkui-callout--warning rkui-sticky-note rkui-sticky-note--tape"
@@ -184,14 +184,19 @@
     clip-path var(--rkui-duration-fast) ease;
 }
 
-.rkui-sticky-note.rkui-card--link::after {
+/* An animated note lifts its corner on hover without being a link: the fold alone, no pop. */
+.rkui-sticky-note--animated:not(.rkui-card--link) {
+  transition: clip-path var(--rkui-duration-fast) ease;
+}
+
+.rkui-sticky-note:where(.rkui-card--link, .rkui-sticky-note--animated)::after {
   transition:
     width var(--rkui-duration-fast) ease,
     height var(--rkui-duration-fast) ease;
 }
 
 @media (hover: hover) {
-  .rkui-sticky-note.rkui-card--link:hover {
+  .rkui-sticky-note:where(.rkui-card--link, .rkui-sticky-note--animated):hover {
     --rkui-note-fold: var(--rkui-space-5);
   }
 }

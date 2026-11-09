@@ -10,6 +10,9 @@ import StickyNote from '@oneonefour/rkui/components/sticky-note/StickyNote.vue'
     <StickyNote title="Steeper tilt" tilt style="--rkui-note-tilt: 4deg">
       <p>The quick brown fox jumps over the lazy dog.</p>
     </StickyNote>
+    <StickyNote title="Animated" animated>
+      <p>Hover to lift the folded corner.</p>
+    </StickyNote>
     <StickyNote title="Tape" hold="tape">
       <p>The quick brown fox jumps over the lazy dog.</p>
     </StickyNote>

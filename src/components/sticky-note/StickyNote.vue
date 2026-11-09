@@ -8,6 +8,7 @@
   @example
   <StickyNote title="Remember" color="grape" tilt hold="pin"><p>Bring the charger.</p></StickyNote>
   <StickyNote as="callout" kind="warning" hold="tape"><p>Back up first.</p></StickyNote>
+  <StickyNote title="Lively" animated><p>The corner lifts on hover.</p></StickyNote>
   <StickyNote title="Steeper" tilt style="--rkui-note-tilt: 4deg"><p>A custom tilt.</p></StickyNote>
 -->
 <script setup lang="ts">
@@ -33,6 +34,8 @@ interface Props {
   color?: NoteColor
   /** Turns the note slightly, by -2deg; set `--rkui-note-tilt` in `style` for another angle; upright when left out. */
   tilt?: boolean
+  /** Lifts the folded corner on hover, as a linked note's does; a linked note always does; still when left out. */
+  animated?: boolean
   /** How the note is held to the page: 'tape' or 'pin'; neither when left out. */
   hold?: 'tape' | 'pin'
   /** The card's title (required for a card) or the callout's bold first line; none when left out. */
@@ -51,6 +54,7 @@ const {
   as = 'card',
   color,
   tilt,
+  animated,
   hold,
   title,
   href,
@@ -64,7 +68,7 @@ const noteClasses = computed(() => [
   'rkui-sticky-note',
   color && !isHex(color) && `rkui-sticky-note--${color}`,
   hold && `rkui-sticky-note--${hold}`,
-  { 'rkui-sticky-note--tilt': tilt },
+  { 'rkui-sticky-note--tilt': tilt, 'rkui-sticky-note--animated': animated },
 ])
 
 /** A hex colour's paper and text as custom properties; a hue sets them by its class. */
