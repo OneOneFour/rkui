@@ -3,29 +3,21 @@
  * A fenced code block in a docs page (```astro … ```), shown with CodeBlock. The docs route hands
  * MDX's <pre> to this component. Markdown's own highlighting is off (astro.config.js), so the slot
  * is the fence as plain text, `<code class="language-astro">…</code>`; this reads the language
- * and the source text back out of it and lets CodeBlock highlight them. MDX's attributes on the
- * <pre> are left out on purpose: CodeBlock draws its own.
+ * back out of it and hands the text, still escaped, to CodeBlock's slot, which reads it as text and
+ * highlights it. MDX's attributes on the <pre> are left out on purpose: CodeBlock draws its own.
  */
 import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
 
-/** The characters Astro escapes in text, and what it escapes them to. */
-const ESCAPES: Record<string, string> = {
-  '&lt;': '<',
-  '&gt;': '>',
-  '&quot;': '"',
-  '&#39;': "'",
-  '&amp;': '&',
-}
-
 const slot = await Astro.slots.render('default')
-const match = slot.match(/^<code(?: class="language-([^"]+)")?>([\s\S]*?)\n?<\/code>$/)
+const match = slot.match(/^<code(?: class="language-([^"]+)")?>([\s\S]*?)<\/code>$/)
 if (!match) throw new Error(`CodeFence: expected MDX's plain <code>, got ${slot.slice(0, 80)}`)
 const [, lang = 'plaintext', escaped] = match
-const code = escaped.replace(/&(lt|gt|quot|#39|amp);/g, (entity) => ESCAPES[entity])
 ---
 
 <div class="fence">
-  <CodeBlock client:visible code={code} lang={lang} />
+  <CodeBlock client:visible lang={lang}>
+    <Fragment set:html={escaped} />
+  </CodeBlock>
 </div>
 
 <style>

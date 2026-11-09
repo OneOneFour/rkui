@@ -5,7 +5,8 @@
  * equation that fit, which show no hint.
  */
 import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
-import JavaScriptLogo from './languages/javascript.svg'
+import { siJavascript } from 'simple-icons'
+import LanguageLogo from '../../components/LanguageLogo.vue'
 import Equation from './Equation.astro'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
@@ -56,14 +57,9 @@ const TABLE_ROWS = [
 {OPTIONS.map((option) => (
   <SpecimenRow title={option.title}>
     <Specimen label="long code line" wide>
-      <CodeBlock
-        client:visible
-        code={LORENZ_JS}
-        lang="javascript"
-        label="JavaScript"
-        preClass={option.class}
-      >
-        <JavaScriptLogo slot="logo" class="rkui-icon rkui-icon--small" aria-hidden="true" />
+      <CodeBlock client:visible lang="javascript" label="JavaScript" preClass={option.class}>
+        {LORENZ_JS}
+        <LanguageLogo slot="logo" icon={siJavascript} />
       </CodeBlock>
     </Specimen>
     <Specimen label="long equation" wide>
@@ -133,12 +129,9 @@ const TABLE_ROWS = [
   {OPTIONS.map((option) => (
     <>
       <Specimen label={`code, ${option.name}`} wide>
-        <CodeBlock
-          client:visible
-          code="x = lorenz(1.0, 1.0, 1.0)"
-          lang="python"
-          preClass={option.class}
-        />
+        <CodeBlock client:visible lang="python" preClass={option.class}>
+          x = lorenz(1.0, 1.0, 1.0)
+        </CodeBlock>
       </Specimen>
       <Specimen label={`equation, ${option.name}`} wide>
         <Equation tex={SHORT_EQUATION} class={option.class} />

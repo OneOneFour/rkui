@@ -24,8 +24,9 @@
    Without the figcaption there is no title area: the copy button sits in the code's top-right
    corner. The copy button can be left out too.
 
-   Opt-in modifiers: .rkui-scroll--bar on the pre keeps its scrollbar visible, and .rkui-code--tab
-   puts the caption in a darker strip, like an editor tab.
+   Opt-in modifiers: .rkui-scroll--bar on the pre keeps its scrollbar visible, .rkui-code--editor
+   puts the caption in a darker strip, like an editor tab, and .rkui-code--copy-hover shows the
+   copy button only while the pointer is over the block or focus is inside it.
    Put .rkui-slate-greige on a block or any ancestor for the greige slate, inline code included.
 
    Highlighted code is coloured by Shiki's css-variables theme (highlight.js), which paints each
@@ -83,12 +84,17 @@
   text-transform: uppercase;
 }
 
-/* Single-colour logos are paths with no fill of their own, sized to the caption text. Wide marks
-   keep their shape: the width follows the viewBox. */
+/* The mark is sized to the caption text. Wide marks keep their shape: the width follows the
+   viewBox. */
 .rkui-code-lang svg {
   inline-size: auto;
   block-size: 1.25em;
   color: var(--rkui-code-lang-color, var(--rkui-muted));
+}
+
+/* A single-colour logo is paths with no fill of their own, filled with the caption's colour. The
+   file-type icons are lines, marked fill="none", which they keep. */
+.rkui-code-lang svg:not([fill]) {
   fill: currentColor;
 }
 
@@ -128,6 +134,27 @@
   visibility: hidden;
 }
 
+/* Copy on hover: the button rolls down into place while the pointer is over the block, or focus
+   is inside it, so the keyboard reaches it. It stays put on a touch screen, which has no hover.
+   It moves by transform, as the button's own lift and press use translate, whose transitions are
+   kept. */
+@media (hover: hover) {
+  .rkui-code--copy-hover > .rkui-code-copy {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition:
+      translate var(--rkui-duration-fast) ease,
+      box-shadow var(--rkui-duration-fast) ease,
+      opacity var(--rkui-duration-fast) ease,
+      transform var(--rkui-duration-spring) var(--rkui-ease-spring);
+  }
+
+  .rkui-code--copy-hover:is(:hover, :focus-within) > .rkui-code-copy {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* The panel shows the focus band for its scroll region: a ring of the outline colour for the band
    to hug. The pre keeps its own focus ring (overflow.css) in browsers without :has(). */
 .rkui-code:has(pre:focus-visible) {
@@ -143,17 +170,17 @@
   box-shadow: none;
 }
 
-/* The editor tab is flat: no inner shadow. A blank shadow, not none, so it can sit in a list. */
-.rkui-code--tab {
+/* The editor look is flat: no inner shadow. A blank shadow, not none, so it can sit in a list. */
+.rkui-code--editor {
   --rkui-code-inset: 0 0 transparent;
 }
 
-.rkui-code--tab .rkui-code-header {
+.rkui-code--editor .rkui-code-header {
   padding-block: var(--rkui-space-2);
   border-radius: var(--rkui-radius) var(--rkui-radius) 0 0;
   background: var(--rkui-slate-tab);
 }
 
-.rkui-code--tab .rkui-code-copy {
+.rkui-code--editor .rkui-code-copy {
   margin-block: var(--rkui-space-2);
 }

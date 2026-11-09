@@ -14,22 +14,20 @@ to the files it covers.
 
 ## Docs site only
 
-The programming-language logos in `site/src/components/languages/` label the language of the docs
-site's code specimens. They are not part of the library: CodeBlock takes its logo from the site
-that uses it.
+The docs site labels the language of its code specimens with logos from the `simple-icons`
+package (a development dependency, drawn by `site/src/components/LanguageLogo.vue`). They are not
+part of the library: CodeBlock takes its logo from the site that uses it.
 
 | Work | Licence | Source |
 |---|---|---|
-| Simple Icons paths (C++, Fortran, JavaScript, Python) | CC0 1.0 | https://github.com/simple-icons/simple-icons |
+| Simple Icons paths (C++, Fortran, Python) | CC0 1.0 | https://github.com/simple-icons/simple-icons |
+| Simple Icons JavaScript path | MIT | https://github.com/simple-icons/simple-icons |
+| Simple Icons Markdown path (Markdown Mark, by Dustin Curtis) | CC0 1.0 | https://github.com/dcurtis/markdown-mark |
 | Julia logo (the Simple Icons path), by Stefan Karpinski | CC BY-NC-SA 4.0 | https://github.com/JuliaLang/julia-logo-graphics |
-| Markdown Mark (outline version), by Dustin Curtis | CC0 1.0 | https://github.com/dcurtis/markdown-mark |
 
 Simple Icons' CC0 dedication covers the SVG data, not the trademarks, which belong to their
-owners. The logos are shown in the caption's own flat grey; a page may give them an accent
-colour, except Python's, since the PSF asks for permission before its logo's colours are changed.
-The Julia logo
-is a single-colour adaptation of Stefan Karpinski's design, shared under the same CC BY-NC-SA 4.0
-licence, so it must not be reused commercially and any copy must carry that licence. Only logos
-that still read well in one colour are used: the C++, Fortran and JavaScript marks keep only the
-letters from the Simple Icons paths of the Standard C++ Foundation's, fortran-lang's and the
-community JS logos (the hexagon and square backgrounds are removed). The Markdown mark is the outline version from its creator's repository.
+owners. The logos are drawn unchanged in shape, in the caption's own flat grey, never in a hue:
+the PSF asks for permission before its logo's colours are changed, and other brands' guidelines
+mostly allow only a black, white or grey version. The Julia logo is shared under the CC BY-NC-SA
+4.0 licence, so it must not be reused commercially and any copy must carry that licence. Logos
+under NonCommercial or ShareAlike terms that aren't credited here (Vue, Rust, R) aren't used.

@@ -1,6 +1,6 @@
 // Syntax highlighting for CodeBlock, run on the server only. Shiki's css-variables theme paints each
 // token with var(--rkui-shiki-token-*), which code.css maps onto the --rkui-code-* colour tokens.
-import { bundledLanguages, codeToHtml, createCssVariablesTheme } from 'shiki'
+import { bundledLanguages, createCssVariablesTheme, getSingletonHighlighter } from 'shiki'
 
 const theme = createCssVariablesTheme({ name: 'css-variables', variablePrefix: '--rkui-shiki-' })
 
@@ -17,17 +17,30 @@ const linesOnly = {
 }
 
 /**
- * Highlights `code` as the Shiki language `lang` (plain text for a language Shiki doesn't know),
- * and returns the HTML that goes inside its `<code>`. A final line break is dropped.
+ * The Shiki language `lang` and the ones it may hold that Shiki only loads when asked, such as
+ * the languages of a Markdown file's fenced code. None for a language Shiki doesn't know.
  *
- * @param {string} code
  * @param {string} lang
- * @returns {Promise<string>}
+ * @returns {Promise<string[]>}
  */
-export function highlight(code, lang) {
-  return codeToHtml(code.replace(/(?:\r\n|\r|\n)$/, ''), {
-    lang: lang in bundledLanguages ? lang : 'plaintext',
-    theme,
-    transformers: [linesOnly],
-  })
+async function languagesFor(lang) {
+  if (!(lang in bundledLanguages)) return []
+  const { default: grammars } = await bundledLanguages[lang]()
+  const embedded = grammars.flatMap((grammar) => grammar.embeddedLangsLazy ?? [])
+  return [lang, ...embedded.filter((name) => name in bundledLanguages)]
+}
+
+/**
+ * Loads Shiki and the language `lang`, and returns a function that highlights code in it (as
+ * plain text for a language Shiki doesn't know), at once, as the HTML that goes inside its
+ * `<code>`. CodeBlock loads it before it renders, and highlights its slot's text as it renders.
+ *
+ * @param {string} lang
+ * @returns {Promise<(code: string) => string>}
+ */
+export async function highlighter(lang) {
+  const langs = await languagesFor(lang)
+  const shiki = await getSingletonHighlighter({ themes: [theme], langs })
+  const known = langs.length ? lang : 'plaintext'
+  return (code) => shiki.codeToHtml(code, { lang: known, theme, transformers: [linesOnly] })
 }

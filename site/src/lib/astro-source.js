@@ -52,7 +52,7 @@ function printProp(prop, node) {
 
 /**
  * An element's attributes and bound props by name, each with its value as the demo writes it:
- * `custom` as '', `:copy="false"` as 'false'.
+ * `custom` as '', `copy="never"` as 'never'.
  */
 function attributesOf(node) {
   const attributes = {}

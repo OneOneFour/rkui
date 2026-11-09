@@ -6,5 +6,5 @@ const code = `def lorenz(x, y, z, sigma=10.0, rho=28.0, beta=8 / 3):
 </script>
 
 <template>
-  <CodeBlock :code="code" lang="python" :copy="false" />
+  <CodeBlock lang="python" copy="never">{{ code }}</CodeBlock>
 </template>

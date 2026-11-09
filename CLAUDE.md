@@ -198,7 +198,7 @@ Every component follows these, so a site author learns them once:
   no directive and ships no JavaScript. No inline event handlers.
 - **Values worked out from props are `computed`:** with props destructured, a top-level `const`
   or `let` worked out from a prop is worked out once, and goes stale when the prop changes (a
-  widget changes CodeBlock's `code`). The template reads props directly. A plain `const` is only
+  widget changes CodeBlock's `lang`). The template reads props directly. A plain `const` is only
   for values that don't depend on props. Something that reads `useAttrs()` or `useSlots()`, which
   aren't reactive, is a function the template calls instead (CodeBlock's `mark()`).
 - **Decide in a `computed`:** a ternary in the template only for a plain either/or. Three or more
