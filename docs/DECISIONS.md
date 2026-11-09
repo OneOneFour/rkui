@@ -224,6 +224,7 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] Logo: lift (the pop only), or motifs (each tile's motif plays on hover). ("Logo")
 - [ ] Sidebar: A plain (the default), B card, C folders, D deck, or E note. ("Sidebar")
 - [ ] Table: A sheet (the default), or B ledger. ("Table")
+- [ ] Quote: A upright (the default), or B italic (`slant="italic"`, slanted by the browser). ("Quote")
 - [ ] Inline maths size (`--rkui-maths-scale`): A 1em, B 1.1em, C 1.15em (proposed, as built), or D
   1.21em (KaTeX's default). ("Maths in text")
 - [ ] Number stepper: split, or stacked. No pick recorded; both may stay as opt-ins.

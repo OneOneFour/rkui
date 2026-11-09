@@ -233,7 +233,8 @@ back inside it.
 | Code, readouts | JetBrains Mono, ligatures on | `--rkui-font-mono` | OFL |
 
 - Both main families have Greek and are variable. Slab headings give character; one sans for prose
-  and widgets keeps them in one voice. Roboto Slab has no italics, so it never sets body text.
+  and widgets keeps them in one voice. Roboto Slab has no italics, so it never sets body text,
+  except a quote (`.rkui-quote`, weight 400), which the serif sets apart from the prose around it.
 - **Self-hosted and vendored.** Xmind isn't on Fontsource, plain files also suit vanilla sites, and
   pinning guards against changes to a very new font.
 - Each family is split by `unicode-range` into latin, greek and a maths-symbols subset
@@ -495,6 +496,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Sticky note | `.rkui-sticky-note` (hues, `--tilt`, `--tape`, `--pin`) | |
 | Widget frame | `.rkui-widget-frame` (dashed, lilac tint) | |
 | Figure | `.rkui-figure` | |
+| Quote | `.rkui-quote` (slate panel, slab serif; `--italic`) | upright by default; slant open |
 | Code block | `.rkui-code`, `<rkui-code-block>` (`--tab`) | inset panel by default |
 | Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`); `.rkui-cabinet` | drawer by default |
 | Equations | `.rkui-equation`, `.rkui-eqref` | §3.3 |

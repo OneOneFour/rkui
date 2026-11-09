@@ -1,0 +1,80 @@
+---
+title: Quote
+description: Quoted text on a slate panel, in the slab serif.
+group: Containers
+order: 76
+component: Quote
+---
+
+import Demo from '../../components/Demo.astro'
+import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
+
+`Quote` renders a `<blockquote>` on a slate panel, in Roboto Slab. It is as wide as its column,
+with no indent, so its edges line up with the text around it, and it keeps the same space above
+and below. With `by`, the attribution goes under the quote in a `<figcaption>`.
+
+<Demo label="Quote with an attribution" stack>
+  <Quote by="Ada Lovelace, 1843">
+    <p>
+      The Analytical Engine weaves algebraical patterns just as the Jacquard-loom weaves flowers and
+      leaves.
+    </p>
+  </Quote>
+</Demo>
+
+## In running text
+
+<Demo label="Quote between paragraphs" stack>
+  <div>
+    <p>Pack my box with five dozen liquor jugs. How vexingly quick daft zebras jump.</p>
+    <Quote>
+      <p>The five boxing wizards jump quickly.</p>
+      <p>Sphinx of black quartz, judge my vow.</p>
+    </Quote>
+    <p>Jackdaws love my big sphinx of quartz. The quick onyx goblin jumps over the lazy dwarf.</p>
+  </div>
+</Demo>
+
+## Slant
+
+Roboto Slab has no italic, so `slant="italic"` has the browser slant its upright letters. Emphasis
+inside an italic quote turns upright.
+
+<Demo label="Upright and italic quotes" stack>
+  <Quote by="A, upright">
+    <p>
+      Sphinx of black quartz, <em>judge</em> my vow.
+    </p>
+  </Quote>
+  <Quote slant="italic" by="B, italic">
+    <p>
+      Sphinx of black quartz, <em>judge</em> my vow.
+    </p>
+  </Quote>
+</Demo>
+
+## Markdown quotes
+
+On this site a Markdown `>` quote renders as a `Quote`:
+
+> How vexingly quick daft zebras jump.
+
+A site does the same by mapping `blockquote` to `Quote` where it renders its Markdown and MDX:
+
+```astro
+---
+import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
+const { Content } = await render(entry)
+---
+
+<Content components={{ blockquote: Quote }} />
+```
+
+or in one MDX file:
+
+```mdx
+import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
+export const components = { blockquote: Quote }
+```
+
+A Markdown quote has no `by`; write `<Quote by="…">` for an attribution.
