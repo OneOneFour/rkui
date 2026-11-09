@@ -4,7 +4,7 @@
   label); other attributes (name, accept, multiple, disabled, ...) go on the input. Without a
   label, give it an `aria-label`; the 'drop' variant is labelled by its own text. It has no
   `v-model`, as a browser lets no script set a file input's files: read them in a `change`
-  handler. In Safari, the 'button' variant's "no file selected" sits right against the button.
+  handler. Without JavaScript the drop panel keeps showing its prompt. In Safari, the 'button' variant's "no file selected" sits right against the button.
 
   @example
   <File variant="drop" name="upload" prompt="Choose a file or drop it here" />
@@ -21,7 +21,8 @@ defineOptions({ inheritAttrs: false })
 interface Props {
   /**
    * 'button' (A: the input frame with a small button and the filename) or 'drop' (B: a dashed
-   * panel that takes clicks and dropped files, without the chosen filename); button when left
+   * panel that takes clicks and dropped files, and shows the chosen filename, or "3 files", when
+   * file-enhance.js is loaded); button when left
    * out. Open, see DECISIONS ("Special inputs").
    */
   variant?: 'button' | 'drop'
@@ -62,7 +63,8 @@ function pageAttrs() {
     <label v-if="variant === 'drop'" class="rkui-file-drop" v-bind="pageAttrs().wrapper">
       <input type="file" v-bind="pageAttrs().wrappedControl" />
       <UploadIcon class="rkui-icon" />
-      <span>{{ prompt }}</span>
+      <span class="rkui-file-drop-prompt">{{ prompt }}</span>
+      <span class="rkui-file-drop-chosen"></span>
     </label>
     <input v-else class="rkui-input" type="file" v-bind="pageAttrs().control" />
   </Field>

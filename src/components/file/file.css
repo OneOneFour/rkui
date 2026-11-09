@@ -4,11 +4,14 @@
    <input class="rkui-input" type="file">
 
    File B: a dashed drop panel. The input is invisible but covers the panel, so clicks and dropped
-   files land on it with no script. The chosen filename isn't shown without a script.
+   files land on it with no script. file-enhance.js adds the chosen
+   filename (or "3 files") in .rkui-file-drop-chosen and sets data-rkui-chosen on the label, which
+   swaps the prompt for it; without the script the prompt stays.
    <label class="rkui-file-drop">
      <input type="file">
      <svg class="rkui-icon" aria-hidden="true">…</svg>
-     <span>Label</span>
+     <span class="rkui-file-drop-prompt">Label</span>
+     <span class="rkui-file-drop-chosen"></span>
    </label> */
 
 /* File A */
@@ -76,6 +79,17 @@
   color: var(--rkui-fg);
   font-weight: 600;
   text-align: center;
+}
+
+.rkui-file-drop-chosen,
+.rkui-file-drop[data-rkui-chosen] .rkui-file-drop-prompt {
+  display: none;
+}
+
+.rkui-file-drop[data-rkui-chosen] .rkui-file-drop-chosen {
+  display: block;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
 }
 
 .rkui-file-drop input {

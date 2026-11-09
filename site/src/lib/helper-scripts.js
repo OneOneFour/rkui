@@ -17,6 +17,8 @@ const SERVES = {
   ],
   // A drawer's close animation, in Safari (drawer.css).
   'drawer-enhance.js': ['Cabinet', 'Drawer'],
+  // The chosen file's name inside a drop panel.
+  'file-enhance.js': ['File'],
   // A folder strip's bar while its tabs don't fit, and how many tabs a collapsing strip shows.
   'folder-enhance.js': ['Folder', 'Pagination'],
   // The "more" dots on scroll regions, without scroll-driven animations (overflow.css).

@@ -3,6 +3,7 @@
 // no-JavaScript component can't do in CSS. The build fails if a *-enhance.js is missing here.
 import './interactive-enhance.js'
 import './components/drawer/drawer-enhance.js'
+import './components/file/file-enhance.js'
 import './components/folder/folder-enhance.js'
 import './components/overflow/overflow-enhance.js'
 import './components/sidebar/sidebar-enhance.js'
