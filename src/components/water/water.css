@@ -2,7 +2,8 @@
    .rkui-water in a host that clips it; it sits behind the host's content. Set --rkui-water-level (0
    to 1) on the host or the water for a fixed level, or add .rkui-water--rise to fill and drain it,
    for an unknown wait.
-   Under reduced motion the water stays still and fades in and out instead.
+   Under reduced motion the water stays still, filling or at a set level, and fades in and out
+   instead.
 
    Hosts in this file:
    water spinner, .rkui-spinner--water: a flask that fills and drains, or holds a set level;
@@ -212,7 +213,8 @@
   --rkui-wave-period: var(--rkui-loop-long);
 }
 
-.rkui-pending > .rkui-water--rise {
+/* :where() keeps this at the rise's weight, so the reduced-motion fade below replaces it. */
+.rkui-pending > :where(.rkui-water--rise) {
   animation-duration: var(--rkui-loop-panel);
 }
 
@@ -222,7 +224,7 @@
     animation: none;
   }
 
-  .rkui-water--rise {
+  .rkui-water {
     animation: rkui-spinner-fade var(--rkui-loop-medium) ease-in-out infinite alternate;
   }
 }
