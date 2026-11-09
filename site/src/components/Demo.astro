@@ -159,6 +159,11 @@ try {
     margin-block: var(--rkui-space-5);
   }
 
+  /* The source tabs' code, and code in a preview, sit in the sheet's own padding. */
+  .demo :global(.rkui-code) {
+    margin-block: 0;
+  }
+
   /* With the sheet's own padding, 2rem above and below the preview and 1.5rem either side. */
   .preview {
     display: flex;

@@ -87,13 +87,6 @@ article > .rkui-logo {
   margin-block-start: var(--rkui-space-7);
 }
 
-/* A fenced code block in a page, which rkui's Astro integration renders as a CodeBlock, in an
-   island when it is hydrated. */
-.docs-main article > .rkui-code,
-.docs-main article > astro-island > .rkui-code {
-  margin-block: var(--rkui-space-4);
-}
-
 /* The menu is the sidebar on narrow screens only. */
 .docs-menu {
   display: none;

@@ -21,6 +21,9 @@
      </button>
    </figure>
 
+   It has the same space above and below as an equation or a quote, so code in a page's prose is
+   spaced without a rule of the site's own.
+
    Without the figcaption there is no title area: the copy button sits in the code's top-right
    corner. The copy button can be left out too.
 
@@ -47,7 +50,7 @@
 
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  margin: 0;
+  margin: var(--rkui-space-5) 0;
   border-radius: var(--rkui-radius);
   background: var(--rkui-slate);
   box-shadow: var(--rkui-code-inset);
