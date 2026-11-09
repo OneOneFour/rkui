@@ -42,9 +42,9 @@
   --rkui-ball-size: 1.5rem;
 }
 
-/* The ball travels and hops in two animations. A hop lands every --rkui-loader-hop-time, and a
-   crossing takes a whole number of hops: the travel over --rkui-loader-hop-length, rounded, at
-   least one.
+/* The ball travels and hops in two animations of its translate, the hop added to the travel. A
+   hop lands every --rkui-loader-hop-time, and a crossing takes a whole number of hops: the travel
+   over --rkui-loader-hop-length, rounded, at least one.
    tan(atan2(a, b)) is a / b as a plain number. --rkui-ball-edge leaves room for the squash at
    each end. */
 .rkui-loader-ball {
@@ -69,6 +69,7 @@
   animation:
     rkui-hop-travel calc(var(--rkui-hops) * var(--rkui-loader-hop-time)) linear infinite alternate,
     rkui-hop var(--rkui-loader-hop-time) infinite;
+  animation-composition: replace, add;
 }
 
 .rkui-loader-ball .rkui-icon {
@@ -92,7 +93,7 @@
 @keyframes rkui-hop {
   from,
   to {
-    inset-block-end: 0;
+    translate: 0 0;
     scale: 1.3 0.7;
     animation-timing-function: ease-out;
   }
@@ -102,7 +103,7 @@
   }
 
   50% {
-    inset-block-end: var(--rkui-hop-height);
+    translate: 0 calc(-1 * var(--rkui-hop-height));
     scale: 1;
     animation-timing-function: ease-in;
   }
