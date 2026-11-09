@@ -8,14 +8,12 @@
   }
 
   :root,
-  [data-palette],
-  [data-shadow='slab'] {
+  [data-palette] {
     --rkui-surface: #f7f3e5;
     --rkui-raised: #fffaf0;
     --rkui-fg: #1d232f;
     --rkui-muted: #5b6070;
     --rkui-line: #1d232f;
-    --rkui-shadow-edge: transparent;
     --rkui-shadow-lit: var(--rkui-line);
 
     --rkui-navy: #2c4d6e;
@@ -62,5 +60,10 @@
     --rkui-slate-tab: #dbe0ea;
     --rkui-slate-greige: #eae7e2;
     --rkui-slate-greige-tab: #e0dcd6;
+  }
+
+  /* The light theme's shadows have no rim, whatever data-shadow and data-highlight say. */
+  * {
+    --rkui-shadow-edge: transparent;
   }
 }

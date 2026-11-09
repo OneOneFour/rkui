@@ -175,7 +175,7 @@
 }
 
 /* A scroll region draws its pills' shadows itself, in this colour: the region's own shadow colour,
-   which the colour shadow mode turns to the pill's shade (shadow-color.css). */
+   which the colour shadow turns to the pill's shade (shadow-color.css). */
 .rkui-scroll {
   --rkui-pill-shadow-color: var(--rkui-shadow-color);
 }
