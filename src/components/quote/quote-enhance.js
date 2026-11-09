@@ -1,14 +1,21 @@
 // Marks a quote whose text is under three lines long, at the normal size, with data-rkui-short:
-// "one" for a single line, which quote.css sets two steps larger, "two" for the rest, a step larger. It is measured at the normal size every time, so the larger
-// size never feeds back into the count. It is checked again when the quote's size changes (one
-// shared ResizeObserver) or its text changes (one shared MutationObserver), including in a Vue
-// app. Without this script every quote keeps the normal size.
+// "one" for a single line, which quote.css sets two steps larger, "two" for the rest, a step
+// larger. It is measured at the normal size every time, so the larger size never feeds back into
+// the count. It is checked again when the quote's size changes (one shared ResizeObserver) or its
+// text changes (one shared MutationObserver), including in a Vue app. Without this script every
+// quote keeps the normal size.
 import { eachElement } from '../../shared/each-element.js'
 
 const SHORT = 'data-rkui-short'
 
 /** Quotes whose size changed, checked together in the next frame. */
 const pending = new Set()
+
+/** The element's line height in pixels: about 1.2 times its font size where it is `normal`. */
+function lineHeight(element) {
+  const style = getComputedStyle(element)
+  return parseFloat(style.lineHeight) || 1.2 * parseFloat(style.fontSize)
+}
 
 /**
  * Sets or clears the quote's mark. The quote is measured with the mark off, and the mark is set
@@ -22,7 +29,7 @@ function check(quote) {
   const text = quote.matches('figure') ? quote.querySelector(':scope > blockquote') : quote
   const range = document.createRange()
   range.selectNodeContents(text)
-  const lines = range.getBoundingClientRect().height / parseFloat(getComputedStyle(text).lineHeight)
+  const lines = range.getBoundingClientRect().height / lineHeight(text)
   // Under three lines' height: two lines with a paragraph gap between them still count.
   if (lines < 1.5) quote.setAttribute(SHORT, 'one')
   else if (lines < 2.75) quote.setAttribute(SHORT, 'two')
