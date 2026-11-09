@@ -15,6 +15,8 @@ const SERVES = {
     'ThemeToggle',
     'Tiles',
   ],
+  // An Alert's opening and closing buttons, and closedby="none", in Safari before 26.2.
+  'alert-enhance.js': ['Alert'],
   // A drawer's close animation, in Safari (drawer.css).
   'drawer-enhance.js': ['Cabinet', 'Drawer'],
   // The chosen file's name inside a drop panel.

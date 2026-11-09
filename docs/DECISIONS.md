@@ -223,6 +223,7 @@ quotes. Each pick is one small change that deletes the losing variant and update
   legend. ("Tile and colour pickers")
 - [ ] `.rkui-progress--flat`: stays, or goes. ("Loading")
 - [ ] Tooltip: A inverted (the default), or B toon. ("Tooltips and popups")
+- [ ] Alert backdrop: darken (the default), or blur, which goes against "no blur". ("Alert")
 - [ ] Corner badge edge: A outline, B ring, or C sticker. ("Badges")
 - [ ] Breadcrumbs: A plain links, B chips, or C path bar. ("Breadcrumbs")
 - [ ] Pagination: A folder tabs, or B tiles between buttons. ("Pagination")

@@ -139,13 +139,14 @@ export const SUMMARY: SummaryGroup[] = [
   {
     title: 'Shading',
     caption:
-      "Hard shadows: the slab's colour and rim, and the colour mode's shadow for things without a fill. Hatching stripes and tape are translucent.",
+      "Hard shadows: the slab's colour and rim, and the colour mode's shadow for things without a fill. Hatching stripes, tape and the scrim behind an Alert are translucent.",
     rows: [
       { color: color('--rkui-shadow-color'), shades: [] },
       { color: color('--rkui-shadow-edge'), shades: [] },
       onPage('--rkui-shadow-lit'),
       { color: color('--rkui-stripe'), shades: [] },
       { color: color('--rkui-note-tape'), shades: [] },
+      { color: color('--rkui-scrim'), shades: [] },
     ],
   },
 ]

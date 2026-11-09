@@ -2,6 +2,7 @@
 // `import '@oneonefour/rkui/enhance.js'`. Each is a small plain script that adds what a
 // no-JavaScript component can't do in CSS. The build fails if a *-enhance.js is missing here.
 import './interactive-enhance.js'
+import './components/alert/alert-enhance.js'
 import './components/drawer/drawer-enhance.js'
 import './components/file/file-enhance.js'
 import './components/folder/folder-enhance.js'

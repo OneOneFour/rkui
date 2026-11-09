@@ -1,0 +1,98 @@
+/* Alert: an urgent message in a box in the middle of the window, a native <dialog> opened as a
+   modal. The browser centres it, makes the page behind inert, moves focus in and back, and closes
+   it on Escape. The page behind is shaded with --rkui-scrim, or blurred with --blur. It pops in
+   with one overshoot; it closes at once.
+
+   --rkui-alert-hue and --rkui-alert-on-hue set the band's fill and text (Alert.vue's `color`);
+   coral (--rkui-coral-solid) when left alone.
+
+   <button class="rkui-button" commandfor="unsaved" command="show-modal">Leave</button>
+   <dialog class="rkui-alert" id="unsaved" role="alertdialog" aria-labelledby="unsaved-title"
+     aria-describedby="unsaved-message">
+     <div class="rkui-alert-band"><svg class="rkui-icon">…</svg>
+       <h2 class="rkui-alert-title" id="unsaved-title">Unsaved changes</h2></div>
+     <div class="rkui-alert-message" id="unsaved-message"><p>…</p></div>
+     <div class="rkui-alert-actions">
+       <button class="rkui-button" commandfor="unsaved" command="close">OK</button></div>
+   </dialog> */
+
+.rkui-alert {
+  --rkui-alert-hue: var(--rkui-coral-solid);
+  --rkui-alert-on-hue: var(--rkui-on-coral);
+  box-sizing: border-box;
+  inline-size: min(28rem, 100% - 2 * var(--rkui-space-4));
+  padding: 0;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  color: var(--rkui-fg);
+  box-shadow: var(--rkui-shadow);
+}
+
+.rkui-alert[open] {
+  animation: rkui-alert-pop var(--rkui-duration-slide) var(--rkui-ease-snap);
+}
+
+.rkui-alert::backdrop {
+  background: var(--rkui-scrim);
+}
+
+.rkui-alert--blur::backdrop {
+  background: none;
+  backdrop-filter: blur(var(--rkui-space-1));
+}
+
+.rkui-alert[open]::backdrop {
+  animation: rkui-alert-fade var(--rkui-duration-slide) ease;
+}
+
+.rkui-alert-band {
+  --rkui-icon-fill: var(--rkui-icon-fill-neutral);
+  display: flex;
+  align-items: center;
+  gap: var(--rkui-space-3);
+  padding: var(--rkui-space-3) var(--rkui-space-4);
+  border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-start-start-radius: calc(var(--rkui-radius) - var(--rkui-outline-width));
+  border-start-end-radius: calc(var(--rkui-radius) - var(--rkui-outline-width));
+  background: var(--rkui-alert-hue);
+  color: var(--rkui-alert-on-hue);
+}
+
+.rkui-alert-title {
+  margin: 0;
+  font-size: var(--rkui-step-1);
+}
+
+.rkui-alert-message {
+  padding: var(--rkui-space-4);
+}
+
+.rkui-alert-message > :first-child {
+  margin-block-start: 0;
+}
+
+.rkui-alert-message > :last-child {
+  margin-block-end: 0;
+}
+
+.rkui-alert-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: var(--rkui-space-3);
+  padding: 0 var(--rkui-space-4) var(--rkui-space-4);
+}
+
+@keyframes rkui-alert-pop {
+  from {
+    opacity: 0;
+    scale: 0.85;
+  }
+}
+
+@keyframes rkui-alert-fade {
+  from {
+    opacity: 0;
+  }
+}

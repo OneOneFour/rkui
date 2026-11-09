@@ -93,6 +93,8 @@
   /* The shadow inside a recess deeper than the code panel's: a drawer's tray. The outline colour
      at a little under half strength. */
   --rkui-recess: color-mix(in srgb, var(--rkui-line) 45%, transparent);
+  /* The shade over the page behind a modal (an Alert): the outline colour at half strength */
+  --rkui-scrim: color-mix(in srgb, var(--rkui-line) 50%, transparent);
 
   /* Icon fills: the quiet default for interface icons, a pale wash of the outline colour */
   --rkui-icon-fill-neutral: color-mix(in srgb, currentColor 20%, transparent);

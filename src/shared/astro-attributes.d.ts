@@ -12,7 +12,20 @@ declare namespace astroHTML.JSX {
     accept?: string | undefined | null
     autocomplete?: string | undefined | null
     checked?: boolean | string | undefined | null
+    closedby?: 'none' | 'closerequest' | 'any' | undefined | null
     cols?: number | string | undefined | null
+    // `string & {}`: any other string, while editors still suggest the named commands.
+    command?:
+      | 'show-modal'
+      | 'close'
+      | 'request-close'
+      | 'show-popover'
+      | 'hide-popover'
+      | 'toggle-popover'
+      | (string & {})
+      | undefined
+      | null
+    commandfor?: string | undefined | null
     disabled?: boolean | string | undefined | null
     download?: string | boolean | undefined | null
     form?: string | undefined | null

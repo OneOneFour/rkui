@@ -47,6 +47,7 @@
 @import './components/loader/loader.css';
 @import './components/tooltip/tooltip.css';
 @import './components/popup/popup.css';
+@import './components/alert/alert.css';
 @import './components/breadcrumbs/breadcrumbs.css';
 @import './components/folder/folder.css';
 @import './components/pagination/pagination.css';

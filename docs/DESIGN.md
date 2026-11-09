@@ -134,6 +134,7 @@ Repeated mixes are named, so the docs page can show them:
   the code panel's sunken edge.
 - `--rkui-recess`: `--rkui-line` at 45% over whatever it crosses. The shadow inside a drawer's tray, a
   deeper recess than the code panel's.
+- `--rkui-scrim`: `--rkui-line` at 50% over the page behind a modal (an Alert's backdrop).
 - `--rkui-shade`: `color-mix(in oklab, var(--rkui-shade-of) 75%, var(--rkui-line))`; set `--rkui-shade-of` to a fill.
   The sticky-note fold and every colour-mode extrusion. Declared on `*`, so each element mixes its
   own.
@@ -493,6 +494,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Folder tabs | `.rkui-folder`, `<rkui-tabs>` (`--tinted`) | bar above the tabs; flat scrollbar |
 | Top bar | `.rkui-topbar--toast`, `--flush` | toast by default; flush for full-width headers |
 | Popup | `.rkui-popup` (Popover API) | |
+| Alert | `.rkui-alert` (modal `<dialog>`, `--blur`) | coral band; darken or blur open |
 | Tooltip | `<rkui-tooltip>` A inverted, B `--toon` | A by default; open |
 | Card | `.rkui-card`, `--link` | content variants proposed (DECISIONS) |
 | Callout | `.rkui-callout--note` (sky tint), `--warning` (apricot tint) | |
