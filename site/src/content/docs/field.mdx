@@ -8,8 +8,6 @@ component: Field
 
 import Demo from '../../components/Demo.astro'
 import Input from '@oneonefour/rkui/components/input/Input.vue'
-import Field from '@oneonefour/rkui/components/field/Field.vue'
-import Range from '@oneonefour/rkui/components/range/Range.vue'
 
 <Demo label="Field with a hint" stack>
   <Input label="Email" type="email" name="field-email" hint="We never share it" />
@@ -25,12 +23,4 @@ import Range from '@oneonefour/rkui/components/range/Range.vue'
     value="not an email"
     error="Enter an email address"
   />
-</Demo>
-
-## Around another control
-
-<Demo label="Field around a range" stack>
-  <Field label="Volume" for="field-volume" hint="0 to 100">
-    <Range id="field-volume" aria-describedby="field-volume-message" />
-  </Field>
 </Demo>
