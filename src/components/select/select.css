@@ -1,4 +1,16 @@
-/* Selects: the text input look (input.css) with a caret. The open list is the browser's own. */
+/* Selects: the text input look (input.css) with a caret. Where the browser supports
+   appearance: base-select, the open list is a raised panel in the toon look and options can hold
+   icons; elsewhere it is the browser's own list, and the icons are left out. A multiple select, or
+   one with a size, is a list box and keeps the browser's own look.
+
+   <select class="rkui-select">
+     <button><selectedcontent></selectedcontent></button>
+     <option value="one"><svg class="rkui-icon rkui-icon--small" aria-hidden="true">…</svg>
+       One</option>
+     …
+   </select>
+
+   The <button> line is optional: it shows the chosen option's icon in the closed select too. */
 
 /* The caret is drawn with two gradients so it takes --rkui-fg in either theme. */
 .rkui-select {
@@ -13,4 +25,69 @@
   background-size: var(--rkui-space-2) var(--rkui-space-2);
   background-repeat: no-repeat;
   cursor: pointer;
+}
+
+@supports (appearance: base-select) {
+  .rkui-select:not([multiple], [size]),
+  .rkui-select:not([multiple], [size])::picker(select) {
+    appearance: base-select;
+  }
+
+  /* .rkui-select draws its own caret. */
+  .rkui-select:not([multiple], [size])::picker-icon {
+    display: none;
+  }
+
+  .rkui-select:not([multiple], [size])::picker(select) {
+    margin-block: var(--rkui-space-1);
+    padding: var(--rkui-space-1);
+    border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+    border-radius: var(--rkui-radius);
+    background: var(--rkui-raised);
+    color: var(--rkui-fg);
+    box-shadow: var(--rkui-shadow);
+  }
+
+  /* The optional <button> only holds <selectedcontent>: the select draws the frame. */
+  .rkui-select:not([multiple], [size]) > button {
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .rkui-select:not([multiple], [size]) :is(selectedcontent, option) {
+    display: flex;
+    align-items: center;
+    gap: var(--rkui-space-2);
+  }
+
+  .rkui-select:not([multiple], [size]) option {
+    padding: var(--rkui-space-1) var(--rkui-space-3);
+    border-radius: calc(var(--rkui-radius) / 2);
+  }
+
+  .rkui-select:not([multiple], [size]) option:hover {
+    box-shadow: inset 0 0 0 var(--rkui-outline-width) var(--rkui-line-unfilled);
+  }
+
+  .rkui-select:not([multiple], [size]) option:checked {
+    background: var(--rkui-selected);
+    color: var(--rkui-on-selected);
+  }
+
+  /* Marker-pen focus, as on links: the list has no room for the band. The transparent outline
+     still shows in forced-colours mode. */
+  .rkui-select:not([multiple], [size]) option:focus-visible {
+    outline: var(--rkui-outline-width) solid transparent;
+    background: var(--rkui-focus);
+    color: var(--rkui-ink);
+  }
+
+  @media (forced-colors: active) {
+    .rkui-select:not([multiple], [size]) option:checked {
+      forced-color-adjust: none;
+      background: Highlight;
+      color: HighlightText;
+    }
+  }
 }

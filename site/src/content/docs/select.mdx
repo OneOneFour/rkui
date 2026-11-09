@@ -1,6 +1,6 @@
 ---
 title: Select
-description: A native select, with an optional custom open list.
+description: A native select whose open list is drawn in the toon look where the browser supports it.
 group: Form controls
 order: 43
 component: Select
@@ -36,20 +36,10 @@ import CircleHalfIcon from '@oneonefour/rkui/icons/circle-half.vue'
   </Select>
 </Demo>
 
-## Custom open list
-
-<Demo label="Select with the custom list" stack>
-  <Select label="Size" name="select-picker" picker>
-    <option value="one">Option one</option>
-    <option value="two">Option two</option>
-    <option value="three">Option three</option>
-  </Select>
-</Demo>
-
 ## Icons in options
 
-<Demo label="Custom list with icons" stack>
-  <Select label="Theme" name="select-icons" picker showSelected>
+<Demo label="Select with icons" stack>
+  <Select label="Theme" name="select-icons" showSelected>
     <option value="one">
       <SunIcon class="rkui-icon rkui-icon--small" aria-hidden="true" /> Option one
     </option>
@@ -59,15 +49,5 @@ import CircleHalfIcon from '@oneonefour/rkui/icons/circle-half.vue'
     <option value="three">
       <CircleHalfIcon class="rkui-icon rkui-icon--small" aria-hidden="true" /> Option three
     </option>
-  </Select>
-</Demo>
-
-## Tinted checked option
-
-<Demo label="Custom list with a tinted checked option" stack>
-  <Select label="Size" name="select-tint" picker tint>
-    <option value="one">Option one</option>
-    <option value="two">Option two</option>
-    <option value="three">Option three</option>
   </Select>
 </Demo>

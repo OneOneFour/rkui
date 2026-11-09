@@ -465,7 +465,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Filling (busy) button | `.rkui-button[aria-busy]` + `.rkui-water` | |
 | Field wrapper | `.rkui-field`, `.rkui-check` | |
 | Text input, textarea | `.rkui-input` | hover cues opt-in (§4.8) |
-| Select | `.rkui-select`; list `.rkui-select--picker` (`--tint`) | picker opt-in, needs `appearance: base-select`; checked option open |
+| Select | `.rkui-select` | toon open list where `appearance: base-select` works, the browser's own elsewhere |
 | Checkbox, radio, switch | `.rkui-checkbox`, `.rkui-radio`, `.rkui-switch` | |
 | Range | `.rkui-range`, `.rkui-output` | |
 | Range ticks | `.rkui-range-scale` (`ticks`) | |

@@ -8,9 +8,10 @@
   model's choice, as the options come through the slot: the browser shows it once the component
   runs, and until then the options marked `selected`.
 
-  With `picker` the open list is a raised panel in the toon look, where the browser supports it,
-  and options can hold icons (`<Icon class="rkui-icon rkui-icon--small" aria-hidden="true" />`
-  before the text). Add `showSelected` to show the chosen option's icon in the closed select too.
+  Where the browser supports it, the open list is a raised panel in the toon look, and options can
+  hold icons (`<Icon class="rkui-icon rkui-icon--small" aria-hidden="true" />` before the text);
+  elsewhere it is the browser's own list. Add `showSelected` to show the chosen option's icon in
+  the closed select too.
 
   @example
   <Select label="Size" name="size">
@@ -43,18 +44,14 @@ interface Props {
    * left out.
    */
   hover?: 'ring' | 'underline' | 'none'
-  /** Use the custom open list; the browser's own list when left out. */
-  picker?: boolean
   /**
-   * With `picker`, show the checked option tinted instead of filled; filled when left out. Open,
-   * see DECISIONS ("Custom select list").
+   * Show the chosen option's content, icon and all, in the closed select, where the browser draws
+   * the toon list; off when left out.
    */
-  tint?: boolean
-  /** With `picker`, show the chosen option's content in the closed select; off when left out. */
   showSelected?: boolean
 }
 
-const { label, hint, error, hover, picker, tint, showSelected } = defineProps<Props>()
+const { label, hint, error, hover, showSelected } = defineProps<Props>()
 
 /**
  * The `<option>` vnodes in a slot written in a `.vue` file, in order, through optgroups and loops.
@@ -133,15 +130,10 @@ function pageAttrs() {
     <select
       v-live-value
       v-model="selection"
-      :class="[
-        'rkui-select',
-        picker && 'rkui-select--picker',
-        picker && tint && 'rkui-select--tint',
-        hover && `rkui-hover-${hover}`,
-      ]"
+      :class="['rkui-select', hover && `rkui-hover-${hover}`]"
       v-bind="pageAttrs().control"
     >
-      <SelectedButton v-if="picker && showSelected" />
+      <SelectedButton v-if="showSelected" />
       <slot />
     </select>
   </Field>

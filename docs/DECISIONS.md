@@ -12,6 +12,11 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-08
 
+**Select's open list** (Rob). Every select draws its open list in the toon look where the browser
+supports `appearance: base-select`, and shows the browser's own list elsewhere; there is no
+`picker` option to turn it on. The checked option is filled with `--rkui-selected`, like every
+other checked control, and the tinted variant is gone.
+
 **Folder and Pagination tabs** (Rob). Tabs never wrap. They stand on the top, bottom, left or right
 of the sheet; for bottom and right the tabs come after the sheet in the page, so the tab order
 follows the reading order. When they don't fit, a strip either scrolls or collapses:
@@ -208,7 +213,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
   ("Loading")
 
 **Picks among built options**
-- [ ] Custom select list, checked option: A filled, or B tinted (`--tint`). ("Custom select list")
 - [ ] File input: A framed button and filename, or B drop panel. ("Special inputs")
 - [ ] Search: A icon inside, or B attached button. ("Special inputs")
 - [ ] Dial: A knob, or B arc. ("Dial")

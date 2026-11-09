@@ -1,7 +1,7 @@
 ---
 /**
- * The custom select list (A checked option filled, B tinted), with and without icons, its states,
- * and a text input with native suggestions.
+ * The select's open list, with and without icons, its states, and a text input with native
+ * suggestions.
  *
  * @param theme the panel's theme, used to keep ids unique across the two panels
  */
@@ -21,46 +21,40 @@ const OPTIONS = [
   { value: 'two', label: 'Option two', Icon: MoonIcon },
   { value: 'three', label: 'Option three', Icon: CircleHalfIcon },
 ]
-const STYLES = [
-  { title: 'A: checked option filled', class: '' },
-  { title: 'B: checked option tinted (.rkui-select--tint)', class: 'rkui-select--tint' },
-]
 const STATES = [
   { label: 'focused', class: 'is-focus', disabled: false },
   { label: 'disabled', class: '', disabled: true },
 ]
 ---
 
-{STYLES.map((style) => (
-  <SpecimenRow title={style.title}>
-    <Specimen label="text options" wide>
-      <select class:list={['rkui-select rkui-select--picker', style.class]} aria-label="Specimen">
-        {OPTIONS.map(({ value, label }) => (
-          <option value={value}>{label}</option>
-        ))}
-      </select>
-    </Specimen>
-    <Specimen label="with icons, shown when closed too" wide>
-      <select class:list={['rkui-select rkui-select--picker', style.class]} aria-label="Specimen">
-        <button>
-          <selectedcontent></selectedcontent>
-        </button>
-        {OPTIONS.map(({ value, label, Icon }) => (
-          <option value={value}>
-            <Icon class="rkui-icon rkui-icon--small" />
-            {label}
-          </option>
-        ))}
-      </select>
-    </Specimen>
-  </SpecimenRow>
-))}
+<SpecimenRow title="Open list">
+  <Specimen label="text options" wide>
+    <select class="rkui-select" aria-label="Specimen">
+      {OPTIONS.map(({ value, label }) => (
+        <option value={value}>{label}</option>
+      ))}
+    </select>
+  </Specimen>
+  <Specimen label="with icons, shown when closed too" wide>
+    <select class="rkui-select" aria-label="Specimen">
+      <button>
+        <selectedcontent></selectedcontent>
+      </button>
+      {OPTIONS.map(({ value, label, Icon }) => (
+        <option value={value}>
+          <Icon class="rkui-icon rkui-icon--small" />
+          {label}
+        </option>
+      ))}
+    </select>
+  </Specimen>
+</SpecimenRow>
 
 <SpecimenRow title="Select states">
   {STATES.map((state) => (
     <Specimen label={state.label} wide>
       <select
-        class:list={['rkui-select rkui-select--picker', state.class]}
+        class:list={['rkui-select', state.class]}
         aria-label="Specimen"
         disabled={state.disabled}
       >
