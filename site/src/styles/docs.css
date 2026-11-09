@@ -70,6 +70,13 @@ article > .rkui-logo {
   background: none;
 }
 
+/* A browser's logo on a helper script's badge, flat in the badge's text colour. */
+.docs-browser-logo {
+  inline-size: 1em;
+  block-size: 1em;
+  fill: currentColor;
+}
+
 .docs-lede {
   color: var(--rkui-muted);
   font-size: var(--rkui-step-1);

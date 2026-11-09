@@ -15,19 +15,20 @@ to the files it covers.
 ## Docs site only
 
 The docs site labels the language of its code specimens with logos from the `simple-icons`
-package (a development dependency, drawn by `site/src/components/LanguageLogo.vue`). They are not
-part of the library: CodeBlock takes its logo from the site that uses it.
+package (a development dependency, drawn by `site/src/components/LanguageLogo.vue`), and marks the
+helper scripts that only matter in Safari with Safari's (`site/src/components/HelperBadge.astro`).
+They are not part of the library: CodeBlock takes its logo from the site that uses it.
 
 | Work | Licence | Source |
 |---|---|---|
-| Simple Icons paths (C++, Fortran, Python) | CC0 1.0 | https://github.com/simple-icons/simple-icons |
+| Simple Icons paths (C++, Fortran, Python, Safari) | CC0 1.0 | https://github.com/simple-icons/simple-icons |
 | Simple Icons JavaScript path | MIT | https://github.com/simple-icons/simple-icons |
 | Simple Icons Markdown path (Markdown Mark, by Dustin Curtis) | CC0 1.0 | https://github.com/dcurtis/markdown-mark |
 | Julia logo (the Simple Icons path), by Stefan Karpinski | CC BY-NC-SA 4.0 | https://github.com/JuliaLang/julia-logo-graphics |
 
 Simple Icons' CC0 dedication covers the SVG data, not the trademarks, which belong to their
-owners. The logos are drawn unchanged in shape, in the caption's own flat grey, never in a hue:
-the PSF asks for permission before its logo's colours are changed, and other brands' guidelines
-mostly allow only a black, white or grey version. The Julia logo is shared under the CC BY-NC-SA
+owners. The logos are drawn unchanged in shape, flat in the caption's grey or the badge's text
+colour, never in their brand colours: the PSF asks for permission before its logo's colours are
+changed, and other brands' guidelines mostly allow only a black, white or grey version. The Julia logo is shared under the CC BY-NC-SA
 4.0 licence, so it must not be reused commercially and any copy must carry that licence. Logos
 under NonCommercial or ShareAlike terms that aren't credited here (Vue, Rust, R) aren't used.
