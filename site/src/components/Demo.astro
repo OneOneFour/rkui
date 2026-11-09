@@ -69,12 +69,14 @@ const rendered = await Astro.slots.render('default')
 const interactive = rendered.includes('<astro-island')
 
 /**
- * The demo's markup as a plain HTML page would write it: no Astro or Vue attributes & none of Vue's markers
+ * The demo's markup as a plain HTML page would write it: no Astro or Vue attributes, none of Vue's
+ * markers, and no CodeBlock copy button, which only works in Vue.
  */
 async function readableHtml(html: string): Promise<string> {
   const markup = useSprite(
     html
       .replace(/<script\b[\s\S]*?<\/script>/g, '')
+      .replace(/<button\b[^>]*\brkui-code-copy\b[\s\S]*?<\/button>/g, '')
       .replace(/<style\b[\s\S]*?<\/style>/g, '')
       .replace(/<!--(\[|\]|v-if|astro:end)?-->/g, '')
       .replace(/<\/?astro-static-slot>/g, '')
