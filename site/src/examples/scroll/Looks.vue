@@ -9,7 +9,7 @@ import Scroll from '@oneonefour/rkui/components/overflow/Scroll.vue'
       too wide for its column.
     </p>
   </Scroll>
-  <Scroll label="Pill dots" class="line-scroll" data-rkui-dots="pill">
+  <Scroll label="Pill dots" class="line-scroll" dots="pill">
     <p>
       Pill dots: a long line of text that does not wrap, so the region scrolls sideways when it is
       too wide for its column.

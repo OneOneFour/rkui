@@ -501,7 +501,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`); `.rkui-cabinet` | drawer by default |
 | Equations | `.rkui-equation`, `.rkui-eqref` | §3.3 |
 | Table | `.rkui-table` (`--ledger`, `--small`, `--messy`, `--still`, `--lift`) | sheet by default; sheet or ledger open |
-| Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on |
+| Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on; every other scrollbar takes its colours |
 | Sidebar | `.rkui-sidebar` (`--card`, `--folders`, `--deck`, `--note`) | plain by default; open |
 | Badge | `.rkui-badge` (`--tint`, hues, `--corner`, `--dot`); corner `--ring`, `--sticker` | corner edge open |
 | Spinners | `.rkui-spinner` `--ring`, `--dots` (with `--squash`), `--water`, `--orbit`, `--triangle` | |

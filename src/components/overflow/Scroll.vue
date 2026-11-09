@@ -4,7 +4,7 @@
   and named. The slot is the content. `class`, `style` and other attributes go on the `<div>`.
 
   @example
-  <Scroll label="Results"><table>…</table></Scroll>
+  <Scroll label="Results" dots="pill"><table>…</table></Scroll>
 -->
 <script setup lang="ts">
 interface Props {
@@ -17,9 +17,14 @@ interface Props {
    * a hover scrollbar when left out.
    */
   bar?: boolean
+  /**
+   * The dots' look: `plain`, or `pill` for dots in a raised pill that slides in from the edge. The
+   * page's `data-rkui-dots` (plain when it sets none) when left out.
+   */
+  dots?: 'plain' | 'pill'
 }
 
-const { label, labelledby, bar } = defineProps<Props>()
+const { label, labelledby, bar, dots } = defineProps<Props>()
 </script>
 
 <template>
@@ -29,6 +34,7 @@ const { label, labelledby, bar } = defineProps<Props>()
     role="region"
     :aria-label="label"
     :aria-labelledby="labelledby"
+    :data-rkui-dots="dots"
   >
     <slot />
   </div>

@@ -14,7 +14,12 @@ import barCode from '../../examples/scroll/Bar.vue?raw'
 import Looks from '../../examples/scroll/Looks.vue'
 import looksCode from '../../examples/scroll/Looks.vue?raw'
 
-Three dots at each edge show there is more to see. The scrollbar shows on hover and focus.
+Every scrollbar on the page takes the toon colours, a yellow thumb on a raised track, in the
+browser's own shape. Scroll is for the page's own wide content, such as a table or a diagram: a
+region the keyboard can reach and scroll, named for screen readers. Three dots at each edge show
+there is more to see, and a toon scrollbar, a pill track with an outlined thumb, shows on hover and
+focus. Code blocks, folder tabs, tables and sidebars have the same scrolling built in, so they
+don't need wrapping.
 
 <Demo vue={tableCode} label="Scroll region with dots" stack>
   <Table />
@@ -28,9 +33,9 @@ Three dots at each edge show there is more to see. The scrollbar shows on hover 
 
 ## Plain or pill dots
 
-Set `data-rkui-dots="pill"` on `<html>`, a container or one region to put the dots in a raised
-pill, and `data-rkui-dots="plain"` to switch back inside it. Sidebars, code blocks and folder tabs
-take it too.
+`dots="pill"` puts the dots in a raised pill that slides in from the edge. To give the whole site
+pills, set `data-rkui-dots="pill"` on `<html>` or a container instead: sidebars, code blocks, folder
+tabs and tables take it too, and `data-rkui-dots="plain"` switches back inside it.
 
 <Demo vue={looksCode} label="Plain and pill dots" stack>
   <Looks />
