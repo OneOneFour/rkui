@@ -1,9 +1,9 @@
 ---
 /**
- * The core colours as a palette picker: a tall column per hue with its -deep and -tint steps
- * beneath, then a row of page colours. Each block is a button that copies its colour, as a hex or
- * as `var(--rkui-…)`, chosen by the switch above. The hexes are read from what the browser
- * paints, so they follow the theme, palette and shadow mode.
+ * The colours as a palette picker: a tall column per hue with its -deep and -tint steps beneath,
+ * the core hues, a row of page colours, then the auxiliary hues with their jobs. Each block is a
+ * button that copies its colour, as a hex or as `var(--rkui-…)`, chosen by the switch above. The
+ * hexes are read from what the browser paints, so they follow the theme, palette and shadow mode.
  *
  * Text on each block follows the on-colour rule: a fill's own label token; the page colour on a
  * -deep step (a deep step is text on the page, so the page colour reads on it); body text on a
@@ -11,6 +11,7 @@
  */
 import Segmented from '@oneonefour/rkui/components/segmented/Segmented.vue'
 import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.vue'
+import { onHue, type Hue } from '@oneonefour/rkui/shared/hues.ts'
 import Swatch from './Swatch.astro'
 
 /** A colour block: the token it shows and the token its text is set in, both without `--rkui-`. */
@@ -19,20 +20,24 @@ interface Swatch {
   text: string
 }
 
-const HUES = [
-  { name: 'navy', label: 'on-navy' },
-  { name: 'teal', label: 'on-fill' },
-  { name: 'coral', label: 'on-coral' },
-  { name: 'yellow', label: 'on-fill' },
-  { name: 'green', label: 'on-fill' },
-  { name: 'sky', label: 'on-fill' },
+const CORE: Hue[] = ['navy', 'teal', 'coral', 'yellow', 'green', 'sky']
+
+/** The auxiliary hues and the jobs each one does. */
+const AUXILIARY: { hue: Hue; job: string }[] = [
+  { hue: 'grape', job: 'Interactive accents, code and maths highlights' },
+  { hue: 'lilac', job: 'Widget frames, equation pills' },
+  { hue: 'tangerine', job: 'Warnings, work in progress, focus' },
+  { hue: 'apricot', job: 'Marked text, callouts, the target flash' },
 ]
 
-const columns: Swatch[][] = HUES.map(({ name, label }) => [
-  { token: name, text: label },
-  { token: `${name}-deep`, text: 'surface' },
-  { token: `${name}-tint`, text: 'fg' },
-])
+/** A hue's fill, -deep and -tint blocks, top to bottom. */
+function column(hue: Hue): Swatch[] {
+  return [
+    { token: hue, text: onHue(hue).replace('--rkui-', '') },
+    { token: `${hue}-deep`, text: 'surface' },
+    { token: `${hue}-tint`, text: 'fg' },
+  ]
+}
 
 const NEUTRALS: Swatch[] = [
   { token: 'surface', text: 'fg' },
@@ -52,9 +57,9 @@ const NEUTRALS: Swatch[] = [
   </Segmented>
 
   <div class="hues">
-    {columns.map((column) => (
+    {CORE.map((hue) => (
       <div class="column">
-        {column.map(({ token, text }) => (
+        {column(hue).map(({ token, text }) => (
           <Swatch token={token} text={text} />
         ))}
       </div>
@@ -65,6 +70,21 @@ const NEUTRALS: Swatch[] = [
     {NEUTRALS.map(({ token, text }) => (
       <Swatch token={token} text={text} />
     ))}
+  </div>
+
+  <div class="auxiliary">
+    <h2>Auxiliary colours</h2>
+    <p>Used for particular jobs only. None of them marks a section of a site.</p>
+    <div class="hues">
+      {AUXILIARY.map(({ hue, job }) => (
+        <div class="column">
+          {column(hue).map(({ token, text }) => (
+            <Swatch token={token} text={text} />
+          ))}
+          <p class="job">{job}</p>
+        </div>
+      ))}
+    </div>
   </div>
 
   <p class="rkui-visually-hidden" aria-live="polite"></p>
@@ -93,6 +113,16 @@ const NEUTRALS: Swatch[] = [
     display: grid;
     grid-template-rows: 10rem 5rem 5rem;
     gap: var(--palette-gap);
+  }
+
+  .auxiliary .column {
+    grid-template-rows: 10rem 5rem 5rem auto;
+  }
+
+  .job {
+    margin: 0;
+    color: var(--rkui-muted);
+    font-size: var(--rkui-step--1);
   }
 
   .neutrals {

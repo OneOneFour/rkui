@@ -1,7 +1,18 @@
 import katex from 'katex'
 
 /** The palette hues with a term class; each has a `\name{…}` macro for colour-coded terms. */
-export const TERM_HUES = ['teal', 'yellow', 'navy', 'green', 'sky', 'coral', 'grape', 'tangerine']
+export const TERM_HUES = [
+  'teal',
+  'yellow',
+  'navy',
+  'green',
+  'sky',
+  'coral',
+  'grape',
+  'tangerine',
+  'lilac',
+  'apricot',
+]
 
 const termMacros = Object.fromEntries(
   TERM_HUES.map((hue) => [`\\${hue}`, `\\htmlClass{rkui-maths-${hue}}{#1}`]),

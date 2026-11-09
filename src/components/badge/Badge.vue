@@ -9,12 +9,11 @@
   <BadgeHost><img src="avatar.png" alt="Ada" /><Badge hue="coral" corner>3</Badge></BadgeHost>
 -->
 <script setup lang="ts">
-/** The hues badge.css has a fill for. */
-type BadgeHue = 'navy' | 'teal' | 'green' | 'coral' | 'grape' | 'tangerine'
+import type { Hue } from '../../shared/hues'
 
 interface Props {
   /** The colour; yellow when left out. */
-  hue?: BadgeHue
+  hue?: Hue
   /** The quiet version, a tint panel with ordinary text; solid when left out. */
   tint?: boolean
   /** Pins the badge to its host's top corner; inline when left out. */

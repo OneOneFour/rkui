@@ -17,16 +17,14 @@
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue'
 import { vLiveChecked } from '../../shared/live-value'
+import type { Hue } from '../../shared/hues'
 import { splitAttrs } from '../../shared/split-attrs'
 
 defineOptions({ inheritAttrs: false })
 
-/** The hues button.css has a fill for; yellow is the default, so it needs no class. */
-type ButtonHue = 'yellow' | 'navy' | 'teal' | 'green' | 'coral' | 'grape' | 'tangerine'
-
 interface Props {
   /** The fill colour, or 'section' for the section's colour; yellow when left out. */
-  hue?: ButtonHue | 'section'
+  hue?: Hue | 'section'
   /** The outline-only secondary style; filled when left out. */
   unfilled?: boolean
   /** The small size; the regular size when left out. */

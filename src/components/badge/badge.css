@@ -117,10 +117,25 @@
 .rkui-badge--grape {
   --rkui-badge-fill: var(--rkui-grape);
   --rkui-badge-label: var(--rkui-on-grape);
-  --rkui-badge-tint: var(--rkui-lilac-tint);
+  --rkui-badge-tint: var(--rkui-grape-tint);
+}
+
+.rkui-badge--sky {
+  --rkui-badge-fill: var(--rkui-sky);
+  --rkui-badge-tint: var(--rkui-sky-tint);
 }
 
 .rkui-badge--tangerine {
   --rkui-badge-fill: var(--rkui-tangerine);
+  --rkui-badge-tint: var(--rkui-tangerine-tint);
+}
+
+.rkui-badge--lilac {
+  --rkui-badge-fill: var(--rkui-lilac);
+  --rkui-badge-tint: var(--rkui-lilac-tint);
+}
+
+.rkui-badge--apricot {
+  --rkui-badge-fill: var(--rkui-apricot);
   --rkui-badge-tint: var(--rkui-apricot-tint);
 }

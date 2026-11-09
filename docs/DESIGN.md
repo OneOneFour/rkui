@@ -63,8 +63,10 @@ All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`,
 
 ### 2.2 Hues
 
-Fills stay vivid in both themes. Each core hue has `-deep` (text and links on the page) and `-tint`
+Fills stay vivid in both themes. Every hue has `-deep` (text and links on the page) and `-tint`
 (panels carrying `--rkui-fg` text); tints flip to dark versions in dark mode so panels don't glare.
+The auxiliary hues come in vivid and pale pairs that share steps: grape and lilac, tangerine and
+apricot.
 
 | Hue | Fill (light / dark) | `-deep` | `-tint` | Label |
 |---|---|---|---|---|
@@ -74,19 +76,20 @@ Fills stay vivid in both themes. Each core hue has `-deep` (text and links on th
 | yellow | `#f4bc38` | `#856000` / `#f7d27a` | `#fbdf94` / `#4a3e18` | `--rkui-on-fill` |
 | green | `#7bba3d` / `#86c44a` | `#3a7016` / `#a3d977` | `#c8e5a8` / `#2a4220` | `--rkui-on-fill` |
 | sky | `#8fd3f7` | `#216b9a` / `#8fd3f7` | `#8fd3f7` / `#1e3a50` | `--rkui-on-fill` |
-| grape | `#7b4fc9` / `#a584e6` | `#7b4fc9` / `#b89cf0` | (`--rkui-lilac-tint`) | `--rkui-on-grape` |
-| lilac | `#d4c4f5` | — | `#d4c4f5` / `#342c55` | `--rkui-on-fill` |
-| tangerine | `#f58a2a` / `#f5923a` | `#a14c0a` / `#f8a65c` | (`--rkui-apricot-tint`) | `--rkui-on-fill` |
-| apricot | `#ffd2a6` | — | `#ffd2a6` / `#4a3324` | `--rkui-on-fill` |
+| grape | `#7b4fc9` / `#a584e6` | `#7b4fc9` / `#b89cf0` | = `--rkui-lilac-tint` | `--rkui-on-grape` |
+| lilac | `#d4c4f5` | = `--rkui-grape-deep` | `#d4c4f5` / `#342c55` | `--rkui-on-fill` |
+| tangerine | `#f58a2a` / `#f5923a` | `#a14c0a` / `#f8a65c` | = `--rkui-apricot-tint` | `--rkui-on-fill` |
+| apricot | `#ffd2a6` | = `--rkui-tangerine-deep` | `#ffd2a6` / `#4a3324` | `--rkui-on-fill` |
 
 - `--rkui-on-fill` = `--rkui-ink`. `--rkui-on-coral` and `--rkui-on-grape` are `#ffffff` in light mode, ink in dark.
 - **`--rkui-coral-solid`** = `--rkui-coral-deep` light, `--rkui-coral` dark: coral for fills with small text.
   Bright `--rkui-coral` under white passes only as large text, so it is for display blocks and bands.
   Coral is the only hue with a `-solid` step.
 - **`--rkui-coral-deep` `#c8322a`** is 4.79:1 as text on cream and 5.32:1 under white.
-- **Auxiliary colours** have set jobs and are **never section colours** or decoration: grape
-  (interactive accents, code and maths highlights), lilac (widget frames, equation pills),
-  tangerine (warnings, work in progress, focus), apricot (`<mark>`, callouts, the `:target` flash).
+- **Auxiliary colours** have set jobs and are **never section colours**: grape (interactive
+  accents, code and maths highlights), lilac (widget frames, equation pills), tangerine (warnings,
+  work in progress, focus), apricot (`<mark>`, callouts, the `:target` flash). Every component that
+  takes a `hue` takes them too.
 
 ### 2.3 Roles and code
 
@@ -95,7 +98,7 @@ Fills stay vivid in both themes. Each core hue has `-deep` (text and links on th
 | `--rkui-selected` / `--rkui-on-selected` | `--rkui-yellow` / `--rkui-on-fill` | checked and selected controls |
 | `--rkui-selected-tint` | `--rkui-yellow-tint` | the selected option's surroundings |
 | `--rkui-section` / `--rkui-on-section` | unset; uses fall back to `--rkui-ink` / `--rkui-on-ink` | the site's section-hue hook |
-| `--rkui-note-<hue>` | tint light, vivid fill dark | sticky notes (yellow, sky, tangerine, green, coral, grape) |
+| `--rkui-note-<hue>` | tint light, vivid fill dark | sticky notes (every hue but navy and teal); sky, lilac and apricot are their fill in both themes |
 | `--rkui-note-tape` | `--rkui-glint` 60% | sticky-note tape |
 | `--rkui-icon-fill-neutral` | `currentColor` 20% | quiet default fill for interface icons |
 | `--rkui-slate` / `--rkui-slate-tab` | `#e7ebf3` / `#dbe0ea`; dark `#2c323d` / `#333946` | code panels, editor-tab strip |
@@ -323,7 +326,7 @@ mode) and takes `--rkui-shadow-inset`, and its label sinks by `--rkui-press-offs
   against the outline (6.41:1 light, 8.69:1 dark); tangerine on cream alone is about 2.2:1.
 - **Marker pen** for things with no outline (text links): tangerine behind ink text, with a
   transparent outline that shows in forced colours.
-- Where tangerine surrounds the element (tangerine buttons, apricot panels, warnings) use
+- Where tangerine surrounds the element (tangerine buttons, apricot panels and notes, warnings) use
   `--rkui-focus: var(--rkui-focus-alt)`; such components set it themselves.
 - Groups show the band on the group, never one option; chips, cards and tiles show it for the input
   inside. An outline-less pill (an equation reference) gets a ring for the band to hug.
@@ -430,7 +433,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 
 | Component | Class | Default and options |
 |---|---|---|
-| Button | `.rkui-button` (`--navy`, `--teal`, `--green`, `--coral`, `--grape`, `--tangerine`, `--section`, `--small`) | filled; yellow by default |
+| Button | `.rkui-button` (`--<hue>` for every hue, `--section`, `--small`) | filled; yellow by default |
 | Unfilled button | `.rkui-button--unfilled` | discouraged (§4.6) |
 | Filling (busy) button | `.rkui-button[aria-busy]` + `.rkui-water` | |
 | Field wrapper | `.rkui-field`, `.rkui-check` | |

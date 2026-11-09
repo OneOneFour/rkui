@@ -15,8 +15,8 @@ import { computed } from 'vue'
 import Callout from '../callout/Callout.vue'
 import Card from '../card/Card.vue'
 
-/** The hues sticky-note.css has a paper colour for. */
-type NoteHue = 'yellow' | 'sky' | 'tangerine' | 'green' | 'coral' | 'grape'
+/** The hues sticky-note.css has a paper colour for: every hue but navy and teal. */
+type NoteHue = 'yellow' | 'sky' | 'tangerine' | 'green' | 'coral' | 'grape' | 'lilac' | 'apricot'
 
 interface Props {
   /** 'card' or 'callout'; 'card' when left out. A card needs a `title`, or the build stops. */

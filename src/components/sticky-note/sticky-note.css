@@ -112,6 +112,16 @@
   --rkui-note-fill: var(--rkui-note-grape);
 }
 
+.rkui-sticky-note--lilac {
+  --rkui-note-fill: var(--rkui-note-lilac);
+}
+
+/* Tangerine focus bands vanish on apricot too. */
+.rkui-sticky-note--apricot {
+  --rkui-note-fill: var(--rkui-note-apricot);
+  --rkui-focus: var(--rkui-focus-alt);
+}
+
 /* The tilt turns the note's shadow with it, so the shadow's offset is turned back by the same
    angle and still falls away from the light. A linked note pops with the usual shadows, which
    turn with it, by under a quarter pixel at a slight tilt. */

@@ -1,6 +1,7 @@
 /**
- * The palette's hues, for every component's `hue` prop. Each has a `--rkui-<hue>` fill token in
- * src/tokens/colors.css. A component that supports fewer hues picks from this list.
+ * The palette's hues, for every component's `hue` prop: the core hues, then the auxiliary ones.
+ * Each has a `--rkui-<hue>` fill token and `-deep` and `-tint` steps in src/tokens/colors.css. A
+ * component that supports fewer hues picks from this list.
  */
 export const HUES = [
   'navy',

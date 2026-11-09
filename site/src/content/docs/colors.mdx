@@ -1,6 +1,6 @@
 ---
 title: Colours
-description: The core hues with their deep and tint steps, and the page colours.
+description: The core and auxiliary hues with their deep and tint steps, and the page colours.
 group: Foundations
 order: 10
 ---
@@ -18,3 +18,7 @@ In code, use the tokens rather than a copied hex: `var(--rkui-teal)` follows the
 palette, and a hex doesn't.
 A fill carries its label token (`--rkui-on-fill`, `--rkui-on-navy`, `--rkui-on-coral`), a `-tint`
 carries `--rkui-fg`, and a `-deep` step is for text and links on the page.
+
+Every component that takes a `hue` takes the auxiliary hues too. They come in pairs, one vivid and
+one pale, that share steps: grape's tint is lilac's, tangerine's is apricot's, and lilac and
+apricot take the deep steps of grape and tangerine.

@@ -58,6 +58,9 @@
   --rkui-sky-deep: light-dark(#216b9a, #8fd3f7);
   --rkui-grape-deep: light-dark(#7b4fc9, #b89cf0);
   --rkui-tangerine-deep: light-dark(#a14c0a, #f8a65c);
+  /* Lilac and apricot share the deep steps of grape and tangerine, their vivid partners */
+  --rkui-lilac-deep: var(--rkui-grape-deep);
+  --rkui-apricot-deep: var(--rkui-tangerine-deep);
 
   /* Tints: panels that carry --rkui-fg text */
   --rkui-navy-tint: light-dark(#c7d5e6, #25364f);
@@ -68,6 +71,9 @@
   --rkui-sky-tint: light-dark(#8fd3f7, #1e3a50);
   --rkui-lilac-tint: light-dark(#d4c4f5, #342c55);
   --rkui-apricot-tint: light-dark(#ffd2a6, #4a3324);
+  /* Grape and tangerine share the tints of lilac and apricot, their pale partners */
+  --rkui-grape-tint: var(--rkui-lilac-tint);
+  --rkui-tangerine-tint: var(--rkui-apricot-tint);
 
   /* Sticky notes: a tint in light mode and the vivid fill in dark, both carrying --rkui-on-fill
      text. The tape that holds one is a see-through wash of the glint. */
@@ -77,6 +83,8 @@
   --rkui-note-green: light-dark(var(--rkui-green-tint), var(--rkui-green));
   --rkui-note-coral: light-dark(var(--rkui-coral-tint), var(--rkui-coral));
   --rkui-note-grape: light-dark(var(--rkui-lilac-tint), var(--rkui-grape));
+  --rkui-note-lilac: var(--rkui-lilac);
+  --rkui-note-apricot: var(--rkui-apricot);
   --rkui-note-tape: color-mix(in srgb, var(--rkui-glint) 60%, transparent);
 
   /* Shading: hatching stripes, the outline colour at a quarter strength over whatever they cross.

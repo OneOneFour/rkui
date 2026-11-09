@@ -194,10 +194,18 @@
 }
 
 .rkui-maths-grape {
-  --rkui-term-tint: var(--rkui-lilac-tint);
+  --rkui-term-tint: var(--rkui-grape-tint);
 }
 
 .rkui-maths-tangerine {
+  --rkui-term-tint: var(--rkui-tangerine-tint);
+}
+
+.rkui-maths-lilac {
+  --rkui-term-tint: var(--rkui-lilac-tint);
+}
+
+.rkui-maths-apricot {
   --rkui-term-tint: var(--rkui-apricot-tint);
 }
 

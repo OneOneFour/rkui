@@ -22,6 +22,12 @@ import StickyNote from '@oneonefour/rkui/components/sticky-note/StickyNote.vue'
     <StickyNote title="Grape" hue="grape">
       <p>Pack my box with five dozen liquor jugs.</p>
     </StickyNote>
+    <StickyNote title="Lilac" hue="lilac">
+      <p>Pack my box with five dozen liquor jugs.</p>
+    </StickyNote>
+    <StickyNote title="Apricot" hue="apricot">
+      <p>Pack my box with five dozen liquor jugs.</p>
+    </StickyNote>
   </div>
 </template>
 

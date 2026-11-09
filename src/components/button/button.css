@@ -56,9 +56,21 @@
   --rkui-button-label: var(--rkui-on-grape);
 }
 
+.rkui-button--sky {
+  --rkui-button-fill: var(--rkui-sky);
+}
+
 .rkui-button--tangerine {
   --rkui-button-fill: var(--rkui-tangerine);
   --rkui-focus: var(--rkui-focus-alt);
+}
+
+.rkui-button--lilac {
+  --rkui-button-fill: var(--rkui-lilac);
+}
+
+.rkui-button--apricot {
+  --rkui-button-fill: var(--rkui-apricot);
 }
 
 .rkui-button--section {
