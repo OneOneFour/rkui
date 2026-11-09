@@ -1,5 +1,6 @@
 /* Checkboxes (.rkui-checkbox) and radio buttons (.rkui-radio) on native inputs. Checked, they fill
-   with --rkui-selected and show a tick or dot in --rkui-on-selected. Wrap each in a
+   with --rkui-selected and show a tick or dot in --rkui-on-selected; in error they fill with
+   --rkui-coral-solid and the mark is --rkui-on-coral. Wrap each in a
    label.rkui-check. */
 
 .rkui-checkbox,
@@ -52,6 +53,15 @@
 .rkui-checkbox[aria-invalid='true'],
 .rkui-radio[aria-invalid='true'] {
   border-color: var(--rkui-coral-deep);
+  background: var(--rkui-coral-solid);
+}
+
+.rkui-checkbox[aria-invalid='true']:checked::before {
+  border-color: var(--rkui-on-coral);
+}
+
+.rkui-radio[aria-invalid='true']:checked::before {
+  background: var(--rkui-on-coral);
 }
 
 /* Forced colours drop the checked fill, so the checked box and its mark use system colours. */
