@@ -7,7 +7,8 @@
 
    Variants (open, DECISIONS "Logo"): with no modifier, the pop only; .rkui-logo--motifs plays each
    tile's motif on hover and focus: the corner lifts, the wave rolls, the stripes march and the
-   dot hops. Nothing moves under reduced motion. */
+   dot hops. Without an href the logo is a span: it doesn't pop and plays the motifs all the time.
+   Nothing moves under reduced motion. */
 
 .rkui-logo {
   --rkui-logo-size: 6rem;
@@ -120,19 +121,23 @@
    bar's, the corner lifts and the dot hops. Hover only counts where there is a pointer, so a tap
    doesn't start them. */
 @media (prefers-reduced-motion: no-preference) {
-  .rkui-logo--motifs:focus-visible .rkui-logo-wave {
+  .rkui-logo--motifs:focus-visible .rkui-logo-wave,
+  span.rkui-logo .rkui-logo-wave {
     animation: rkui-logo-roll var(--rkui-loop-long) linear infinite;
   }
 
-  .rkui-logo--motifs:focus-visible .rkui-logo-stripes {
+  .rkui-logo--motifs:focus-visible .rkui-logo-stripes,
+  span.rkui-logo .rkui-logo-stripes {
     animation: rkui-logo-march var(--rkui-loop-short) linear infinite;
   }
 
-  .rkui-logo--motifs:focus-visible .rkui-logo-flap {
+  .rkui-logo--motifs:focus-visible .rkui-logo-flap,
+  span.rkui-logo .rkui-logo-flap {
     animation: rkui-logo-lift var(--rkui-loop-medium) ease-in-out infinite;
   }
 
-  .rkui-logo--motifs:focus-visible .rkui-logo-dot {
+  .rkui-logo--motifs:focus-visible .rkui-logo-dot,
+  span.rkui-logo .rkui-logo-dot {
     animation: rkui-logo-hop var(--rkui-loop-medium) infinite;
   }
 }

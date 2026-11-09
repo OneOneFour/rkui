@@ -34,7 +34,7 @@
     .rkui-switch,
     .rkui-tile,
     .rkui-color-input,
-    .rkui-logo
+    .rkui-logo:where(a)
   ):hover,
   .rkui-segmented--deck label:hover,
   .rkui-sidebar--deck .rkui-sidebar-link:where(:not([aria-current='page'])):hover,
@@ -54,7 +54,7 @@
   .rkui-switch,
   .rkui-tile,
   .rkui-color-input,
-  .rkui-logo
+  .rkui-logo:where(a)
 ):active,
 .rkui-segmented--deck label:active,
 .rkui-sidebar--deck .rkui-sidebar-link:where(:not([aria-current='page'])):active,
@@ -166,7 +166,7 @@
   .rkui-switch,
   .rkui-input,
   .rkui-select,
-  .rkui-logo
+  .rkui-logo:where(a)
 ):focus-visible,
 /* :where() keeps each selector's specificity what it was, so the cascade doesn't change. */
 .rkui-radio:where([data-rkui-focus-visible]):focus,

@@ -9,6 +9,8 @@ component: Logo
 import Demo from '../../components/Demo.astro'
 import Lift from '../../examples/logo/Lift.vue'
 import liftCode from '../../examples/logo/Lift.vue?raw'
+import Static from '../../examples/logo/Static.vue'
+import staticCode from '../../examples/logo/Static.vue?raw'
 import Motifs from '../../examples/logo/Motifs.vue'
 import motifsCode from '../../examples/logo/Motifs.vue?raw'
 
@@ -26,4 +28,13 @@ the wave rolls, the stripes march and the dot of the i hops.
 
 <Demo vue={motifsCode} label="Logo with motifs">
   <Motifs />
+</Demo>
+
+## Without a link
+
+Leave out `href` and the logo is a plain `<span>`: it doesn't pop, and it plays its motifs all the
+time (not under reduced motion).
+
+<Demo vue={staticCode} label="Logo without a link">
+  <Static />
 </Demo>

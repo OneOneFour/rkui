@@ -1,6 +1,7 @@
 <!--
   The rkui logo as a home link: four outlined tiles, r k u i, raised on the hard shadow, that pop
-  like a button. `class`, `style` and other attributes go on the `<a>`.
+  like a button. Without `href` it is a plain `<span>` that doesn't pop and plays its motifs all
+  the time. `class`, `style` and other attributes go on the `<a>` or `<span>`.
 
   @example
   <Logo href="/" label="rkui home" variant="motifs" size="3rem" />
@@ -10,8 +11,8 @@ import { computed } from 'vue'
 import { useComponentId } from '../../shared/component-id'
 
 interface Props {
-  /** Where the link goes: the site's home page. */
-  href: string
+  /** Where the link goes: the site's home page. A logo with no link is only shown, and animated. */
+  href?: string
   /** The link's accessible name; "Home" when left out. */
   label?: string
   /**
@@ -31,7 +32,8 @@ const vars = computed(() => (size ? { '--rkui-logo-size': size } : {}))
 </script>
 
 <template>
-  <a
+  <component
+    :is="href ? 'a' : 'span'"
     :href="href"
     :class="['rkui-logo', { 'rkui-logo--motifs': variant === 'motifs' }]"
     :style="vars"
@@ -115,5 +117,5 @@ const vars = computed(() => (size ? { '--rkui-logo-size': size } : {}))
       </g>
     </svg>
     <span class="rkui-visually-hidden">{{ label }}</span>
-  </a>
+  </component>
 </template>
