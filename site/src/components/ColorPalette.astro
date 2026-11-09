@@ -49,13 +49,32 @@ const NEUTRALS: Swatch[] = [
   { token: 'line', text: 'on-ink' },
 ]
 
-/** The panel and shading colours, each with what uses it. */
-const PANELS: { token: string; job: string }[] = [
-  { token: 'panel', job: 'Code blocks, quotes, shaded cards, inline code' },
-  { token: 'panel-tab', job: "The code block's editor-tab strip, a quote in a quote" },
-  { token: 'folder-back', job: "Unselected folder tabs, a drawer's tray, an inset card" },
-  { token: 'recess', job: "The shadow inside a drawer's tray and an inset card (translucent)" },
-  { token: 'stripe', job: "The code panel's inset, hatching (translucent)" },
+/** The panel and shading colours, each with what uses it, and the inset floor it is mixed from. */
+const PANELS: { token: string; text: string; job: string; floor?: string }[] = [
+  { token: 'panel', text: 'fg', job: 'Code blocks, quotes, shaded cards, inline code' },
+  { token: 'panel-tab', text: 'fg', job: "The code block's editor-tab strip, a quote in a quote" },
+  {
+    token: 'folder-back',
+    text: 'fg',
+    job: "Unselected folder tabs, a drawer's tray, an inset card",
+  },
+  {
+    token: 'recess-shade',
+    text: 'on-ink',
+    job: "The inset's grey step on the panel: code blocks",
+    floor: 'panel',
+  },
+  {
+    token: 'recess-shade',
+    text: 'on-ink',
+    job: "The inset's grey step on the folder back: a drawer's tray, an inset card",
+    floor: 'folder-back',
+  },
+  {
+    token: 'stripe',
+    text: 'fg',
+    job: "Progress stripes, hatching, a drawer's handle, the table's rules (translucent)",
+  },
 ]
 
 /** The syntax colours, with the kind of code each one sets. */
@@ -109,13 +128,14 @@ const CODE: { token: string; job: string }[] = [
   <div class="auxiliary">
     <h2>Panels and shading</h2>
     <p class="note">
-      The panel and its tab follow the page palette. Recess and stripe are translucent recipes, the
-      outline colour over whatever they cross. They are shown over the page colour.
+      The panel and its tab follow the page palette. The inset's grey step is its floor 60% of the
+      way to the outline colour. Stripe is translucent, the outline colour over whatever it crosses,
+      shown over the page colour.
     </p>
     <div class="hues">
-      {PANELS.map(({ token, job }) => (
-        <div class="column panel">
-          <Swatch token={token} text="fg" />
+      {PANELS.map(({ token, text, job, floor }) => (
+        <div class="column panel" style={floor && `--rkui-recess-floor: var(--rkui-${floor})`}>
+          <Swatch token={token} text={text} />
           <p class="job">{job}</p>
         </div>
       ))}

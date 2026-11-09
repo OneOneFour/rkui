@@ -78,10 +78,12 @@
   background: var(--rkui-panel);
 }
 
-/* Sunk like a drawer's tray, a resting shadow deep. The inner shadow is drawn over the card, so
-   an image doesn't cover it. */
+/* Sunk like a drawer's tray, with the inset (shadows.css). The inner shadow is drawn over the
+   card, so an image doesn't cover it. */
 .rkui-card--inset {
-  background: var(--rkui-folder-back);
+  --rkui-recess-floor: var(--rkui-folder-back);
+
+  background: var(--rkui-recess-floor);
 }
 
 .rkui-card--inset::after {
@@ -89,7 +91,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0 var(--rkui-recess);
+  box-shadow: var(--rkui-shadow-recess);
   pointer-events: none;
 }
 

@@ -12,6 +12,15 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-08
 
+**Insets: two steps, ink then a grey shade, with the outline rim in dark** (Rob). Code blocks,
+drawer trays and inset cards share one inset, `--rkui-shadow-recess`, chosen from a board of
+prototypes. Inside the sides towards the light it draws two hard 3px steps: the shadow colour
+(ink, or the lighter grey with the colour shadow in dark mode), then the floor 60% of the way to
+the outline colour (`--rkui-recess-shade`). The raised shadow's rim sits just past them, so in
+dark mode the outline shadow gives a cream rim and block gives none. All three are 6px deep (9px
+with `data-depth="deep"`); the drawer's `--rkui-drawer-depth` is gone. It replaces the code
+panel's `--rkui-stripe` inset and the 45% `--rkui-recess` shadow in drawers and inset cards.
+
 **One panel, the palette's** (Rob). Panels follow the page palette instead of offering a choice:
 `--rkui-panel` and `--rkui-panel-tab` replace `--rkui-slate` and `--rkui-slate-tab`, and each
 palette sets its own pair. The slate palette keeps the cool slate panel, greige takes the greige

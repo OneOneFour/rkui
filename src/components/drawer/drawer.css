@@ -44,12 +44,9 @@
    holding one doesn't clip it. In a right-to-left page left and right swap.
 
    The default is a drawer. Its tray, in the colour behind folder tabs, is sunk into the parent
-   by an inner shadow in --rkui-recess, and its front (the summary) sits beyond it. It slides out
-   from under the parent; closed, it slams back in, overshoots a little and settles, and the
-   parent gives a small jolt as it lands. --rkui-drawer-depth sets how deep the tray looks, on the
-   drawer or any ancestor: the inner shadow's offset, as a multiple of the resting shadow offset;
-   2 when left out, and 1 gives the code panel's inset. data-depth="deep" deepens it as it does
-   every shadow.
+   by the inset (shadows.css), and its front (the summary) sits beyond it. It slides out from
+   under the parent; closed, it slams back in, overshoots a little and settles, and the parent
+   gives a small jolt as it lands.
    .rkui-drawer--blind is a roller blind. A roller lies along the parent's edge; the screen
    unrolls from it under its weighted hem (the summary), bounces as it reaches its end, and
    snaps back into the roller. The roller's stripes move as it turns. Its pull is a yellow ring
@@ -100,7 +97,7 @@
 }
 
 .rkui-drawer {
-  --rkui-drawer-tray: var(--rkui-folder-back);
+  --rkui-recess-floor: var(--rkui-folder-back);
   --rkui-drawer-overshoot: calc(var(--rkui-shadow-depth) * 3px);
   /* The caret's turn while shut, pointing the way the drawer pulls out. */
   --rkui-drawer-caret-turn: 0turn;
@@ -169,7 +166,7 @@
   rotate: calc(var(--rkui-drawer-caret-turn) + 0.5turn);
 }
 
-/* The tray, sunk into the parent by an inner shadow. Open, its one row grows from
+/* The tray, sunk into the parent by the inset. Open, its one row grows from
    nothing to its contents' height: an fr track animates where height: auto can't. The contents
    keep to the far edge, by the handle, so they slide out from under the parent with it. A remote
    drawer's tray is hidden once it has shut, as a closed <details> hides its contents. */
@@ -180,9 +177,8 @@
   grid-area: tray;
   align-content: end;
   overflow: clip;
-  background: var(--rkui-drawer-tray);
-  box-shadow: inset calc(var(--rkui-drawer-depth, 2) * var(--rkui-shadow-offset-x))
-    calc(var(--rkui-drawer-depth, 2) * var(--rkui-shadow-offset-y)) 0 var(--rkui-recess);
+  background: var(--rkui-recess-floor);
+  box-shadow: var(--rkui-shadow-recess);
   /* In faster, speeding up; content-visibility and visibility wait out the move, so the contents
      stay drawn. */
   transition:

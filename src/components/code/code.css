@@ -37,7 +37,8 @@
    tokens. */
 
 .rkui-code {
-  --rkui-code-inset: var(--rkui-shadow-code-inset);
+  --rkui-recess-floor: var(--rkui-panel);
+  --rkui-code-inset: var(--rkui-shadow-recess);
   /* Where the caption and the code start: past the scroll region's dot gutter where that is
      wider (the pill look, overflow.css) */
   --rkui-code-pad: max(var(--rkui-space-4), var(--rkui-dots-gutter));
@@ -46,7 +47,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
   margin: var(--rkui-space-5) 0;
   border-radius: var(--rkui-radius);
-  background: var(--rkui-panel);
+  background: var(--rkui-recess-floor);
   box-shadow: var(--rkui-code-inset);
   color: var(--rkui-fg);
 

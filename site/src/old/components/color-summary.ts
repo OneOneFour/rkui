@@ -147,11 +147,18 @@ export const SUMMARY: SummaryGroup[] = [
   {
     title: 'Shading',
     caption:
-      "Hard shadows: the outline shadow's colour and rim, and the colour shadow's shadow for things without a colour of their own. Hatching stripes and tape are translucent.",
+      "Hard shadows: the outline shadow's colour and rim, and the colour shadow's shadow for things without a colour of their own. The inset's grey step, on the panel and on the folder back. Hatching stripes and tape are translucent.",
     rows: [
       { color: color('--rkui-shadow-color'), shades: [] },
       { color: color('--rkui-shadow-edge'), shades: [] },
       onPage('--rkui-shadow-lit'),
+      ...['--rkui-panel', '--rkui-folder-back'].map((floor) => ({
+        color: color('--rkui-recess-shade', {
+          label: `--rkui-recess-shade on ${floor}`,
+          inputs: { '--rkui-recess-floor': floor },
+        }),
+        shades: [],
+      })),
       { color: color('--rkui-stripe'), shades: [] },
       { color: color('--rkui-note-tape'), shades: [] },
     ],

@@ -65,8 +65,6 @@
       var(--rkui-shadow-edge);
   --rkui-shadow-inset: inset calc(var(--rkui-shadow-dx) * var(--rkui-shadow-offset-pressed))
     calc(var(--rkui-shadow-dy) * var(--rkui-shadow-offset-pressed)) 0 var(--rkui-line);
-  --rkui-shadow-code-inset: inset var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y) 0
-    var(--rkui-stripe);
 }
 
 /* Shadow: data-shadow on <html> or any container sets how hard shadows look in dark mode, and
@@ -96,6 +94,26 @@
 /* Declared on every element, so the rim follows the nearest data-shadow. */
 * {
   --rkui-shadow-edge: light-dark(transparent, var(--rkui-shadow-rim, var(--rkui-fg)));
+}
+
+/* The inset: a code panel, a drawer's tray or an inset card, sunk into the page. Two hard steps
+   inside the sides towards the light, 3px each (4.5px when deep): the shadow colour, then
+   --rkui-recess-shade, and the raised shadow's rim just past them. So it follows data-shadow as
+   raised shadows do: a cream rim in dark mode with "outline", none with "block", and with "color"
+   the first step is --rkui-shadow-lit. The component sets --rkui-recess-floor to its fill; the
+   shade is that floor 60% of the way to the outline colour. Declared on every element, so each
+   recess mixes its own. */
+* {
+  --rkui-recess-step: calc(var(--rkui-shadow-depth) * 3px);
+  --rkui-recess-x: calc(var(--rkui-shadow-dx) * var(--rkui-recess-step));
+  --rkui-recess-y: calc(var(--rkui-shadow-dy) * var(--rkui-recess-step));
+  --rkui-recess-shade: color-mix(in srgb, var(--rkui-recess-floor), var(--rkui-line) 60%);
+  --rkui-shadow-recess:
+    inset var(--rkui-recess-x) var(--rkui-recess-y) 0 var(--rkui-shadow-color),
+    inset calc(2 * var(--rkui-recess-x)) calc(2 * var(--rkui-recess-y)) 0 var(--rkui-recess-shade),
+    inset calc(2 * var(--rkui-recess-x) + var(--rkui-shadow-dx) * var(--rkui-outline-width))
+      calc(2 * var(--rkui-recess-y) + var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0
+      var(--rkui-shadow-edge);
 }
 
 /* Nothing moves under reduced motion; shadows still change. */

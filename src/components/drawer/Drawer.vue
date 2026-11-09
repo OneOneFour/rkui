@@ -11,10 +11,9 @@
   before the label (`slot="handle"` in Astro, `<template #handle>` in Vue). A drawer's pull shows
   its label; a blind's is a ring holding the caret, with the label there for screen readers,
   unless `showLabel` grows it into a pill with the label beside the caret. `class`, `style` and
-  other attributes go on the `<details>`, or the `<div>` with `remote`. Set `--rkui-drawer-depth`
-  on it or any ancestor for a deeper or shallower tray (drawer.css); 2 when left out. A card or
-  cabinet jolts as a drawer slams shut in it; another parent does with the class
-  `rkui-drawer-host`. A closed drawer's contents don't print.
+  other attributes go on the `<details>`, or the `<div>` with `remote`. A card or cabinet jolts
+  as a drawer slams shut in it; another parent does with the class `rkui-drawer-host`. A closed
+  drawer's contents don't print.
 
   With `remote`, a button elsewhere on the page opens and shuts it, with no JavaScript: give the
   drawer an `id` and the button `popovertarget` set to it. The drawer is then a `<div>` holding an

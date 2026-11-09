@@ -132,9 +132,11 @@ file extension as grey text. Code sits on the page palette's panel.
 
 Repeated mixes are named, so the docs page can show them:
 - `--rkui-stripe`: `--rkui-line` at 25% over whatever it crosses. Progress stripes, illustration hatching,
-  the code panel's sunken edge.
-- `--rkui-recess`: `--rkui-line` at 45% over whatever it crosses. The shadow inside a drawer's tray
-  and an inset card, a deeper recess than the code panel's.
+  the line above a drawer's handle, the table's rules in light mode.
+- `--rkui-recess-shade`: `color-mix(in srgb, var(--rkui-recess-floor), var(--rkui-line) 60%)`, opaque;
+  the inset's grey step (§2.7). The component sets `--rkui-recess-floor` to its fill: `--rkui-panel`
+  for a code block, `--rkui-folder-back` for a drawer's tray and an inset card. Declared on `*`, so
+  each recess mixes its own.
 - `--rkui-shade`: `color-mix(in oklab, var(--rkui-shade-of) 75%, var(--rkui-line))`; set `--rkui-shade-of` to a fill.
   The sticky-note fold and every colour-mode extrusion. Declared on `*`, so each element mixes its
   own.
@@ -195,6 +197,7 @@ and depth, light, shadow and highlight couldn't change inside a container.
 | `--rkui-press-offset` (move on press) | 2px | 3px |
 | `--rkui-lift-offset` (rise on hover) | 1px | 1.5px |
 | `--rkui-depth-gap-scale` (gaps between raised neighbours) | 1 | 1.25 |
+| `--rkui-recess-step` (each of the inset's two steps) | 3px | 4.5px |
 
 - **The recipe:** two layers, the shadow in `--rkui-shadow-color` at the offset, and the same widened by
   `--rkui-outline-width` in `--rkui-shadow-edge`. `--rkui-shadow`, `--rkui-shadow-hover`, `--rkui-shadow-pressed` all follow
@@ -202,7 +205,12 @@ and depth, light, shadow and highlight couldn't change inside a container.
 - **Press equals rest:** press move + pressed shadow = resting shadow (2 + 2 = 4), so the outer edge
   stays put.
 - `--rkui-shadow-inset`: pressed offset in `--rkui-line`, near-black in both themes.
-- `--rkui-shadow-code-inset`: resting offset in `--rkui-stripe`, zero blur like every other shadow.
+- `--rkui-shadow-recess`: the inset, one for code blocks, drawer trays and inset cards. Two hard
+  steps inside the sides towards the light, `--rkui-recess-step` each (3px, 4.5px deep): first
+  `--rkui-shadow-color`, then `--rkui-recess-shade`, with `--rkui-shadow-edge` one outline width
+  past them. It follows the light, the depth and `data-shadow` as raised shadows do: in dark mode a
+  cream rim with `outline`, none with `block`, and with `color` the first step is
+  `--rkui-shadow-lit`. In light mode it is ink, then grey. The code block's editor look is flat.
 
 ### 2.8 Modes
 
@@ -303,8 +311,10 @@ is an optional peer dependency, installed by the sites that use them.
 - A static card never lifts, and needs an edge so it doesn't vanish on the raised surface: by
   default the folder sheet's `--rkui-line-unfilled` outline. Three other edges are options: that
   outline and the hard shadow (`raised`), a `--rkui-panel` fill like the quote and the code panel
-  (`shaded`), or pushed in like a drawer's tray (`inset`: `--rkui-folder-back` with a
-  `--rkui-recess` inner shadow, a resting offset deep).
+  (`shaded`), or pushed in like a drawer's tray (`inset`: `--rkui-folder-back` with
+  `--rkui-shadow-recess`).
+- Insets press a panel into the page with the same two steps, 6px in all (§2.7): code blocks,
+  drawer trays and inset cards. The steps are hard, like the raised shadow, never a blur.
 
 ### 4.2 Dark-mode shadows and highlight
 
