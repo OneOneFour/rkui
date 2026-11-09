@@ -36,7 +36,7 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
     {EASINGS.map((item) => (
       <Specimen label={item.label} wide>
         <div class="track">
-          <span class="block hop" style={`--rkui-hop-ease: ${item.easing}`} />
+          <span class="block hop" style={`--hop-ease: ${item.easing}`} />
         </div>
       </Specimen>
     ))}
@@ -49,7 +49,7 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
     >
       <div class="stagger">
         {STAGGERED.map((fill, i) => (
-          <span class="block enter" style={`--rkui-i: ${i}; --rkui-block-fill: var(${fill})`} />
+          <span class="block enter" style={`--i: ${i}; --block-fill: var(${fill})`} />
         ))}
       </div>
     </Specimen>
@@ -97,8 +97,8 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
   /* The colour shadow casts each block's and ball's shadow in its own fill, darkened
      (shadow-color.css). */
   .block {
-    --rkui-block-fill: var(--rkui-yellow);
-    --rkui-shade-of: var(--rkui-block-fill);
+    --block-fill: var(--rkui-yellow);
+    --rkui-shade-of: var(--block-fill);
     --rkui-extrusion: var(--rkui-shade);
 
     display: block;
@@ -107,14 +107,14 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
     block-size: 1.5rem;
     border: var(--rkui-outline-width) solid var(--rkui-line);
     border-radius: calc(var(--rkui-radius) / 2);
-    background: var(--rkui-block-fill);
+    background: var(--block-fill);
     box-shadow: var(--rkui-shadow);
   }
 
   /* Each move takes 15% of the loop. The easing applies to every step of the keyframes, but on the
      holds it has nothing to ease. */
   .hop {
-    animation: motion-hop var(--rkui-loop-medium) var(--rkui-hop-ease) infinite;
+    animation: motion-hop var(--rkui-loop-medium) var(--hop-ease) infinite;
   }
 
   @keyframes motion-hop {
@@ -142,7 +142,7 @@ const STAGGERED = ['--rkui-teal', '--rkui-yellow', '--rkui-navy', '--rkui-green'
   .enter {
     opacity: 0;
     animation: motion-enter var(--rkui-loop-panel) var(--rkui-ease-snap)
-      calc(var(--rkui-i) * var(--rkui-stagger)) infinite backwards;
+      calc(var(--i) * var(--rkui-stagger)) infinite backwards;
   }
 
   /* Comes in over 6% of the loop, holds, then fades out. */

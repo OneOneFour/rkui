@@ -5,11 +5,11 @@ import Motion from '@oneonefour/rkui/components/motion/Motion.vue'
 <template>
   <Motion>
     <div class="row">
-      <span class="block" style="--rkui-i: 0; --rkui-block-fill: var(--rkui-teal)"></span>
-      <span class="block" style="--rkui-i: 1; --rkui-block-fill: var(--rkui-yellow)"></span>
-      <span class="block" style="--rkui-i: 2; --rkui-block-fill: var(--rkui-navy)"></span>
-      <span class="block" style="--rkui-i: 3; --rkui-block-fill: var(--rkui-green)"></span>
-      <span class="block" style="--rkui-i: 4; --rkui-block-fill: var(--rkui-coral)"></span>
+      <span class="block" style="--i: 0; --block-fill: var(--rkui-teal)"></span>
+      <span class="block" style="--i: 1; --block-fill: var(--rkui-yellow)"></span>
+      <span class="block" style="--i: 2; --block-fill: var(--rkui-navy)"></span>
+      <span class="block" style="--i: 3; --block-fill: var(--rkui-green)"></span>
+      <span class="block" style="--i: 4; --block-fill: var(--rkui-coral)"></span>
     </div>
   </Motion>
 </template>
@@ -25,7 +25,7 @@ import Motion from '@oneonefour/rkui/components/motion/Motion.vue'
 /* Each block enters in reading order, holds, then leaves in the same order, over one loop. The
    colour shadow casts each block's shadow in its own fill, darkened (shadow-color.css). */
 .block {
-  --rkui-shade-of: var(--rkui-block-fill);
+  --rkui-shade-of: var(--block-fill);
   --rkui-extrusion: var(--rkui-shade);
 
   box-sizing: border-box;
@@ -33,11 +33,11 @@ import Motion from '@oneonefour/rkui/components/motion/Motion.vue'
   block-size: 1.5rem;
   border: var(--rkui-outline-width) solid var(--rkui-line);
   border-radius: calc(var(--rkui-radius) / 2);
-  background: var(--rkui-block-fill);
+  background: var(--block-fill);
   box-shadow: var(--rkui-shadow);
   opacity: 0;
-  animation: enter var(--rkui-loop-panel) var(--rkui-ease-snap)
-    calc(var(--rkui-i) * var(--rkui-stagger)) infinite backwards;
+  animation: enter var(--rkui-loop-panel) var(--rkui-ease-snap) calc(var(--i) * var(--rkui-stagger))
+    infinite backwards;
 }
 
 @keyframes enter {
