@@ -177,3 +177,26 @@ article > .rkui-logo {
 .docs-reference .docs-reference-text:last-child {
   min-inline-size: 16rem;
 }
+
+/* A worked example's files in folder tabs (developing.mdx): the code sits in the sheet's own
+   padding, as in a Demo, and a preview gets the same room as a Demo's. */
+.docs-files {
+  margin-block: var(--rkui-space-5);
+}
+
+.docs-files .rkui-code {
+  margin-block: 0;
+}
+
+.docs-preview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--rkui-space-4);
+  padding: var(--rkui-space-4) var(--rkui-space-2);
+}
+
+/* For something as wide as the column, such as a Definition, which a flex row would squeeze. */
+.docs-preview--stack {
+  display: block;
+}

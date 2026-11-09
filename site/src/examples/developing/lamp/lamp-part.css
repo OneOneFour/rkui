@@ -1,0 +1,24 @@
+/* Lamp part: one outlined shape of a drawing, as large as its box on the grid. A grid unit is
+   --rkui-lamp-unit, which the Lamp sets from its width; a part on its own takes 0.6rem.
+
+   <svg class="rkui-lamp-part" viewBox="7.2 21 1.6 8.5" aria-hidden="true"
+     style="--rkui-part-x: 7.2; --rkui-part-y: 21; --rkui-part-width: 1.6;
+     --rkui-part-height: 8.5; --rkui-part-fill: var(--rkui-sky)">
+     <path d="M7.2 21h1.6v8.5h-1.6z" />
+   </svg> */
+
+.rkui-lamp-part {
+  inline-size: calc(var(--rkui-part-width) * var(--rkui-lamp-unit, 0.6rem));
+  block-size: calc(var(--rkui-part-height) * var(--rkui-lamp-unit, 0.6rem));
+  overflow: visible;
+}
+
+/* The outline is a stroke twice its width under the fill, so only its outer half shows. */
+.rkui-lamp-part path {
+  fill: var(--rkui-part-fill);
+  stroke: var(--rkui-line);
+  stroke-width: calc(2 * var(--rkui-outline-width));
+  stroke-linejoin: round;
+  paint-order: stroke;
+  vector-effect: non-scaling-stroke;
+}
