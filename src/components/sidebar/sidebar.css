@@ -55,7 +55,8 @@
   --rkui-sidebar-pad: calc(var(--rkui-shadow-offset) + var(--rkui-focus-width));
   /* An edge that is there but not shown, so a look can show it without the text moving */
   --rkui-sidebar-edge-off: transparent;
-  --rkui-sidebar-dot-color: var(--rkui-line-unfilled);
+  /* The plain hints are the text colour, cream in dark mode whatever the highlight */
+  --rkui-sidebar-dot-color: var(--rkui-fg);
 
   position: relative;
   display: flex;

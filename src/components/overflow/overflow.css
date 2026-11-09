@@ -122,9 +122,9 @@
   initial-value: 0px;
 }
 
-/* The dots. The gutters are borders because content is clipped inside the border, so it never
-   runs under the dots. Each dot is a background layer; a scroll container's background stays put
-   while its content scrolls. */
+/* The dots, in the text colour (cream in dark mode, whatever the highlight). The gutters are
+   borders because content is clipped inside the border, so it never runs under the dots. Each dot
+   is a background layer; a scroll container's background stays put while its content scrolls. */
 .rkui-scroll:not(.rkui-scroll--bar) {
   --rkui-scroll-gutter: var(--rkui-dots-gutter);
   --rkui-dot-size: 0.3rem;
@@ -132,22 +132,12 @@
   --rkui-dot-inset: calc((var(--rkui-scroll-gutter) - var(--rkui-dot-size)) / 2);
   --rkui-dot-start: radial-gradient(
     closest-side,
-    color-mix(
-        in srgb,
-        var(--rkui-line-unfilled) calc(var(--rkui-scroll-more-start) * 100%),
-        transparent
-      )
-      90%,
+    color-mix(in srgb, var(--rkui-fg) calc(var(--rkui-scroll-more-start) * 100%), transparent) 90%,
     transparent
   );
   --rkui-dot-end: radial-gradient(
     closest-side,
-    color-mix(
-        in srgb,
-        var(--rkui-line-unfilled) calc(var(--rkui-scroll-more-end) * 100%),
-        transparent
-      )
-      90%,
+    color-mix(in srgb, var(--rkui-fg) calc(var(--rkui-scroll-more-end) * 100%), transparent) 90%,
     transparent
   );
 
