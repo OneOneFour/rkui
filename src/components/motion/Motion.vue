@@ -1,7 +1,7 @@
 <!--
-  Motion: a Pause button before the slot's animated content. While Pause is on, every CSS
-  animation inside this Motion is paused; animations elsewhere on the page keep running. Pause is
-  a toggle Button, so it works with no JavaScript. `class`, `style` and other attributes go on the
+  A Pause button above a group of animations (the slot). While Pause is pressed, every CSS
+  animation in the group pauses; the rest of the page keeps moving. It works without JavaScript,
+  so an Astro page gives it no `client:` directive. `class`, `style` and other attributes go on the
   div.
 
   @example

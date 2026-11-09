@@ -1,6 +1,6 @@
 ---
 title: Motion
-description: When things move, how long they take, how they ease, and how they stop.
+description: When things move, how long they take, how they ease, and how a reader pauses them.
 group: Foundations
 order: 13
 ---
@@ -22,26 +22,30 @@ import Dots from '@oneonefour/rkui/components/spinner-dots/Dots.vue'
 import Flask from '@oneonefour/rkui/components/water/Flask.vue'
 import Loader from '@oneonefour/rkui/components/loader/Loader.vue'
 
-Motion explains: it answers input, shows work under way, or shows how a change happens. It is never
-decoration.
+Things move to explain: to answer the reader's input, to show work under way, or to show how a
+change happens. Nothing moves for decoration. This page covers the timing tokens, the easing
+curves, reduced motion, and the Motion component, which gives a group of animations a Pause
+button.
 
 ## What never moves
 
-- Readable text, layout and scroll position. Smooth scrolling is only for jumps within the page.
+- Readable text, the layout and the scroll position. Smooth scrolling is only for jumps within the
+  page.
 - The light, the outline width and the focus band.
-- Nothing turns, so shadows stay on the light's side. A part that turns has no shadow: the spinner
-  wedge, the dial's notch and the clock hands.
+- Nothing turns while it casts a shadow, so shadows always fall away from the light. Parts that
+  turn have no shadow: the spinner's wedge, the dial's notch and the clock's hands.
 
 ## Input responses
 
-An input response starts in the same frame as the input, eases with plain `ease`, and never
-repeats. Its length is a duration token:
+An input response starts in the same frame as the input, eases with plain `ease`, and plays once.
+Its length is a duration token:
 
 - `--rkui-duration-fast`, 120ms: hover and press.
 - `--rkui-duration-spring`, 180ms: toggles and snapping.
 - `--rkui-duration-slide`, 320ms: travel and panels.
 
-Only clickable things lift on hover and sink on press. Open, see DECISIONS.
+Clickable things lift on hover and sink on press; things that can't be clicked stay still. Two
+options lift on hover without a click: a Table's `lift` and a StickyNote's `animated`.
 
 <Demo vue={responseCode} label="A button's input response, and the same under reduced motion">
   <Response />
@@ -50,7 +54,7 @@ Only clickable things lift on hover and sink on press. Open, see DECISIONS.
 ## Ambient loops
 
 An ambient loop starts by itself and runs while a state lasts, until the state ends or the reader
-pauses it. One cycle is a loop token, and the loop holds still for a third or more of it:
+pauses it. One cycle is a loop token, and the loop holds still for at least a third of it:
 
 - `--rkui-loop-short`, 0.9s: small busy marks.
 - `--rkui-loop-medium`, 1.6s.
@@ -60,9 +64,9 @@ pauses it. One cycle is a loop token, and the loop holds still for a third or mo
 ## Easing
 
 - `ease` for input responses, `linear` for steady travel, `ease-out` going up and `ease-in` coming
-  down for gravity, and `ease-in-out` with `alternate` for fills.
+  down under gravity, and `ease-in-out` with `alternate` for fills.
 - `--rkui-ease-spring` recovers from a squash or a press.
-- `--rkui-ease-snap` is a jump to a new place or state, with one visible overshoot of about 4%.
+- `--rkui-ease-snap` jumps to a new place or state, with one visible overshoot of about 4%.
 
 There are no other curves and no elastic easing.
 
@@ -72,12 +76,13 @@ There are no other curves and no elastic easing.
 
 ## Toon phases
 
-A move winds up, goes, overshoots and settles, with holds between. A sequence uses equal steps of
+A move winds up, goes, overshoots and settles, with holds between. A sequence takes equal steps of
 0.6 to 1s and ends on a held step.
 
 - **Squash:** up to 1.3 × 0.7 on impact, 0.8–0.9 × 1.1–1.25 in flight, and 0.95 × 1.05 to settle.
-  The area stays within about 10%, pinned to the contact point. The `rkui-squash` keyframes do this.
-- **Overshoot:** one swing only, from the snap curve or one keyframe past the target, 10% at most.
+  The area stays within about 10%, pinned to the point of contact. The library's `rkui-squash`
+  keyframes do this.
+- **Overshoot:** one swing only, 10% at most, from the snap curve or one keyframe past the target.
 
 <Demo vue={squashCode} label="Squash and settle with rkui-squash">
   <Squash />
@@ -96,38 +101,34 @@ staggered loops share one period.
   <Stagger />
 </Demo>
 
-## Shadows and performance
-
-- Offsets that move with a shadow come from `--rkui-shadow-dx` and `--rkui-shadow-dy`, never literal
-  numbers, and lengths that go with a shadow multiply by `--rkui-shadow-depth`.
-- Animate `transform` and `opacity`, and never animate layout in a loop.
-- At a join, move with inset offsets rather than `translate`: a `translate` transition can open a
-  hairline seam.
-
 ## Reduced motion
 
-Under `prefers-reduced-motion: reduce`:
+When the reader asks for reduced motion (`prefers-reduced-motion: reduce`):
 
 - the duration tokens become 0ms and the press and lift offsets 0px, so a transition timed with
   them happens at once and only the shadow changes;
-- loops that show a state (spinners, loaders, pending panels) stay still and fade, with
-  `rkui-spinner-fade` over 1.8s;
-- illustrative loops stop. Open, see DECISIONS.
+- loops that show a state (spinners, loaders, pending panels) stay in place and fade in and out,
+  with `rkui-spinner-fade` over 1.8s;
+- loops that only illustrate something stop.
 
-The loop tokens don't change, so an animation that loops has its own `prefers-reduced-motion`
+The loop tokens stay the same, so each looping animation has its own `prefers-reduced-motion`
 rule, as each loop on this page does.
 
 <Demo vue={reducedCode} label="The hop and the bounce under reduced motion">
   <Reduced />
 </Demo>
 
-## Pausing
+## Pausing: the Motion component
 
-Self-moving content that runs longer than five seconds, other than a loader, has a pause control
-(WCAG 2.2.2). The Motion component gives a group of animations one Pause button: while it is
-pressed, every CSS animation inside the group pauses, including ones the page writes itself.
-Transitions, animations started from a script (`element.animate()`), SVG `<animate>` and canvas
-loops keep running.
+Anything that moves by itself for more than five seconds, other than a loader, needs a way to
+pause it (WCAG 2.2.2). Wrap it in `<Motion>`, which puts a Pause button above it. While Pause is
+pressed, every CSS animation inside the group pauses, including ones the page writes itself;
+animations elsewhere on the page keep running. A group inside another pauses with it, and its own
+Pause button pauses only itself.
+
+Motion works without JavaScript, so in an Astro page it needs no `client:` directive. It pauses CSS
+animations only: transitions, animations started from a script (`element.animate()`), SVG
+`<animate>` and canvas drawing keep running.
 
 <Demo label="A Motion group with its Pause button">
   <Motion>
@@ -142,7 +143,12 @@ loops keep running.
 
 ## Your own animations
 
-- Time transitions with the duration tokens, so reduced motion stops them.
+- Time transitions with the duration tokens, so that reduced motion stops them.
 - Time loops with the loop tokens, and give each one a `prefers-reduced-motion` rule.
+- Move a shadow's offsets with `--rkui-shadow-dx` and `--rkui-shadow-dy`, never fixed numbers, and
+  multiply lengths that go with a shadow by `--rkui-shadow-depth`.
+- Animate `transform` and `opacity`, and never animate the layout in a loop.
+- Where two pieces meet, move them with inset offsets rather than `translate`: a `translate`
+  transition can open a hairline seam between them.
 - Colour a chart or canvas library's marks with the tokens, and turn off its own animations or time
   them with the tokens.

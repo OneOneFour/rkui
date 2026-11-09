@@ -54,6 +54,7 @@ figcaption {
   border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
 }
 
+/* What a state loop does under reduced motion: it stays in place and fades. */
 .block,
 .ball {
   display: block;

@@ -26,7 +26,7 @@ figcaption {
   font-size: var(--rkui-step--1);
 }
 
-/* What the tokens become under reduced motion, here at all times. */
+/* The tokens' reduced-motion values, set here all the time to show the difference. */
 .reduced .rkui-button {
   --rkui-duration-fast: 0ms;
   --rkui-lift-offset: 0px;

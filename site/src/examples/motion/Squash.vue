@@ -19,7 +19,7 @@ import Motion from '@oneonefour/rkui/components/motion/Motion.vue'
   border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
 }
 
-/* rkui-squash comes with the library (spinner-dots.css). */
+/* The library's rkui-squash keyframes: squash on landing, stretch in flight, settle. */
 .ball {
   position: relative;
   box-sizing: border-box;
