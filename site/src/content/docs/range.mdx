@@ -6,6 +6,7 @@ order: 38
 component: Range
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import Range from '@oneonefour/rkui/components/range/Range.vue'
 import OwnReadout from '../../examples/range/OwnReadout.vue'
@@ -78,3 +79,7 @@ To show the value somewhere else, bind the Range with `v-model` in a `.vue` file
 <Demo vue={ownReadoutCode} label="Range with a readout written beside it" widget>
   <OwnReadout client:visible />
 </Demo>
+
+## Reference
+
+<ApiReference component="Range" />

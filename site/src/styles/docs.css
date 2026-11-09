@@ -165,3 +165,18 @@ article > .rkui-logo {
     margin-block-end: var(--rkui-space-5);
   }
 }
+
+/* A component's reference tables: the types, defaults and descriptions wrap, where a table's
+   cells otherwise stay on one line. */
+.docs-reference {
+  margin-block: var(--rkui-space-5);
+}
+
+.docs-reference :is(.docs-reference-type, .docs-reference-text) {
+  min-inline-size: 9rem;
+  white-space: normal;
+}
+
+.docs-reference .docs-reference-text:last-child {
+  min-inline-size: 16rem;
+}

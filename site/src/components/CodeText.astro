@@ -1,0 +1,16 @@
+---
+/**
+ * A line of text from a comment in the library, with its `code` spans set as `<code>`.
+ *
+ * @param text the text, with code between backticks
+ */
+import { codeSpans } from '../lib/component-api.js'
+
+interface Props {
+  text: string
+}
+
+const { text } = Astro.props
+---
+
+{codeSpans(text).map((part) => (part.code ? <code>{part.text}</code> : part.text))}

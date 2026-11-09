@@ -6,6 +6,7 @@ order: 61
 component: Clock
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import Clock from '@oneonefour/rkui/components/clock/Clock.vue'
 
@@ -21,3 +22,7 @@ A labelled time input with a clock face to set it by. Without JavaScript the fac
 <Demo label="Disabled clock">
   <Clock client:visible disabled label="Wake up" value="12:00" />
 </Demo>
+
+## Reference
+
+<ApiReference component="Clock" />

@@ -6,6 +6,7 @@ order: 82
 component: Flask
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import Flask from '@oneonefour/rkui/components/water/Flask.vue'
 import LevelWidget from '../../examples/flask/LevelWidget.vue'
@@ -26,3 +27,7 @@ import levelWidgetCode from '../../examples/flask/LevelWidget.vue?raw'
 <Demo vue={levelWidgetCode} label="Water flask with its level set by a slider" widget>
   <LevelWidget client:visible />
 </Demo>
+
+## Reference
+
+<ApiReference component="Flask" />

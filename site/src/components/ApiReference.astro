@@ -1,0 +1,132 @@
+---
+/**
+ * The reference for one library component, read from its `.vue` file when the site is built
+ * (component-api.js), so it can't drift from the code: where its attributes go, its props, its
+ * `v-model`, its slots and the custom element a plain HTML page writes for it. Each component page
+ * ends with a "Reference" section holding one for each component it documents.
+ *
+ * @param component the component's name, e.g. 'Range'
+ */
+import Table from '@oneonefour/rkui/components/table/Table.vue'
+import CodeText from './CodeText.astro'
+import { componentApi } from '../lib/component-api.js'
+import { elementFor } from '../lib/element-scripts.js'
+
+interface Props {
+  component: string
+}
+
+const { component } = Astro.props
+const { props, models, slots, attributes } = componentApi(component)
+const element = elementFor(component)
+const namedSlot = slots.find((slot) => slot.name !== 'default')?.name
+
+/** Whether a default is a value as code would write it (`'top'`, `3`, `false`), not words. */
+const isLiteral = (value: string) => /^(['"].*['"]|-?[\d.]+|true|false)$/.test(value)
+---
+
+<h3>{component}</h3>
+{attributes.map((sentence) => (
+  <p>
+    <CodeText text={sentence} />
+  </p>
+))}
+
+{[
+  { caption: `${component} props`, entries: props, heading: 'Prop' },
+  { caption: `${component} v-model`, entries: models, heading: 'Model' },
+]
+  .filter(({ entries }) => entries.length)
+  .map(({ caption, entries, heading }) => (
+    <Table caption={caption} small class="docs-reference">
+      <thead>
+        <tr>
+          <th scope="col">{heading}</th>
+          <th scope="col">Type</th>
+          <th scope="col">Default</th>
+          <th scope="col">What it does</th>
+        </tr>
+      </thead>
+      <tbody>
+        {entries.map((entry) => (
+          <tr>
+            <th scope="row">
+              <code>{entry.name}</code>
+            </th>
+            <td class="docs-reference-type">
+              {entry.type.map((part, i) => (
+                <>
+                  {i > 0 && ' | '}
+                  {part.code ? (
+                    <code>{part.code}</code>
+                  ) : part.href ? (
+                    <a href={part.href}>{part.words}</a>
+                  ) : (
+                    part.words
+                  )}
+                </>
+              ))}
+            </td>
+            <td class="docs-reference-text">
+              {!entry.defaultValue ? (
+                '—'
+              ) : isLiteral(entry.defaultValue) ? (
+                <code>{entry.defaultValue}</code>
+              ) : (
+                <CodeText text={entry.defaultValue} />
+              )}
+            </td>
+            <td class="docs-reference-text">
+              <CodeText text={entry.description} />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  ))}
+{!props.length && <p>It takes no props.</p>}
+{models.length > 0 && (
+  <p>
+    With <code>v-model</code>, the parent's value is the starting value unless it is undefined; then
+    the default applies, and is handed to the parent once the component runs.
+  </p>
+)}
+
+{slots.length > 0 && (
+  <Table caption={`${component} slots`} small class="docs-reference">
+    <thead>
+      <tr>
+        <th scope="col">Slot</th>
+        <th scope="col">What it holds</th>
+      </tr>
+    </thead>
+    <tbody>
+      {slots.map((slot) => (
+        <tr>
+          <th scope="row">
+            <code>{slot.name}</code>
+          </th>
+          <td class="docs-reference-text">
+            {slot.description.map((sentence) => (
+              <CodeText text={`${sentence} `} />
+            ))}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </Table>
+)}
+{namedSlot && (
+  <p>
+    Fill a named slot with <code>slot="{namedSlot}"</code> on an element in Astro and MDX, or{' '}
+    <code>&lt;template #{namedSlot}&gt;</code> in a <code>.vue</code> file.
+  </p>
+)}
+
+{element && (
+  <p>
+    A plain HTML page writes it as <code>&lt;{element}&gt;</code>, from{' '}
+    <code>@oneonefour/rkui/rkui.js</code>. Its attributes are the props and attributes above, read
+    once, when it starts.
+  </p>
+)}

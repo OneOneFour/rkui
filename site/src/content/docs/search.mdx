@@ -6,6 +6,7 @@ order: 45
 component: Search
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import Search from '@oneonefour/rkui/components/search/Search.vue'
 
@@ -40,3 +41,7 @@ icon variant in `<search>` when it is the page's search area.
 <Demo label="Search with an error" stack>
   <Search label="Search" name="q-error" value="x" error="Enter at least two characters" />
 </Demo>
+
+## Reference
+
+<ApiReference component="Search" />

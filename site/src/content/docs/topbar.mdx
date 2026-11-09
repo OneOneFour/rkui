@@ -6,6 +6,7 @@ order: 91
 component: TopBar
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import TopBar from '../../examples/topbar/Default.vue'
 import topBarCode from '../../examples/topbar/Default.vue?raw'
@@ -16,3 +17,9 @@ The demo shows each bar in place, as it looks once the page has scrolled: the to
 <Demo vue={topBarCode} label="Toast and flush top bars" stack>
   <TopBar />
 </Demo>
+
+## Reference
+
+<ApiReference component="TopBar" />
+
+<ApiReference component="BackToTop" />

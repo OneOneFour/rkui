@@ -6,6 +6,7 @@ order: 79
 component: Equation
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import Equation from '@oneonefour/rkui/components/maths/Equation.vue'
 import EquationReference from '@oneonefour/rkui/components/maths/EquationReference.vue'
@@ -110,3 +111,11 @@ the arrow keys, or swipe. `dots="pill"` puts the dots at its edges in pills.
 <Demo label="Long equation" stack>
   <Equation tex="\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y} + w \frac{\partial u}{\partial z} - f v = -\frac{1}{\rho} \frac{\partial p}{\partial x} + \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2} \right) \tag{6}" />
 </Demo>
+
+## Reference
+
+<ApiReference component="Equation" />
+
+<ApiReference component="Maths" />
+
+<ApiReference component="EquationReference" />

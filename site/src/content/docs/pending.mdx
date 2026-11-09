@@ -6,6 +6,7 @@ order: 85
 component: Pending
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import Pending from '@oneonefour/rkui/components/water/Pending.vue'
 import LevelWidget from '../../examples/pending/LevelWidget.vue'
@@ -22,3 +23,7 @@ import levelWidgetCode from '../../examples/pending/LevelWidget.vue?raw'
 <Demo vue={levelWidgetCode} label="Pending panel with its level set by a slider" stack widget>
   <LevelWidget client:visible />
 </Demo>
+
+## Reference
+
+<ApiReference component="Pending" />

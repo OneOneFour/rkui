@@ -6,6 +6,7 @@ order: 30
 component: Logo
 ---
 
+import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import Lift from '../../examples/logo/Lift.vue'
 import liftCode from '../../examples/logo/Lift.vue?raw'
@@ -38,3 +39,7 @@ time (not under reduced motion).
 <Demo vue={staticCode} label="Logo without a link">
   <Static />
 </Demo>
+
+## Reference
+
+<ApiReference component="Logo" />
