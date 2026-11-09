@@ -7,6 +7,7 @@ component: Scroll
 ---
 
 import Demo from '../../components/Demo.astro'
+import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
 import Table from '../../examples/scroll/Table.vue'
 import tableCode from '../../examples/scroll/Table.vue?raw'
 import Bar from '../../examples/scroll/Bar.vue'
@@ -40,3 +41,21 @@ tabs and tables take it too, and `data-rkui-dots="plain"` switches back inside i
 <Demo vue={looksCode} label="Plain and pill dots" stack>
   <Looks />
 </Demo>
+
+Every component that scrolls takes the same `dots`: CodeBlock, Table, Folder, Pagination, Sidebar
+and Equation as well as Scroll. It writes `data-rkui-dots` on the component's outer element, so a
+plain HTML page sets the attribute there.
+
+<Demo label="Code block with pill dots" stack>
+  <CodeBlock lang="shell" copy="never" dots="pill">
+    {`echo "A long line of code that does not wrap, so the block scrolls sideways and shows its dots in pills"`}
+  </CodeBlock>
+</Demo>
+
+## Scrollbar colours
+
+The scrollbar's colours pass down: set them on `<html>`, a container or a component, and every
+scroll region inside it takes them. They are `--rkui-scroll-track`, `--rkui-scroll-track-edge`,
+`--rkui-scroll-thumb`, `--rkui-scroll-thumb-edge` and `--rkui-scroll-bar-size` for the scrollbar,
+and `--rkui-pill-fill`, `--rkui-pill-edge` and `--rkui-pill-dot` for the pill. Every other
+scrollbar, such as the page's own or a textarea's, takes the ones set on `<html>`.

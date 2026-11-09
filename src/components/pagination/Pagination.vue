@@ -54,6 +54,12 @@ interface Props {
   overflow?: 'collapse' | 'scroll'
   /** The ‹ › links to the previous and next pages; shown when left out. */
   steps?: boolean
+  /**
+   * The look of the dots at the ends of a strip of links that scrolls (on the top or the bottom),
+   * written as `data-rkui-dots` on the outer div: 'plain', or 'pill' for dots in a raised pill; the
+   * page's setting when left out.
+   */
+  dots?: 'plain' | 'pill'
 }
 
 const {
@@ -66,6 +72,7 @@ const {
   placement = 'top',
   overflow = 'collapse',
   steps = true,
+  dots,
 } = defineProps<Props>()
 
 if (variant === 'tiles' && (placement === 'left' || placement === 'right')) {
@@ -124,6 +131,7 @@ const parts = computed(() =>
       `rkui-folder--${overflow}`,
       { [`rkui-folder--${placement}`]: placement !== 'top', 'rkui-folder--tinted': tinted },
     ]"
+    :data-rkui-dots="dots"
   >
     <template v-for="part in parts" :key="part">
       <nav v-if="part === 'strip'" class="rkui-folder-strip" :aria-label="label">
@@ -192,6 +200,7 @@ const parts = computed(() =>
       `rkui-pagination-tiles--${overflow}`,
       { 'rkui-pagination-tiles--bottom': placement === 'bottom' },
     ]"
+    :data-rkui-dots="dots"
   >
     <template v-for="part in parts" :key="part">
       <nav v-if="part === 'strip'" class="rkui-pagination" :aria-label="label">

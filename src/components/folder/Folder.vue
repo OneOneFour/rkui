@@ -56,9 +56,15 @@ interface Props {
   overflow?: 'scroll' | 'collapse'
   /** ‹ › step tabs at the strip's ends, choosing the tab before or after; none when left out. */
   steps?: boolean
+  /**
+   * The look of the dots at the ends of a strip of tabs that scrolls (on the top or the bottom),
+   * written as `data-rkui-dots` on the outer div: 'plain', or 'pill' for dots in a raised pill; the
+   * page's setting when left out.
+   */
+  dots?: 'plain' | 'pill'
 }
 
-const { label, tinted, placement = 'top', overflow = 'scroll', steps } = defineProps<Props>()
+const { label, tinted, placement = 'top', overflow = 'scroll', steps, dots } = defineProps<Props>()
 
 /** The chosen tab's index, from 0 (`v-model`); the tab marked `selected`, or 0, when left out. */
 const model = defineModel<number>()
@@ -146,6 +152,7 @@ onBeforeUnmount(() => form?.removeEventListener('reset', onReset))
     ]"
     role="group"
     :aria-label="label"
+    :data-rkui-dots="dots"
   >
     <template v-for="part in parts" :key="part">
       <div v-if="part === 'strip'" class="rkui-folder-strip">

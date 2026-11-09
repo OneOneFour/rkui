@@ -210,6 +210,7 @@ back inside it.
 | Shadow | `data-shadow` | `slab`, `color`, `block` | `tokens/shadows.css` for `slab` and `block`; `tokens/shadow-color.css`: `@scope` from `color` to `slab` or `block` |
 | Depth | `data-depth` | `normal`, `deep` | `--rkui-shadow-depth` 1 or 1.5 |
 | Light | `style` on `<html>` | `--rkui-shadow-dx`/`-dy`, default 1, 1 | `<rkui-light-direction>` |
+| Scroll dots | `data-rkui-dots`; a component's `dots` writes it on its outer element | `plain`, `pill` | `@scope` from `pill` to `plain` (`overflow.css`) |
 
 - **Theme:** `:root` is `color-scheme: light dark`. Tokens stay unregistered, because `@property`
   breaks `light-dark()`. The choice is stored under `rkui-theme`, shared by every site on the domain,
@@ -508,7 +509,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Drawer | `.rkui-drawer` (`<details>`), `--blind` (`--show-label`); `.rkui-cabinet` | drawer by default |
 | Equations | `.rkui-equation` (`--panel`, `--rule`, `--key`), `.rkui-eqref` | bare by default; §3.3 |
 | Table | `.rkui-table` (`--ledger`, `--small`, `--messy`, `--still`, `--lift`) | sheet by default; sheet or ledger open |
-| Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on; every other scrollbar takes its colours |
+| Scroll region | `.rkui-scroll`, `--bar` | dots plus a hover scrollbar by default; `--bar` always on; its colours (`--rkui-scroll-*`, `--rkui-pill-*`) pass down from wherever they are set; every other scrollbar takes the page's |
 | Sidebar | `.rkui-sidebar` (`--card`, `--folders`, `--deck`, `--note`, `--sections`) | plain by default; open |
 | Header band | `.rkui-header-band` | takes `--rkui-section`; a prototype, open |
 | Badge | `.rkui-badge` (`--tint`, hues, `--corner`, `--dot`); corner `--ring`, `--sticker` | corner edge open |

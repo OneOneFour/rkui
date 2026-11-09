@@ -66,9 +66,15 @@ interface Props {
   still?: boolean
   /** A row pops up out of the sheet while hovered; rows stay flat when left out. */
   lift?: boolean
+  /**
+   * The look of the dots at the edges of a table too wide for the sheet, written as
+   * `data-rkui-dots` on the outer `<div>`: 'plain', or 'pill' for dots in a raised pill; the page's
+   * setting when left out.
+   */
+  dots?: 'plain' | 'pill'
 }
 
-const { caption, hue, variant = 'sheet', small, messy, still, lift } = defineProps<Props>()
+const { caption, hue, variant = 'sheet', small, messy, still, lift, dots } = defineProps<Props>()
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -102,6 +108,7 @@ const Rows = () => unwrappedSlot(slots.default?.() ?? [])
       },
     ]"
     :style="vars"
+    :data-rkui-dots="dots"
     v-bind="pageAttrs().outer"
   >
     <Scroll :labelledby="captionId">

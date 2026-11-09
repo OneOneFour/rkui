@@ -24,9 +24,15 @@ interface Props {
    * ("Sidebar").
    */
   variant?: 'plain' | 'card' | 'folders' | 'deck' | 'note' | 'sections'
+  /**
+   * The look of the hints at the top and bottom edges, written as `data-rkui-dots` on the `<nav>`:
+   * 'plain' dots, or 'pill' for dots in a raised pill (a card's are always pills); the page's
+   * setting when left out.
+   */
+  dots?: 'plain' | 'pill'
 }
 
-const { label, variant = 'plain' } = defineProps<Props>()
+const { label, variant = 'plain', dots } = defineProps<Props>()
 </script>
 
 <template>
@@ -39,6 +45,7 @@ const { label, variant = 'plain' } = defineProps<Props>()
       },
     ]"
     :aria-label="label"
+    :data-rkui-dots="dots"
   >
     <div v-if="$slots.header" class="rkui-sidebar-header">
       <slot name="header" />

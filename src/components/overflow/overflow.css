@@ -18,8 +18,9 @@
 
    Two looks for the dots, plain or a pill: set data-rkui-dots="pill" on <html> or on any
    container (or one region, or a component's outer element, where its `dots` prop writes it) and
-   its dots sit in a raised yellow pill that slides in from the edge, in wider gutters. Sidebars (sidebar.css) take it too. data-rkui-dots="plain" switches
-   back inside it. Browsers without @scope show plain dots in the wider gutters.
+   its dots sit in a raised yellow pill that slides in from the edge, in wider gutters. Sidebars
+   (sidebar.css) take it too. data-rkui-dots="plain" switches back inside it. Browsers without
+   @scope show plain dots in the wider gutters.
 
    The scrollbar's look and the pill's colours pass down: set any of these on <html>, a container
    or a component to change every scroll region inside it. Each falls back to its default.
@@ -28,8 +29,9 @@
      --rkui-scroll-thumb       the thumb (--rkui-selected)
      --rkui-scroll-thumb-edge  the thumb's outline (--rkui-line)
      --rkui-scroll-bar-size    the scrollbar's thickness (0.875rem)
-     --rkui-pill-fill, --rkui-pill-edge, --rkui-pill-dot   the pill (--rkui-selected, --rkui-line,
-                               --rkui-on-selected)
+     --rkui-pill-fill          the pill (--rkui-selected)
+     --rkui-pill-edge          the pill's outline (--rkui-line)
+     --rkui-pill-dot           the dots on the pill (--rkui-on-selected)
 
    Every other scrollbar on the page (the page's own, a textarea's, a plain <pre>'s) takes the
    colours set on <html>, in the browser's own shape, with no dots and no hiding. */

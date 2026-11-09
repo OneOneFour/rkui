@@ -62,9 +62,14 @@ interface Props {
   editor?: boolean
   /** Extra classes for the scrolling `<pre>`; `rkui-scroll--bar` keeps its scrollbar visible. */
   preClass?: string
+  /**
+   * The look of the dots at the edges of a long line, written as `data-rkui-dots` on the
+   * `<figure>`: 'plain', or 'pill' for dots in a raised pill; the page's setting when left out.
+   */
+  dots?: 'plain' | 'pill'
 }
 
-const { lang, label, copy = 'always', editor = false, preClass } = defineProps<Props>()
+const { lang, label, copy = 'always', editor = false, preClass, dots } = defineProps<Props>()
 
 /** Phosphor file-type icons by Shiki language id or common alias. */
 const FILE_ICONS: Record<string, Component> = {
@@ -168,6 +173,7 @@ async function copyCode() {
       { 'rkui-code--editor': editor, 'rkui-code--copy-hover': copy === 'hover' },
     ]"
     :data-rkui-live="live ? '' : undefined"
+    :data-rkui-dots="dots"
   >
     <figcaption v-if="label" class="rkui-code-header">
       <span class="rkui-code-lang">

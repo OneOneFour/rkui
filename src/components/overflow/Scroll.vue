@@ -2,6 +2,8 @@
   A scroll region: content that scrolls sideways when it is too wide, with three dots at each edge
   showing there is more to see and a toon scrollbar on hover and focus. It is keyboard focusable
   and named. The slot is the content. `class`, `style` and other attributes go on the `<div>`.
+  Every component that scrolls takes the same `dots`, and passes the scrollbar settings
+  (`--rkui-scroll-thumb` and the rest, overflow.css) set on it or around it down to its scrollbar.
 
   @example
   <Scroll label="Results" dots="pill"><table>…</table></Scroll>
@@ -18,8 +20,8 @@ interface Props {
    */
   bar?: boolean
   /**
-   * The dots' look: `plain`, or `pill` for dots in a raised pill that slides in from the edge. The
-   * page's `data-rkui-dots` (plain when it sets none) when left out.
+   * The dots' look, written as `data-rkui-dots` on the `<div>`: 'plain', or 'pill' for dots in a
+   * raised pill that slides in from the edge; the page's setting when left out.
    */
   dots?: 'plain' | 'pill'
 }

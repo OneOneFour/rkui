@@ -27,9 +27,15 @@ interface Props {
    * panel, for a key result); none when left out.
    */
   variant?: 'panel' | 'rule' | 'key'
+  /**
+   * The look of the dots at the edges of an equation too wide for the column, written as
+   * `data-rkui-dots` on the wrapper: 'plain', or 'pill' for dots in a raised pill; the page's
+   * setting when left out. The 'rule' and 'key' frames show a scrollbar in place of the dots.
+   */
+  dots?: 'plain' | 'pill'
 }
 
-const { tex, variant } = defineProps<Props>()
+const { tex, variant, dots } = defineProps<Props>()
 
 const html = computed(() => renderMaths(tex, true))
 
@@ -52,6 +58,7 @@ const label = computed(() => {
     tabindex="0"
     role="region"
     :aria-label="label"
+    :data-rkui-dots="dots"
     v-html="html"
   />
 </template>
