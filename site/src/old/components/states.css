@@ -241,10 +241,10 @@ a:where(:not(.rkui-button, .rkui-chip, .rkui-tile, .rkui-folder-tab, .rkui-eqref
 /* Scroll regions and maths */
 
 .rkui-scroll.is-focus {
-  --rkui-scroll-track: var(--rkui-raised);
-  --rkui-scroll-track-edge: var(--rkui-line-unfilled);
-  --rkui-scroll-thumb: var(--rkui-selected);
-  --rkui-scroll-thumb-edge: var(--rkui-line);
+  --rkui-scroll-drawn-track: var(--rkui-scroll-track, var(--rkui-raised));
+  --rkui-scroll-drawn-track-edge: var(--rkui-scroll-track-edge, var(--rkui-line-unfilled));
+  --rkui-scroll-drawn-thumb: var(--rkui-scroll-thumb, var(--rkui-selected));
+  --rkui-scroll-drawn-thumb-edge: var(--rkui-scroll-thumb-edge, var(--rkui-line));
 }
 
 .rkui-equation.is-focus {

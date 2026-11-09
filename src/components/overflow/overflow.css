@@ -17,23 +17,38 @@
    them from overflow-enhance.js instead, and show the scrollbar at all times.
 
    Two looks for the dots, plain or a pill: set data-rkui-dots="pill" on <html> or on any
-   container (or one region) and its dots sit in a raised yellow pill that slides in from the
-   edge, in wider gutters. Sidebars (sidebar.css) take it too. data-rkui-dots="plain" switches
+   container (or one region, or a component's outer element, where its `dots` prop writes it) and
+   its dots sit in a raised yellow pill that slides in from the edge, in wider gutters. Sidebars (sidebar.css) take it too. data-rkui-dots="plain" switches
    back inside it. Browsers without @scope show plain dots in the wider gutters.
 
-   Every other scrollbar on the page (the page's own, a textarea's, a plain <pre>'s) takes the
-   same colours in the browser's own shape, with no dots and no hiding. */
+   The scrollbar's look and the pill's colours pass down: set any of these on <html>, a container
+   or a component to change every scroll region inside it. Each falls back to its default.
+     --rkui-scroll-track       the track (--rkui-raised)
+     --rkui-scroll-track-edge  the track's outline (--rkui-line-unfilled)
+     --rkui-scroll-thumb       the thumb (--rkui-selected)
+     --rkui-scroll-thumb-edge  the thumb's outline (--rkui-line)
+     --rkui-scroll-bar-size    the scrollbar's thickness (0.875rem)
+     --rkui-pill-fill, --rkui-pill-edge, --rkui-pill-dot   the pill (--rkui-selected, --rkui-line,
+                               --rkui-on-selected)
 
-/* The scrollbar's colours and size. A sidebar's scroller (sidebar.css) shares the scrollbar, stood
-   on end. Each scroller sets its own, so one that hides its scrollbar doesn't hide a nested one's. */
+   Every other scrollbar on the page (the page's own, a textarea's, a plain <pre>'s) takes the
+   colours set on <html>, in the browser's own shape, with no dots and no hiding. */
+
+:root {
+  --rkui-scroll-bar-size: 0.875rem;
+}
+
+/* The colours each scrollbar is drawn in: the settings above, or their defaults. Each scroller
+   works out its own, so the defaults follow a palette container's colours, and one that hides
+   its scrollbar (below) doesn't hide a nested one's. A sidebar's scroller (sidebar.css) shares
+   the scrollbar, stood on end. */
 :root,
 .rkui-scroll,
 .rkui-sidebar-scroll {
-  --rkui-scroll-bar-size: 0.875rem;
-  --rkui-scroll-track: var(--rkui-raised);
-  --rkui-scroll-track-edge: var(--rkui-line-unfilled);
-  --rkui-scroll-thumb: var(--rkui-selected);
-  --rkui-scroll-thumb-edge: var(--rkui-line);
+  --rkui-scroll-drawn-track: var(--rkui-scroll-track, var(--rkui-raised));
+  --rkui-scroll-drawn-track-edge: var(--rkui-scroll-track-edge, var(--rkui-line-unfilled));
+  --rkui-scroll-drawn-thumb: var(--rkui-scroll-thumb, var(--rkui-selected));
+  --rkui-scroll-drawn-thumb-edge: var(--rkui-scroll-thumb-edge, var(--rkui-line));
 }
 
 .rkui-scroll {
@@ -56,9 +71,9 @@
 }
 
 :is(.rkui-scroll, .rkui-sidebar-scroll)::-webkit-scrollbar-track {
-  border: var(--rkui-outline-width) solid var(--rkui-scroll-track-edge);
+  border: var(--rkui-outline-width) solid var(--rkui-scroll-drawn-track-edge);
   border-radius: var(--rkui-radius-pill);
-  background: var(--rkui-scroll-track);
+  background: var(--rkui-scroll-drawn-track);
 }
 
 .rkui-scroll::-webkit-scrollbar-track {
@@ -70,14 +85,14 @@
 }
 
 :is(.rkui-scroll, .rkui-sidebar-scroll)::-webkit-scrollbar-thumb {
-  border: var(--rkui-outline-width) solid var(--rkui-scroll-thumb-edge);
+  border: var(--rkui-outline-width) solid var(--rkui-scroll-drawn-thumb-edge);
   border-radius: var(--rkui-radius-pill);
-  background: var(--rkui-scroll-thumb);
+  background: var(--rkui-scroll-drawn-thumb);
 }
 
 /* Every other scrollbar: the colours only. */
 :root {
-  scrollbar-color: var(--rkui-scroll-thumb) var(--rkui-scroll-track);
+  scrollbar-color: var(--rkui-scroll-drawn-thumb) var(--rkui-scroll-drawn-track);
 }
 
 /* Chrome draws no styled parts where scrollbar-color is set, so a scroller that has them drops the
@@ -93,7 +108,7 @@
 @supports not selector(::-webkit-scrollbar) {
   .rkui-scroll,
   .rkui-sidebar-scroll {
-    scrollbar-color: var(--rkui-scroll-thumb) var(--rkui-scroll-track);
+    scrollbar-color: var(--rkui-scroll-drawn-thumb) var(--rkui-scroll-drawn-track);
   }
 }
 
@@ -151,8 +166,7 @@
 }
 
 /* The pill look's colours, which the card sidebar's hints share (sidebar.css). */
-.rkui-scroll,
-.rkui-sidebar-more {
+:root {
   --rkui-pill-fill: var(--rkui-selected);
   --rkui-pill-edge: var(--rkui-line);
   --rkui-pill-dot: var(--rkui-on-selected);
@@ -373,10 +387,10 @@
      colours keep it visible. */
   @media (forced-colors: none) {
     .rkui-scroll:not(.rkui-scroll--bar, :hover, :focus-visible, :has(:focus-visible)) {
-      --rkui-scroll-track: transparent;
-      --rkui-scroll-track-edge: transparent;
-      --rkui-scroll-thumb: transparent;
-      --rkui-scroll-thumb-edge: transparent;
+      --rkui-scroll-drawn-track: transparent;
+      --rkui-scroll-drawn-track-edge: transparent;
+      --rkui-scroll-drawn-thumb: transparent;
+      --rkui-scroll-drawn-thumb-edge: transparent;
     }
   }
 
