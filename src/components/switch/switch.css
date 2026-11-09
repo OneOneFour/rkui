@@ -1,5 +1,7 @@
 /* Switch: a native checkbox with role="switch", drawn as a pill track with a round thumb.
-   On, the track fills with --rkui-selected. Wrap it in a label.rkui-check. */
+   On, the track fills with --rkui-selected; in error (aria-invalid="true") it fills with
+   --rkui-coral-solid, on or off, and the thumb is --rkui-on-coral, as checkboxes and radios do.
+   Wrap it in a label.rkui-check. */
 
 .rkui-switch {
   --rkui-switch-width: 2.75rem;
@@ -43,6 +45,15 @@
 .rkui-switch:checked::before {
   background: var(--rkui-on-selected);
   translate: var(--rkui-thumb-travel) 0;
+}
+
+.rkui-switch[aria-invalid='true'] {
+  border-color: var(--rkui-coral-deep);
+  background: var(--rkui-coral-solid);
+}
+
+.rkui-switch[aria-invalid='true']::before {
+  background: var(--rkui-on-coral);
 }
 
 /* Forced colours drop the fills, so the thumb and the on track use system colours. */

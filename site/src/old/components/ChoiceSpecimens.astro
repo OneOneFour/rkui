@@ -54,14 +54,24 @@ const STATES = [
         Label
       </label>
     </Specimen>
-    {control.role !== 'switch' && (
-      <Specimen label="error">
-        <label class="rkui-check">
-          <input class={control.class} type={control.type} aria-invalid="true" />
-          Label
-        </label>
-      </Specimen>
-    )}
+    <Specimen label="error">
+      <label class="rkui-check">
+        <input class={control.class} type={control.type} role={control.role} aria-invalid="true" />
+        Label
+      </label>
+    </Specimen>
+    <Specimen label="error, on">
+      <label class="rkui-check">
+        <input
+          class={control.class}
+          type={control.type}
+          role={control.role}
+          aria-invalid="true"
+          checked
+        />
+        Label
+      </label>
+    </Specimen>
   </SpecimenRow>
 ))}
 

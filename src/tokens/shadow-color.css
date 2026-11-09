@@ -36,6 +36,12 @@
       --rkui-extrusion: var(--rkui-shade);
     }
 
+    /* In error they fill with coral, on or off. */
+    :is(.rkui-checkbox, .rkui-radio, .rkui-switch)[aria-invalid='true'] {
+      --rkui-shade-of: var(--rkui-coral-solid);
+      --rkui-extrusion: var(--rkui-shade);
+    }
+
     /* The range's native thumb and the file button are pseudo-elements, so their inputs carry the
        colour. */
     .rkui-range,
