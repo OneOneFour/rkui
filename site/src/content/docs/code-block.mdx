@@ -7,6 +7,7 @@ component: CodeBlock
 ---
 
 import Demo from '../../components/Demo.astro'
+import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
 import Default from '../../examples/code-block/Default.vue'
 import defaultCode from '../../examples/code-block/Default.vue?raw'
 import NoTitle from '../../examples/code-block/NoTitle.vue'
@@ -73,6 +74,14 @@ With `copy="never"` there is no button, and the block needs no JavaScript.
 
 A long line scrolls sideways, with dots at the edges; `dots="pill"` puts them in pills (see
 [Scroll](../scroll/)).
+`bar` keeps the scrollbar in view instead, with no dots; a plain HTML page writes it as the class
+`rkui-scroll--bar` on the `<pre>`.
+
+<Demo label="Code block with a scrollbar that stays" stack>
+  <CodeBlock lang="shell" copy="never" bar>
+    {`echo "A long line of code that does not wrap, so the block scrolls sideways and keeps its scrollbar in view"`}
+  </CodeBlock>
+</Demo>
 
 ## Language mark
 

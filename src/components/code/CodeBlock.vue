@@ -4,7 +4,7 @@
   highlighted when the page is built, on the server. Vue, Astro and MDX all tidy the white space
   in text written between the tags, so code longer than a line goes in as a string, which they
   leave alone: `{{ code }}` in a `.vue` file, `{code}` or {`…`} in Astro and MDX. `class`, `style` and
-  other attributes go on the `<figure>`, and `preClass` on the scrolling `<pre>`. With no `label`
+  other attributes go on the `<figure>`. With no `label`
   there is no title area: the copy button sits in the code's top-right corner. The copy button
   needs `client:visible` in an Astro page; without it the button stays hidden.
 
@@ -60,8 +60,11 @@ interface Props {
   copy?: 'always' | 'hover' | 'never'
   /** Puts the caption in a darker strip, like an editor tab, on a flat panel; false when left out. */
   editor?: boolean
-  /** Extra classes for the scrolling `<pre>`; `rkui-scroll--bar` keeps its scrollbar visible. */
-  preClass?: string
+  /**
+   * Keeps the scrollbar of a long line visible, with no dots, as Scroll's `bar` does (the class
+   * `rkui-scroll--bar` on the `<pre>`); dots and a hover scrollbar when left out.
+   */
+  bar?: boolean
   /**
    * The look of the dots at the edges of a long line, written as `data-rkui-dots` on the
    * `<figure>`: 'plain', or 'pill' for dots in a raised pill; the page's setting when left out.
@@ -69,7 +72,7 @@ interface Props {
   dots?: 'plain' | 'pill'
 }
 
-const { lang, label, copy = 'always', editor = false, preClass, dots } = defineProps<Props>()
+const { lang, label, copy = 'always', editor = false, bar, dots } = defineProps<Props>()
 
 /** Phosphor file-type icons by Shiki language id or common alias. */
 const FILE_ICONS: Record<string, Component> = {
@@ -189,7 +192,7 @@ async function copyCode() {
       </span>
     </figcaption>
     <pre
-      :class="['rkui-scroll', preClass]"
+      :class="['rkui-scroll', { 'rkui-scroll--bar': bar }]"
       tabindex="0"
     ><code v-if="highlight" v-html="highlight(code())" /><code v-else>{{ code() }}</code></pre>
     <button

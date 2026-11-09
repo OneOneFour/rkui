@@ -17,12 +17,14 @@ const OPTIONS = [
     name: 'default',
     title: 'Default: dots, and the scrollbar on hover and focus (.rkui-scroll)',
     class: undefined,
+    bar: false,
     withFolder: true,
   },
   {
     name: '.rkui-scroll--bar',
     title: 'The scrollbar always shows, with no dots (.rkui-scroll--bar)',
     class: 'rkui-scroll--bar',
+    bar: true,
   },
 ]
 
@@ -57,7 +59,7 @@ const TABLE_ROWS = [
 {OPTIONS.map((option) => (
   <SpecimenRow title={option.title}>
     <Specimen label="long code line" wide>
-      <CodeBlock client:visible lang="javascript" label="JavaScript" preClass={option.class}>
+      <CodeBlock client:visible lang="javascript" label="JavaScript" bar={option.bar}>
         {LORENZ_JS}
         <LanguageLogo slot="logo" icon={siJavascript} />
       </CodeBlock>
@@ -129,7 +131,7 @@ const TABLE_ROWS = [
   {OPTIONS.map((option) => (
     <>
       <Specimen label={`code, ${option.name}`} wide>
-        <CodeBlock client:visible lang="python" preClass={option.class}>
+        <CodeBlock client:visible lang="python" bar={option.bar}>
           x = lorenz(1.0, 1.0, 1.0)
         </CodeBlock>
       </Specimen>

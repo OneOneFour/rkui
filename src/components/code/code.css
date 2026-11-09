@@ -24,7 +24,8 @@
    Without the figcaption there is no title area: the copy button sits in the code's top-right
    corner. The copy button can be left out too.
 
-   Opt-in modifiers: .rkui-scroll--bar on the pre keeps its scrollbar visible, .rkui-code--editor
+   Opt-in modifiers: .rkui-scroll--bar on the pre keeps its scrollbar visible, with no dots
+   (CodeBlock.vue's `bar`), .rkui-code--editor
    puts the caption in a darker strip, like an editor tab, and .rkui-code--copy-hover shows the
    copy button only while the pointer is over the block or focus is inside it.
    Put .rkui-slate-greige on a block or any ancestor for the greige slate, inline code included.

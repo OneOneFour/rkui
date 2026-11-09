@@ -26,6 +26,8 @@
      down the start margin, a red margin rule after the first column and a double red rule under
      the header. The margin rule is --rkui-coral at 70% over the paper.
    - .rkui-table--small: the compact density.
+   - .rkui-scroll--bar on the scroll region: its scrollbar stays in view, with no dots (Table.vue's
+     `bar`).
    - .rkui-table--still: no entrance; the table just shows, with or without JavaScript.
    - .rkui-table--messy: the stickers are slightly tilted, the other way on every other cell, like
      a checkerboard; straight without it.
@@ -115,6 +117,18 @@
 /* A table on its own has no scroll region, whose gutters would hold it off the sides. */
 table.rkui-table {
   padding-inline: var(--rkui-space-3);
+}
+
+/* With the bar there are no dot gutters, so a clear edge as wide holds the table off the sides and
+   clips it there, as they do. Forced colours draw it in the page's colour. */
+.rkui-table > .rkui-scroll--bar {
+  border-inline: var(--rkui-space-3) solid transparent;
+}
+
+@media (forced-colors: active) {
+  .rkui-table > .rkui-scroll--bar {
+    border-inline-color: Canvas;
+  }
 }
 
 /* The caption's text stays at the start while the table scrolls sideways. */

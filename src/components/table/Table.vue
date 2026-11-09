@@ -1,7 +1,8 @@
 <!--
   A data table on a toon sheet: the page's own `<thead>`, `<tbody>`, rows and cells, so a cell can
   hold anything, with a caption above them. The table scrolls sideways inside the sheet when it is
-  too wide, with the Scroll region's edge dots. Needs no JavaScript. `class` and `style` go on the
+  too wide, with the Scroll region's edge dots, or with `bar` a scrollbar that stays in view. Needs
+  no JavaScript. `class` and `style` go on the
   outer `<div>`, the sheet; other attributes go on the `<table>`.
 
   The header row and the first column stay in view while the table scrolls inside the sheet: the
@@ -67,6 +68,11 @@ interface Props {
   /** A row pops up out of the sheet while hovered; rows stay flat when left out. */
   lift?: boolean
   /**
+   * Keeps the scrollbar of a table too wide for the sheet visible, with no dots, as Scroll's `bar`
+   * does; dots and a hover scrollbar when left out.
+   */
+  bar?: boolean
+  /**
    * The look of the dots at the edges of a table too wide for the sheet, written as
    * `data-rkui-dots` on the outer `<div>`: 'plain', or 'pill' for dots in a raised pill; the page's
    * setting when left out.
@@ -74,7 +80,17 @@ interface Props {
   dots?: 'plain' | 'pill'
 }
 
-const { caption, hue, variant = 'sheet', small, messy, still, lift, dots } = defineProps<Props>()
+const {
+  caption,
+  hue,
+  variant = 'sheet',
+  small,
+  messy,
+  still,
+  lift,
+  bar,
+  dots,
+} = defineProps<Props>()
 
 const attrs = useAttrs()
 const slots = useSlots()
@@ -111,7 +127,7 @@ const Rows = () => unwrappedSlot(slots.default?.() ?? [])
     :data-rkui-dots="dots"
     v-bind="pageAttrs().outer"
   >
-    <Scroll :labelledby="captionId">
+    <Scroll :labelledby="captionId" :bar="bar">
       <table v-bind="pageAttrs().inner">
         <caption :id="captionId">
           <span>{{ caption }}</span>
