@@ -13,9 +13,9 @@
 }
 
 /* Highlight: data-highlight on <html> or any container sets the dark-mode colour of the outline on
-   things with no fill, and of the outline shadow's rim (shadows.css): "cream", the default, is the
-   text colour; "dark" is the near-black outline colour. Another value switches back inside it.
-   Light mode draws them in the outline colour either way. */
+   things with no fill: "cream", the default, is the text colour; "dark" is the near-black
+   outline colour. Another value switches back inside it. Light mode draws them in the outline
+   colour either way. */
 :root,
 [data-highlight='cream'] {
   --rkui-line-unfilled: var(--rkui-fg);

@@ -57,7 +57,7 @@ All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`,
 | `--rkui-fg` | `#1d232f` | `#f2eee2` | body text |
 | `--rkui-muted` | `#5b6070` | `#a3a8b6` | captions, meta |
 | `--rkui-line` | `#1d232f` | `#05070b` | outlines and hard shadows |
-| `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` (= `--rkui-line` with the dark highlight) | outlines of things with no fill; the outline shadow's rim |
+| `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` (= `--rkui-line` with the dark highlight) | outlines of things with no fill |
 | `--rkui-ink` | `#1d232f` | `#1d232f` | ink, same in both themes |
 | `--rkui-on-ink`, `--rkui-glint` | `#f7f3e5` | `#f2eee2` | text on ink; highlights on fills |
 | `--rkui-shadow-lit` | = `--rkui-line` | `#6e7891` | colour shadow: shadow of things without a fill |
@@ -309,7 +309,8 @@ or any container. Light mode is the same in every combination.
 
 **Shadow** (`data-shadow`) sets how the hard shadow is drawn:
 - **Outline is the default** (`outline`): the near-black shadow sits on a copy widened by the
-  outline in `--rkui-shadow-edge`, a rim in the highlight colour, transparent in light mode.
+  outline in `--rkui-shadow-edge`: a cream rim (`--rkui-fg`) whatever the highlight, transparent
+  in light mode.
 - **Block** (`block`): the near-black shadow with no rim, sitting straight on the page, as in the
   first mockup.
 - **Colour** (`color`): in dark mode a raised thing with a fill casts `--rkui-shade` of it, with
@@ -329,13 +330,11 @@ or any container. Light mode is the same in every combination.
     sticky note cast their own shadows, not the note's.
   - Without `@scope` or `light-dark()`, browsers draw the outline shadow.
 
-**Highlight** (`data-highlight`) sets the colour of the outline shadow's rim and of the outlines on
-things with no fill (`--rkui-line-unfilled`: inputs, chips, tiles, folder tabs, unchecked
+**Highlight** (`data-highlight`) sets the colour of the outlines on things with no fill (`--rkui-line-unfilled`: inputs, chips, tiles, folder tabs, unchecked
 controls):
 - **Cream is the default** (`cream`): `--rkui-fg`, so those edges show on the dark page.
 - **Dark** (`dark`): the near-black `--rkui-line`, like the mockup's Surface card. Those edges are
-  hard to see on the dark page; that is accepted. With the outline shadow it draws a near-black
-  rim, which looks like block.
+  hard to see on the dark page; that is accepted. The outline shadow's rim stays cream.
 
 ### 4.3 Depth
 
