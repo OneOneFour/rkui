@@ -4,7 +4,8 @@
 .docs-topbar {
   --rkui-topbar-inset: var(--rkui-space-4);
 
-  padding-block: var(--rkui-space-3);
+  /* The settings drawer is last, so the bottom padding is its bleed. */
+  padding-block: var(--rkui-space-3) var(--rkui-topbar-inset);
 
   justify-content: flex-start;
 }
@@ -16,6 +17,32 @@
   margin-inline-start: auto;
 }
 
+/* The settings drawer takes a row of its own along the bar's bottom edge, reaching its sides. */
+.docs-settings {
+  --rkui-drawer-bleed: var(--rkui-topbar-inset);
+
+  flex-basis: calc(100% + 2 * var(--rkui-drawer-bleed));
+}
+
+.docs-settings-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: flex-end;
+  gap: var(--rkui-space-4) var(--rkui-space-6);
+}
+
+.docs-mode-name {
+  margin: 0 0 var(--rkui-space-1);
+  font-size: var(--rkui-step--1);
+  font-weight: 600;
+}
+
+.docs-mode-note {
+  color: var(--rkui-muted);
+  font-weight: 400;
+}
+
 .docs-frame {
   display: grid;
   grid-template-columns: 14rem minmax(0, 1fr);
@@ -25,15 +52,20 @@
   padding: var(--rkui-space-6) var(--rkui-space-4) var(--rkui-space-8);
 }
 
+/* Anchor jumps land below the top bar, which is two rows high with the settings drawer's front. */
+:root:has(.docs-topbar) {
+  scroll-padding-block-start: 8rem;
+}
+
 /* The sidebar stays in view below the top bar. It shrinks to fit, so its own scroller scrolls it
    when it is long. */
 .docs-sidebar {
   position: sticky;
-  inset-block-start: 6rem;
+  inset-block-start: 8rem;
   display: flex;
   flex-direction: column;
   align-self: start;
-  max-block-size: calc(100dvh - 7rem);
+  max-block-size: calc(100dvh - 9rem);
 }
 
 .docs-main {
@@ -119,6 +151,10 @@ article > .rkui-logo {
 
   .docs-sidebar {
     display: none;
+  }
+
+  .docs-settings-body {
+    justify-content: flex-start;
   }
 
   .docs-menu {

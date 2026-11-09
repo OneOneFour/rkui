@@ -3,7 +3,8 @@
  * The colours as a palette picker: a tall column per hue with its -deep and -tint steps beneath,
  * the core hues, a row of page colours, then the auxiliary hues with their jobs. Each block is a
  * button that copies its colour, as a hex or as `var(--rkui-…)`, chosen by the switch above. The
- * hexes are read from what the browser paints, so they follow the theme, palette and shadow mode.
+ * hexes are read from what the browser paints, so they follow the theme, palette, shadow and
+ * highlight.
  *
  * Text on each block follows the on-colour rule: a fill's own label token; the page colour on a
  * -deep step (a deep step is text on the page, so the page colour reads on it); body text on a
@@ -137,7 +138,7 @@ const NEUTRALS: Swatch[] = [
 </style>
 
 <script>
-  const ATTRIBUTES = ['data-theme', 'data-palette', 'data-shadow']
+  const ATTRIBUTES = ['data-theme', 'data-palette', 'data-shadow', 'data-highlight']
   const COPIED_FOR = 1200
 
   let context: OffscreenCanvasRenderingContext2D | null | undefined

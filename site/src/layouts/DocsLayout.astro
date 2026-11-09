@@ -1,7 +1,8 @@
 ---
 /**
- * The page frame for every docs page: the top bar (the logo, the version, search and the theme,
- * palette and shadow switches), the sidebar of pages and the content column. Only the content
+ * The page frame for every docs page: the top bar (the logo, the version, search, the theme switch
+ * and a settings drawer for the palette, shadow and highlight), the sidebar of pages and the
+ * content column. Only the content
  * column is indexed for search (`data-pagefind-body`).
  *
  * @param page the docs page being shown; its title and description head the content
@@ -14,6 +15,9 @@ import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'
 import tableInit from '@oneonefour/rkui/head-scripts/table-init.js?raw'
 import ThemeToggle from '@oneonefour/rkui/components/theme-toggle/ThemeToggle.vue'
 import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import Drawer from '@oneonefour/rkui/components/drawer/Drawer.vue'
+import SlidersIcon from '@oneonefour/rkui/icons/sliders-horizontal.vue'
 import GitBranchIcon from '@oneonefour/rkui/icons/git-branch.vue'
 import Logo from '@oneonefour/rkui/components/logo/Logo.vue'
 import TopBar from '@oneonefour/rkui/components/topbar/TopBar.vue'
@@ -42,12 +46,13 @@ const branch = gitBranch()
     <script is:inline set:html={themeInit} />
     <script is:inline set:html={tableInit} />
     <script is:inline>
-      // Inline, like the theme, so a stored palette or shadow mode doesn't flash the default first.
+      // Inline, like the theme, so a stored palette, shadow or highlight doesn't flash the default
+      // first.
       try {
-        const palette = localStorage.getItem('rkui-palette')
-        if (palette) document.documentElement.dataset.palette = palette
-        const shadow = localStorage.getItem('rkui-shadow')
-        if (shadow) document.documentElement.dataset.shadow = shadow
+        for (const name of ['palette', 'shadow', 'highlight']) {
+          const value = localStorage.getItem(`rkui-${name}`)
+          if (value) document.documentElement.dataset[name] = value
+        }
       } catch {
         // Storage is blocked, so the page keeps the defaults.
       }
@@ -71,27 +76,46 @@ const branch = gitBranch()
       )}
       <Search />
       <div class="docs-switches">
-        <ModeSwitch
-          name="shadow"
-          legend="Dark-mode shadows"
-          options={[
-            { value: 'slab', label: 'Slab' },
-            { value: 'color', label: 'Colour' },
-            { value: 'block', label: 'Block' },
-            { value: 'block-color', label: 'Block colour' },
-          ]}
-        />
-        <ModeSwitch
-          name="palette"
-          legend="Page palette"
-          options={[
-            { value: 'cream', label: 'Cream' },
-            { value: 'slate', label: 'Slate' },
-            { value: 'greige', label: 'Greige' },
-          ]}
-        />
         <ThemeToggle client:visible />
+        <Button unfilled popovertarget="docs-settings">
+          <SlidersIcon class="rkui-icon" /> Settings
+        </Button>
       </div>
+      <Drawer label="Settings" remote id="docs-settings" class="docs-settings">
+        <div class="docs-settings-body">
+          <ModeSwitch
+            name="palette"
+            legend="Palette"
+            options={[
+              { value: 'cream', label: 'Cream' },
+              { value: 'slate', label: 'Slate' },
+              { value: 'greige', label: 'Greige' },
+            ]}
+          />
+          <ModeSwitch
+            name="shadow"
+            legend="Shadow"
+            note="in dark mode"
+            options={[
+              { value: 'outline', label: 'Outline' },
+              { value: 'block', label: 'Block' },
+              { value: 'color', label: 'Colour' },
+            ]}
+          />
+          <ModeSwitch
+            name="highlight"
+            legend="Highlight"
+            note="in dark mode"
+            options={[
+              { value: 'cream', label: 'Cream' },
+              { value: 'dark', label: 'Dark' },
+            ]}
+          />
+          <Button small unfilled popovertarget="docs-settings" popovertargetaction="hide">
+            Close
+          </Button>
+        </div>
+      </Drawer>
     </TopBar>
 
     <div class="docs-frame">
