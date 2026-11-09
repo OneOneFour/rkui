@@ -80,10 +80,17 @@
 }
 
 /* The block shadow mode: the slab with no rim, so in dark mode the near-black shadow sits straight
-   on the page. Light mode is unchanged. */
+   on the page, and things with no fill take the near-black outline too. Light mode is unchanged.
+   The other modes keep the cream outline of things with no fill (colors.css). */
 [data-shadow='block'] {
   --rkui-shadow-color: var(--rkui-line);
   --rkui-shadow-edge: transparent;
+  --rkui-line-unfilled: var(--rkui-line);
+}
+
+[data-shadow='slab'],
+[data-shadow='color'] {
+  --rkui-line-unfilled: var(--rkui-fg);
 }
 
 /* Nothing moves under reduced motion; shadows still change. */

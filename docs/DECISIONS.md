@@ -12,6 +12,10 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-08
 
+**Block mode outlines** (Rob). In dark mode with `data-shadow="block"`, things with no fill of
+their own (inputs, chips, tiles, folder tabs, unchecked controls) take the near-black outline too,
+like the mockup's Surface card, though their edges are then hard to see on the dark page.
+
 **Alert backdrop** (Rob). An open Alert blurs the page behind it, with no shade, the one exception
 to "no blur"; the darken backdrop and `--rkui-scrim` are gone. The page behind stays still while
 the alert is open, and keeps its scroll position when it closes.

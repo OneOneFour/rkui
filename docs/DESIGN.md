@@ -57,7 +57,7 @@ All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`,
 | `--rkui-fg` | `#1d232f` | `#f2eee2` | body text |
 | `--rkui-muted` | `#5b6070` | `#a3a8b6` | captions, meta |
 | `--rkui-line` | `#1d232f` | `#05070b` | outlines and hard shadows |
-| `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` | outlines of things with no fill |
+| `--rkui-line-unfilled` | = `--rkui-fg` | = `--rkui-fg` (= `--rkui-line` in the block mode) | outlines of things with no fill |
 | `--rkui-ink` | `#1d232f` | `#1d232f` | ink, same in both themes |
 | `--rkui-on-ink`, `--rkui-glint` | `#f7f3e5` | `#f2eee2` | text on ink; highlights on fills |
 | `--rkui-shadow-lit` | = `--rkui-line` | `#6e7891` | colour mode: shadow of things without a fill |
@@ -321,8 +321,10 @@ A near-black shadow is hard to see on night blue, so dark mode has three shadow 
     sticky note cast their own shadows, not the note's.
   - Without `@scope` or `light-dark()`, browsers keep the slab.
 - **Block is a rarely used mode** (`data-shadow="block"`): the slab with no rim, so the near-black
-  shadow sits straight on the page, as in the first mockup. `--rkui-shadow-edge` is transparent;
-  light mode is unchanged. Things with no fill keep their `--rkui-line-unfilled` outline.
+  shadow sits straight on the page, as in the first mockup. `--rkui-shadow-edge` is transparent,
+  and `--rkui-line-unfilled` is `--rkui-line`, so things with no fill (inputs, chips, tiles, folder
+  tabs, unchecked controls) take the near-black outline too, like the mockup's Surface card. Their
+  edges are hard to see on the dark page; that is accepted. Light mode is unchanged.
 
 ### 4.3 Depth
 
@@ -603,7 +605,8 @@ tokens in `site/src/old/components/chart-tokens.css`.
     shades against the page;
   - every palette, both themes, and the fallback.
 - **Dark outline gap:** near-black `--rkui-line` on the dark page is about 1.2–1.4:1. Filled components
-  get their 3:1 edge from the fill; outline-only ones use `--rkui-line-unfilled`. It is a known gap.
+  get their 3:1 edge from the fill; outline-only ones use `--rkui-line-unfilled`, except in the block
+  shadow mode, where they take the near-black outline (§4.2). It is a known gap.
 - **`--rkui-section` in dark mode** defaults to ink, nearly the page colour. Sites set their own hues.
 - **Accepted shortfalls** (Rob's reasons are in DECISIONS.md):
   - ink icon lines on the coral note's fold in dark mode, 2.8:1 against 3;
