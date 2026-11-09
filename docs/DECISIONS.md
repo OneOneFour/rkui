@@ -15,6 +15,9 @@ new entry and update DESIGN.md; don't rewrite the old one.
 **Quote slant** (Rob). Both stay: a quote is upright by default, and `slant="italic"` slants it,
 with the browser slanting Roboto Slab, which has no italic.
 
+**Motion** (Rob). The motion principles are the docs site's Motion page. The Motion component
+stays in rkui as the Pause button for a group of animations; it doesn't pause them off-screen.
+
 **Select's open list** (Rob). Every select draws its open list in the toon look where the browser
 supports `appearance: base-select`, and shows the browser's own list elsewhere; there is no
 `picker` option to turn it on. The checked option is filled with `--rkui-selected`, like every
@@ -211,8 +214,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] "Only clickable things lift and sink": stays, or changes. ("Motion")
 - [ ] Under reduced motion, illustrative loops stop while state loops fade: stays, or changes.
   ("Motion")
-- [ ] `<rkui-motion>` (the Pause button, off-screen pausing): stays in rkui, or not. ("Motion",
-  "Diagrams")
 - [ ] Loaders and spinners: time their loops with the `--rkui-loop-*` tokens, or keep their own.
   ("Loading")
 

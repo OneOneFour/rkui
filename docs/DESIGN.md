@@ -422,7 +422,7 @@ share one period.
   open: DECISIONS).
 - Forced colours: `CanvasText` outlines, `Highlight` for lit parts, `Canvas` behind.
 - Self-moving content over five seconds, other than a loader, gets a pause control (WCAG 2.2.2):
-  `<rkui-motion>`, which also pauses off-screen. JS loops stop when paused, off-screen or hidden.
+  the Motion component's Pause button. JS loops stop when paused, off-screen or hidden.
 
 **Performance.** Animate `transform` and `opacity`; never layout in a loop; no permanent
 `will-change`. **At a join, move with inset offsets, not `translate`:** a `translate` transition
@@ -515,7 +515,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Loader | `.rkui-loader--hop` | |
 | Progress, meter | `.rkui-progress` (striped), `--flat`; `.rkui-meter` | striped by default; whether `--flat` stays is open |
 | Water, pending | `.rkui-water`, `--rise`; `.rkui-pending` | a filling panel |
-| Motion pause | `<rkui-motion>` | whether it stays in rkui is open |
+| Motion pause | `.rkui-motion` | |
 
 ### 7.3 Behaviour and distribution
 
