@@ -1,6 +1,6 @@
 ---
 /**
- * A docs-site switch for a mode on <html>, under its name: checking an option sets `data-<name>`
+ * A docs-site switch for a mode on <html>, under its name: checking an option sets its attribute
  * and remembers it under `rkui-<name>`. DocsLayout restores the stored choice before first paint.
  */
 import Segmented from '@oneonefour/rkui/components/segmented/Segmented.vue'
@@ -12,8 +12,10 @@ interface Option {
 }
 
 interface Props {
-  /** The mode: `palette`, `shadow` or `highlight`. */
-  name: 'palette' | 'shadow' | 'highlight'
+  /** The mode: `palette`, `shadow`, `highlight` or `dots`. */
+  name: 'palette' | 'shadow' | 'highlight' | 'dots'
+  /** The attribute on <html> it sets; `data-<name>` when left out. */
+  attribute?: string
   /** The switch's name, shown above it. */
   legend: string
   /** A line after the name, such as when the mode shows; none when left out. */
@@ -22,7 +24,7 @@ interface Props {
   options: Option[]
 }
 
-const { name, legend, note, options } = Astro.props
+const { name, attribute = `data-${name}`, legend, note, options } = Astro.props
 // No radio starts checked: the script checks the stored choice, so the sliding pill starts there.
 ---
 
@@ -30,7 +32,12 @@ const { name, legend, note, options } = Astro.props
   <p class="docs-mode-name" aria-hidden="true">
     {legend} {note && <span class="docs-mode-note">{note}</span>}
   </p>
-  <Segmented legend={note ? `${legend}, ${note}` : legend} name={`rkui-${name}`} data-mode={name}>
+  <Segmented
+    legend={note ? `${legend}, ${note}` : legend}
+    name={`rkui-${name}`}
+    data-mode={name}
+    data-attribute={attribute}
+  >
     {options.map(({ value, label }) => (
       <SegmentedOption value={value}>{label}</SegmentedOption>
     ))}
@@ -44,14 +51,16 @@ const { name, legend, note, options } = Astro.props
 
   for (const fieldset of document.querySelectorAll<HTMLElement>('fieldset[data-mode]')) {
     const name = fieldset.dataset.mode ?? ''
+    const attribute = fieldset.dataset.attribute ?? ''
     const radios = [...fieldset.querySelectorAll('input')]
     // The stored choice, or the default where there is none or it is no longer an option.
-    const current = radios.find((radio) => radio.value === root.dataset[name]) ?? radios[0]
+    const stored = root.getAttribute(attribute)
+    const current = radios.find((radio) => radio.value === stored) ?? radios[0]
 
     for (const radio of radios) {
       radio.checked = radio === current
       radio.addEventListener('change', () => {
-        afterSlide(radio, () => (root.dataset[name] = radio.value))
+        afterSlide(radio, () => root.setAttribute(attribute, radio.value))
         try {
           localStorage.setItem(`rkui-${name}`, radio.value)
         } catch {

@@ -226,8 +226,8 @@ back inside it.
   gives dx = dy = 1: shadows fall down-right. `<rkui-light-direction>`
   (`src/components/light-direction/light-direction.js`) sets it from a range, or follows the sun (rises left
   at 6:00, overhead at noon, sets right at 18:00, default at night).
-- `rkui-palette`, `rkui-shadow` and `rkui-highlight` are the docs site's own storage keys for its
-  settings drawer, not part of the theme contract.
+- `rkui-palette`, `rkui-shadow`, `rkui-highlight` and `rkui-dots` are the docs site's own storage
+  keys for its settings drawer, not part of the theme contract.
 
 ## 3. Typography and maths
 

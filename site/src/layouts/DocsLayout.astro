@@ -1,8 +1,8 @@
 ---
 /**
  * The page frame for every docs page: the top bar (the logo, the version, search, the theme switch
- * and a settings drawer for the palette, shadow and highlight), the sidebar of pages and the
- * content column. Only the content column is indexed for search (`data-pagefind-body`).
+ * and a settings drawer for the palette, shadow, highlight and scroll dots), the sidebar of pages
+ * and the content column. Only the content column is indexed for search (`data-pagefind-body`).
  *
  * @param page the docs page being shown; its title and description head the content
  */
@@ -45,12 +45,18 @@ const branch = gitBranch()
     <script is:inline set:html={themeInit} />
     <script is:inline set:html={tableInit} />
     <script is:inline>
-      // Inline, like the theme, so a stored palette, shadow or highlight doesn't flash the default
-      // first.
+      // Inline, like the theme, so a stored palette, shadow, highlight or dots look doesn't flash
+      // the default first. Each is stored under rkui-<name> and set as this attribute on <html>.
       try {
-        for (const name of ['palette', 'shadow', 'highlight']) {
+        const modes = {
+          palette: 'data-palette',
+          shadow: 'data-shadow',
+          highlight: 'data-highlight',
+          dots: 'data-rkui-dots',
+        }
+        for (const [name, attribute] of Object.entries(modes)) {
           const value = localStorage.getItem(`rkui-${name}`)
-          if (value) document.documentElement.dataset[name] = value
+          if (value) document.documentElement.setAttribute(attribute, value)
         }
       } catch {
         // Storage is blocked, so the page keeps the defaults.
@@ -112,6 +118,15 @@ const branch = gitBranch()
               options={[
                 { value: 'cream', label: 'Cream' },
                 { value: 'dark', label: 'Dark' },
+              ]}
+            />
+            <ModeSwitch
+              name="dots"
+              attribute="data-rkui-dots"
+              legend="Scroll dots"
+              options={[
+                { value: 'plain', label: 'Plain' },
+                { value: 'pill', label: 'Pill' },
               ]}
             />
             <Button small unfilled popovertarget="docs-settings" popovertargetaction="hide">
