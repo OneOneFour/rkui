@@ -38,11 +38,11 @@ A ball hopping along a line. Screen readers read out its label, which is never s
 
 Each hop covers about the same distance, so a narrow loader takes few hops and a wide one many, and
 the ball lands at each end. The loader fills its line up to 30rem; set `max-inline-size` to change
-that, and `--rkui-hop-length` (4rem when left out) for the distance.
+that, and `--rkui-loader-hop-length` (4rem when left out) for the distance.
 
 <Demo label="Hop loaders of different widths" stack>
   <Loader style="max-inline-size: 8rem" />
   <Loader style="max-inline-size: 16rem" />
   <Loader style="max-inline-size: none" />
-  <Loader style="max-inline-size: none; --rkui-hop-length: 2rem" />
+  <Loader style="max-inline-size: none; --rkui-loader-hop-length: 2rem" />
 </Demo>

@@ -1,9 +1,9 @@
 /* Loader: an indeterminate bar with more character than the progress bar's. Like the spinners,
    give it role="status" and a visually hidden label.
    .rkui-loader--hop: a ball hops back and forth along a line, squashing as it lands. Each hop
-     covers about --rkui-hop-length, so a wider loader takes more hops, and the ball always lands
-     at each end. Set --rkui-loader-fill to recolour it, and put an icon in the ball to have it
-     ride in a bigger one.
+     covers about --rkui-loader-hop-length, so a wider loader takes more hops, and the ball
+     always lands at each end. Set --rkui-loader-fill to recolour it, and put an icon in the ball
+     to have it ride in a bigger one.
    Under reduced motion nothing moves: the ball fades in and out instead.
 
    <div class="rkui-loader rkui-loader--hop" role="status"
@@ -31,8 +31,8 @@
   --rkui-loader-on-fill: var(--rkui-on-fill);
   --rkui-ball-size: 0.875rem;
   --rkui-hop-height: 1.1rem;
-  --rkui-hop-length: 4rem;
-  --rkui-hop-time: 0.6s;
+  --rkui-loader-hop-length: 4rem;
+  --rkui-loader-hop-time: 0.6s;
 
   block-size: calc(var(--rkui-ball-size) + var(--rkui-hop-height) + 0.25rem);
   border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
@@ -42,14 +42,15 @@
   --rkui-ball-size: 1.5rem;
 }
 
-/* The ball travels and hops in two animations. A hop lands every --rkui-hop-time, and a crossing
-   takes a whole number of hops: the travel over --rkui-hop-length, rounded, at least one.
+/* The ball travels and hops in two animations. A hop lands every --rkui-loader-hop-time, and a
+   crossing takes a whole number of hops: the travel over --rkui-loader-hop-length, rounded, at
+   least one.
    tan(atan2(a, b)) is a / b as a plain number. --rkui-ball-edge leaves room for the squash at
    each end. */
 .rkui-loader-ball {
   --rkui-ball-edge: calc(var(--rkui-ball-size) * 0.15);
   --rkui-ball-travel: calc(100cqi - var(--rkui-ball-size) - 2 * var(--rkui-ball-edge));
-  --rkui-hops: max(1, round(tan(atan2(var(--rkui-ball-travel), var(--rkui-hop-length)))));
+  --rkui-hops: max(1, round(tan(atan2(var(--rkui-ball-travel), var(--rkui-loader-hop-length)))));
 
   position: absolute;
   inset-block-end: 0;
@@ -66,8 +67,8 @@
   transform-origin: 50% 100%;
   translate: calc(50cqi - 50%) 0;
   animation:
-    rkui-hop-travel calc(var(--rkui-hops) * var(--rkui-hop-time)) linear infinite alternate,
-    rkui-hop var(--rkui-hop-time) infinite;
+    rkui-hop-travel calc(var(--rkui-hops) * var(--rkui-loader-hop-time)) linear infinite alternate,
+    rkui-hop var(--rkui-loader-hop-time) infinite;
 }
 
 .rkui-loader-ball .rkui-icon {
