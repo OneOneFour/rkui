@@ -104,6 +104,10 @@
   --rkui-drawer-overshoot: calc(var(--rkui-shadow-depth) * 3px);
   /* The caret's turn while shut, pointing the way the drawer pulls out. */
   --rkui-drawer-caret-turn: 0turn;
+  /* A clip that cuts off whatever falls past the side towards the parent, and nothing on the other
+     sides (100vmax is past any shadow): the shadow an overlay drawer would cast on its parent, and
+     a blind's screen and hem shadows that would fall on the part before them. */
+  --rkui-drawer-cut: inset(0 -100vmax -100vmax);
 
   display: grid;
   /* The parts in order from the parent's edge: the blind's roller, the tray, the handle. */
@@ -231,6 +235,7 @@
   z-index: 1;
   inset: 100% 0 auto;
   margin: 0;
+  clip-path: var(--rkui-drawer-cut);
 }
 
 .rkui-drawer--overlay.rkui-drawer--top {
@@ -327,8 +332,10 @@
 /* The blind: the roller, the screen hanging from it, a hem like the roller, and a round pull
    on a short cord from the hem's middle, holding the caret, or the label and caret with
    .rkui-drawer--show-label. The roller is a little wider
-   than the screen and hem. The whole blind hangs in front of the parent with the hard shadow: the
-   screen's grows as it unrolls, and the roller and hem cover the parts of it that fall on them.
+   than the screen and hem. The whole blind hangs in front of the parent with one hard shadow: the
+   screen's grows as it unrolls, the roller is drawn first so the screen covers the part of its
+   shadow that falls there, and the screen's and hem's are cut off on the side towards the roller
+   (--rkui-drawer-cut), so neither falls on the part before it.
    Each part is outlined, so its slab, widened by the outline in dark mode, lines up with its edge.
    Shut, the roller, hem and pull show. */
 .rkui-drawer--blind {
@@ -384,6 +391,7 @@
   border-block: none;
   background: var(--rkui-drawer-screen);
   box-shadow: var(--rkui-shadow);
+  clip-path: var(--rkui-drawer-cut);
 }
 
 /* The screen falls, speeding up as under gravity, and the roller turns with it; once it is down,
@@ -405,7 +413,14 @@
   box-shadow: none;
 }
 
+/* The cut makes the screen a layer of its own, so the hem is raised above it again, within the
+   blind. */
+.rkui-drawer--blind {
+  isolation: isolate;
+}
+
 .rkui-drawer--blind > .rkui-drawer-handle {
+  z-index: 1;
   flex-direction: column;
   align-items: center;
   margin-inline: var(--rkui-space-4);
@@ -423,6 +438,7 @@
   border-end-end-radius: var(--rkui-space-1);
   background: var(--rkui-drawer-roller);
   box-shadow: var(--rkui-shadow);
+  clip-path: var(--rkui-drawer-cut);
 }
 
 /* The pull: a yellow ring, hung from the hem's middle by its cord. A remote blind's is an empty
@@ -472,6 +488,7 @@
    to the handle, and the moves run upwards. */
 .rkui-drawer--top {
   --rkui-drawer-caret-turn: 0.5turn;
+  --rkui-drawer-cut: inset(-100vmax -100vmax 0);
 
   grid-template-areas: 'handle' 'tray' 'roller';
 }
@@ -538,14 +555,15 @@
   grid-template-areas: 'roller tray handle';
 }
 
-/* The side of the screen it is on: the label's writing mode, the caret's turn and the way the
-   roller's stripes move. On the left the label is turned round to read upwards, from the icon
+/* The side of the screen it is on: the label's writing mode, the caret's turn, the way the
+   roller's stripes move and the side the cut is on. On the left the label is turned round to read upwards, from the icon
    to the caret. */
 .rkui-drawer--left:dir(ltr),
 .rkui-drawer--right:dir(rtl) {
   --rkui-drawer-caret-turn: 0.25turn;
   --rkui-drawer-turned: vertical-rl;
   --rkui-drawer-roll: calc(-4 * var(--rkui-drawer-stripe-gap)) 0;
+  --rkui-drawer-cut: inset(-100vmax 0 -100vmax -100vmax);
 }
 
 .rkui-drawer--right:dir(ltr),
@@ -553,6 +571,7 @@
   --rkui-drawer-caret-turn: -0.25turn;
   --rkui-drawer-turned: vertical-lr;
   --rkui-drawer-roll: calc(4 * var(--rkui-drawer-stripe-gap)) 0;
+  --rkui-drawer-cut: inset(-100vmax -100vmax -100vmax 0);
 }
 
 :is(.rkui-drawer--left, .rkui-drawer--right) > .rkui-drawer-handle .rkui-drawer-pull {
