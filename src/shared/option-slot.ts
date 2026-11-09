@@ -15,7 +15,7 @@ import { slotHtml } from './slot-html'
 type Selection = string | string[] | undefined
 
 /** What a group hands its options in a Vue tree, by provide and inject. */
-export interface OptionGroup {
+interface OptionGroup {
   name: string
   multiple: boolean
   /** The group's `v-model`. A group with no `v-model` of its own (Segmented) leaves it out. */

@@ -47,7 +47,7 @@ const attrs = useAttrs()
 const model = defineModel<string>()
 if (model.value === undefined) model.value = attrs.value as string | undefined
 // In the browser, what was typed before the clock woke up wins.
-const vLiveValue = useLiveValue(model, (field) => field.value)
+const vLiveValue = useLiveValue(model)
 const id = (attrs.id as string | undefined) ?? useComponentId('clock')
 const input = useTemplateRef<HTMLInputElement>('input')
 const face = useTemplateRef<HTMLElement>('face')

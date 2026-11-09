@@ -20,6 +20,8 @@ const SERVES = {
   'pagination-enhance.js': ['Pagination'],
   'sidebar-enhance.js': ['Sidebar'],
   'table-enhance.js': ['Table'],
+  // Escape to hide an open tooltip.
+  'tooltip-enhance.js': ['Tooltip'],
 }
 
 // Only the file names are read, to check the list above; nothing is imported.

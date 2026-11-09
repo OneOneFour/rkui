@@ -15,7 +15,7 @@ export interface SlotTab {
 }
 
 /** A group's slot, split into its tabs and everything outside them, in one of the two shapes. */
-export interface SlotParts {
+interface SlotParts {
   tabs: SlotTab[]
   /** What was outside the tabs in a .vue file. */
   outside: VNode[]

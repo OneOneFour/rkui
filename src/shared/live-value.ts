@@ -1,40 +1,95 @@
-// A form control's value as the browser has it when its component starts, for the interactive
-// form controls (Stepper, Clock, Dial, Range), and a radio or checkbox's checked state. Each
-// directive goes on the input before its `v-model`: the first read must come before Vue's v-model
-// writes to the input, which for a radio is as soon as it is created.
+// A form control's value as the browser has it when its component starts, for every form control
+// with a `v-model` (inputs, textareas and selects), and a radio or checkbox's checked state. Each
+// directive goes on the control before its `v-model`: the first read must come before Vue's
+// v-model writes to it, which for a radio is as soon as it is created.
 
-/** A component's model: the `ref` that `defineModel()` returns. */
-interface Model<T> {
-  value: T
-}
+import { startingIndex } from './starting-option'
 
-/** The value each input had before Vue's `v-model` first wrote to it, when it was changed. */
-const changedValues = new WeakMap<HTMLInputElement, string>()
+/** A form control that holds a value: an input, a textarea or a select. */
+type ValueControl = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 
 /**
- * A directive that makes the input's value in the browser win over the model's starting value:
- * `const vLiveValue = useLiveValue(model, (input) => input.valueAsNumber)`, then
- * `<input v-live-value v-model="model">`. It covers what was typed before
- * the component woke up (`client:visible`), a form the browser restored on going back, and a
- * starting value the browser clamped or snapped to the input's `min`, `max` and `step`.
- * `read` gives the input's value as the model holds it.
+ * What each control held before Vue's `v-model` first wrote to it, when the reader or the browser
+ * had changed it: its value, or a select's chosen options.
  */
-export function useLiveValue<T>(model: Model<T>, read: (input: HTMLInputElement) => T) {
+const changedValues = new WeakMap<ValueControl, string | HTMLOptionElement[]>()
+
+/**
+ * The value an input's markup alone gives it, as the browser cleans it up: a colour in lower case,
+ * a range's value kept within its `min`, `max` and `step`.
+ */
+function markupValue(input: HTMLInputElement): string {
+  const fresh = document.createElement('input')
+  for (const { name, value } of input.attributes) fresh.setAttribute(name, value)
+  return fresh.value
+}
+
+/** The options a select's markup alone chooses. */
+function markupOptions(select: HTMLSelectElement): HTMLOptionElement[] {
+  const options = [...select.options]
+  if (select.multiple) return options.filter((option) => option.defaultSelected)
+  const marks = options.map((option) => ({
+    selected: option.defaultSelected,
+    disabled: option.disabled,
+  }))
+  const start = options[startingIndex(marks)]
+  return start ? [start] : []
+}
+
+/** What the control holds now, if the reader or the browser changed it from its markup. */
+function changedInBrowser(control: ValueControl): string | HTMLOptionElement[] | undefined {
+  if (control instanceof HTMLSelectElement) {
+    const chosen = [...control.selectedOptions]
+    const start = markupOptions(control)
+    const same = chosen.length === start.length && chosen.every((option, i) => option === start[i])
+    return same ? undefined : chosen
+  }
+  const start = control instanceof HTMLInputElement ? markupValue(control) : control.defaultValue
+  return control.value === start ? undefined : control.value
+}
+
+/** Puts back what the control held before `v-model` wrote over it. */
+function restore(control: ValueControl, changed: string | HTMLOptionElement[]) {
+  if (typeof changed === 'string') {
+    control.value = changed
+    return
+  }
+  // A list of options comes only from a select. Choosing one unchooses the others, unless it is
+  // a multiple select.
+  const select = control as HTMLSelectElement
+  for (const option of select.options) {
+    if (changed.includes(option)) option.selected = true
+    else if (select.multiple) option.selected = false
+  }
+}
+
+/**
+ * A directive that keeps what the browser holds in an input, a textarea or a select over the
+ * model's starting value: what was typed or chosen before the component woke up
+ * (`client:visible`), or a form the browser restored on going back. A range's model also follows
+ * a starting value the browser kept within its `min`, `max` and `step`. Otherwise the model stays
+ * exactly as the parent gave it. `const vLiveValue = useLiveValue(model)`, then
+ * `<input v-live-value v-model="model">`. It hands the value on with the event `v-model` listens
+ * for, as typing would, so `v-model` casts it as usual (a number for `type="number"`).
+ */
+export function useLiveValue(model: { value: unknown }) {
   return {
-    // Before v-model writes the model's value over it. An input already on the page came from the
-    // server; if its value differs from its `value` attribute, it was changed in the browser.
-    beforeMount(input: HTMLInputElement) {
-      if (input.isConnected && input.value !== input.defaultValue) {
-        changedValues.set(input, input.value)
-      }
+    // Before v-model writes the model's value over it. A control already on the page came from
+    // the server; if it differs from its markup, it was changed in the browser.
+    beforeMount(control: ValueControl) {
+      if (!control.isConnected) return
+      const changed = changedInBrowser(control)
+      if (changed !== undefined) changedValues.set(control, changed)
     },
     // Once the mount is over, after v-model and the parent's starting value have had their say.
-    mounted(input: HTMLInputElement) {
+    mounted(control: ValueControl) {
       queueMicrotask(() => {
-        const changed = changedValues.get(input)
-        if (changed !== undefined) input.value = changed
-        const value = read(input)
-        if (value !== model.value) model.value = value
+        const changed = changedValues.get(control)
+        if (changed !== undefined) restore(control, changed)
+        const clamped = control.type === 'range' && control.value !== String(model.value)
+        if (changed === undefined && !clamped) return
+        const event = control instanceof HTMLSelectElement ? 'change' : 'input'
+        control.dispatchEvent(new Event(event, { bubbles: true }))
       })
     },
   }

@@ -23,9 +23,11 @@
 import { h, useAttrs, useSlots, type VNode } from 'vue'
 import Field from '../field/Field.vue'
 import { useComponentId } from '../../shared/component-id'
+import { useLiveValue } from '../../shared/live-value'
 import { modelWithStart } from '../../shared/model-start'
 import { slotText } from '../../shared/slot-html'
 import { controlAttrs } from '../../shared/split-attrs'
+import { startingIndex } from '../../shared/starting-option'
 
 defineOptions({ inheritAttrs: false })
 
@@ -77,20 +79,26 @@ function optionValue(option: VNode): string {
   return text.trim().replace(/\s+/g, ' ')
 }
 
+/** Whether an option sets a boolean attribute (`selected`, `disabled`). */
+function hasFlag(option: VNode, name: string): boolean {
+  const value = option.props?.[name]
+  return value !== undefined && value !== false
+}
+
 /**
  * A select's starting value, read from its options in a slot written in a `.vue` file, as a
  * browser chooses it: the values of the options marked `selected` for a multiple select, and for
- * any other the last one marked, or else the first option. A slot from MDX or .astro is HTML,
- * with no options to read.
+ * any other the last one marked, or else the first not disabled. A slot from MDX or .astro is
+ * HTML, with no options to read.
  */
 function selectedValue(vnodes: VNode[], multiple: boolean): string | string[] | undefined {
   const all = options(vnodes)
-  const marked = all.filter((option) => {
-    const selected = option.props?.selected
-    return selected !== undefined && selected !== false
-  })
-  if (multiple) return marked.map(optionValue)
-  const chosen = marked.at(-1) ?? all[0]
+  if (multiple) return all.filter((option) => hasFlag(option, 'selected')).map(optionValue)
+  const marks = all.map((option) => ({
+    selected: hasFlag(option, 'selected'),
+    disabled: hasFlag(option, 'disabled'),
+  }))
+  const chosen = all[startingIndex(marks)]
   return chosen && optionValue(chosen)
 }
 
@@ -103,6 +111,8 @@ const multiple = attrs.multiple !== undefined && attrs.multiple !== false
 const model = defineModel<string | string[]>()
 const slots = useSlots()
 const selection = modelWithStart(model, () => selectedValue(slots.default?.() ?? [], multiple))
+// In the browser, what was chosen before the select woke up wins.
+const vLiveValue = useLiveValue(selection)
 const id = (attrs.id as string | undefined) ?? useComponentId('select')
 
 // The customizable select's button, made with h(): in a template Vue warns about a `<button>`
@@ -121,6 +131,7 @@ function pageAttrs() {
 <template>
   <Field :label :for="id" :hint :error v-bind="pageAttrs().field">
     <select
+      v-live-value
       v-model="selection"
       :class="[
         'rkui-select',

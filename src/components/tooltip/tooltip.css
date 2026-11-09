@@ -1,6 +1,7 @@
 /* Tooltip: a short plain-text description of a control, shown above it while it is hovered or
    focused, with no JavaScript. The control points at the bubble with aria-describedby; anything
    interactive belongs in a popup instead. A parent with overflow: hidden clips the bubble.
+   tooltip-enhance.js lets Escape hide an open bubble, marking the tooltip data-rkui-dismissed.
    A, the default: an inverted bubble, in the page's colours swapped.
    B, .rkui-tooltip--toon: a raised bubble with the outline and the hard shadow.
 
@@ -98,8 +99,15 @@
 }
 
 /* A short wait on hover, so a pointer passing over doesn't flash the bubble. */
-.rkui-tooltip:hover:not(:has(:focus-visible)) > .rkui-tooltip-bubble {
+.rkui-tooltip:hover:not(:has(:focus-visible), [data-rkui-dismissed]) > .rkui-tooltip-bubble {
   transition-delay: 300ms;
+}
+
+/* Hidden with Escape, until the pointer or focus comes back (tooltip-enhance.js). */
+.rkui-tooltip[data-rkui-dismissed] > .rkui-tooltip-bubble {
+  opacity: 0;
+  visibility: hidden;
+  translate: -50% var(--rkui-space-1);
 }
 
 /* Forced colours outline the tail's transparent edges too, so it is left out. */

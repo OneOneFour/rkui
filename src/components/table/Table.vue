@@ -84,6 +84,11 @@ const vars = computed(() => {
   }
 })
 
+/** The page's attributes: `class` and `style` for the outer div (`outer`), the rest for the `<table>`. */
+function pageAttrs() {
+  return splitAttrs(attrs)
+}
+
 /** The page's rows and cells, written straight into the `<table>`, which allows no wrapper. */
 const Rows = () => unwrappedSlot(slots.default?.() ?? [])
 </script>
@@ -101,10 +106,10 @@ const Rows = () => unwrappedSlot(slots.default?.() ?? [])
       },
     ]"
     :style="vars"
-    v-bind="splitAttrs(attrs).outer"
+    v-bind="pageAttrs().outer"
   >
     <Scroll :labelledby="captionId">
-      <table v-bind="splitAttrs(attrs).inner">
+      <table v-bind="pageAttrs().inner">
         <caption :id="captionId">
           <span>{{ caption }}</span>
         </caption>

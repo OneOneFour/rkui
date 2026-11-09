@@ -45,7 +45,7 @@ const attrs = useAttrs()
 const model = defineModel<number | string>()
 if (model.value === undefined) model.value = attrs.value as string | undefined
 // In the browser, what was typed before the stepper woke up wins.
-const vLiveValue = useLiveValue(model, (field) => (field.value === '' ? '' : field.valueAsNumber))
+const vLiveValue = useLiveValue(model)
 const id = (attrs.id as string | undefined) ?? useComponentId('stepper')
 const input = useTemplateRef<HTMLInputElement>('input')
 // Set once the stepper runs in the browser; until then number.css hides the buttons.

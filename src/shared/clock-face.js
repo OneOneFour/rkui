@@ -9,7 +9,7 @@ import {
 } from './dial-geometry.js'
 
 /** The day and night ring, where the hour hand's tag rides */
-export const RING_RADIUS = 86
+const RING_RADIUS = 86
 const RING_WIDTH = 28
 const TICK_INNER_RADIUS = 58
 const QUARTER_TICK_INNER_RADIUS = 54
@@ -17,9 +17,9 @@ const TICK_OUTER_RADIUS = 66
 const MINUTE_HAND_RADIUS = 40
 
 /** The hour hand goes round once a day, with noon at the top and midnight at the bottom. */
-export const DEGREES_PER_HOUR = 360 / 24
-export const DEGREES_PER_MINUTE = 360 / 60
-export const NOON_ANGLE = 12 * DEGREES_PER_HOUR
+const DEGREES_PER_HOUR = 360 / 24
+const DEGREES_PER_MINUTE = 360 / 60
+const NOON_ANGLE = 12 * DEGREES_PER_HOUR
 
 /**
  * @param {number} value

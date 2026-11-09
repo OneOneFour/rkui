@@ -2,7 +2,8 @@
   A short plain-text tooltip over a control, shown while the control is hovered or focused, with no
   JavaScript. The slot is the control, which must point at the bubble with `aria-describedby` set
   to this `id`. Anything interactive belongs in a `Popup`. `class`, `style` and other attributes
-  go on the outer span.
+  go on the outer span. With `tooltip-enhance.js` (in `@oneonefour/rkui/enhance.js`), Escape hides
+  an open tooltip until the pointer or focus leaves it and comes back.
 
   @example
   <Tooltip id="save-tip" text="Save the file">

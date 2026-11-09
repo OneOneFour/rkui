@@ -11,6 +11,7 @@
 <script setup lang="ts">
 import { useAttrs } from 'vue'
 import PaintBrushIcon from '@oneonefour/rkui/icons/paint-brush.vue'
+import { useLiveValue } from '../../shared/live-value'
 import { splitAttrs } from '../../shared/split-attrs'
 
 defineOptions({ inheritAttrs: false })
@@ -26,6 +27,8 @@ const attrs = useAttrs()
 /** The input's value (`v-model`); the page's `value` attribute when left out. */
 const model = defineModel<string>()
 if (model.value === undefined) model.value = attrs.value as string | undefined
+// In the browser, the colour chosen before the input woke up wins.
+const vLiveValue = useLiveValue(model)
 
 /**
  * The page's attributes: `class` and `style` for the frame (`outer`), the rest for the input.
@@ -39,7 +42,13 @@ function pageAttrs() {
 
 <template>
   <span class="rkui-color-input" v-bind="pageAttrs().outer">
-    <input v-model="model" type="color" :aria-label="label" v-bind="pageAttrs().inner" />
+    <input
+      v-live-value
+      v-model="model"
+      type="color"
+      :aria-label="label"
+      v-bind="pageAttrs().inner"
+    />
     <PaintBrushIcon />
   </span>
 </template>

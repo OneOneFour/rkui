@@ -23,8 +23,10 @@ The package isn't on npm yet.
 
 ### Astro
 
-Add Vue to the site (`npx astro add vue`). Add this line to `src/env.d.ts`, so `astro check`
-accepts the form and link attributes rkui components hand on to their native elements:
+Add Vue to the site (`npx astro add vue`). A site that uses CodeBlock also installs `shiki`
+(`^4.0.0`), which highlights the code: it is an optional peer, so npm leaves it out. Add this line
+to `src/env.d.ts`, so `astro check` accepts the form and link attributes rkui components hand on to
+their native elements:
 
 ```ts
 /// <reference types="@oneonefour/rkui/astro-attributes" />

@@ -27,6 +27,9 @@ npm run dev         # builds dist/, then runs the docs site live on port 4321
 
 ## Using the Vue components in Astro
 
+A site that uses CodeBlock also installs `shiki` (`^4.0.0`), an optional peer that highlights the
+code; npm doesn't install it for you.
+
 Add `@astrojs/vue` to the site, with an app entrypoint that sets
 `app.config.throwUnhandledErrorInProduction = true` (as `site/src/vue-app.js` does). Without it, a
 component that throws while the site builds, such as a Tabs with no Tab, is left out of the page

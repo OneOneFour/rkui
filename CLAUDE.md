@@ -141,11 +141,12 @@ Every component follows these, so a site author learns them once:
     model holds, and that with `v-model` the parent's value is the starting value unless it is
     undefined; then `checked`, `selected`, `value` or the slot applies, on the server too, and is
     handed to the parent on mount.
-  - **Before it wakes up:** a form control in an interactive component puts `v-live-value` (or
+  - **Before it wakes up:** every form control with a `v-model` puts `v-live-value` (or
     `v-live-checked` on a checkbox or radio) first, before its `v-model`, so what was typed or
     chosen before it woke up, or restored by the browser, isn't written over
-    (`src/shared/live-value.ts`). It goes first because it must read the input before Vue's
-    `v-model` writes to it, which for a radio is as soon as it is created.
+    (`src/shared/live-value.ts`). A control with no JavaScript of its own (Input, Select) needs it
+    too, as it wakes up inside an interactive widget. It goes first because it must read the
+    control before Vue's `v-model` writes to it, which for a radio is as soon as it is created.
 - **Lists of things are child components, never an array prop.** Options and tabs are each one
   tag inside their group: `<Tabs label="Topics"><Tab label="One">…</Tab></Tabs>`, the same in MDX,
   `.astro` and `.vue`. A child marks its own state (`checked`, `selected`); where only one can

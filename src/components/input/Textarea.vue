@@ -14,6 +14,7 @@
 import { useAttrs, useSlots } from 'vue'
 import Field from '../field/Field.vue'
 import { useComponentId } from '../../shared/component-id'
+import { useLiveValue } from '../../shared/live-value'
 import { modelWithStart } from '../../shared/model-start'
 import { slotText } from '../../shared/slot-html'
 import { controlAttrs } from '../../shared/split-attrs'
@@ -42,6 +43,8 @@ const model = defineModel<string>()
 // Trimmed, as a textarea would otherwise show the indentation Prettier adds around it.
 const slots = useSlots()
 const text = modelWithStart(model, () => slotText(slots.default?.() ?? []).trim())
+// In the browser, what was typed before the textarea woke up wins.
+const vLiveValue = useLiveValue(text)
 const id = (attrs.id as string | undefined) ?? useComponentId('textarea')
 
 /**
@@ -56,6 +59,7 @@ function pageAttrs() {
 <template>
   <Field :label :for="id" :hint :error v-bind="pageAttrs().field">
     <textarea
+      v-live-value
       v-model="text"
       :class="['rkui-input', hover && `rkui-hover-${hover}`]"
       v-bind="pageAttrs().control"

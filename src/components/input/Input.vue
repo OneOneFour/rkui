@@ -15,6 +15,7 @@
 import { useAttrs } from 'vue'
 import Field from '../field/Field.vue'
 import { useComponentId } from '../../shared/component-id'
+import { useLiveValue } from '../../shared/live-value'
 import { controlAttrs } from '../../shared/split-attrs'
 
 defineOptions({ inheritAttrs: false })
@@ -41,6 +42,8 @@ const attrs = useAttrs()
 /** The input's value (`v-model`); the page's `value` attribute when left out. */
 const model = defineModel<string | number>()
 if (model.value === undefined) model.value = attrs.value as string | undefined
+// In the browser, what was typed before the input woke up wins.
+const vLiveValue = useLiveValue(model)
 const id = (attrs.id as string | undefined) ?? useComponentId('input')
 
 /**
@@ -56,6 +59,7 @@ function pageAttrs() {
 <template>
   <Field :label :for="id" :hint :error v-bind="pageAttrs().field">
     <input
+      v-live-value
       v-model="model"
       :class="['rkui-input', hover && `rkui-hover-${hover}`]"
       :type

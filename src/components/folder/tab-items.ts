@@ -7,7 +7,7 @@
  */
 
 /** One tab, as read back from the group's rendered slot. */
-export interface TabItem {
+interface TabItem {
   label: string
   selected: boolean
   /** The tab's rendered slot: its panel in Tabs. */

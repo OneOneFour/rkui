@@ -1,7 +1,7 @@
 import { arcPath, polarToCartesian, percentOfFace, radialLine } from './dial-geometry.js'
 
 /** Degrees of travel, centred on 12 o'clock, leaving a gap at the bottom. */
-export const SWEEP = 270
+const SWEEP = 270
 export const START_ANGLE = -SWEEP / 2
 export const END_ANGLE = SWEEP / 2
 
@@ -11,7 +11,7 @@ const TICK_OUTER_RADIUS = 94
 export const TRACK_RADIUS = 84
 const LIMIT_RADIUS = 86
 const LIMIT_ANGLE = 158
-export const RAMP_BLOCK_COUNT = 18
+const RAMP_BLOCK_COUNT = 18
 /** Degrees left empty between neighbouring ramp blocks */
 const RAMP_BLOCK_GAP = 3
 const RAMP_INNER_RADIUS = 74

@@ -53,7 +53,7 @@ if (model.value === undefined) {
 }
 // In the browser, the slider's own value wins: what was moved before the Range woke up, or a
 // starting value it clamped or snapped to a step.
-const vLiveValue = useLiveValue(model, (slider) => slider.valueAsNumber)
+const vLiveValue = useLiveValue(model)
 const id = (attrs.id as string | undefined) ?? useComponentId('range')
 
 /** The label the Field shows: `label`, with `readout`. */

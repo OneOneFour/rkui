@@ -84,20 +84,23 @@ const classes = computed(() => [
 /** The water level as a custom property, when it is set. */
 const vars = computed(() => (level === undefined ? {} : { '--rkui-water-level': level }))
 
-/** A toggle's attributes: `class` and `style` for the label (`outer`), the rest for the checkbox. */
-function toggleAttrs() {
+/**
+ * The page's attributes, for a toggle: `class` and `style` for the label (`outer`), the rest for
+ * the checkbox. A plain button or link takes them all.
+ */
+function pageAttrs() {
   return splitAttrs(attrs)
 }
 </script>
 
 <template>
-  <label v-if="toggle" :class="classes" :style="vars" v-bind="toggleAttrs().outer">
+  <label v-if="toggle" :class="classes" :style="vars" v-bind="pageAttrs().outer">
     <input
       v-live-checked
       v-model="on"
       class="rkui-visually-hidden"
       type="checkbox"
-      v-bind="toggleAttrs().inner"
+      v-bind="pageAttrs().inner"
     />
     <slot />
   </label>

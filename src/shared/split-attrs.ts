@@ -6,7 +6,7 @@ import { fieldAttrs } from './field-attrs'
  * A component's attributes, split. `class` and `style` are left out when the page didn't set them,
  * so an element that binds no style of its own gets no `style=""`.
  */
-export interface SplitAttrs {
+interface SplitAttrs {
   outer: Record<string, unknown>
   inner: Record<string, unknown>
 }
@@ -28,7 +28,7 @@ interface FieldText {
 }
 
 /** A form control's attributes, split around its Field. */
-export interface ControlAttrs {
+interface ControlAttrs {
   /** For the Field: `class` and `style` when it draws a frame (a label, hint or error). */
   field: Record<string, unknown>
   /**

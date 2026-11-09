@@ -68,7 +68,7 @@ if (model.value === undefined) {
 }
 // In the browser, the range's own value wins: what was typed before the dial woke up, or a
 // starting value it clamped or snapped to a step.
-const vLiveValue = useLiveValue(model, (range) => range.valueAsNumber)
+const vLiveValue = useLiveValue(model)
 const id = (attrs.id as string | undefined) ?? useComponentId('dial')
 const input = useTemplateRef<HTMLInputElement>('input')
 const face = useTemplateRef<HTMLElement>('face')
