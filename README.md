@@ -11,6 +11,7 @@ Published on npm as `@oneonefour/rkui` (not yet released).
 | Folder | What it is | Ships to sites? |
 |---|---|---|
 | `src/` | The library itself, one folder per component under `components/` (its CSS, its custom element script if it has one, and its Astro component), with `tokens/`, `base/` (fonts, type, base styles), `shared/` (helpers more than one component uses), `head-scripts/` (scripts to paste inline into `<head>`), `fonts/` and `icons/` (the icon set and sources) | yes |
+| `astro/` | The Astro integration, `@oneonefour/rkui/astro`: fenced code in MDX as CodeBlock, and dollar maths as Maths and Equation. It sits outside `src/`, which never imports Astro | yes |
 | `site/` | The docs and demo site: every component, with the theme, palette and shadow switches. An Astro app that imports the library as `@oneonefour/rkui/...`, as any site would | no |
 | `build/` | Node scripts that build `dist/`: the bundled CSS and JS, the type declarations and the icons | no |
 | `dist/` | The build output (not committed): `rkui.css`, `rkui.js`, `fonts/`, `icons/`, `types/` | yes |

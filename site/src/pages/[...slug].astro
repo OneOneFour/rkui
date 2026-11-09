@@ -1,11 +1,10 @@
 ---
 /**
- * Renders every docs page in src/content/docs/ with the docs layout. Fenced code renders through
- * CodeFence and a Markdown `>` quote as rkui's Quote.
+ * Renders every docs page in src/content/docs/ with the docs layout. A Markdown `>` quote renders
+ * as rkui's Quote; rkui's Astro integration renders fenced code (astro.config.js).
  */
 import { render } from 'astro:content'
 import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
-import CodeFence from '../components/CodeFence.astro'
 import DocsLayout from '../layouts/DocsLayout.astro'
 import { sortedPages, type DocsPage } from '../lib/pages'
 
@@ -27,5 +26,5 @@ const { Content } = await render(page)
 ---
 
 <DocsLayout page={page}>
-  <Content components={{ pre: CodeFence, blockquote: Quote }} />
+  <Content components={{ blockquote: Quote }} />
 </DocsLayout>

@@ -70,7 +70,6 @@ The demo gets three folder tabs: Preview (the demo, live), Astro (the file's sou
 | `src/components/Search.astro`        | the search box and its results                                    |
 | `pagefind-index.js`                  | builds the search index after `astro build`                       |
 | `src/components/Demo.astro`          | a demo in Preview / Astro / HTML tabs                             |
-| `src/components/CodeFence.astro`     | shows fenced code as rkui's code block                            |
 | `src/components/ColorPalette.astro`  | the clickable colour blocks on the Colours page                   |
 | `src/components/ModeSwitch.astro`    | the palette and shadow switches in the top bar                    |
 | `src/styles/docs.css`                | the site's own layout CSS                                         |

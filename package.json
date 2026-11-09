@@ -33,12 +33,17 @@
     "./head-scripts/*": "./src/head-scripts/*",
     "./icons/*": "./dist/icons/*",
     "./fonts/*": "./src/fonts/*",
+    "./astro": {
+      "types": "./astro/index.d.ts",
+      "default": "./astro/index.js"
+    },
     "./astro-attributes": {
       "types": "./src/shared/astro-attributes.d.ts"
     },
     "./package.json": "./package.json"
   },
   "files": [
+    "astro",
     "src",
     "dist",
     "THIRD_PARTY_NOTICES.md"
@@ -52,11 +57,19 @@
     "screenshots": "playwright test"
   },
   "peerDependencies": {
+    "@astrojs/mdx": "^8.1.0",
+    "astro": "^7.4.0",
     "katex": "^0.19.0",
     "shiki": "^4.0.0",
     "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {
+    "@astrojs/mdx": {
+      "optional": true
+    },
+    "astro": {
+      "optional": true
+    },
     "katex": {
       "optional": true
     },
