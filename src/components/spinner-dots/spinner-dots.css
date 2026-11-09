@@ -36,19 +36,19 @@
 
   transform: rotate(var(--rkui-orbit-turn)) translateY(var(--rkui-orbit-radius))
     rotate(calc(-1 * var(--rkui-orbit-turn)));
-  animation: rkui-orbit 1.2s ease-in-out infinite backwards;
+  animation: rkui-orbit var(--rkui-loop-steady) ease-in-out infinite backwards;
 }
 
 .rkui-spinner--orbit .rkui-spinner-dot:nth-child(2) {
   --rkui-orbit-turn: 0.333turn;
 
-  animation-delay: 0.12s;
+  animation-delay: var(--rkui-stagger);
 }
 
 .rkui-spinner--orbit .rkui-spinner-dot:nth-child(3) {
   --rkui-orbit-turn: 0.667turn;
 
-  animation-delay: 0.24s;
+  animation-delay: calc(2 * var(--rkui-stagger));
 }
 
 @keyframes rkui-orbit {
@@ -71,17 +71,17 @@
 /* One hop path for all three dots, each started a third of the way further along it. */
 .rkui-spinner--triangle .rkui-spinner-dot {
   translate: var(--rkui-corner-top);
-  animation: rkui-triangle-hop 1.8s var(--rkui-ease-snap) infinite;
+  animation: rkui-triangle-hop var(--rkui-loop-medium) var(--rkui-ease-snap) infinite;
 }
 
 .rkui-spinner--triangle .rkui-spinner-dot:nth-child(2) {
   translate: var(--rkui-corner-right);
-  animation-delay: -0.6s;
+  animation-delay: calc(var(--rkui-loop-medium) / -3);
 }
 
 .rkui-spinner--triangle .rkui-spinner-dot:nth-child(3) {
   translate: var(--rkui-corner-left);
-  animation-delay: -1.2s;
+  animation-delay: calc(var(--rkui-loop-medium) * -2 / 3);
 }
 
 @keyframes rkui-triangle-hop {
@@ -109,15 +109,15 @@
    then settle. */
 .rkui-spinner--squash .rkui-spinner-dot {
   transform-origin: 50% 100%;
-  animation: rkui-squash 0.9s infinite;
+  animation: rkui-squash var(--rkui-loop-short) infinite;
 }
 
 .rkui-spinner--squash .rkui-spinner-dot:nth-child(2) {
-  animation-delay: 0.15s;
+  animation-delay: var(--rkui-stagger);
 }
 
 .rkui-spinner--squash .rkui-spinner-dot:nth-child(3) {
-  animation-delay: 0.3s;
+  animation-delay: calc(2 * var(--rkui-stagger));
 }
 
 @keyframes rkui-squash {
@@ -162,6 +162,6 @@
   .rkui-spinner--orbit .rkui-spinner-dot,
   .rkui-spinner--triangle .rkui-spinner-dot,
   .rkui-spinner--squash .rkui-spinner-dot {
-    animation: rkui-spinner-fade 1.8s ease-in-out infinite alternate;
+    animation: rkui-spinner-fade var(--rkui-loop-medium) ease-in-out infinite alternate;
   }
 }

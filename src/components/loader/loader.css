@@ -32,7 +32,7 @@
   --rkui-ball-size: 0.875rem;
   --rkui-hop-height: 1.1rem;
   --rkui-loader-hop-length: 4rem;
-  --rkui-loader-hop-time: 0.6s;
+  --rkui-loader-hop-time: var(--rkui-loop-quick);
 
   block-size: calc(var(--rkui-ball-size) + var(--rkui-hop-height) + 0.25rem);
   border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
@@ -114,7 +114,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .rkui-loader-ball {
-    animation: rkui-spinner-fade 1.8s ease-in-out infinite alternate;
+    animation: rkui-spinner-fade var(--rkui-loop-medium) ease-in-out infinite alternate;
   }
 }
 

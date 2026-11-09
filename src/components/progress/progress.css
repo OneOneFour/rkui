@@ -77,13 +77,13 @@
   background:
     var(--rkui-stripes) 0 0 / var(--rkui-stripe-size) var(--rkui-stripe-size),
     var(--rkui-progress-fill);
-  animation: rkui-progress-stripes 0.6s linear infinite;
+  animation: rkui-progress-stripes var(--rkui-loop-quick) linear infinite;
 }
 
 .rkui-progress--flat:indeterminate {
   background: linear-gradient(var(--rkui-progress-fill) 0 0) 0 0 / 35% 100% no-repeat
     var(--rkui-progress-track);
-  animation: rkui-progress-slide 1.2s ease-in-out infinite alternate;
+  animation: rkui-progress-slide var(--rkui-loop-steady) ease-in-out infinite alternate;
 }
 
 @keyframes rkui-progress-stripes {
@@ -132,20 +132,15 @@
   background: var(--rkui-coral);
 }
 
-/* Under reduced motion, an indeterminate bar stays still and fades in and out instead. */
+/* Under reduced motion, an indeterminate bar stays still and fades in and out instead, like the
+   spinners (rkui-spinner-fade, spinner.css). */
 @media (prefers-reduced-motion: reduce) {
   .rkui-progress:indeterminate {
-    animation: rkui-progress-fade 2s ease-in-out infinite alternate;
+    animation: rkui-spinner-fade var(--rkui-loop-medium) ease-in-out infinite alternate;
   }
 
   .rkui-progress--flat:indeterminate {
     background-size: 100% 100%;
-  }
-}
-
-@keyframes rkui-progress-fade {
-  to {
-    opacity: 0.4;
   }
 }
 

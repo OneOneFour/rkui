@@ -24,6 +24,14 @@ all use, and plain HTML pages get custom elements registered from the same files
 `defineElement()`. The optional Astro integration (`rkui()`) renders fenced code and dollar maths
 in MDX with rkui's components.
 
+**Loops and staggers use the motion tokens** (Rob). Spinners, loaders, progress bars, water and
+the table's entrance time their loops with the `--rkui-loop-*` tokens and their staggers with
+`--rkui-stagger`, rather than durations of their own. Two loop tokens join, `--rkui-loop-quick`
+(0.6s) and `--rkui-loop-steady` (1.2s), and `--rkui-loop-medium` moves from 1.6s to 1.8s, the
+length the triangle spinner and the reduced-motion fade already used. The orbit spinner's dots
+start 0.15s apart instead of 0.12s, and an indeterminate progress bar under reduced motion takes
+the spinners' fade (1.8s, to 30%) instead of its own (2s, to 40%).
+
 ### 2026-11-08
 
 **Insets: two steps, ink then a grey shade, with the outline rim in dark** (Rob). Code blocks,
@@ -283,8 +291,6 @@ quotes. Each pick is one small change that deletes the losing variant and update
 - [ ] "Only clickable things lift and sink": stays, or changes. ("Motion")
 - [ ] Under reduced motion, illustrative loops stop while state loops fade: stays, or changes.
   ("Motion")
-- [ ] Loaders and spinners: time their loops with the `--rkui-loop-*` tokens, or keep their own.
-  ("Loading")
 
 **Picks among built options**
 - [ ] File input: A framed button and filename, or B drop panel. ("Special inputs")

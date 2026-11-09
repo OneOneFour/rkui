@@ -63,7 +63,7 @@ figcaption {
   display: block;
   box-sizing: border-box;
   border: var(--rkui-outline-width) solid var(--rkui-line);
-  animation: rkui-spinner-fade 1.8s ease-in-out infinite alternate;
+  animation: rkui-spinner-fade var(--rkui-loop-medium) ease-in-out infinite alternate;
 }
 
 .block {

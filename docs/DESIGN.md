@@ -441,7 +441,7 @@ Never decoration.
 | | Input response | Ambient loop |
 |---|---|---|
 | Starts | on input, same frame | by itself, while a state lasts |
-| Length | `--rkui-duration-fast` 120ms (hover, press); `--rkui-duration-spring` 180ms (toggles, snapping); `--rkui-duration-slide` 320ms (travel, panels) | `--rkui-loop-short` 0.9s; `--rkui-loop-medium` 1.6s; `--rkui-loop-long` 2.4s (fills); `--rkui-loop-panel` 4s (diagrams) |
+| Length | `--rkui-duration-fast` 120ms (hover, press); `--rkui-duration-spring` 180ms (toggles, snapping); `--rkui-duration-slide` 320ms (travel, panels) | `--rkui-loop-quick` 0.6s (a hop); `--rkui-loop-short` 0.9s (small busy marks); `--rkui-loop-steady` 1.2s (a turn, a rolling wave); `--rkui-loop-medium` 1.8s (a circuit, the reduced-motion fade); `--rkui-loop-long` 2.4s (fills); `--rkui-loop-panel` 4s (diagrams) |
 | Repeats | never | until the state ends or the reader pauses it |
 
 **Easing.** Plain `ease` for input responses; `linear` for steady travel; `ease-out` up and
@@ -475,7 +475,7 @@ share one period.
 
 **Reduced motion, forced colours, pausing.**
 - Reduced motion: the tokens zero durations and press/lift offsets. State loops (spinners, loaders,
-  pending panels) become a fade (`rkui-spinner-fade`, 1.8s); illustrative loops stop (this split is
+  pending panels) become a fade (`rkui-spinner-fade`, `--rkui-loop-medium`); illustrative loops stop (this split is
   open: DECISIONS).
 - Forced colours: `CanvasText` outlines, `Highlight` for lit parts, `Canvas` behind.
 - Self-moving content over five seconds, other than a loader, gets a pause control (WCAG 2.2.2):

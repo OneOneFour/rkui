@@ -52,7 +52,7 @@ import Motion from '@oneonefour/rkui/components/motion/Motion.vue'
 
 @media (prefers-reduced-motion: reduce) {
   .ball {
-    animation: rkui-spinner-fade 1.8s ease-in-out infinite alternate;
+    animation: rkui-spinner-fade var(--rkui-loop-medium) ease-in-out infinite alternate;
   }
 }
 </style>

@@ -56,8 +56,10 @@ options lift on hover without a click: a Table's `lift` and a StickyNote's `anim
 An ambient loop starts by itself and runs while a state lasts, until the state ends or the reader
 pauses it. One cycle is a loop token, and the loop holds still for at least a third of it:
 
+- `--rkui-loop-quick`, 0.6s: a hop, or a stripe's march.
 - `--rkui-loop-short`, 0.9s: small busy marks.
-- `--rkui-loop-medium`, 1.6s.
+- `--rkui-loop-steady`, 1.2s: a turn, or a rolling wave.
+- `--rkui-loop-medium`, 1.8s: a circuit, and the reduced-motion fade.
 - `--rkui-loop-long`, 2.4s: fills and sloshes.
 - `--rkui-loop-panel`, 4s: large areas and diagrams.
 
@@ -108,7 +110,7 @@ When the reader asks for reduced motion (`prefers-reduced-motion: reduce`):
 - the duration tokens become 0ms and the press and lift offsets 0px, so a transition timed with
   them happens at once and only the shadow changes;
 - loops that show a state (spinners, loaders, pending panels) stay in place and fade in and out,
-  with `rkui-spinner-fade` over 1.8s;
+  with `rkui-spinner-fade` over `--rkui-loop-medium`;
 - loops that only illustrate something stop.
 
 The loop tokens stay the same, so each looping animation has its own `prefers-reduced-motion`

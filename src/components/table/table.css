@@ -595,7 +595,7 @@ table.rkui-table--ledger {
   }
 
   .rkui-table[data-rkui-entrance='arrived'] tbody tr > * {
-    --rkui-table-column-delay: calc((sibling-index() - 1) / sibling-count() * 0.15s);
+    --rkui-table-column-delay: calc((sibling-index() - 1) / sibling-count() * var(--rkui-stagger));
   }
 
   .rkui-table[data-rkui-entrance='arrived'] td > .rkui-badge {
