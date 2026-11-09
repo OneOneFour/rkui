@@ -65,8 +65,9 @@ All in `src/tokens/` (`colors.css`, `palettes.css`, `space.css`, `motion.css`,
 
 Fills stay vivid in both themes. Every hue has `-deep` (text and links on the page) and `-tint`
 (panels carrying `--rkui-fg` text); tints flip to dark versions in dark mode so panels don't glare.
-The auxiliary hues come in vivid and pale pairs that share steps: grape and lilac, tangerine and
-apricot.
+The auxiliary hues come in vivid and pale pairs, grape and lilac, tangerine and apricot, and each
+has its own steps. A pale hue's fill is also its light tint and its dark deep, as sky's is; the
+vivid partner's tint is a stronger wash than the pale fill.
 
 | Hue | Fill (light / dark) | `-deep` | `-tint` | Label |
 |---|---|---|---|---|
@@ -76,10 +77,10 @@ apricot.
 | yellow | `#f4bc38` | `#856000` / `#f7d27a` | `#fbdf94` / `#4a3e18` | `--rkui-on-fill` |
 | green | `#7bba3d` / `#86c44a` | `#3a7016` / `#a3d977` | `#c8e5a8` / `#2a4220` | `--rkui-on-fill` |
 | sky | `#8fd3f7` | `#216b9a` / `#8fd3f7` | `#8fd3f7` / `#1e3a50` | `--rkui-on-fill` |
-| grape | `#7b4fc9` / `#a584e6` | `#7b4fc9` / `#b89cf0` | = `--rkui-lilac-tint` | `--rkui-on-grape` |
-| lilac | `#d4c4f5` | = `--rkui-grape-deep` | `#d4c4f5` / `#342c55` | `--rkui-on-fill` |
-| tangerine | `#f58a2a` / `#f5923a` | `#a14c0a` / `#f8a65c` | = `--rkui-apricot-tint` | `--rkui-on-fill` |
-| apricot | `#ffd2a6` | = `--rkui-tangerine-deep` | `#ffd2a6` / `#4a3324` | `--rkui-on-fill` |
+| grape | `#7b4fc9` / `#a584e6` | `#7b4fc9` / `#b89cf0` | `#c8b2ff` / `#4a306b` | `--rkui-on-grape` |
+| lilac | `#d4c4f5` | `#685796` / `#d4c4f5` | `#d4c4f5` / `#342c55` | `--rkui-on-fill` |
+| tangerine | `#f58a2a` / `#f5923a` | `#a14c0a` / `#f8a65c` | `#feb98f` / `#603714` | `--rkui-on-fill` |
+| apricot | `#ffd2a6` | `#7f512d` / `#ffd2a6` | `#ffd2a6` / `#4a3324` | `--rkui-on-fill` |
 
 - `--rkui-on-fill` = `--rkui-ink`. `--rkui-on-coral` and `--rkui-on-grape` are `#ffffff` in light mode, ink in dark.
 - **`--rkui-coral-solid`** = `--rkui-coral-deep` light, `--rkui-coral` dark: coral for fills with small text.

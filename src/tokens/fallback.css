@@ -38,6 +38,8 @@
     --rkui-sky-deep: #216b9a;
     --rkui-grape-deep: #7b4fc9;
     --rkui-tangerine-deep: #a14c0a;
+    --rkui-lilac-deep: #685796;
+    --rkui-apricot-deep: #7f512d;
 
     --rkui-navy-tint: #c7d5e6;
     --rkui-teal-tint: #a6dfe3;
@@ -45,14 +47,16 @@
     --rkui-yellow-tint: #fbdf94;
     --rkui-green-tint: #c8e5a8;
     --rkui-sky-tint: #8fd3f7;
+    --rkui-grape-tint: #c8b2ff;
     --rkui-lilac-tint: #d4c4f5;
+    --rkui-tangerine-tint: #feb98f;
     --rkui-apricot-tint: #ffd2a6;
 
     --rkui-note-yellow: var(--rkui-yellow-tint);
-    --rkui-note-tangerine: var(--rkui-apricot-tint);
+    --rkui-note-tangerine: var(--rkui-tangerine-tint);
     --rkui-note-green: var(--rkui-green-tint);
     --rkui-note-coral: var(--rkui-coral-tint);
-    --rkui-note-grape: var(--rkui-lilac-tint);
+    --rkui-note-grape: var(--rkui-grape-tint);
 
     --rkui-slate: #e7ebf3;
     --rkui-slate-tab: #dbe0ea;
