@@ -1,8 +1,9 @@
 /* Loader: an indeterminate bar with more character than the progress bar's. Like the spinners,
    give it role="status" and a visually hidden label.
-   .rkui-loader--hop: a ball hops back and forth along a line, squashing as it lands. Set
-     --rkui-loader-fill to recolour it, and put an icon in a .rkui-loader-ball child to have it ride
-     in a bigger ball.
+   .rkui-loader--hop: a ball hops back and forth along a line, squashing as it lands. Each hop
+     covers about --rkui-hop-length, so a wider loader takes more hops, and the ball always lands
+     at each end. Set --rkui-loader-fill to recolour it, and put an icon in the ball to have it
+     ride in a bigger one.
    Under reduced motion nothing moves: the ball fades in and out instead.
 
    <div class="rkui-loader rkui-loader--hop" role="status"
@@ -23,36 +24,50 @@
   container-type: inline-size;
 }
 
-/* Hop has no track, only the ground. The ball is the loader's ::before, or a .rkui-loader-ball
-   holding an icon. Set --rkui-loader-fill on the loader for the ball's colour, and
-   --rkui-loader-on-fill for its icon's. The ball travels, hops and squashes in three animations;
-   four hops take it from one end to the other. */
+/* Hop has no track, only the ground. Set --rkui-loader-fill on the loader for the ball's colour,
+   and --rkui-loader-on-fill for its icon's. */
 .rkui-loader--hop {
   --rkui-loader-fill: var(--rkui-teal);
   --rkui-loader-on-fill: var(--rkui-on-fill);
   --rkui-ball-size: 0.875rem;
   --rkui-hop-height: 1.1rem;
+  --rkui-hop-length: 4rem;
+  --rkui-hop-time: 0.6s;
 
   block-size: calc(var(--rkui-ball-size) + var(--rkui-hop-height) + 0.25rem);
   border-block-end: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
 }
 
-.rkui-loader--hop::before {
-  content: '';
-}
-
-.rkui-loader--hop:has(> .rkui-loader-ball) {
+.rkui-loader--hop:has(> .rkui-loader-ball > .rkui-icon) {
   --rkui-ball-size: 1.5rem;
 }
 
-.rkui-loader--hop:has(> .rkui-loader-ball)::before {
-  content: none;
-}
-
+/* The ball travels and hops in two animations. A hop lands every --rkui-hop-time, and a crossing
+   takes a whole number of hops: the travel over --rkui-hop-length, rounded, at least one.
+   tan(atan2(a, b)) is a / b as a plain number. --rkui-ball-edge leaves room for the squash at
+   each end. */
 .rkui-loader-ball {
+  --rkui-ball-edge: calc(var(--rkui-ball-size) * 0.15);
+  --rkui-ball-travel: calc(100cqi - var(--rkui-ball-size) - 2 * var(--rkui-ball-edge));
+  --rkui-hops: max(1, round(tan(atan2(var(--rkui-ball-travel), var(--rkui-hop-length)))));
+
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
   display: grid;
   place-items: center;
+  box-sizing: border-box;
+  inline-size: var(--rkui-ball-size);
+  block-size: var(--rkui-ball-size);
+  border: var(--rkui-outline-width) solid var(--rkui-loader-edge);
+  border-radius: 50%;
+  background: var(--rkui-loader-fill);
   color: var(--rkui-loader-on-fill);
+  transform-origin: 50% 100%;
+  translate: calc(50cqi - 50%) 0;
+  animation:
+    rkui-hop-travel calc(var(--rkui-hops) * var(--rkui-hop-time)) linear infinite alternate,
+    rkui-hop var(--rkui-hop-time) infinite;
 }
 
 .rkui-loader-ball .rkui-icon {
@@ -63,31 +78,13 @@
   color: inherit;
 }
 
-.rkui-loader--hop::before,
-.rkui-loader-ball {
-  position: absolute;
-  inset-block-end: 0;
-  inset-inline-start: 0;
-  box-sizing: border-box;
-  inline-size: var(--rkui-ball-size);
-  block-size: var(--rkui-ball-size);
-  border: var(--rkui-outline-width) solid var(--rkui-loader-edge);
-  border-radius: 50%;
-  background: var(--rkui-loader-fill);
-  transform-origin: 50% 100%;
-  translate: calc(50cqi - 50%) 0;
-  animation:
-    rkui-hop-travel 2.4s linear infinite alternate,
-    rkui-hop 0.6s infinite;
-}
-
 @keyframes rkui-hop-travel {
   from {
-    translate: 0 0;
+    translate: var(--rkui-ball-edge) 0;
   }
 
   to {
-    translate: calc(100cqi - 100%) 0;
+    translate: calc(var(--rkui-ball-edge) + var(--rkui-ball-travel)) 0;
   }
 }
 
@@ -115,7 +112,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rkui-loader--hop::before,
   .rkui-loader-ball {
     animation: rkui-spinner-fade 1.8s ease-in-out infinite alternate;
   }

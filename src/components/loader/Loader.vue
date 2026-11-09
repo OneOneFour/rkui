@@ -1,8 +1,9 @@
 <!--
-  The hop loader: a ball hops back and forth along a line, squashing as it lands. Give it a `color`, or
-  an icon to ride in a bigger ball (the slot: an icon with class "rkui-icon"). A busy indicator with
-  `role="status"`; the label is read out, not shown. `class`, `style` and other attributes go on the
-  `<div>`.
+  The hop loader: a ball hops back and forth along a line, squashing as it lands. Each hop covers
+  about the same distance (`--rkui-hop-length`), so a wider loader takes more hops. Give it a
+  `color`, or an icon to ride in a bigger ball (the slot: an icon with class "rkui-icon"). A busy
+  indicator with `role="status"`; the label is read out, not shown. `class`, `style` and other
+  attributes go on the `<div>`.
 
   @example
   <Loader color="coral" label="Fetching…"><StarIcon class="rkui-icon" aria-hidden="true" /></Loader>
@@ -32,7 +33,7 @@ function vars() {
 
 <template>
   <div class="rkui-loader rkui-loader--hop" role="status" :style="vars()">
-    <span v-if="$slots.default" class="rkui-loader-ball"><slot /></span>
+    <span class="rkui-loader-ball"><slot /></span>
     <span class="rkui-visually-hidden">{{ label }}</span>
   </div>
 </template>

@@ -235,11 +235,9 @@ const BALLS = [
           `--rkui-loader-fill: var(--rkui-${fill})${onFill ? `; --rkui-loader-on-fill: var(--rkui-${onFill})` : ''}`
         }
       >
-        {Icon && (
-          <span class="rkui-loader-ball">
-            <Icon class="rkui-icon" aria-hidden="true" />
-          </span>
-        )}
+        <span class="rkui-loader-ball">
+          {Icon && <Icon class="rkui-icon" aria-hidden="true" />}
+        </span>
         <span class="rkui-visually-hidden">Loading…</span>
       </div>
     </Specimen>
