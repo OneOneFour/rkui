@@ -1,0 +1,19 @@
+/* Exploded lamp: a Lamp with a switch under it that takes it apart. The switch does nothing until
+   the component runs in the browser and sets data-rkui-live, so until then it is hidden, with its
+   space kept so nothing shifts.
+
+   <div class="rkui-exploded-lamp" data-rkui-live>
+     <div class="rkui-lamp">…</div>
+     <label class="rkui-check"><input class="rkui-switch" type="checkbox" role="switch" /> Take it
+       apart</label>
+   </div> */
+
+.rkui-exploded-lamp {
+  display: grid;
+  justify-items: start;
+  gap: var(--rkui-space-4);
+}
+
+.rkui-exploded-lamp:not([data-rkui-live]) > .rkui-check {
+  visibility: hidden;
+}

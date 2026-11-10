@@ -1,6 +1,6 @@
 ---
 title: Quote
-description: Quoted text on a panel, in the slab serif.
+description: Quoted text on a panel.
 group: Containers
 order: 75
 component: Quote
@@ -12,9 +12,7 @@ import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
 import TryIt from '../../examples/quote/TryIt.vue'
 import tryItCode from '../../examples/quote/TryIt.vue?raw'
 
-`Quote` renders a `<blockquote>` on a panel, in Roboto Slab. It is as wide as its column,
-with no indent, so its edges line up with the text around it, and it keeps the same space above
-and below. With `by`, the attribution goes under the quote in a `<figcaption>`.
+`by` puts an attribution under the quote.
 
 <Demo label="Quote with an attribution" stack>
   <Quote by="Ada Lovelace, 1843">
@@ -27,11 +25,7 @@ and below. With `by`, the attribution goes under the quote in a `<figcaption>`.
 
 ## Short quotes
 
-A quote whose text fits on one line is set two steps larger (`--rkui-step-2`), and one of two
-lines a step larger (`--rkui-step-1`), by the helper script `quote-enhance.js`. It measures each quote at the normal size, in the column it sits in, so
-the same quote can be larger in a wide column and normal on a phone, where it wraps to three lines
-or more. Its padding and the space around it stay the same. Without the script, every quote keeps
-the normal size.
+With the helper script `quote-enhance.js`, a quote of one or two lines is set larger.
 
 <Demo label="A short quote and a long one" stack>
   <Quote by="Short">
@@ -46,8 +40,7 @@ the normal size.
   </Quote>
 </Demo>
 
-`short` sets a quote two steps larger whatever its length, for a pull quote that should stay large
-on a phone too.
+`short` sets a quote two steps larger, whatever its length.
 
 <Demo label="A short quote that stays large" stack>
   <Quote short by="Short">
@@ -57,8 +50,7 @@ on a phone too.
 
 ## Try it
 
-Type a quote and an attribution to see them render. A blank line starts a new paragraph. The quote
-turns larger while it is under three lines, and back as it grows.
+Type a quote and an attribution to see them render.
 
 <Demo vue={tryItCode} label="Quote that renders as you type" stack widget>
   <TryIt client:visible />
@@ -79,8 +71,7 @@ turns larger while it is under three lines, and back as it grows.
 
 ## Slant
 
-A quote is upright by default. Roboto Slab has no italic, so `slant="italic"` has the browser slant
-its upright letters. Emphasis inside an italic quote turns upright.
+`slant="italic"` slants the quote.
 
 <Demo label="Upright and italic quotes" stack>
   <Quote by="Upright">
@@ -101,13 +92,11 @@ On this site a Markdown `>` quote renders as a `Quote`:
 
 > How vexingly quick daft zebras jump.
 
-A site does the same by mapping `blockquote` to `Quote` where it renders its Markdown and MDX:
+A site maps `blockquote` to `Quote` where it renders its Markdown and MDX:
 
 ```astro
 ---
 import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
-import TryIt from '../../examples/quote/TryIt.vue'
-import tryItCode from '../../examples/quote/TryIt.vue?raw'
 const { Content } = await render(entry)
 ---
 
@@ -118,12 +107,10 @@ or in one MDX file:
 
 ```mdx
 import Quote from '@oneonefour/rkui/components/quote/Quote.vue'
-import TryIt from '../../examples/quote/TryIt.vue'
-import tryItCode from '../../examples/quote/TryIt.vue?raw'
 export const components = { blockquote: Quote }
 ```
 
-A Markdown quote has no `by`; write `<Quote by="…">` for an attribution.
+A Markdown quote has no `by`.
 
 ## Reference
 

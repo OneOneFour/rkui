@@ -1,6 +1,6 @@
 ---
 title: Code block
-description: Highlighted code on a panel, with an optional caption and a copy button.
+description: Highlighted code on a panel, with a copy button.
 group: Containers
 order: 76
 component: CodeBlock
@@ -9,6 +9,7 @@ component: CodeBlock
 import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
+import TextToCome from '../../components/TextToCome.astro'
 import Default from '../../examples/code-block/Default.vue'
 import defaultCode from '../../examples/code-block/Default.vue?raw'
 import NoTitle from '../../examples/code-block/NoTitle.vue'
@@ -24,19 +25,14 @@ import editorCode from '../../examples/code-block/Editor.vue?raw'
   <Default client:visible />
 </Demo>
 
-The code goes in the slot, and is trimmed. A short line can be written as it is
-(`<CodeBlock lang="shell">npm install</CodeBlock>`). Vue, Astro and MDX all tidy the white space
-in text written between tags, so longer code goes in as a string, which keeps every space and line
-break: `{{ code }}` in a `.vue` file, `{code}` in Astro and MDX.
+The code goes in the slot. Code longer than a line goes in as a string: `{{ code }}` in a `.vue`
+file, `{code}` in Astro and MDX.
 
 ## Highlighting
 
-Shiki highlights the code when the page is built, on the server, so the page ships no highlighter.
-`lang` is a Shiki language id; one Shiki doesn't know is shown as plain text. Shiki's
-`css-variables` theme marks each token with a CSS variable, which `code.css` maps onto the
-`--rkui-code-*` colour tokens, so the colours follow the theme and the light or dark mode. A site
-that uses CodeBlock installs `shiki`. In the browser the block never highlights: one that a Vue
-app draws there, or whose code changes there, shows plain text.
+A site that uses CodeBlock installs `shiki`. `lang` is a Shiki language id.
+
+<TextToCome />
 
 ## No title area
 
@@ -48,8 +44,7 @@ Leave out `label`: the copy button sits in the code's corner.
 
 ## Copy on hover
 
-With `copy="hover"`, the copy button rolls in from the top while the pointer is over the block,
-or focus is inside it. On a touch screen it is always there.
+With `copy="hover"`, the copy button shows while the pointer is over the block.
 
 <Demo vue={hoverCode} label="Code blocks whose copy button shows on hover" stack>
   <Hover client:visible />
@@ -57,7 +52,7 @@ or focus is inside it. On a touch screen it is always there.
 
 ## No copy button
 
-With `copy="never"` there is no button, and the block needs no JavaScript.
+With `copy="never"` there is no copy button.
 
 <Demo vue={noCopyCode} label="Code block with no copy button" stack>
   <NoCopy />
@@ -73,10 +68,7 @@ With `copy="never"` there is no button, and the block needs no JavaScript.
 
 ## Long lines
 
-A long line scrolls sideways, with dots at the edges; `dots="pill"` puts them in pills (see
-[Scroll](../scroll/)).
-`bar` keeps the scrollbar in view instead, with no dots; a plain HTML page writes it as the class
-`rkui-scroll--bar` on the `<pre>`.
+A long line scrolls sideways (see [Scroll](../scroll/)). `bar` keeps the scrollbar in view.
 
 <Demo label="Code block with a scrollbar that stays" stack>
   <CodeBlock lang="shell" copy="never" bar>
@@ -86,13 +78,7 @@ A long line scrolls sideways, with dots at the edges; `dots="pill"` puts them in
 
 ## Language mark
 
-The caption starts with a mark for the language: the site's logo in the `logo` slot, else the
-library's file-type icon for the language, else the file extension as text. rkui holds no brand
-logos. These docs take theirs from the `simple-icons` package, drawn in the caption's flat grey,
-as the demo at the top of the page does, so a site without them shows the file-type icon or the
-extension text instead. A fence that the Astro integration renders
-([Getting started](../#fenced-code-and-maths-in-mdx)) has no logo slot, so it always shows the
-icon or the extension.
+<TextToCome />
 
 ## Reference
 

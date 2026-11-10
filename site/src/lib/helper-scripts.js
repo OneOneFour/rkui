@@ -1,48 +1,40 @@
 /**
- * The library's helper scripts (src/**\/*-enhance.js), for the badges on a component's page: what
- * each one does, in a few words, the one browser it matters in (if only one), and the components
- * it serves. Keep each list in step with the CSS its script serves; the build stops if a helper
- * script is missing here.
+ * The library's helper scripts (src/**\/*-enhance.js), for the badges on a component's page: the
+ * components each one serves. Keep each list in step with the CSS its script serves; the build
+ * stops if a helper script is missing here.
  */
 const HELPERS = {
   // The focus band on radio groups, in Safari (interactive.css).
-  'interactive-enhance.js': {
-    label: 'Safari focus fix',
-    browser: 'safari',
-    serves: [
-      'Ballot',
-      'ChipGroup',
-      'ColorPicker',
-      'Folder',
-      'Radio',
-      'Segmented',
-      'ThemeToggle',
-      'Tiles',
-    ],
-  },
+  'interactive-enhance.js': [
+    'Ballot',
+    'ChipGroup',
+    'ColorPicker',
+    'Folder',
+    'Radio',
+    'Segmented',
+    'ThemeToggle',
+    'Tiles',
+  ],
   // An Alert's opening and closing buttons, and closedby="none", in Safari before 26.2.
-  'alert-enhance.js': { label: 'Safari dialog fix', browser: 'safari', serves: ['Alert'] },
+  'alert-enhance.js': ['Alert'],
   // A drawer's close animation, in Safari (drawer.css), and Escape to shut a remote drawer.
-  'drawer-enhance.js': { label: 'Escape and Safari close', serves: ['Cabinet', 'Drawer'] },
+  'drawer-enhance.js': ['Cabinet', 'Drawer'],
   // The chosen files' names inside a drop panel, cleared when its form is reset.
-  'file-enhance.js': { label: 'Shows the chosen file names', serves: ['File'] },
+  'file-enhance.js': ['File'],
   // A folder strip's bar while its tabs don't fit, and how many tabs a collapsing strip shows.
-  'folder-enhance.js': { label: 'Strip bar and collapse', serves: ['Folder', 'Pagination'] },
+  'folder-enhance.js': ['Folder', 'Pagination'],
   // The "more" dots on scroll regions, without scroll-driven animations (overflow.css): Safari
   // before 26 and Firefox before 159.
-  'overflow-enhance.js': {
-    label: 'Scroll dots in older browsers',
-    serves: ['CodeBlock', 'Equation', 'Folder', 'Pagination', 'Scroll', 'Table'],
-  },
+  'overflow-enhance.js': ['CodeBlock', 'Equation', 'Folder', 'Pagination', 'Scroll', 'Table'],
   // Sets a quote under three lines a step larger.
-  'quote-enhance.js': { label: 'Short quotes larger', serves: ['Quote'] },
+  'quote-enhance.js': ['Quote'],
   // Opens a sidebar scrolled to its current page, without scroll-initial-target (Safari and
   // Firefox).
-  'sidebar-enhance.js': { label: 'Scrolls to the current page', serves: ['Sidebar'] },
+  'sidebar-enhance.js': ['Sidebar'],
   // A table's entrance, and its header band's measurements.
-  'table-enhance.js': { label: 'Table entrance', serves: ['Table'] },
+  'table-enhance.js': ['Table'],
   // Escape to hide an open tooltip.
-  'tooltip-enhance.js': { label: 'Escape hides it', serves: ['Tooltip'] },
+  'tooltip-enhance.js': ['Tooltip'],
 }
 
 // Only the file names are read, to check the list above; nothing is imported.
@@ -52,13 +44,10 @@ for (const path of Object.keys(import.meta.glob('../../../src/**/*-enhance.js'))
 }
 
 /**
- * The helper scripts a component uses, e.g. 'Table' → the entries for overflow-enhance.js and
- * table-enhance.js.
+ * The helper scripts a component uses, e.g. 'Table' → ['overflow-enhance.js', 'table-enhance.js'].
  * @param {string} component the component's name
- * @returns {{ script: string, label: string, browser?: string }[]}
+ * @returns {string[]}
  */
 export function helpersFor(component) {
-  return Object.entries(HELPERS)
-    .filter(([, helper]) => helper.serves.includes(component))
-    .map(([script, { label, browser }]) => ({ script, label, browser }))
+  return Object.keys(HELPERS).filter((script) => HELPERS[script].includes(component))
 }

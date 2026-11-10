@@ -61,11 +61,13 @@ for (const { path, theme, palette, shadow, highlight } of SHOTS) {
       [theme, palette, shadow, highlight],
     )
     await page.goto(path)
-    // Wait until every island on screen has woken up (Astro drops `ssr` once it has hydrated).
+    // Wait until every island on screen has woken up (Astro drops `ssr` once it has hydrated). An
+    // island is `display: contents`, so its first child is measured; one with no size, such as a
+    // code block in a folder's hidden tab, isn't shown and never wakes up.
     await page.waitForFunction(() =>
       [...document.querySelectorAll('astro-island[ssr]')].every((island) => {
-        const box = island.getBoundingClientRect()
-        return box.bottom < 0 || box.top > innerHeight
+        const box = island.firstElementChild?.getBoundingClientRect()
+        return !box || box.width === 0 || box.bottom < 0 || box.top > innerHeight
       }),
     )
     await page.screenshot({ path: `screenshots/${name}.png`, fullPage: false })

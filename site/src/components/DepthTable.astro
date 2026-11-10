@@ -1,0 +1,37 @@
+---
+/**
+ * A table of the shadow lengths that grow with depth (tokens.js): each token's name, and its
+ * length at normal depth and with `data-depth="deep"`.
+ */
+import Table from '@oneonefour/rkui/components/table/Table.vue'
+import { depthLengths } from '../lib/tokens.js'
+
+const lengths = depthLengths()
+---
+
+<Table caption="Shadow lengths by depth" small class="depth-table">
+  <thead>
+    <tr>
+      <th scope="col">Token</th>
+      <th scope="col">Normal</th>
+      <th scope="col">Deep</th>
+    </tr>
+  </thead>
+  <tbody>
+    {lengths.map(({ name, normal, deep }) => (
+      <tr>
+        <th scope="row">
+          <code>{name}</code>
+        </th>
+        <td>{normal}px</td>
+        <td>{deep}px</td>
+      </tr>
+    ))}
+  </tbody>
+</Table>
+
+<style>
+  .depth-table {
+    margin-block: var(--rkui-space-5);
+  }
+</style>

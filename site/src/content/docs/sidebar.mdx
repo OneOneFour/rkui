@@ -8,6 +8,7 @@ component: Sidebar
 
 import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
+import TextToCome from '../../components/TextToCome.astro'
 import Sidebar from '@oneonefour/rkui/components/sidebar/Sidebar.vue'
 import SidebarGroup from '@oneonefour/rkui/components/sidebar/SidebarGroup.vue'
 import SidebarLink from '@oneonefour/rkui/components/sidebar/SidebarLink.vue'
@@ -30,10 +31,7 @@ import House from '@oneonefour/rkui/icons/house.vue'
 import PenNib from '@oneonefour/rkui/icons/pen-nib.vue'
 import Rocket from '@oneonefour/rkui/icons/rocket.vue'
 
-Groups of links, each a child component. The page gives the sidebar its height; when its links
-don't fit, it scrolls, with hints at its edges and a scrollbar on hover and focus. `variant`
-picks the look; slab type, bold links, columns, link colours and icons work with any of them. `dots="pill"` puts the
-hints in pills, as the card's are (see [Scroll](../scroll/)).
+<TextToCome />
 
 <Demo label="A short sidebar" stack>
   <Sidebar label="Short example" style="max-inline-size: 16rem">
@@ -52,7 +50,7 @@ hints in pills, as the card's are (see [Scroll](../scroll/)).
 
 ## A: Plain
 
-The page's own colour, with dots at the edges; the current page is a tinted pill on a slab.
+The default look, `variant="plain"`.
 
 <Demo vue={plainCode} label="Plain sidebar" stack>
   <Plain />
@@ -60,7 +58,7 @@ The page's own colour, with dots at the edges; the current page is a tinted pill
 
 ## B: Card
 
-A raised card whose headings lift into slabs as they stick, with tabs on its edges.
+`variant="card"`.
 
 <Demo vue={cardCode} label="Card sidebar" stack>
   <Card />
@@ -68,7 +66,7 @@ A raised card whose headings lift into slabs as they stick, with tabs on its edg
 
 ## C: Folders
 
-Each group is a small folder whose tab sticks to the top while you scroll through it.
+`variant="folders"`.
 
 <Demo vue={foldersCode} label="Folders sidebar" stack>
   <Folders />
@@ -76,7 +74,7 @@ Each group is a small folder whose tab sticks to the top while you scroll throug
 
 ## D: Deck
 
-Every link is a raised key that pops on hover; the current page is pushed in.
+`variant="deck"`.
 
 <Demo vue={deckCode} label="Deck sidebar" stack>
   <Deck />
@@ -84,7 +82,7 @@ Every link is a raised key that pops on hover; the current page is pushed in.
 
 ## E: Note
 
-A taped sticky note with sticking slab headings; the current page is an ink pill.
+`variant="note"`.
 
 <Demo vue={noteCode} label="Note sidebar" stack>
   <Note />
@@ -92,20 +90,8 @@ A taped sticky note with sticking slab headings; the current page is an ink pill
 
 ## With any look
 
-Each look also takes these:
-
-- `slab` on the Sidebar sets its header, headings and links in the slab serif.
-- `selected-slab` on the Sidebar sets only the current page's link in the slab serif, and the
-  other links in the UI font. Headings keep the look's own type.
-- `bold` on the Sidebar sets its links bolder (weight 600).
-- `columns` on the Sidebar lets each group's links flow into several columns when the sidebar is
-  wide, as when it stacks above the page on a phone; a narrow sidebar keeps one column.
-- `hue` on a SidebarLink gives the link its own colour, such as the section colour of the page it
-  leads to. It fills the link's icon, and the link itself when it is the current page, in the
-  look's own shape. Other links keep the page's text colour.
-- An icon in a SidebarLink's `icon` slot sits before its text.
-- The `header` slot stays above the links, for a site's name and tagline, and a SidebarGroup
-  needs no heading.
+`slab`, `selected-slab`, `bold` and `columns` on the Sidebar, and `hue` and the `icon` slot on a
+SidebarLink, work with every look.
 
 <Demo vue={everyLookCode} label="Every look with slab type, link colours and icons">
   <EveryLook />
@@ -117,11 +103,8 @@ Each look also takes these:
 
 ## A site's own nav
 
-The plain look on a sky panel (`--rkui-sidebar-panel`), with slab type, bold links, a header, one
-group with no heading, and a colour and an icon for each link. With `columns` the links flow into
-columns here, where the sidebar is as wide as the demo; in a narrow column they stay in one. In a flex column,
-like this demo's, the sidebar needs an inline size, or the browser keeps the height of one column. The
-[header band](../header-band/) page shows it in a site frame.
+The plain look on a sky panel (`--rkui-sidebar-panel`), with `slab`, `bold`, `columns`, a header,
+and a hue and an icon on each link.
 
 <Demo label="A site's own nav" stack>
   <Sidebar

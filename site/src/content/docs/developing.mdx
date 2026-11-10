@@ -1,0 +1,152 @@
+---
+title: Developing new components
+description: Two worked examples in Vue, a static component and an interactive one.
+group: Start
+order: 1
+---
+
+import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
+import Folder from '@oneonefour/rkui/components/folder/Folder.vue'
+import Tab from '@oneonefour/rkui/components/folder/Tab.vue'
+import '../../examples/developing/definition/definition.css'
+import '../../examples/developing/lamp/lamp-part.css'
+import '../../examples/developing/lamp/lamp.css'
+import '../../examples/developing/lamp/exploded-lamp.css'
+import UseDefinition from '../../examples/developing/definition/UseDefinition.vue'
+import useDefinitionCode from '../../examples/developing/definition/UseDefinition.vue?raw'
+import definitionCode from '../../examples/developing/definition/Definition.vue?raw'
+import definitionCss from '../../examples/developing/definition/definition.css?raw'
+import LampParts from '../../examples/developing/lamp/LampParts.vue'
+import lampPartsCode from '../../examples/developing/lamp/LampParts.vue?raw'
+import lampPartCode from '../../examples/developing/lamp/LampPart.vue?raw'
+import lampPartCss from '../../examples/developing/lamp/lamp-part.css?raw'
+import LampStates from '../../examples/developing/lamp/LampStates.vue'
+import lampStatesCode from '../../examples/developing/lamp/LampStates.vue?raw'
+import lampCode from '../../examples/developing/lamp/Lamp.vue?raw'
+import lampCss from '../../examples/developing/lamp/lamp.css?raw'
+import lampDrawingCode from '../../examples/developing/lamp/lamp-drawing.ts?raw'
+import UseExplodedLamp from '../../examples/developing/lamp/UseExplodedLamp.vue'
+import useExplodedLampCode from '../../examples/developing/lamp/UseExplodedLamp.vue?raw'
+import explodedLampCode from '../../examples/developing/lamp/ExplodedLamp.vue?raw'
+import explodedLampCss from '../../examples/developing/lamp/exploded-lamp.css?raw'
+
+A component is a `.vue` file and a `.css` file beside it, in `src/components/<name>/`. Its CSS
+joins the list in `src/index.css`, and its docs page goes in `site/src/content/docs/`. The examples
+on this page live in `site/src/examples/developing/`, so they import the library by its package
+name.
+
+## A static component: Definition
+
+A dictionary entry: the word across the column, its pronunciation and part of speech under it,
+and its meaning.
+
+### 1. Props and template
+
+`interface Props` lists the props, each with a comment saying its default. The word's length goes
+to the CSS as a custom property, from a `computed`.
+
+<Folder label="Definition: props and template" class="docs-files">
+  <Tab label="Definition.vue">
+    <CodeBlock client:visible lang="vue" copy="hover">{definitionCode}</CodeBlock>
+  </Tab>
+</Folder>
+
+### 2. Styles from tokens
+
+Every colour, space and font is a token. The word's size is the column's width shared between
+its letters.
+
+<Folder label="Definition: styles" class="docs-files">
+  <Tab label="definition.css">
+    <CodeBlock client:visible lang="css" copy="hover">{definitionCss}</CodeBlock>
+  </Tab>
+</Folder>
+
+### 3. Use it
+
+It needs no JavaScript, so a page uses it with no `client:` directive.
+
+<Folder label="Definition in use" class="docs-files">
+  <Tab label="Preview">
+    <div class="docs-preview docs-preview--stack">
+      <UseDefinition />
+    </div>
+  </Tab>
+  <Tab label="UseDefinition.vue">
+    <CodeBlock client:visible lang="vue" copy="hover">{useDefinitionCode}</CodeBlock>
+  </Tab>
+</Folder>
+
+## An interactive component: the exploded lamp
+
+The lamp from the [old styleguide](../old/), built in three components, each wrapping the one before.
+
+### 1. One part
+
+`LampPart` is one outlined shape on a grid, in a palette hue. Its `hue` goes through `hueVars()`,
+which turns a hue or a hex code into the fill's custom property.
+
+<Folder label="Lamp, step 1: one part" class="docs-files">
+  <Tab label="Preview">
+    <div class="docs-preview">
+      <LampParts />
+    </div>
+  </Tab>
+  <Tab label="LampPart.vue">
+    <CodeBlock client:visible lang="vue" copy="hover">{lampPartCode}</CodeBlock>
+  </Tab>
+  <Tab label="lamp-part.css">
+    <CodeBlock client:visible lang="css" copy="hover">{lampPartCss}</CodeBlock>
+  </Tab>
+  <Tab label="LampParts.vue">
+    <CodeBlock client:visible lang="vue" copy="hover">{lampPartsCode}</CodeBlock>
+  </Tab>
+</Folder>
+
+### 2. The drawing
+
+`Lamp` places its parts from plain data in `lamp-drawing.ts`. With `apart`, the CSS moves each
+part and lengthens its shadow, using the motion and shadow tokens. It still needs no JavaScript.
+
+<Folder label="Lamp, step 2: the drawing" class="docs-files">
+  <Tab label="Preview">
+    <div class="docs-preview">
+      <LampStates />
+    </div>
+  </Tab>
+  <Tab label="Lamp.vue">
+    <CodeBlock client:visible lang="vue" copy="hover">{lampCode}</CodeBlock>
+  </Tab>
+  <Tab label="lamp.css">
+    <CodeBlock client:visible lang="css" copy="hover">{lampCss}</CodeBlock>
+  </Tab>
+  <Tab label="lamp-drawing.ts">
+    <CodeBlock client:visible lang="ts" copy="hover">{lampDrawingCode}</CodeBlock>
+  </Tab>
+  <Tab label="LampStates.vue">
+    <CodeBlock client:visible lang="vue" copy="hover">{lampStatesCode}</CodeBlock>
+  </Tab>
+</Folder>
+
+### 3. Make it interactive
+
+`ExplodedLamp` holds whether the lamp is apart in a `v-model` (`defineModel()`), and binds it to a
+`Switch`. The switch does nothing until the component runs, so it stays hidden until
+`onMounted` sets `data-rkui-live`.
+
+<Folder label="Lamp, step 3: interactive" class="docs-files">
+  <Tab label="Preview">
+    <div class="docs-preview">
+      <UseExplodedLamp client:visible />
+    </div>
+  </Tab>
+  <Tab label="ExplodedLamp.vue">
+    <CodeBlock client:visible lang="vue" copy="hover">{explodedLampCode}</CodeBlock>
+  </Tab>
+  <Tab label="exploded-lamp.css">
+    <CodeBlock client:visible lang="css" copy="hover">{explodedLampCss}</CodeBlock>
+  </Tab>
+  <Tab label="UseExplodedLamp.vue">
+    <CodeBlock client:visible lang="vue" copy="hover">{useExplodedLampCode}</CodeBlock>
+  </Tab>
+</Folder>

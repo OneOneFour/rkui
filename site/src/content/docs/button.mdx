@@ -13,7 +13,7 @@ import PauseIcon from '@oneonefour/rkui/icons/pause.vue'
 import BusyScript from '../../examples/button/BusyScript.vue'
 import busyScriptCode from '../../examples/button/BusyScript.vue?raw'
 
-Buttons are yellow by default. Give `Button` an `href` and it renders a link instead.
+With `href`, a Button renders a link.
 
 <Demo label="Default button">
   <Button>Save</Button>
@@ -22,8 +22,7 @@ Buttons are yellow by default. Give `Button` an `href` and it renders a link ins
 
 ## Colours
 
-Give `hue` a palette hue, or a hex code for a colour outside the palette (the Colours page says what a
-hex code can't do).
+`hue` takes a palette hue or a hex code; yellow when left out.
 
 <Demo label="Button colours">
   <Button>Yellow</Button>
@@ -49,7 +48,7 @@ hex code can't do).
 
 ## Unfilled
 
-The outline-only button is for a secondary action beside a filled one.
+`unfilled` draws the button as an outline only.
 
 <Demo label="Unfilled button">
   <Button>Save</Button>
@@ -58,8 +57,7 @@ The outline-only button is for a secondary action beside a filled one.
 
 ## Busy
 
-`busy` starts a button in its busy state: it fills with water, is marked `aria-busy` and
-`aria-disabled`, and stays focusable. Say what is happening in the label.
+`busy` starts the button busy, filled with water.
 
 <Demo label="Busy buttons">
   <Button busy>Saving…</Button>
@@ -79,8 +77,7 @@ The outline-only button is for a secondary action beside a filled one.
 
 ## Busy at a level
 
-`level` holds the water at a fixed height from 0 to 1, for a wait with known progress. It works
-with `busy` or `water`.
+`level` holds the water at a fixed height from 0 to 1.
 
 <Demo label="Busy buttons at a level">
   <Button busy hue="teal" level={0.25}>
@@ -96,12 +93,15 @@ with `busy` or `water`.
 
 ## Busy from a script
 
-`water` includes the water without starting busy, so a script can set `aria-busy` later. Click the
-button to toggle it. A busy button does not stop its own clicks; the script decides what to ignore.
+`water` adds the water without making the button busy, for a script that sets `aria-busy` later.
 
 <Demo vue={busyScriptCode} label="A button a script makes busy" widget>
   <BusyScript client:visible />
 </Demo>
+
+## Toggle
+
+`toggle` makes a button that stays pushed in while it is on.
 
 <Demo label="Toggle buttons">
   <Button toggle small>

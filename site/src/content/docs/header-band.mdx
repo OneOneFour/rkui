@@ -9,13 +9,11 @@ component: HeaderBand
 import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import HeaderBand from '@oneonefour/rkui/components/header-band/HeaderBand.vue'
+import TextToCome from '../../components/TextToCome.astro'
 import SiteFrame from '../../examples/header-band/SiteFrame.vue'
 import siteFrameCode from '../../examples/header-band/SiteFrame.vue?raw'
 
-A full-width band that opens a page: a kicker line over the page's heading, and a hard rule along
-its foot. It takes the page's section hue, so it shows which part of the site the reader is in;
-`hue` picks a colour instead. The slot holds the heading, at the level that fits the page, and an
-optional line under it.
+`hue` picks the band's colour; the page's section hue when left out.
 
 <Demo label="Header bands" stack>
   <HeaderBand kicker="Kicker · a short line">
@@ -32,9 +30,7 @@ optional line under it.
 
 ## The page's section hue
 
-A site sets `--rkui-section` and `--rkui-on-section` once for each part of the site, on the page
-or its `<body>`. The band, checked chips, section buttons, breadcrumbs and table bands all take it.
-For coral, set `--rkui-coral-solid` and `--rkui-on-coral`, as small text sits on it.
+<TextToCome />
 
 <Demo label="A band in the page's section hue" stack>
   <div style="--rkui-section: var(--rkui-teal); --rkui-on-section: var(--rkui-on-fill)">
@@ -46,13 +42,7 @@ For coral, set `--rkui-coral-solid` and `--rkui-on-coral`, as small text sits on
 
 ## In a site frame
 
-The band with a Sidebar beside it: the plain look on a sky panel, in slab type with bold links,
-where each link has its section's colour (`hue`) and an icon, and the current one is filled with
-it. When the frame is narrow and the nav stacks above the page, its links flow into columns
-(`columns`). The frame
-itself is the site's own layout, a few lines of CSS grid in the example's `<style>`: the nav column
-beside the page, stacked above it when the frame is narrow. On a real page the column would also
-be `position: sticky` with a `max-block-size` of `100dvh`, so it scrolls on its own.
+A header band beside a Sidebar.
 
 <Demo vue={siteFrameCode} label="A site frame with a sidebar and a header band" stack>
   <SiteFrame />

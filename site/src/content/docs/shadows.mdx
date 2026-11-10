@@ -1,0 +1,69 @@
+---
+title: Shadows
+description: The hard shadows, their depth, the light they fall from, and their dark-mode looks.
+group: Foundations
+order: 13
+---
+
+import Demo from '../../components/Demo.astro'
+import DepthTable from '../../components/DepthTable.astro'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+import LightDirection from '@oneonefour/rkui/components/light-direction/LightDirection.vue'
+import ShadowTokens from '../../examples/shadows/ShadowTokens.vue'
+import shadowTokensCode from '../../examples/shadows/ShadowTokens.vue?raw'
+import DarkShadows from '../../examples/shadows/DarkShadows.vue'
+import darkShadowsCode from '../../examples/shadows/DarkShadows.vue?raw'
+import Highlight from '../../examples/shadows/Highlight.vue'
+import highlightCode from '../../examples/shadows/Highlight.vue?raw'
+import OwnShadow from '../../examples/shadows/OwnShadow.vue'
+import ownShadowCode from '../../examples/shadows/OwnShadow.vue?raw'
+
+## Shadow tokens
+
+Each shadow is hard, with no blur, and falls away from the light.
+
+<Demo vue={shadowTokensCode} label="The shadow tokens, at normal depth and deep" stack widget>
+  <ShadowTokens />
+</Demo>
+
+## Depth
+
+`data-depth="deep"` on any container makes its shadows, insets and pops 1.5 times as deep.
+
+<DepthTable />
+
+## Light
+
+`--rkui-shadow-dx` and `--rkui-shadow-dy` set where the shadows fall. `LightDirection` turns them
+for the whole page.
+
+<Demo label="Turning the light">
+  <LightDirection client:visible />
+  <Button>A button</Button>
+</Demo>
+
+## Dark mode
+
+`data-shadow` on any container sets how shadows look in dark mode: `outline` (the default),
+`block` or `color`. Light mode is the same in all three.
+
+<Demo vue={darkShadowsCode} label="The three dark-mode shadows" stack widget>
+  <DarkShadows />
+</Demo>
+
+`data-highlight` sets the outline on things with no fill in dark mode: `cream` (the default) or
+`dark`.
+
+<Demo vue={highlightCode} label="The two dark-mode highlights" stack widget>
+  <Highlight />
+</Demo>
+
+## Your own element
+
+`box-shadow: var(--rkui-shadow)` gives an element the hard shadow. With `data-shadow="color"`, it
+casts its own colour once it sets `--rkui-shade-of` to its fill and `--rkui-extrusion:
+var(--rkui-shade)`.
+
+<Demo vue={ownShadowCode} label="Your own element's shadow" stack>
+  <OwnShadow />
+</Demo>

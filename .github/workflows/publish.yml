@@ -1,16 +1,15 @@
-# Publishes the package to npm when a version tag (e.g. v0.1.0) is pushed. `npm publish` runs
-# `prepack`, which builds dist/ here on the runner; nothing built is committed.
+# Publishes the package to npm when a GitHub release is published, from main or develop. The
+# release's tag must be the package.json version with a "v" (v0.0.3); otherwise the run fails and
+# nothing is published. A version already on npm is skipped. `npm publish` runs `prepack`, which
+# builds dist/ here on the runner; nothing built is committed.
 #
-# Uses npm trusted publishing: no token is stored. Set it up once on npmjs.com (the package's
-# Settings → Trusted publishing → GitHub Actions, repository OneOneFour/rkui, workflow
-# publish.yml). Trusted publishing is configured on npmjs.com for an existing package, so the very
-# first release may need a one-off manual `npm publish` (or npm's staged publish) before this
-# workflow can take over.
+# Auth is npm trusted publishing, so no token is stored: the package's Settings on npmjs.com →
+# Trusted publishing → GitHub Actions, repository OneOneFour/rkui, workflow publish.yml.
 name: Publish to npm
 
 on:
-  push:
-    tags: ['v*']
+  release:
+    types: [published]
 
 permissions:
   contents: read
@@ -25,6 +24,24 @@ jobs:
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
-      - run: npm install -g npm@latest
-      - run: npm ci
-      - run: npm publish --access public
+      - id: check
+        name: Check the release tag matches package.json and isn't on npm yet
+        run: |
+          name="$(node -p "require('./package.json').name")"
+          version="$(node -p "require('./package.json').version")"
+          if [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "::error::The release tag is $GITHUB_REF_NAME but package.json says v$version."
+            exit 1
+          fi
+          if npm view "$name@$version" version > /dev/null 2>&1; then
+            echo "$name@$version is already on npm; nothing to publish."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.check.outputs.publish == 'true'
+        run: npm install -g npm@latest
+      - if: steps.check.outputs.publish == 'true'
+        run: npm ci
+      - if: steps.check.outputs.publish == 'true'
+        run: npm publish --access public

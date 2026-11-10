@@ -1,6 +1,6 @@
 ---
 title: Card
-description: A panel with a title and a body, optionally an image or one link.
+description: A panel with a title and a body.
 group: Containers
 order: 73
 component: Card
@@ -9,8 +9,9 @@ component: Card
 import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import Card from '@oneonefour/rkui/components/card/Card.vue'
+import TextToCome from '../../components/TextToCome.astro'
 
-`Card` is an `<article>` with a title and a body. On its own it is a static panel. With `href` the whole card is one link: the title is the link text, and there is a single tab stop.
+With `href` the whole card is one link.
 
 <Demo label="A static card">
   <Card title="Field notes" meta="Updated today" style="inline-size: 20rem">
@@ -20,7 +21,7 @@ import Card from '@oneonefour/rkui/components/card/Card.vue'
 
 ## Static edges
 
-A static card never lifts, but it needs an edge, or it vanishes on a raised surface such as this demo's. It has an outline by default; `variant` picks one of the others: `raised` (the outline and a hard shadow that doesn't lift), `shaded` (a panel fill with no outline) or `inset` (pushed into the page). Each is shown here in light and in dark, on the page colour.
+`variant` sets a static card's edge: `outline` (the default), `raised`, `shaded` or `inset`.
 
 <Demo label="Static card edges" stack>
   <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-4); padding: var(--rkui-space-5); color-scheme: light; background: var(--rkui-surface); color: var(--rkui-fg)">
@@ -63,7 +64,7 @@ A static card never lifts, but it needs an edge, or it vanishes on a raised surf
 
 ## Image
 
-The `image` slot sits above the body. Give it an `<img class="rkui-card-image">`, or any element with that class.
+The `image` slot holds an `<img class="rkui-card-image">`, above the body.
 
 <Demo label="Cards with an image">
   <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-6)">
@@ -80,7 +81,7 @@ The `image` slot sits above the body. Give it an `<img class="rkui-card-image">`
 
 ## Shadow colour
 
-`hue` takes a palette hue or a hex code, such as a colour from the card's image. With the colour shadow (`data-shadow="color"`) in dark mode, a linked or raised card casts that colour's shade instead of the lighter grey; light mode and the other shadows are unchanged. This demo always has the colour shadow.
+<TextToCome />
 
 <Demo label="Cards with a shadow colour">
   <div
@@ -104,7 +105,7 @@ The `image` slot sits above the body. Give it an `<img class="rkui-card-image">`
 
 ## Heading level
 
-`headingLevel` (2, 3 or 4) sets the title's heading, to fit the page outline. It is 3 when left out.
+`headingLevel` (2, 3 or 4) sets the title's heading level; 3 when left out.
 
 <Demo label="Cards with heading levels">
   <div style="display: flex; flex-wrap: wrap; gap: var(--rkui-space-6)">

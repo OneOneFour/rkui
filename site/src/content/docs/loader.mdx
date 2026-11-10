@@ -13,7 +13,7 @@ import AtomIcon from '@oneonefour/rkui/icons/atom.vue'
 import LightningIcon from '@oneonefour/rkui/icons/lightning.vue'
 import StarIcon from '@oneonefour/rkui/icons/star.vue'
 
-A ball hopping along a line. Screen readers read out its label, which is never shown; it defaults to "Loading…".
+`label` is read out by screen readers, not shown; "Loading…" when left out.
 
 <Demo label="Hop loaders" stack>
   <Loader />
@@ -37,9 +37,7 @@ A ball hopping along a line. Screen readers read out its label, which is never s
 
 ## Width
 
-Each hop covers about the same distance, so a narrow loader takes few hops and a wide one many, and
-the ball lands at each end. The loader fills its line up to 30rem; set `max-inline-size` to change
-that, and `--rkui-loader-hop-length` (4rem when left out) for the distance.
+`max-inline-size` sets the width (30rem when left out), `--rkui-loader-hop-length` one hop (4rem).
 
 <Demo label="Hop loaders of different widths" stack>
   <Loader style="max-inline-size: 8rem" />
