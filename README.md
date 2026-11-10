@@ -4,7 +4,7 @@ Rob King's "toon" component library. It covers flat token colours, 2px ink outli
 follow a light direction, a hover-lift/press-sink "pop", light/dark themes, page palettes, shadow
 modes and a depth mode. It is built to plug into Astro, Vue and plain HTML sites.
 
-Published on npm as `@oneonefour/rkui` (not yet released).
+Published on npm as `@oneonefour/rkui`.
 
 ## What's where
 
