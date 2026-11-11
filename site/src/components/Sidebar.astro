@@ -1,11 +1,13 @@
 ---
 /**
  * The list of docs pages, built from the docs collection: pages grouped by their `group` and
- * sorted by `order`, in rkui's Sidebar. A group sits where its first page sits.
+ * sorted by `order`, in rkui's Sidebar. A group sits where its first page sits. A page marked
+ * `new` gets a tilted "New!" badge in its link's corner.
  *
  * @example
  * <Sidebar current={page.id} label="Pages" />
  */
+import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
 import RkuiSidebar from '@oneonefour/rkui/components/sidebar/Sidebar.vue'
 import SidebarGroup from '@oneonefour/rkui/components/sidebar/SidebarGroup.vue'
 import SidebarLink from '@oneonefour/rkui/components/sidebar/SidebarLink.vue'
@@ -34,6 +36,11 @@ for (const page of await sortedPages()) {
       {pages.map((page) => (
         <SidebarLink href={pageUrl(page)} current={page.id === current}>
           {page.data.title}
+          {page.data.new && (
+            <Badge hue="coral" class="docs-new">
+              New!
+            </Badge>
+          )}
         </SidebarLink>
       ))}
     </SidebarGroup>

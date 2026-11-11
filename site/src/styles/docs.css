@@ -66,6 +66,15 @@
   max-block-size: calc(100dvh - 7rem);
 }
 
+/* A new page's badge, tilted, in its sidebar link's top corner, on the small hard shadow of
+   Badge's sticker edge. */
+.docs-new {
+  float: inline-end;
+  margin-inline-start: var(--rkui-space-1);
+  box-shadow: var(--rkui-shadow-pressed);
+  rotate: 8deg;
+}
+
 .docs-main {
   min-inline-size: 0;
   max-inline-size: 48rem;
