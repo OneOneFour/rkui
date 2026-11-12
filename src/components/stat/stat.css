@@ -40,9 +40,12 @@
   margin: 0;
 }
 
-/* The trend arrow: the icon at the value's size and in its colour (the hue's, with `hue`), turned
-   over for "down". */
+/* The trend arrow: the icon at the value's size and in its colour (the hue's, with `hue`), solid
+   and heavy to stand beside the bold number, turned over for "down". */
 .rkui-stat-trend {
+  --rkui-icon-stroke: 36;
+  --rkui-icon-fill: currentcolor;
+
   inline-size: 0.75em;
   block-size: 0.75em;
   margin-inline-start: 0.2em;
