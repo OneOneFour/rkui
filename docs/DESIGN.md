@@ -573,7 +573,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Alert | `.rkui-alert` (modal `<dialog>`) | coral band; blurs the page behind, which stays still |
 | Tooltip | `.rkui-tooltip`, `--flat` | toon by default; flat swaps the page's colours |
 | Card | `.rkui-card`, `--link`; static `--outline`, `--raised`, `--shaded`, `--inset` | outline by default; content variants proposed (DECISIONS) |
-| Stat | `.rkui-stat` (`--small`, `--animate`) | value in the display face at step 3 (step 2 small, or any `size`), in a hue's `-deep` shade with `hue` (`--rkui-stat-color`, `--rkui-stat-size`), muted note under it, `trend` arrow; static by default; with `animate` (`--animate`) the number counts up on entering view over 1.2s (`--rkui-stat-count-duration`), then pops once |
+| Stat | `.rkui-stat` (`--small`, `--animate`) | value in the display face at step 3 (step 2 small, or any `size`), in a hue's `-deep` shade with `hue` (`--rkui-stat-color`, `--rkui-stat-size`), muted note under it, `trend` arrow in the value's colour; static by default; with `animate` (`--animate`) the number counts up on entering view over 1.2s (`--rkui-stat-count-duration`), then pops once |
 | Callout | `.rkui-callout--note` (sky tint), `--warning` (apricot tint), `--error` (coral tint) | `role="note"` for every kind; a page announces one through its own live region |
 | Disclosure | `.rkui-disclosure` (`<details>`) | closed; dashed rule above, summary in the link colour with a turning caret, body in the small step; no rule inside a callout |
 | Sticky note | `.rkui-sticky-note` (hues, `--tilt`, `--tape`, `--pin`) | |

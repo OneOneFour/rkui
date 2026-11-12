@@ -36,7 +36,7 @@ interface Props {
    */
   hue?: HueOrHex
   /**
-   * A small arrow beside the value, in the text colour, with "up" or "down" for screen readers;
+   * A small arrow beside the value, in its colour, with "up" or "down" for screen readers;
    * none when left out.
    */
   trend?: 'up' | 'down'
