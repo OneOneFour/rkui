@@ -1,3 +1,5 @@
+import { timeOf } from './css-time.js'
+
 /**
  * Runs `callback` once a segmented control's sliding pill has reached the newly checked option:
  * after `--rkui-duration-slide`, read where the control is, so it is immediate under reduced
@@ -8,7 +10,5 @@
  * @param {() => void} callback
  */
 export function afterSlide(control, callback) {
-  const duration = getComputedStyle(control).getPropertyValue('--rkui-duration-slide').trim()
-  const milliseconds = duration.endsWith('ms') ? parseFloat(duration) : parseFloat(duration) * 1000
-  setTimeout(callback, Number.isFinite(milliseconds) ? milliseconds : 0)
+  setTimeout(callback, timeOf(control, '--rkui-duration-slide'))
 }
