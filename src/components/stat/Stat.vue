@@ -13,8 +13,12 @@
   together. A sign or other symbol in front of a number stays as it is, so "−3 °C" counts 0 to 3
   behind its minus. An animated stat already in view as the page loads counts too when the page
   inlines `head-scripts/table-init.js`, which keeps it hidden until it starts; without it, that stat
-  shows its final value. With JavaScript off, or with reduced motion, the final value shows at
-  once. Screen readers read the final value only.
+  shows its final value. After that, whenever the value changes it rolls from the number on screen
+  to the new one over `--rkui-stat-change-duration` (about 0.3s), with no pop, carrying on from
+  where it is if it changes again mid-roll; a value with a different count of numbers just shows.
+  With JavaScript off, or with reduced motion, the value shows at once. Screen readers read the
+  value itself, which changes at once, never the rolling numbers; the stat doesn't announce
+  changes, so a page that wants them read wraps it in its own `aria-live` region.
 
   @example
   <Stat value="62 %" hue="teal" trend="up" animate small>
@@ -41,8 +45,8 @@ interface Props {
    */
   trend?: 'up' | 'down'
   /**
-   * Counts the number up the first time it comes into view, then pops it; the final value just
-   * shows when left out.
+   * Counts the number up the first time it comes into view, then pops it, and rolls it to each
+   * new value; the value just shows when left out.
    */
   animate?: boolean
   /** Sets the value a step smaller (step 2); step 3 when left out. */

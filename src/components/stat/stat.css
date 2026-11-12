@@ -10,8 +10,9 @@
    </div>
 
    --rkui-stat-color sets the value's colour; --rkui-stat-size its size. With --animate the number
-   counts up (stat-enhance.js) over --rkui-stat-count-duration, 1.2s, then pops. The trend icon
-   and its word are optional. */
+   counts up (stat-enhance.js) over --rkui-stat-count-duration, 1.2s, then pops, and rolls to each
+   new value over --rkui-stat-change-duration, about 0.3s. The trend icon and its word are
+   optional. */
 
 .rkui-stat {
   display: grid;
@@ -56,32 +57,37 @@
   rotate: 180deg;
 }
 
-/* The count-up of an animated stat (stat-enhance.js), on screen only, so a printed page shows the
+/* An animated stat's rolling number (stat-enhance.js), on screen only, so a printed page shows the
    final values.
    - A stat the script will count is "waiting" until its value is well in view, with its number
      hidden. Before the script has seen it at all, table-init.js's mark on the page hides it the
      same way, so a stat in view on load never shows its final value first.
-   - Counting: --rkui-stat-progress runs from 0 to 1 on an ease-out, and the script writes the
-     counter's numbers from it each frame. The counter is a copy of the number's text laid over it
-     (stat-enhance.js), so the number's own text stays in place, unseen, and the layout never moves.
-     In the counter each number is written out unseen, so it keeps its final width, and the
-     counting number is set back over it, its end against the number's end.
-   - Landed: the counter is gone and the number pops. Then it is "done", so showing it again (a
-     tab switched back) doesn't pop it again. */
-@property --rkui-stat-progress {
-  syntax: '<number>';
-  inherits: false;
-  initial-value: 0;
+   - Rolling: the first count up from zero, over --rkui-stat-count-duration (1.2s), or a change in
+     its value, over --rkui-stat-change-duration (about 0.3s), both on an ease-out. The counter is
+     a copy of the number's text laid over it (stat-enhance.js), so the number's own text stays in
+     place, unseen, and the layout never moves. In the counter each number is written out unseen,
+     so it keeps its final width, and the rolling number is set back over it, its end against the
+     number's end.
+   - Landed, after the first count only: the counter is gone and the number pops. Then it is
+     "done", so showing it again (a tab switched back) doesn't pop it again. A change ends "done"
+     with no pop.
+   The two lengths are registered as times so the script can read them, worked out from the
+   tokens on :root; a page can set either anywhere. */
+@property --rkui-stat-count-duration {
+  syntax: '<time>';
+  inherits: true;
+  initial-value: 0s;
 }
 
-@keyframes rkui-stat-count {
-  from {
-    --rkui-stat-progress: 0;
-  }
+@property --rkui-stat-change-duration {
+  syntax: '<time>';
+  inherits: true;
+  initial-value: 0s;
+}
 
-  to {
-    --rkui-stat-progress: 1;
-  }
+:root {
+  --rkui-stat-count-duration: var(--rkui-loop-steady);
+  --rkui-stat-change-duration: var(--rkui-duration-slide);
 }
 
 /* Up to 1.08 on the snap curve, then back on plain ease (DESIGN §4.4). */
@@ -118,11 +124,7 @@
     opacity: 0;
   }
 
-  .rkui-stat[data-rkui-count-state='counting'] {
-    animation: rkui-stat-count var(--rkui-stat-count-duration, var(--rkui-loop-steady)) ease-out;
-  }
-
-  .rkui-stat[data-rkui-count-state='counting'] .rkui-stat-number {
+  .rkui-stat[data-rkui-count-state='rolling'] .rkui-stat-number {
     -webkit-text-fill-color: transparent;
   }
 
