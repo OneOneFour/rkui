@@ -3,22 +3,66 @@ title: Top bar
 description: Controls that stay at the top of the window as the page scrolls.
 group: Layout
 order: 17
+new: true
 component: TopBar
 ---
 
 import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
-import TopBar from '../../examples/topbar/Default.vue'
+import ThemeToggle from '@oneonefour/rkui/components/theme-toggle/ThemeToggle.vue'
+import TopBar from '@oneonefour/rkui/components/topbar/TopBar.vue'
+import TopBarVariants from '../../examples/topbar/Default.vue'
 import topBarCode from '../../examples/topbar/Default.vue?raw'
+import TopBarLink from '@oneonefour/rkui/components/topbar/TopBarLink.vue'
+import TopBarNav from '@oneonefour/rkui/components/topbar/TopBarNav.vue'
 
 The default bar, then the `flush` bar, each as it looks once the page has scrolled.
 
 <Demo vue={topBarCode} label="Toast and flush top bars" stack>
-  <TopBar />
+  <TopBarVariants />
+</Demo>
+
+## Page links
+
+A `TopBarNav` holds the page links, at the start of the bar. The page marks its own link `current`.
+The links scroll sideways when they don't fit. On a narrow screen they take a second row.
+
+<Demo label="Flush top bar with page links" stack>
+  <div style="max-inline-size: 100%; overflow: clip; border: 1px solid var(--rkui-muted); border-radius: var(--rkui-radius)">
+    <TopBar flush style="position: static; animation: none">
+      <TopBarNav label="Site">
+        <TopBarLink href="#">Home</TopBarLink>
+        <TopBarLink href="#" current>
+          Notes
+        </TopBarLink>
+        <TopBarLink href="#">Projects</TopBarLink>
+        <TopBarLink href="#">About</TopBarLink>
+      </TopBarNav>
+      <ThemeToggle icon-only client:visible />
+    </TopBar>
+    <p style="margin: var(--rkui-space-4)">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.
+    </p>
+  </div>
+</Demo>
+
+## Theme switch
+
+`icon-only` shows only the icons. Screen readers still hear each option's name.
+
+<Demo label="Theme switch, with words and icons only">
+  <ThemeToggle client:visible />
+  <ThemeToggle icon-only client:visible />
 </Demo>
 
 ## Reference
 
 <ApiReference component="TopBar" />
 
+<ApiReference component="TopBarNav" />
+
+<ApiReference component="TopBarLink" />
+
 <ApiReference component="BackToTop" />
+
+<ApiReference component="ThemeToggle" />

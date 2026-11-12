@@ -1,5 +1,5 @@
 ---
-/** Note and warning callouts, with and without a title, and a focused link inside each. */
+/** Note, warning and error callouts, with and without a title, and a focused link inside each. */
 import Callout from '@oneonefour/rkui/components/callout/Callout.vue'
 import Specimen from './Specimen.astro'
 import SpecimenRow from './SpecimenRow.astro'
@@ -20,6 +20,13 @@ import SpecimenRow from './SpecimenRow.astro'
       </p>
     </Callout>
   </Specimen>
+  <Specimen label="error, with title" wide>
+    <Callout kind="error" title="Title">
+      <p>
+        Body text with <a href="#callouts">a link</a>. Pack my box with five dozen liquor jugs.
+      </p>
+    </Callout>
+  </Specimen>
   <Specimen label="note, focused link" wide>
     <Callout>
       <p>
@@ -33,6 +40,17 @@ import SpecimenRow from './SpecimenRow.astro'
   </Specimen>
   <Specimen label="warning, focused link (--rkui-focus-alt)" wide>
     <Callout kind="warning">
+      <p>
+        Body text with{' '}
+        <a href="#callouts" class="is-focus">
+          a focused link
+        </a>
+        .
+      </p>
+    </Callout>
+  </Specimen>
+  <Specimen label="error, focused link" wide>
+    <Callout kind="error">
       <p>
         Body text with{' '}
         <a href="#callouts" class="is-focus">

@@ -8,8 +8,8 @@
   <ExplodedLamp v-model="apart" label="Take the lamp apart" />
 -->
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
 import Switch from '@oneonefour/rkui/components/switch/Switch.vue'
+import { useLive } from '@oneonefour/rkui/shared/live.ts'
 import Lamp from './Lamp.vue'
 
 interface Props {
@@ -25,8 +25,7 @@ const { label = 'Take it apart', size } = defineProps<Props>()
 const apart = defineModel<boolean>({ default: false })
 
 /** Set once the component runs in the browser, which shows the switch (exploded-lamp.css). */
-const live = ref(false)
-onMounted(() => (live.value = true))
+const live = useLive()
 </script>
 
 <template>

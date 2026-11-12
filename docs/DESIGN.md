@@ -215,8 +215,9 @@ and depth, light, shadow and highlight couldn't change inside a container.
 
 ### 2.8 Modes
 
-Attributes on `<html>` or any container (depth also on one element); each has a value that switches
-back inside it.
+Attributes on `<html>` or any container (depth also on one element); each has a value that
+switches back inside it. `rkui({ settings })` writes fixed ones on every page's `<html>` as it
+renders; an attribute the layout already wrote wins.
 
 | Mode | Attribute | Values | Mechanism |
 |---|---|---|---|
@@ -225,14 +226,14 @@ back inside it.
 | Shadow | `data-shadow` | `outline`, `block`, `color` | dark mode only. `tokens/shadows.css`: the rim (`--rkui-shadow-rim`, unset for `outline` and `color`, transparent for `block`); `tokens/shadow-color.css`: `@scope` from `color` to `outline` or `block` |
 | Highlight | `data-highlight` | `cream`, `dark` | dark mode only. `tokens/colors.css`: `--rkui-line-unfilled` is `--rkui-fg` or `--rkui-line` |
 | Depth | `data-depth` | `normal`, `deep` | `--rkui-shadow-depth` 1 or 1.5 |
-| Light | `style` on `<html>` | `--rkui-shadow-dx`/`-dy`, default 1, 1 | `<rkui-light-direction>` |
-| Scroll dots | `data-rkui-dots`; a component's `dots` writes it on its outer element | `plain`, `pill` | `@scope` from `pill` to `plain` (`overflow.css`) |
+| Light | `--rkui-light-angle` | an angle, default `315deg` | `--rkui-shadow-dx`/`-dy` from its `sin()` and `cos()` on every element; 1, 1 without CSS trigonometry |
+| Scroll dots | `data-rkui-dots`; a component's `dots` writes it on its outer element | `plain`, `pill` | `@scope` from `pill` to `plain` (`overflow.css`); both keep the narrow gutters (wider without `anchor-scope`), and the pill draws over the content's edge |
 
 - **Theme:** `:root` is `color-scheme: light dark`. Tokens stay unregistered, because `@property`
   breaks `light-dark()`. The choice is stored under `rkui-theme`, shared by every site on the domain,
-  and applied before first paint by `src/head-scripts/theme-init.js`, a classic script inlined in
-  `<head>` (a module runs too late and flashes). `<rkui-theme-toggle>` is Light / Dark / System and
-  syncs tabs and sites.
+  and applied before first paint by `src/head-scripts/settings-init.js`, a classic script inlined in
+  `<head>` (a module runs too late and flashes). `<rkui-theme-toggle>` is Light / Dark / System, with
+  icons and words (or icons only, `icon-only`), and syncs tabs and sites.
 - **No `light-dark()`** (browsers before mid-2024): `tokens/fallback.css` gives the light theme on
   cream everywhere, palettes included. Checked by hand. One gap: a `hue` given as a hex code sets
   its tint inline with `light-dark()` (`hueVars()`), which the fallback can't reach, so there a
@@ -240,10 +241,14 @@ back inside it.
 - **Light:** the angle names where light comes from, clockwise from 12. The default 315° (top left)
   gives dx = dy = 1: shadows fall down-right. `LightDirection`
   (`src/components/light-direction/LightDirection.vue`, `<rkui-light-direction>` on a plain page)
-  sets it from a range, or follows the sun (rises left at 6:00, overhead at noon, sets right at
-  18:00, default at night).
-- `rkui-palette`, `rkui-shadow`, `rkui-highlight` and `rkui-dots` are the docs site's own storage
-  keys for its settings drawer, not part of the theme contract.
+  sets it from a compass, a whole ring the sun is dragged round, wrapping past 0, with a block in
+  the middle casting the page's shadow, over an invisible range. Or it follows the sun (rises left
+  at 6:00, overhead at noon, sets right at 18:00, default at night). Every LightDirection on a page
+  shares one clock switch.
+- A reader's choices are stored under `rkui-theme`, `rkui-palette`, `rkui-shadow`, `rkui-highlight`,
+  `rkui-dots` and `rkui-light` through `@oneonefour/rkui/settings` (`src/shared/settings.js`), the
+  public API that `ThemeToggle`, `LightDirection` and a site's own controls use.
+  `settings-init.js` puts back only the ones the site lists as switchable.
 
 ## 3. Typography and maths
 
@@ -335,7 +340,7 @@ or any container. Light mode is the same in every combination.
   of that colour, with no rim. The colour is its fill, or the colour it shows on a neutral body.
   - Fills: buttons, checked checkboxes, radios and switches, the range thumb, the file button,
     colour tiles, badges (a table's stickers too), the three-dot spinners, the blind's pull, the
-    scroll and sidebar pills, sticky notes, the clock's hour tag.
+    scroll and sidebar pills, sticky notes, the clock's hour tag, the light direction's sun.
   - Colours on a neutral body: the ring spinner and the flask take their fill (`hue`), the knob and
     arc dials `--rkui-selected` (the notch, the thumb), the alert and the table their band's hue
     (a table's lifted row too), the search bar its button's yellow.
@@ -355,7 +360,7 @@ or any container. Light mode is the same in every combination.
     - neutral things with no colour of their own: the page, panels, plain cards, popups and
       tooltips, the untinted folder, inputs, unchecked controls and tiles, the drawer and the
       blind's roller and screen with no `hue`, the top bar, the sidebar's card, folders and deck
-      keys;
+      keys, the light direction's block;
     - things with more than one colour: the clock face (day and night), the logo;
     - the custom colour tile and the colour input, whose colour CSS can't read.
   - An element's extrusion is its own (`--rkui-extrusion` doesn't inherit), so the controls on a
@@ -396,6 +401,9 @@ emphasis with its fill and a small pop in place (scale 1.08 on `--rkui-ease-snap
 - **Pushed in:** a checked deck key goes in by the whole shadow offset, flush, no shadow; a checked
   (or current-page) tile the same, with `--rkui-shadow-inset`. Neither pops. Both land with the
   "kerchunk": a keyframe drives past the depth, then settles.
+- **Pressed button:** a `toggle` that is on, or a button with `aria-pressed="true"`, is pushed in
+  like a tile, with `--rkui-shadow-inset`, at the toggles' pace. Its fill doesn't change and it
+  doesn't pop.
 - **Selected folder tab:** joined to the sheet, no pop, takes the state at once so the press
   doesn't ease back across the join.
 - **Checked fills:** `--rkui-selected` for checkboxes, radios, switches, segmented pills and tiles;
@@ -414,8 +422,8 @@ mode) and takes `--rkui-shadow-inset`, and its label sinks by `--rkui-press-offs
 
 - **The highlighter:** a 6px tangerine outline hugging the ink outline, shadow off. Its 3:1 edge is
   against the outline (6.41:1 light, 8.69:1 dark); tangerine on cream alone is about 2.2:1.
-- **Marker pen** for things with no outline (text links): tangerine behind ink text, with a
-  transparent outline that shows in forced colours.
+- **Marker pen** for things with no outline (text links, a disclosure's summary): tangerine behind
+  ink text, with a transparent outline that shows in forced colours.
 - Where tangerine surrounds the element (tangerine buttons, apricot panels and notes, warnings) use
   `--rkui-focus: var(--rkui-focus-alt)`; such components set it themselves.
 - Groups show the band on the group, never one option; chips, cards and tiles show it for the input
@@ -530,6 +538,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Component | Class | Default and options |
 |---|---|---|
 | Button | `.rkui-button` (`--<hue>` for every hue, `--section`, `--small`) | filled; yellow by default |
+| Toggle button | `.rkui-button` holding a checkbox (`toggle`), or `[aria-pressed]` | pushed in while on (§4.5) |
 | Unfilled button | `.rkui-button--unfilled` | discouraged (§4.6) |
 | Filling (busy) button | `.rkui-button[aria-busy]` + `.rkui-water` | |
 | Field wrapper | `.rkui-field`, `.rkui-check` | |
@@ -548,6 +557,7 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Number stepper | `<rkui-stepper>` `--split`, `--stacked` | open |
 | Dial | `<rkui-dial>` A `--knob`, B `--arc`; `--ramp`, `--ramp-heat` | knob or arc open; ramp lighting open |
 | Clock | `<rkui-clock>` | hour-hand length open |
+| Light direction | `<rkui-light-direction>`, `.rkui-light-direction` | a compass: the sun dragged round a ring, a block casting the shadow |
 
 ### 7.2 Navigation, containers and feedback
 
@@ -558,11 +568,14 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
 | Pagination | `.rkui-pagination`; folder-tab version in `folder.css` | open |
 | Folder tabs | `.rkui-folder` (`--tinted`) | bar above the tabs; flat scrollbar |
 | Top bar | `.rkui-topbar--toast`, `--flush` | toast by default; flush for full-width headers |
+| Top bar links | `.rkui-topbar-nav`, `.rkui-topbar-link` | at the start of the bar, controls at the end, on one row; links in `--rkui-fg`, bold (600), no underline until hovered, scrolling sideways when they don't fit; the current page (`aria-current="page"`, set by the page) looks like a checked chip, flat; under 35rem wide (the library's one viewport breakpoint) a second row of their own, opened at the current link (`topbar-nav-enhance.js`) |
 | Popup | `.rkui-popup` (Popover API) | |
 | Alert | `.rkui-alert` (modal `<dialog>`) | coral band; blurs the page behind, which stays still |
 | Tooltip | `.rkui-tooltip`, `--flat` | toon by default; flat swaps the page's colours |
 | Card | `.rkui-card`, `--link`; static `--outline`, `--raised`, `--shaded`, `--inset` | outline by default; content variants proposed (DECISIONS) |
-| Callout | `.rkui-callout--note` (sky tint), `--warning` (apricot tint) | |
+| Stat | `.rkui-stat` (`--small`, `--animate`) | value in the display face at step 3 (step 2 small, or any `size`), in a hue's `-deep` shade with `hue` (`--rkui-stat-color`, `--rkui-stat-size`), muted note under it, `trend` arrow; static by default; with `animate` (`--animate`) the number counts up on entering view over 1.2s (`--rkui-stat-count-duration`), then pops once |
+| Callout | `.rkui-callout--note` (sky tint), `--warning` (apricot tint), `--error` (coral tint) | `role="note"` for every kind; a page announces one through its own live region |
+| Disclosure | `.rkui-disclosure` (`<details>`) | closed; dashed rule above, summary in the link colour with a turning caret, body in the small step; no rule inside a callout |
 | Sticky note | `.rkui-sticky-note` (hues, `--tilt`, `--tape`, `--pin`) | |
 | Widget frame | `.rkui-widget-frame` (dashed, lilac tint) | |
 | Figure | `.rkui-figure` | |
@@ -589,11 +602,11 @@ built and the pick is in [DECISIONS.md](DECISIONS.md#open-decisions).
   - `<rkui-clock>`, `<rkui-color-picker>`, `<rkui-dial>`, `<rkui-light-direction>`, `<rkui-range>`,
     `<rkui-stepper>` and `<rkui-theme-toggle>`;
   - `dist/rkui.js` bundles them, with the Vue runtime and the helper scripts.
-- Helpers: `src/head-scripts/theme-init.js`, `src/head-scripts/table-init.js` (inlined beside it;
-  tables visible on load keep their values hidden until their entrance), `afterSlide()` in
-  `src/shared/after-slide.js`, and the enhance scripts that `src/enhance.js` loads, such as
-  `src/components/table/table-enhance.js` (plays each table's entrance the first time it is seen,
-  in every browser).
+- Helpers: `src/head-scripts/settings-init.js`, `src/head-scripts/table-init.js` (inlined beside it;
+  tables and animated stats visible on load keep their values hidden until they play),
+  `afterSlide()` in `src/shared/after-slide.js`, and the enhance scripts that `src/enhance.js`
+  loads, such as `src/components/table/table-enhance.js` (plays each table's entrance the first
+  time it is seen, in every browser).
 - Plain CSS and JS, fonts by relative path, icons and sprite. There is no CDN, so pages make no
   third-party requests: plain-HTML sites copy a tagged release into `vendor/`.
 - Layers: tokens → fonts and base → CSS classes → icons → Vue components → custom elements.

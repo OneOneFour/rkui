@@ -1,13 +1,14 @@
-// Writes .d.ts files for src/components/ and src/shared/ into dist/types/, from their JSDoc.
+// Writes .d.ts files for src/settings.js, src/components/ and src/shared/ into dist/types/, from
+// their JSDoc.
 import { execFileSync } from 'node:child_process'
 import { globSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url))
 
-/** Every .js file under src/components/ and src/shared/, as paths relative to the repo root. */
+/** src/settings.js and every .js file under src/components/ and src/shared/, from the repo root. */
 function sourceFiles() {
-  return ['src/components/**/*.js', 'src/shared/*.js'].flatMap((pattern) =>
+  return ['src/settings.js', 'src/components/**/*.js', 'src/shared/*.js'].flatMap((pattern) =>
     globSync(pattern, { cwd: ROOT }).sort(),
   )
 }

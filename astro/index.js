@@ -1,19 +1,28 @@
 /**
- * rkui's Astro integration: in MDX files, a fenced code block renders as `CodeBlock`, `$…$` as
- * `Maths` and `$$…$$` as `Equation`, with no tags to write.
+ * rkui's Astro integration. It sets up a site: the stylesheet, the global settings and the enhance
+ * scripts on every page, one copy of Vue, fonts kept as files, and a licences file in the build.
+ * In MDX files, a fenced code block renders as `CodeBlock`, `$…$` as `Maths` and `$$…$$` as
+ * `Equation`, with no tags to write.
  *
  *   // astro.config.mjs
- *   import mdx from '@astrojs/mdx'
  *   import vue from '@astrojs/vue'
  *   import rkui from '@oneonefour/rkui/astro'
- *   export default defineConfig({ integrations: [mdx(), vue(), rkui()] })
+ *   export default defineConfig({ integrations: [vue(), rkui()] })
  *
+ * For the MDX part, add `@astrojs/mdx`.
  * It adds a plugin to Sätteri, Astro's Markdown processor, on `markdown.processor`, which MDX
  * inherits: options given to `mdx({ processor })` instead are out of its reach, and it warns when
  * MDX compiles without it. `.md` files are left as they were, dollars included.
  */
 
 import { pathToFileURL } from 'node:url'
+import {
+  bakeFixedSettings,
+  checkedSettings,
+  injectHead,
+  viteSettings,
+  writeLicences,
+} from './setup.js'
 
 const CODE_BLOCK = '@oneonefour/rkui/components/code/CodeBlock.vue'
 const MATHS = '@oneonefour/rkui/components/maths/Maths.vue'
@@ -122,31 +131,70 @@ function source(node, ctx) {
 }
 
 /**
- * The integration. `code` is true, false, or the attributes every fence's CodeBlock gets, such as
- * `{ copy: 'hover', editor: true }`; `maths` is true or false. Both are true when left out.
+ * Sets up the Markdown plugin: only with MDX in the site, and only with Sätteri, which a site may
+ * have swapped for another processor. Never throws; says why it skipped when MDX is there.
  */
-export default function rkui({ code = true, maths = true } = {}) {
+function setupMarkdown({ config, logger, updateConfig, code, maths }) {
+  if (!config.integrations.some((integration) => integration.name === '@astrojs/mdx')) return
+  const { processor } = config.markdown
+  if (processor.name !== 'satteri') {
+    logger.warn(
+      `markdown.processor is ${processor.name}, so fenced code and $…$ maths in MDX stay as ` +
+        "Markdown has them: rkui's plugin needs Sätteri. Set code and maths to false to silence this.",
+    )
+    return
+  }
+  const { options } = processor
+  // Unless the site already parses maths in its .md files.
+  const keepDollars = maths && !options.features.math
+  if (maths) options.features.math = true
+  const seen = new Set()
+  options.mdastPlugins.push(({ sourceFormat, fileURL }) => {
+    if (sourceFormat !== 'mdx') return keepDollars && markdownDollars
+    if (fileURL) seen.add(fileURL.href)
+    return mdxPlugin({ code, maths })
+  })
+  updateConfig({ vite: { plugins: [mdxCheck(seen, logger)] } })
+}
+
+/**
+ * The integration. Each option is on when left out.
+ * - `code`: true, false, or the attributes every fence's CodeBlock gets, such as
+ *   `{ copy: 'hover', editor: true }`; `maths`: true or false.
+ * - `vite`: the Vite settings the library needs; true, false or which to turn off.
+ * - `licences`: true writes `rkui-licences.txt` to the build output, a string names the file.
+ * - `head`: the page head's table mark (for tables and animated stats), stylesheet and enhance
+ *   scripts; true, false or which to turn off.
+ * - `settings`: the site's global settings: true, false, or the fixed settings and the
+ *   `switchable` list, such as `{ palette: 'slate', switchable: ['theme', 'shadow'] }`. Fixed
+ *   settings are written on every page's `<html>` by a middleware (`bakeFixedSettings()`); the
+ *   switchable ones are put back from a reader's choice by a head script. True only puts back the
+ *   theme; false, or an empty `switchable`, injects no script.
+ */
+export default function rkui({
+  code = true,
+  maths = true,
+  vite = true,
+  licences = true,
+  head = true,
+  settings = true,
+} = {}) {
   return {
     name: '@oneonefour/rkui',
     hooks: {
-      'astro:config:setup': ({ config, logger, updateConfig }) => {
-        const { processor } = config.markdown
-        if (processor.name !== 'satteri') {
-          throw new Error(
-            `rkui(): markdown.processor is ${processor.name}; the integration needs Sätteri`,
-          )
-        }
-        const { options } = processor
-        // Unless the site already parses maths in its .md files.
-        const keepDollars = maths && !options.features.math
-        if (maths) options.features.math = true
-        const seen = new Set()
-        options.mdastPlugins.push(({ sourceFormat, fileURL }) => {
-          if (sourceFormat !== 'mdx') return keepDollars && markdownDollars
-          if (fileURL) seen.add(fileURL.href)
-          return mdxPlugin({ code, maths })
-        })
-        updateConfig({ vite: { plugins: [mdxCheck(seen, logger)] } })
+      'astro:config:setup': async (hooks) => {
+        const { config, logger, updateConfig, injectScript } = hooks
+        if (code || maths) setupMarkdown({ config, logger, updateConfig, code, maths })
+        if (vite) updateConfig({ vite: viteSettings(config, vite, logger) })
+        const { switchable, fixed } = checkedSettings(settings)
+        bakeFixedSettings(hooks, fixed)
+        await injectHead(injectScript, head, switchable, logger)
+      },
+      'astro:build:done': async ({ dir, logger }) => {
+        if (!licences) return
+        const name = licences === true ? 'rkui-licences.txt' : licences
+        await writeLicences(dir, name)
+        logger.info(`wrote ${name}`)
       },
     },
   }

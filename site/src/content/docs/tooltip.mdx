@@ -3,6 +3,7 @@ title: Tooltip
 description: A short plain-text description of a control, shown on hover or focus.
 group: Containers
 order: 71
+new: true
 component: Tooltip
 ---
 
@@ -46,6 +47,36 @@ Hover or focus the button to show the tooltip.
     </Tooltip>
   </div>
 </Demo>
+
+## Placed by a script
+
+A script can place and show a tooltip itself, for a tip that follows a point on a chart. Write an
+empty `.rkui-tooltip` positioned where the tip belongs, with the bubble inside, and toggle
+`data-rkui-shown` on it to show and hide the bubble:
+
+```html
+<span class="rkui-tooltip" style="position: absolute; left: 120px; top: 80px">
+  <span class="rkui-tooltip-bubble">62%</span>
+</span>
+```
+
+```js
+tooltip.toggleAttribute('data-rkui-shown', true)
+
+// The script hides the tip on Escape itself.
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') tooltip.removeAttribute('data-rkui-shown')
+})
+```
+
+The bubble sits above the point, `--rkui-tooltip-gap` away from it; set that custom property on
+the `.rkui-tooltip` to move it. `.rkui-tooltip`, `.rkui-tooltip-bubble`, `.rkui-tooltip--flat` and
+`data-rkui-shown` are public. A tooltip a script shows is not tied to a control, so give the
+bubble no `role` and add `aria-hidden="true"` when the text is repeated elsewhere on the page.
+
+`tooltip-enhance.js` only dismisses tips that are hovered or hold focus, so it does not hide one
+the script shows. The script removes `data-rkui-shown` on Escape itself, as above, so the tip can
+be dismissed without moving the pointer (WCAG 1.4.13).
 
 ## Reference
 

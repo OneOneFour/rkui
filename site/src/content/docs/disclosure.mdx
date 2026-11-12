@@ -1,0 +1,63 @@
+---
+title: Disclosure
+description: A line that opens to a short note.
+group: Containers
+order: 65
+new: true
+component: Disclosure
+---
+
+import ApiReference from '../../components/ApiReference.astro'
+import Demo from '../../components/Demo.astro'
+import Callout from '@oneonefour/rkui/components/callout/Callout.vue'
+import Disclosure from '@oneonefour/rkui/components/disclosure/Disclosure.vue'
+
+A `<details>` for an inline note. For storage that slides out of a panel, use a [Drawer](../drawer/).
+
+<Demo label="A closed disclosure" stack>
+  <Disclosure summary="Where this comes from">
+    <p>Pack my box with five dozen liquor jugs.</p>
+  </Disclosure>
+</Demo>
+
+## Open
+
+`open` starts it open.
+
+<Demo label="An open disclosure" stack>
+  <Disclosure summary="Where this comes from" open>
+    <p>The quick brown fox jumps over the lazy dog.</p>
+  </Disclosure>
+</Demo>
+
+## One at a time
+
+Disclosures that share a `name` open one at a time.
+
+<Demo label="Disclosures that open one at a time" stack>
+  <Disclosure summary="First" name="disclosure-group">
+    <p>Sphinx of black quartz, judge my vow.</p>
+  </Disclosure>
+  <Disclosure summary="Second" name="disclosure-group">
+    <p>How vexingly quick daft zebras jump.</p>
+  </Disclosure>
+</Demo>
+
+## In a callout
+
+Inside a callout it drops its rule, so several notes fold into one line.
+
+<Demo label="Notes folded into one callout" stack>
+  <Callout kind="warning" title="Two notes">
+    <Disclosure summary="Show both">
+      <ul>
+        <li>Pack my box with five dozen liquor jugs.</li>
+        <li>The five boxing wizards jump quickly.</li>
+      </ul>
+    </Disclosure>
+  </Callout>
+</Demo>
+
+## Reference
+
+<ApiReference component="Disclosure" />

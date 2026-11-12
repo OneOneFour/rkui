@@ -3,7 +3,8 @@
    interactive belongs in a popup instead. A parent with overflow: hidden clips the bubble.
    tooltip-enhance.js lets Escape hide an open bubble, marking the tooltip data-rkui-dismissed.
    By default a raised bubble with the outline and the hard shadow; .rkui-tooltip--flat is a
-   bubble in the page's colours swapped, with no outline or shadow.
+   bubble in the page's colours swapped, with no outline or shadow. A script that places the
+   tooltip itself sets data-rkui-shown on .rkui-tooltip to show the bubble.
 
    <span class="rkui-tooltip">
      <button class="rkui-button" aria-describedby="save-tip">Save</button>
@@ -91,7 +92,8 @@
 }
 
 .rkui-tooltip:hover > .rkui-tooltip-bubble,
-.rkui-tooltip:has(:focus-visible) > .rkui-tooltip-bubble {
+.rkui-tooltip:has(:focus-visible) > .rkui-tooltip-bubble,
+.rkui-tooltip[data-rkui-shown] > .rkui-tooltip-bubble {
   opacity: 1;
   visibility: visible;
   translate: -50% 0;

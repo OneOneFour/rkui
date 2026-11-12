@@ -40,7 +40,7 @@
   --rkui-recess-floor: var(--rkui-panel);
   --rkui-code-inset: var(--rkui-shadow-recess);
   /* Where the caption and the code start: past the scroll region's dot gutter where that is
-     wider (the pill look, overflow.css) */
+     wider (the pill look in browsers without anchor positioning, overflow.css) */
   --rkui-code-pad: max(var(--rkui-space-4), var(--rkui-dots-gutter));
 
   display: grid;

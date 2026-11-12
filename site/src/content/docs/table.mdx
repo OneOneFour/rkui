@@ -3,6 +3,7 @@ title: Table
 description: A data table with a header band and ruled rows.
 group: Containers
 order: 78
+new: true
 component: Table
 ---
 
@@ -447,6 +448,35 @@ import XIcon from '@oneonefour/rkui/icons/x.vue'
   </Table>
 </Demo>
 
+## Hidden caption
+
+`hiddenCaption` keeps the caption for assistive technology and hides it from view, for a table that
+the page's own heading already introduces. It still names the table and its scroll region.
+
+<Demo label="Table with a hidden caption" stack>
+  <Table caption="Moons by planet" hue="teal" hiddenCaption>
+    <thead>
+      <tr>
+        <th scope="col">Moon</th>
+        <th scope="col">Planet</th>
+        <th scope="col">Radius (km)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Io</th>
+        <td>Jupiter</td>
+        <td>1822</td>
+      </tr>
+      <tr>
+        <th scope="row">Titan</th>
+        <td>Saturn</td>
+        <td>2575</td>
+      </tr>
+    </tbody>
+  </Table>
+</Demo>
+
 ## Lift
 
 <Demo label="Table with lifting rows" stack>
@@ -765,6 +795,13 @@ import XIcon from '@oneonefour/rkui/icons/x.vue'
     </tbody>
   </Table>
 </Demo>
+
+## Screenshots and tests
+
+A table below the fold waits to be scrolled to before it plays its entrance, so a full-page
+screenshot, which never scrolls, shows its rows empty. Put `still` on the table, or run the capture
+with reduced motion (in Playwright, `reducedMotion: 'reduce'`), which also stops every other
+entrance from being caught half-way. Either way the table just shows.
 
 ## Reference
 

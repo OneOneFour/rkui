@@ -10,6 +10,39 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ## Decisions
 
+### 2026-11-11
+
+**A Stat counts up with the pop, opt-in through `animate`** (Rob). A stat is static by default.
+With `animate` (`.rkui-stat--animate` on a plain page) its number counts up the first time it comes
+into view, then lands with the pop: A, chosen over B, which stopped with no pop. Rob also asked for
+a slower count than the 0.36s first built; the length, 1.2s on an ease-out
+(`--rkui-stat-count-duration`, from `--rkui-loop-steady`), is the agent's pick, awaiting his OK. It
+is longer than the 0.6s an entrance may otherwise take; the exception in DESIGN §5 waits for
+Rob's review. An animated stat in view on load counts
+too, under `table-init.js`'s mark, as a table's entrance plays. For a day the count was on by
+default, with `still` to turn it off and `count="plain"` for B; both are gone.
+
+**Settings are set globally, with no control required** (Rob). A site sets the theme, palette,
+shadow, highlight, scroll dots and light from its configuration or code. `rkui({ settings })`
+writes fixed ones on every page's `<html>` as it renders, so they need no JavaScript, and
+`@oneonefour/rkui/settings` is the public JavaScript API. The `Settings` wrapper and `SettingSwitch`
+(with `<rkui-setting-switch>`) are gone: a section writes the attributes on its own element, and a
+control other than ThemeToggle and LightDirection is the site's own, as the docs drawer's switch is.
+
+**LightDirection is a compass** (Rob). The sun is dragged round a whole ring, wrapping past 0,
+with a block in the middle casting the page's shadow, over an invisible range for keys and screen
+readers. It was chosen over a sky (a half circle over a horizon, on the angles the sun takes, with
+a moon at night) and the straight slider it replaces. Every LightDirection on a page shares one
+"Follow the time of day" switch.
+
+**Site-wide settings stay attributes the CSS reads** (Rob). A `Settings` wrapper sets the palette,
+shadow, highlight, scroll dots and light for a section, with no JavaScript. The storage keys
+`rkui-palette`, `rkui-shadow`, `rkui-highlight`, `rkui-dots` and the new `rkui-light` join
+`rkui-theme` as the library's own. `settings-init.js` replaces `theme-init.js` and puts back only
+the settings a site lists as switchable; `rkui({ settings })` writes that list and the site's fixed
+settings. `SettingSwitch` replaces the docs site's `ModeSwitch`. The light becomes one angle,
+`--rkui-light-angle`, which turns the light inside any container.
+
 ### 2026-11-09
 
 **Equation references are written by hand** (a record of what is built). The rehype plugin for

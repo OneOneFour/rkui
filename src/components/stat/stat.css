@@ -1,0 +1,147 @@
+/* Stat: a big number in the display face with a small muted note under it. The value is step 3,
+   step 2 with --small, or --rkui-stat-size where it is set.
+
+   <div class="rkui-stat">
+     <p class="rkui-stat-value">
+       <span class="rkui-stat-number">62 %<svg class="rkui-icon rkui-stat-trend">…</svg>
+         <span class="rkui-visually-hidden"> up</span></span>
+     </p>
+     <div class="rkui-stat-note"><a href="…">How good is this?</a></div>
+   </div>
+
+   --rkui-stat-color sets the value's colour; --rkui-stat-size its size. With --animate the number
+   counts up (stat-enhance.js) over --rkui-stat-count-duration, 1.2s, then pops. The trend icon
+   and its word are optional. */
+
+.rkui-stat {
+  display: grid;
+  gap: var(--rkui-space-1);
+}
+
+.rkui-stat--small {
+  --rkui-stat-size: var(--rkui-step-2);
+}
+
+.rkui-stat-value {
+  margin: 0;
+  font-family: var(--rkui-font-display);
+  font-size: var(--rkui-stat-size, var(--rkui-step-3));
+  font-weight: 800;
+  line-height: var(--rkui-line-height-heading);
+  color: var(--rkui-stat-color, inherit);
+}
+
+.rkui-stat-note {
+  color: var(--rkui-muted);
+  font-size: var(--rkui-step--1);
+}
+
+.rkui-stat-note > * {
+  margin: 0;
+}
+
+/* The trend arrow: the icon at the value's size, turned over for "down". */
+.rkui-stat-trend {
+  inline-size: 0.75em;
+  block-size: 0.75em;
+  margin-inline-start: 0.2em;
+}
+
+.rkui-stat-trend--down {
+  rotate: 180deg;
+}
+
+/* The count-up of an animated stat (stat-enhance.js), on screen only, so a printed page shows the
+   final values.
+   - A stat the script will count is "waiting" until its value is well in view, with its number
+     hidden. Before the script has seen it at all, table-init.js's mark on the page hides it the
+     same way, so a stat in view on load never shows its final value first.
+   - Counting: --rkui-stat-progress runs from 0 to 1 on an ease-out, and the script writes the
+     counter's numbers from it each frame. The counter is a copy of the number's text laid over it
+     (stat-enhance.js), so the number's own text stays in place, unseen, and the layout never moves.
+     In the counter each number is written out unseen, so it keeps its final width, and the
+     counting number is set back over it, its end against the number's end.
+   - Landed: the counter is gone and the number pops. Then it is "done", so showing it again (a
+     tab switched back) doesn't pop it again. */
+@property --rkui-stat-progress {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes rkui-stat-count {
+  from {
+    --rkui-stat-progress: 0;
+  }
+
+  to {
+    --rkui-stat-progress: 1;
+  }
+}
+
+/* Up to 1.08 on the snap curve, then back on plain ease (DESIGN §4.4). */
+@keyframes rkui-stat-pop {
+  from {
+    scale: 1;
+  }
+
+  50% {
+    scale: 1.08;
+    animation-timing-function: ease;
+  }
+
+  to {
+    scale: 1;
+  }
+}
+
+.rkui-stat-number {
+  position: relative;
+  display: inline-block;
+}
+
+.rkui-stat-counter {
+  display: none;
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  .rkui-stat:is(
+      [data-rkui-count-state='waiting'],
+      :root[data-rkui-tables] .rkui-stat--animate:not([data-rkui-stat-watched])
+    )
+    .rkui-stat-number {
+    opacity: 0;
+  }
+
+  .rkui-stat[data-rkui-count-state='counting'] {
+    animation: rkui-stat-count var(--rkui-stat-count-duration, var(--rkui-loop-steady)) ease-out;
+  }
+
+  .rkui-stat[data-rkui-count-state='counting'] .rkui-stat-number {
+    -webkit-text-fill-color: transparent;
+  }
+
+  .rkui-stat-counter {
+    position: absolute;
+    inset: 0;
+    display: block;
+    white-space: nowrap;
+    -webkit-text-fill-color: currentcolor;
+  }
+
+  .rkui-stat-counter-final {
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* No width of its own: its number sits against the end of the unseen one before it, and
+     overflows back over it towards the start. */
+  .rkui-stat-counter-now {
+    display: inline-flex;
+    justify-content: flex-end;
+    inline-size: 0;
+  }
+
+  .rkui-stat[data-rkui-count-state='landed'] .rkui-stat-number {
+    animation: rkui-stat-pop calc(2 * var(--rkui-duration-fast)) var(--rkui-ease-snap);
+  }
+}

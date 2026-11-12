@@ -3,6 +3,7 @@ title: Developing new components
 description: Two worked examples in Vue, a static component and an interactive one.
 group: Start
 order: 1
+new: true
 ---
 
 import CodeBlock from '@oneonefour/rkui/components/code/CodeBlock.vue'
@@ -132,7 +133,7 @@ part and lengthens its shadow, using the motion and shadow tokens. It still need
 
 `ExplodedLamp` holds whether the lamp is apart in a `v-model` (`defineModel()`), and binds it to a
 `Switch`. The switch does nothing until the component runs, so it stays hidden until
-`onMounted` sets `data-rkui-live`.
+`useLive()` sets `data-rkui-live` once it is mounted.
 
 <Folder label="Lamp, step 3: interactive" class="docs-files">
   <Tab label="Preview">
@@ -150,3 +151,10 @@ part and lengthens its shadow, using the motion and shadow tokens. It still need
     <CodeBlock client:visible lang="vue" copy="hover">{useExplodedLampCode}</CodeBlock>
   </Tab>
 </Folder>
+
+## Screenshots and tests
+
+Capture pages with Playwright, and run it with reduced motion (`reducedMotion: 'reduce'`) so no
+entrance is caught half-way. A `Table` below the fold plays its entrance only when scrolled to,
+which a full-page screenshot never does, so its rows stay empty: reduced motion shows them, as
+does `still` on the table.

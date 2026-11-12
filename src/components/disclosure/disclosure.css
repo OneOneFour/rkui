@@ -1,0 +1,75 @@
+/* Disclosure: a <details> under a dashed rule. Its summary is a bold line in the link colour, with
+   a caret that turns as it opens; the body is in the small step. With no outline to
+   hug, a focused summary gets the marker pen, as a link does. Inside a callout it drops the rule.
+
+   <details class="rkui-disclosure">
+     <summary>Where this comes from</summary>
+     <p>Body text.</p>
+   </details> */
+
+.rkui-disclosure {
+  padding-block-start: var(--rkui-space-2);
+  border-block-start: var(--rkui-outline-width) dashed var(--rkui-line-unfilled);
+  font-size: var(--rkui-step--1);
+}
+
+.rkui-disclosure > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--rkui-space-2);
+  inline-size: fit-content;
+  color: var(--rkui-navy-deep);
+  font-weight: 700;
+  text-underline-offset: 0.15em;
+  list-style: none;
+  cursor: pointer;
+}
+
+.rkui-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The caret, the breadcrumbs' solid triangle the shape of icons/caret-right.svg in currentColor,
+   points the inline-end way when closed and down when open. In right-to-left text it is mirrored,
+   so it turns the other way. forced-color-adjust keeps its fill in forced colours. */
+.rkui-disclosure > summary::before {
+  content: '';
+  flex: none;
+  inline-size: 0.75em;
+  block-size: 0.75em;
+  background: currentColor;
+  clip-path: polygon(25% 10%, 75% 50%, 25% 90%);
+  forced-color-adjust: none;
+  transition: rotate var(--rkui-duration-fast) ease;
+}
+
+.rkui-disclosure[open] > summary::before {
+  rotate: 90deg;
+}
+
+.rkui-disclosure:dir(rtl) > summary::before {
+  scale: -1 1;
+}
+
+.rkui-disclosure[open]:dir(rtl) > summary::before {
+  rotate: -90deg;
+}
+
+.rkui-disclosure > summary:hover {
+  text-decoration: underline;
+}
+
+.rkui-disclosure > summary:focus-visible {
+  outline: var(--rkui-outline-width) solid transparent;
+  background: var(--rkui-focus);
+  color: var(--rkui-ink);
+}
+
+.rkui-disclosure > :not(summary) {
+  margin-block: var(--rkui-space-2) 0;
+}
+
+.rkui-callout .rkui-disclosure {
+  padding-block-start: 0;
+  border-block-start: 0;
+}

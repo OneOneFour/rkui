@@ -15,9 +15,10 @@
   <Dial v-model="temperature" label="Temperature" min="10" max="30" step="0.5" />
 -->
 <script setup lang="ts">
-import { computed, onMounted, ref, useAttrs, useTemplateRef } from 'vue'
+import { computed, ref, useAttrs, useTemplateRef } from 'vue'
 import { useComponentId } from '../../shared/component-id'
 import { useLiveValue } from '../../shared/live-value'
+import { useLive } from '../../shared/live'
 import { splitAttrs } from '../../shared/split-attrs'
 import {
   END_ANGLE,
@@ -76,8 +77,7 @@ const id = (attrs.id as string | undefined) ?? useComponentId('dial')
 const input = useTemplateRef<HTMLInputElement>('input')
 const face = useTemplateRef<HTMLElement>('face')
 // Set once the dial runs in the browser; until then dial.css hides the face.
-const live = ref(false)
-onMounted(() => (live.value = true))
+const live = useLive()
 
 /** What the face draws round its edge: the ramp's blocks, the arc's track, or tick marks. */
 const marks = computed<'ramp' | 'arc' | 'ticks'>(() => {

@@ -1,5 +1,6 @@
 /* Top bar: controls that stay at the top of the window as the page scrolls, such as a theme
-   switch, ending with a back-to-top link. Pick one of two variants:
+   switch, ending with a back-to-top link, and optionally a row of page links (below) before
+   them. Pick one of two variants:
    .rkui-topbar--toast: a raised panel hanging just below the top edge, at the end of the line.
    .rkui-topbar--flush: full width along the top edge, with a rule and a shadow under it.
    --rkui-topbar-inset is the space at the bar's sides: the toast's margin, the flush bar's padding.
@@ -61,10 +62,102 @@
     0 var(--rkui-shadow-offset) 0 var(--rkui-outline-width) var(--rkui-shadow-edge);
 }
 
+/* Page links: a row of links at the start of the bar, in a scroll region (overflow.css), with the
+   controls after it pushed to the end. The bar stays one row, and the links scroll sideways when
+   they don't fit. On a narrow screen they take a second row of their own, after the controls;
+   topbar-nav-enhance.js opens the line scrolled to the current link. The current page's link
+   looks like a checked chip (chip.css): filled with --rkui-section and --rkui-on-section text, or
+   inverted where no section is set, with an ink edge drawn inside it so it doesn't move. Like a
+   checked chip, it doesn't pop.
+
+   <nav class="rkui-topbar-nav" aria-label="Site">
+     <div class="rkui-scroll" tabindex="-1" role="region">
+       <ul class="rkui-topbar-nav-list">
+         <li><a class="rkui-topbar-link" href="…" aria-current="page">Home</a></li>
+         …
+       </ul>
+     </div>
+   </nav> */
+.rkui-topbar-nav {
+  min-inline-size: 0;
+}
+
+.rkui-topbar-nav-list {
+  display: flex;
+  gap: var(--rkui-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rkui-topbar-link {
+  --rkui-topbar-current: light-dark(var(--rkui-ink), var(--rkui-fg));
+  --rkui-topbar-on-current: light-dark(var(--rkui-on-ink), var(--rkui-ink));
+
+  display: block;
+  padding: var(--rkui-space-1) var(--rkui-space-3);
+  border-radius: var(--rkui-radius-pill);
+  color: var(--rkui-fg);
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.rkui-topbar-link:hover {
+  text-decoration: underline;
+}
+
+.rkui-topbar-link[aria-current='page'] {
+  background: var(--rkui-section, var(--rkui-topbar-current));
+  color: var(--rkui-on-section, var(--rkui-topbar-on-current));
+  box-shadow: inset 0 0 0 var(--rkui-outline-width) var(--rkui-line);
+}
+
+/* Marker-pen focus (base.css), over the current page's fill too. */
+.rkui-topbar-link:focus-visible {
+  background: var(--rkui-focus);
+  color: var(--rkui-ink);
+}
+
+/* From 35rem up, a bar with page links stays one row: the links take only the room the controls
+   leave, and scroll in it, so the controls never shrink, even inside a display: contents wrapper
+   such as an Astro island. Below 35rem the links take a second row of their own. */
+@media (width >= 35rem) {
+  .rkui-topbar:has(> .rkui-topbar-nav) {
+    flex-wrap: nowrap;
+  }
+
+  .rkui-topbar-nav {
+    flex: 1 1 0;
+  }
+}
+
+@media (width < 35rem) {
+  .rkui-topbar-nav {
+    order: 1;
+    flex-basis: 100%;
+  }
+}
+
+/* Forced colours drop the fill and the inner edge, so the current page uses system colours. */
+@media (forced-colors: active) {
+  .rkui-topbar-link[aria-current='page']:not(:focus-visible) {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
 /* Anchor jumps, such as a table of contents' links, land below the bar rather than under it.
-   This clears a bar one row of controls high. */
+   This clears a bar one row of controls high, or two on a narrow screen with page links. */
 :root:has(.rkui-topbar) {
   scroll-padding-block-start: 6rem;
+}
+
+@media (width < 35rem) {
+  :root:has(.rkui-topbar-nav) {
+    scroll-padding-block-start: 9rem;
+  }
 }
 
 /* Under reduced motion nothing moves: the toast and the link only fade in. */

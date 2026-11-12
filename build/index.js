@@ -2,6 +2,7 @@
 // `node build/index.js`; `npm run dev`, `npm run build` and `npm pack` all run it first.
 import { rm } from 'node:fs/promises'
 import './check-boundary.js'
+import './check-settings.js'
 import { buildColors } from './colors.js'
 import { buildCss } from './css.js'
 import { buildIcons } from './icons.js'

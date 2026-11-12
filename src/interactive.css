@@ -102,10 +102,11 @@
   translate: var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y);
 }
 
-/* A checked tile, the current page's, or a toggle button that is on, is pushed in the same way,
-   with an inset shadow instead, at the toggles' pace. */
+/* A checked tile, the current page's, or a button that is on (a toggle, or a button with
+   aria-pressed="true"), is pushed in the same way, with an inset shadow instead, at the toggles'
+   pace. */
 .rkui-tile:is(:has(:checked), [aria-current='page']),
-.rkui-button:has(:checked) {
+.rkui-button:is(:has(:checked), [aria-pressed='true']) {
   box-shadow: var(--rkui-shadow-inset);
   translate: var(--rkui-shadow-offset-x) var(--rkui-shadow-offset-y);
   transition-duration: var(--rkui-duration-spring);

@@ -20,7 +20,13 @@ const changedValues = new WeakMap<ValueControl, string | HTMLOptionElement[]>()
  */
 function markupValue(input: HTMLInputElement): string {
   const fresh = document.createElement('input')
-  for (const { name, value } of input.attributes) fresh.setAttribute(name, value)
+  for (const { name, value } of input.attributes) {
+    if (name !== 'value') fresh.setAttribute(name, value)
+  }
+  // The value last, after type, min and max: in Chromium, one set before them stays clamped to
+  // the defaults, 0 to 100.
+  const value = input.getAttribute('value')
+  if (value !== null) fresh.setAttribute('value', value)
   return fresh.value
 }
 
@@ -73,10 +79,13 @@ function restore(control: ValueControl, changed: string | HTMLOptionElement[]) {
  * for, as typing would, so `v-model` casts it as usual (a number for `type="number"`).
  */
 export function useLiveValue(model: { value: unknown }) {
+  /** The model's starting value, which v-model writes to the control as it mounts. */
+  let start = ''
   return {
     // Before v-model writes the model's value over it. A control already on the page came from
     // the server; if it differs from its markup, it was changed in the browser.
     beforeMount(control: ValueControl) {
+      start = String(model.value)
       if (!control.isConnected) return
       const changed = changedInBrowser(control)
       if (changed !== undefined) changedValues.set(control, changed)
@@ -86,7 +95,12 @@ export function useLiveValue(model: { value: unknown }) {
       queueMicrotask(() => {
         const changed = changedValues.get(control)
         if (changed !== undefined) restore(control, changed)
-        const clamped = control.type === 'range' && control.value !== String(model.value)
+        // The browser changed the value v-model wrote: it is neither the starting value nor one
+        // the parent has set since, during the mount.
+        const clamped =
+          control.type === 'range' &&
+          control.value !== start &&
+          control.value !== String(model.value)
         if (changed === undefined && !clamped) return
         const event = control instanceof HTMLSelectElement ? 'change' : 'input'
         control.dispatchEvent(new Event(event, { bubbles: true }))

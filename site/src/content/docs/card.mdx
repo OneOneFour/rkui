@@ -3,12 +3,14 @@ title: Card
 description: A panel with a title and a body.
 group: Containers
 order: 73
+new: true
 component: Card
 ---
 
 import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import Card from '@oneonefour/rkui/components/card/Card.vue'
+import Select from '@oneonefour/rkui/components/select/Select.vue'
 import TextToCome from '../../components/TextToCome.astro'
 
 With `href` the whole card is one link.
@@ -101,6 +103,34 @@ The `image` slot holds an `<img class="rkui-card-image">`, above the body.
       <p>The lighter grey.</p>
     </Card>
   </div>
+</Demo>
+
+## No title
+
+With no `title` the card has no heading. Name it with `aria-label`.
+
+<Demo label="A card with no title">
+  <Card aria-label="Field notes" meta="Updated today" style="inline-size: 20rem">
+    <p>Sphinx of black quartz, judge my vow.</p>
+  </Card>
+</Demo>
+
+## Heading slot
+
+The `heading` slot fills a static card's heading, and can hold controls. A Select fills its line,
+so `inline-size: auto` sits it in the heading.
+
+<Demo label="A card with controls in its heading">
+  <Card style="inline-size: 24rem">
+    <Fragment slot="heading">
+      Chance of at least{' '}
+      <Select aria-label="Amount" name="card-amount" style="inline-size: auto">
+        <option>12 in</option>
+        <option>24 in</option>
+      </Select>
+    </Fragment>
+    <p>The quick brown fox jumps over the lazy dog.</p>
+  </Card>
 </Demo>
 
 ## Heading level

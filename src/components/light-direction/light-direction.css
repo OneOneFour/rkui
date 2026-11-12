@@ -1,0 +1,205 @@
+/* LightDirection: a compass stacked over the "Follow the time of day" switch, drawn by
+   LightDirection.vue. The sun rides the ring at the light's angle and a block in the middle casts
+   the page's shadow. A range lies invisibly over the compass: still focusable and announced, while
+   the face takes the pointer. LightDirection.vue marks it data-rkui-live once it runs in the
+   browser; until then the sun and the range stay hidden, holding their place.
+
+   <div class="rkui-light-direction">
+     <div class="rkui-field">
+       <label for="l">Light from (degrees clockwise from the top)</label>
+       <div class="rkui-light-direction-control">
+         <div class="rkui-light-direction-face" aria-hidden="true">
+           <svg>…</svg>                                    (the ring and its ticks)
+           <span class="rkui-light-direction-block"></span>
+           <span class="rkui-light-direction-sun">…</span> (icons/sun.svg)
+         </div>
+         <input class="rkui-range" id="l" type="range" min="0" max="359" value="315">
+       </div>
+     </div>
+     <label class="rkui-check">…</label>                   (the switch)
+   </div>
+
+   The face's SVG is 200 units square, so its lengths are pixels at the default
+   --rkui-light-direction-size. LightDirection.vue sets where the sun sits
+   (--rkui-light-direction-x, -y). */
+
+.rkui-light-direction {
+  --rkui-light-direction-size: 12.5rem;
+
+  display: grid;
+  justify-items: start;
+  gap: var(--rkui-space-3);
+}
+
+.rkui-light-direction-control {
+  display: grid;
+}
+
+.rkui-light-direction-control > * {
+  grid-area: 1 / 1;
+}
+
+/* input.rkui-range: above the disabled range's own opacity (interactive.css). */
+.rkui-light-direction-control > input.rkui-range {
+  inline-size: 100%;
+  block-size: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Until LightDirection.vue runs in the browser, the sun and the range would do nothing. */
+.rkui-light-direction:not([data-rkui-live])
+  :is(.rkui-light-direction-sun, .rkui-light-direction-control > input) {
+  visibility: hidden;
+}
+
+.rkui-light-direction-face {
+  position: relative;
+  inline-size: var(--rkui-light-direction-size);
+  aspect-ratio: 1;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}
+
+.rkui-light-direction-face > svg {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+}
+
+.rkui-light-direction-track-outline,
+.rkui-light-direction-track {
+  fill: none;
+}
+
+.rkui-light-direction-track-outline {
+  stroke: var(--rkui-line-unfilled);
+  stroke-width: 20px;
+}
+
+.rkui-light-direction-track {
+  stroke: var(--rkui-raised);
+  stroke-width: 16px;
+}
+
+.rkui-light-direction-tick {
+  stroke: var(--rkui-muted);
+  stroke-width: 2px;
+  stroke-linecap: round;
+}
+
+/* The block shows the result: its shadow is the page's, falling away from the light. */
+.rkui-light-direction-block {
+  --rkui-block-size: calc(var(--rkui-light-direction-size) * 0.22);
+
+  position: absolute;
+  left: calc(50% - var(--rkui-block-size) / 2);
+  top: calc(50% - var(--rkui-block-size) / 2);
+  box-sizing: border-box;
+  inline-size: var(--rkui-block-size);
+  aspect-ratio: 1;
+  border: var(--rkui-outline-width) solid var(--rkui-line-unfilled);
+  border-radius: var(--rkui-radius);
+  background: var(--rkui-raised);
+  box-shadow: var(--rkui-shadow);
+}
+
+/* Centred on the point LightDirection.vue sets; the margins centre it, since translate is taken
+   by the pop. */
+.rkui-light-direction-sun {
+  --rkui-sun-size: calc(var(--rkui-light-direction-size) * 0.16);
+  --rkui-light-direction-shadow: var(--rkui-shadow);
+  --rkui-light-direction-shift: 0px;
+
+  display: grid;
+  place-items: center;
+  position: absolute;
+  left: var(--rkui-light-direction-x);
+  top: var(--rkui-light-direction-y);
+  box-sizing: border-box;
+  inline-size: var(--rkui-sun-size);
+  aspect-ratio: 1;
+  margin: calc(var(--rkui-sun-size) / -2) 0 0 calc(var(--rkui-sun-size) / -2);
+  border: var(--rkui-outline-width) solid var(--rkui-line);
+  border-radius: 50%;
+  background: var(--rkui-selected);
+  color: var(--rkui-on-selected);
+  box-shadow: var(--rkui-light-direction-shadow);
+  translate: calc(var(--rkui-shadow-dx) * var(--rkui-light-direction-shift))
+    calc(var(--rkui-shadow-dy) * var(--rkui-light-direction-shift));
+  transition:
+    translate var(--rkui-duration-fast) ease,
+    box-shadow var(--rkui-duration-fast) ease;
+}
+
+/* The icon takes the sun's colour, not the page's. Its middle is yellow by default, lost on the
+   yellow sun: tangerine shows. */
+.rkui-light-direction-sun > .rkui-icon {
+  --rkui-icon-fill: var(--rkui-tangerine);
+
+  inline-size: 70%;
+  block-size: 70%;
+  color: inherit;
+}
+
+/* States */
+
+@media (hover: hover) {
+  .rkui-light-direction-face:hover > .rkui-light-direction-sun {
+    --rkui-light-direction-shadow: var(--rkui-shadow-hover);
+    --rkui-light-direction-shift: calc(-1 * var(--rkui-lift-offset));
+  }
+}
+
+.rkui-light-direction-control[data-dragging] .rkui-light-direction-sun {
+  --rkui-light-direction-shadow: var(--rkui-shadow-pressed);
+  --rkui-light-direction-shift: var(--rkui-press-offset);
+}
+
+.rkui-light-direction-control:has(> input:focus-visible) .rkui-light-direction-sun {
+  outline: var(--rkui-focus-width) solid var(--rkui-focus);
+  outline-offset: var(--rkui-focus-offset);
+  box-shadow: none;
+}
+
+/* While the light follows the time of day: the sun keeps moving, but can't be dragged. */
+.rkui-light-direction-control:has(> input:disabled) > .rkui-light-direction-face {
+  cursor: not-allowed;
+}
+
+.rkui-light-direction-control:has(> input:disabled) .rkui-light-direction-sun {
+  --rkui-light-direction-shadow: none;
+  --rkui-light-direction-shift: 0px;
+
+  opacity: 0.45;
+}
+
+/* Forced colours: the SVG keeps its own colours, so the sun and the ring stay visible. */
+@media (forced-colors: active) {
+  .rkui-light-direction-face > svg,
+  .rkui-light-direction-sun {
+    forced-color-adjust: none;
+  }
+
+  .rkui-light-direction-track-outline,
+  .rkui-light-direction-tick {
+    stroke: CanvasText;
+  }
+
+  .rkui-light-direction-track {
+    stroke: Canvas;
+  }
+
+  .rkui-light-direction-sun {
+    border-color: CanvasText;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .rkui-light-direction-sun > .rkui-icon {
+    --rkui-icon-fill: transparent;
+  }
+}

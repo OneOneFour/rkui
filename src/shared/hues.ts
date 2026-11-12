@@ -45,6 +45,8 @@ export interface HueProperties {
   text?: string
   /** Takes the tint: a pale panel that carries `--rkui-fg` text. */
   tint?: string
+  /** Takes the colour for text straight on the page: the hue's `-deep` step, or the hex itself. */
+  deep?: string
   /** The fill carries small text, so coral takes `--rkui-coral-solid`. */
   solid?: boolean
 }
@@ -59,16 +61,18 @@ export function hueVars(
   properties: HueProperties,
 ): Record<string, string> {
   if (!hue) return {}
-  const { fill, text, tint, solid } = properties
+  const { fill, text, tint, deep, solid } = properties
   const style: Record<string, string> = {}
   if (isHex(hue)) {
     if (fill) style[fill] = hue
     if (text) style[text] = `var(${textOn(hue)})`
     if (tint) style[tint] = tintOf(hue)
+    if (deep) style[deep] = hue
   } else {
     if (fill) style[fill] = `var(--rkui-${solid && hue === 'coral' ? 'coral-solid' : hue})`
     if (text) style[text] = `var(${onHue(hue)})`
     if (tint) style[tint] = `var(--rkui-${hue}-tint)`
+    if (deep) style[deep] = `var(--rkui-${hue}-deep)`
   }
   return style
 }

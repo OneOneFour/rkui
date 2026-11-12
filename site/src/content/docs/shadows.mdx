@@ -3,6 +3,7 @@ title: Shadows
 description: The hard shadows, their depth, the light they fall from, and their dark-mode looks.
 group: Foundations
 order: 13
+new: true
 ---
 
 import Demo from '../../components/Demo.astro'
@@ -34,12 +35,21 @@ Each shadow is hard, with no blur, and falls away from the light.
 
 ## Light
 
-`--rkui-shadow-dx` and `--rkui-shadow-dy` set where the shadows fall. `LightDirection` turns them
-for the whole page.
+`--rkui-light-angle` says where the light comes from, clockwise from the top: `315deg`, the top
+left, by default. Shadows fall away from it, on `<html>` or inside any element that sets it
+([Settings](../settings/)). `LightDirection` turns it for the whole page and stores it: drag the
+sun round the compass, or focus it and use the arrow keys. The block in the middle casts the
+page's shadow.
 
 <Demo label="Turning the light">
   <LightDirection client:visible />
   <Button>A button</Button>
+</Demo>
+
+<Demo label="A section lit from the top right">
+  <div style="--rkui-light-angle: 45deg">
+    <Button>Lit from the top right</Button>
+  </div>
 </Demo>
 
 ## Dark mode

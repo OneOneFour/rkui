@@ -13,13 +13,14 @@
   <Stepper v-model="quantity" label="Quantity" min="0" max="10" />
 -->
 <script setup lang="ts">
-import { onMounted, ref, useAttrs, useTemplateRef } from 'vue'
+import { useAttrs, useTemplateRef } from 'vue'
 import CaretUpIcon from '@oneonefour/rkui/icons/caret-up.vue'
 import CaretDownIcon from '@oneonefour/rkui/icons/caret-down.vue'
 import Button from '../button/Button.vue'
 import Field from '../field/Field.vue'
 import { useComponentId } from '../../shared/component-id'
 import { useLiveValue } from '../../shared/live-value'
+import { useLive } from '../../shared/live'
 import { controlAttrs } from '../../shared/split-attrs'
 
 defineOptions({ inheritAttrs: false })
@@ -49,8 +50,7 @@ const vLiveValue = useLiveValue(model)
 const id = (attrs.id as string | undefined) ?? useComponentId('stepper')
 const input = useTemplateRef<HTMLInputElement>('input')
 // Set once the stepper runs in the browser; until then number.css hides the buttons.
-const live = ref(false)
-onMounted(() => (live.value = true))
+const live = useLive()
 
 /**
  * The page's attributes: `class` and `style` for the Field's div when it draws a frame, otherwise

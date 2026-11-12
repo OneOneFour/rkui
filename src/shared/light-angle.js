@@ -6,34 +6,22 @@
 /** Where the light comes from by default: the top left. */
 export const DEFAULT_ANGLE = 315
 
-/** At the default angle this gives --rkui-shadow-dx and --rkui-shadow-dy of exactly 1. */
-const SHADOW_LENGTH = Math.SQRT2
-
 const SUNRISE_HOUR = 6
 const SUNSET_HOUR = 18
 /** The sun rises on the left, at 9 o'clock. */
 const SUNRISE_ANGLE = 270
 
-/**
- * @param {number} value
- * @returns {string} `value` rounded to three decimals, so the default angle gives exactly 1
- */
-function toToken(value) {
-  return String(Math.round(value * 1000) / 1000)
-}
-
-/**
- * The shadow direction that points away from a light at `angle`.
- * @param {number} angle where the light comes from
- * @returns {{ dx: string, dy: string }} the values for --rkui-shadow-dx and --rkui-shadow-dy
- */
-export function shadowOffsets(angle) {
-  const radians = (angle * Math.PI) / 180
-  return {
-    dx: toToken(-SHADOW_LENGTH * Math.sin(radians)),
-    dy: toToken(SHADOW_LENGTH * Math.cos(radians)),
-  }
-}
+/** Where each eighth of the circle lies, from the top round clockwise, as the value text says. */
+const DIRECTIONS = [
+  'top',
+  'top right',
+  'right',
+  'bottom right',
+  'bottom',
+  'bottom left',
+  'left',
+  'top left',
+]
 
 /**
  * The sun rises on the left at 6:00, is overhead at noon and sets on the right at 18:00, so 9:00
@@ -46,4 +34,21 @@ export function sunAngle(time) {
   const dayFraction = (hour - SUNRISE_HOUR) / (SUNSET_HOUR - SUNRISE_HOUR)
   if (dayFraction < 0 || dayFraction > 1) return DEFAULT_ANGLE
   return (SUNRISE_ANGLE + 180 * dayFraction) % 360
+}
+
+/**
+ * @param {number | string} value an angle in degrees, any number of turns round
+ * @returns {number} the same angle in whole degrees, from 0 to 359
+ */
+export function wholeAngle(value) {
+  const degrees = Math.round(Number(value))
+  return ((degrees % 360) + 360) % 360
+}
+
+/**
+ * @param {number} angle a light angle, from 0 to 359
+ * @returns {string} where the light comes from, in words: "top left", to the nearest eighth
+ */
+export function directionName(angle) {
+  return DIRECTIONS[Math.round(angle / 45) % DIRECTIONS.length]
 }

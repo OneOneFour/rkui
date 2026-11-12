@@ -20,10 +20,11 @@
   <Range client:visible label="Volume" step="25" ticks={[0, 25, 50, 75, 100]} />
 -->
 <script setup lang="ts">
-import { computed, onMounted, ref, useAttrs } from 'vue'
+import { computed, ref, useAttrs } from 'vue'
 import Field from '../field/Field.vue'
 import { useComponentId } from '../../shared/component-id'
 import { useLiveValue } from '../../shared/live-value'
+import { useLive } from '../../shared/live'
 import { controlAttrs } from '../../shared/split-attrs'
 
 defineOptions({ inheritAttrs: false })
@@ -61,8 +62,7 @@ if (model.value === undefined) {
 const vLiveValue = useLiveValue(model)
 const id = (attrs.id as string | undefined) ?? useComponentId('range')
 // Set once the Range runs in the browser; until then range.css hides the drawn thumb and popup.
-const live = ref(false)
-onMounted(() => (live.value = true))
+const live = useLive()
 // Whether a pointer is holding the slider: `:active` alone misses a touch in Safari on iPhone.
 const dragging = ref(false)
 

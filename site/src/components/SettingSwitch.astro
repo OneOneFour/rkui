@@ -1,0 +1,63 @@
+---
+/**
+ * The docs site's switch for one setting: a Segmented control with the setting's values, built on
+ * rkui's settings API (`@oneonefour/rkui/settings`). It is the worked example of a site's own
+ * control, as the library ships only ThemeToggle and LightDirection. Choosing a value stores it at
+ * once and restyles the page once the pill has slid there; other switches for the setting, on the
+ * page and in other tabs, follow. No option starts checked, and the switch stays hidden, keeping
+ * its space, until its script has checked the page's value, so the pill never slides from a
+ * default.
+ *
+ * @param setting the setting it switches
+ * @param legend the group's name, visually hidden; the setting's own, such as "Palette", when left out
+ */
+import Segmented from '@oneonefour/rkui/components/segmented/Segmented.vue'
+import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.vue'
+import { SETTINGS } from '@oneonefour/rkui/settings'
+
+interface Props {
+  setting: 'palette' | 'shadow' | 'highlight' | 'dots'
+  legend?: string
+}
+
+const { setting, legend = SETTINGS[setting].legend } = Astro.props
+---
+
+<Segmented legend={legend} class="docs-setting-switch" data-setting={setting}>
+  {Object.entries(SETTINGS[setting].options).map(([value, label]) => (
+    <SegmentedOption value={value}>{label}</SegmentedOption>
+  ))}
+</Segmented>
+
+<style is:global>
+  .docs-setting-switch:not([data-live]) {
+    visibility: hidden;
+  }
+</style>
+
+<script>
+  import { afterSlide } from '@oneonefour/rkui/shared/after-slide.js'
+  import {
+    applySetting,
+    chooseSetting,
+    onSettingChange,
+    readSetting,
+    type SettingName,
+  } from '@oneonefour/rkui/settings'
+
+  for (const fieldset of document.querySelectorAll<HTMLElement>('.docs-setting-switch')) {
+    const setting = fieldset.dataset.setting as SettingName
+    /** Checks the option for `value`. */
+    const check = (value: string) => {
+      for (const radio of fieldset.querySelectorAll('input')) radio.checked = radio.value === value
+    }
+    check(readSetting(setting))
+    fieldset.dataset.live = ''
+    fieldset.addEventListener('change', (event) => {
+      const { value } = event.target as HTMLInputElement
+      chooseSetting(setting, value)
+      afterSlide(fieldset, () => applySetting(setting, value))
+    })
+    onSettingChange(setting, check)
+  }
+</script>

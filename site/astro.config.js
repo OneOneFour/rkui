@@ -14,8 +14,13 @@ export default defineConfig({
   integrations: [
     mdx(),
     vue({ appEntrypoint: '/src/vue-app.js' }),
-    // Fenced code renders as rkui's CodeBlock, and dollar maths as Maths and Equation.
-    rkui({ code: { copy: 'hover' } }),
+    // Fenced code renders as rkui's CodeBlock, and dollar maths as Maths and Equation. The docs
+    // layout imports the stylesheet itself, after KaTeX's. Readers switch every setting.
+    rkui({
+      code: { copy: 'hover' },
+      head: { styles: false },
+      settings: { switchable: ['theme', 'palette', 'shadow', 'highlight', 'dots', 'light'] },
+    }),
     pagefindIndex(),
   ],
   markdown: {
@@ -23,11 +28,5 @@ export default defineConfig({
     processor: satteri({ mdastPlugins: [demoSource] }),
     // No page needs Astro's highlighting: fenced code is a CodeBlock, which highlights itself.
     syntaxHighlight: false,
-  },
-  vite: {
-    build: {
-      // Keep fonts as files: inlined, every unicode-range subset would load on every page.
-      assetsInlineLimit: (filePath) => (filePath.endsWith('.woff2') ? false : undefined),
-    },
   },
 })

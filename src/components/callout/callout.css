@@ -1,4 +1,4 @@
-/* Callouts: a static tint panel with an icon, as a note or a warning.
+/* Callouts: a static tint panel with an icon, as a note, a warning or an error.
 
    <div class="rkui-callout rkui-callout--note" role="note">
      <svg class="rkui-icon">…</svg>
@@ -36,4 +36,9 @@
   --rkui-focus: var(--rkui-focus-alt);
   --rkui-icon-fill: var(--rkui-tangerine);
   background: var(--rkui-apricot-tint);
+}
+
+.rkui-callout--error {
+  --rkui-icon-fill: var(--rkui-coral-solid);
+  background: var(--rkui-coral-tint);
 }

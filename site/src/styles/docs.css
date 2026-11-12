@@ -10,13 +10,11 @@
 }
 
 /* The theme toggle and the Settings button, with the settings drawer hanging out of the bar's
-   bottom edge under the toggle. The drawer sits in the toggle's grid column, so it takes the
-   toggle's width, less a space at each side, with nothing measured. The group fills the bar's
-   row, so the column's bottom is the bar's, short of its padding. */
+   bottom edge at its far end, under the button: as wide as its switches, its end a space in from
+   the button's. The group fills the bar's row, so its bottom is the bar's, short of its padding. */
 .docs-switches {
   position: relative;
-  display: grid;
-  grid-template-columns: auto auto;
+  display: flex;
   align-items: center;
   align-self: stretch;
   gap: var(--rkui-space-2);
@@ -24,9 +22,9 @@
 }
 
 .docs-settings {
-  grid-area: 1 / 1 / 2 / 2;
   inset-block-start: calc(100% + var(--rkui-space-3));
-  inset-inline: var(--rkui-space-2);
+  inset-inline: auto var(--rkui-space-2);
+  inline-size: max-content;
 }
 
 .docs-settings-body {

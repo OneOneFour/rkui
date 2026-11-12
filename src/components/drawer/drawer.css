@@ -212,7 +212,10 @@
     grid-template-columns var(--rkui-duration-slide) ease-out;
 }
 
+/* Positioned, so that the tray clips a scroll region's pills along with the region while it opens
+   and shuts (overflow.css). */
 .rkui-drawer-body {
+  position: relative;
   align-self: end;
   min-block-size: 0;
   padding: var(--rkui-space-4);

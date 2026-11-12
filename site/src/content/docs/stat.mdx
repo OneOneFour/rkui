@@ -1,0 +1,85 @@
+---
+title: Stat
+description: A big number with a note under it.
+group: Containers
+order: 66
+new: true
+component: Stat
+---
+
+import ApiReference from '../../components/ApiReference.astro'
+import Demo from '../../components/Demo.astro'
+import Card from '@oneonefour/rkui/components/card/Card.vue'
+import Stat from '@oneonefour/rkui/components/stat/Stat.vue'
+
+The value is a string, so it carries its own units and words. The slot goes under it.
+
+<Demo label="A stat with a note">
+  <Stat value="62 %">
+    <a href="#stat">How good is this?</a>
+  </Stat>
+</Demo>
+
+## Sizes
+
+`small` sets the value a step smaller; `size` sets it to any CSS length.
+
+<Demo label="Stats in three sizes">
+  <Stat value="3 to 9 in" small />
+  <Stat value="3 to 9 in" />
+  <Stat value="3 to 9 in" size="var(--rkui-step-5)" />
+</Demo>
+
+## Colour and trend
+
+`hue` colours the value in the hue's text-safe shade (a palette hue, or a hex code, which is used as
+given). `trend` puts a small arrow beside it, in the text colour, with "up" or "down" read to screen
+readers; it says nothing about good or bad.
+
+<Demo label="A hue and a trend">
+  <Stat value="62 %" hue="teal" trend="up" />
+  <Stat value="4.5 m" hue="coral" trend="down" />
+  <Stat value="1,204" hue="#a064d8" />
+</Demo>
+
+## Counting up
+
+With `animate`, the number counts up from zero the first time it is well in view, over 1.2s on an
+ease-out, then lands with the emphasis pop. `--rkui-stat-count-duration` sets the length. Without
+`animate` a stat is static and just shows its value.
+
+Every number in the value counts together, keeping its decimals, thousands commas and words: "3 to 9
+in" counts both numbers, "4.5 m" counts to one decimal. A sign in front of a number stays put, so
+"−3 °C" counts 0 to 3 behind its minus. The stat itself is still static; `stat-enhance.js` does the
+counting, over a copy of the text that screen readers skip, in which each number keeps its final
+width, so nothing moves and the real value is always what is read.
+
+An animated stat already in view as the page loads counts too when the page inlines
+`table-init.js` in `<head>` (the `rkui()` add-on does), which keeps it hidden until it starts;
+without it, that stat shows its final value. With JavaScript off, or with reduced motion, every
+stat shows its final value at once.
+
+<Demo label="Stats that count up, then pop">
+  <Stat value="62 %" animate />
+  <Stat value="1,204" animate />
+  <Stat value="3 to 9 in" animate />
+  <Stat value="4.5 m" animate />
+  <Stat value="−3 °C" animate />
+</Demo>
+
+## In a card
+
+<Demo label="A card holding two stats">
+  <Card title="Field notes" style="inline-size: 20rem">
+    <Stat value="41 in">
+      <p>Pack my box with five dozen liquor jugs.</p>
+    </Stat>
+    <Stat value="12 to 30 in" small>
+      <a href="#in-a-card">How vexingly quick daft zebras jump</a>
+    </Stat>
+  </Card>
+</Demo>
+
+## Reference
+
+<ApiReference component="Stat" />

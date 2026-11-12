@@ -22,15 +22,8 @@
   <CodeBlock lang="shell" copy="never">npm install @oneonefour/rkui</CodeBlock>
 -->
 <script setup lang="ts">
-import {
-  computed,
-  onBeforeUnmount,
-  onMounted,
-  onServerPrefetch,
-  ref,
-  useSlots,
-  type Component,
-} from 'vue'
+import { computed, onBeforeUnmount, onServerPrefetch, ref, useSlots, type Component } from 'vue'
+import { useLive } from '../../shared/live'
 import { slotText } from '../../shared/slot-html'
 import CopyIcon from '@oneonefour/rkui/icons/copy.vue'
 import FileCIcon from '@oneonefour/rkui/icons/file-c.vue'
@@ -149,11 +142,10 @@ if (import.meta.env.SSR) {
 }
 
 // Set once the block runs in the browser; until then code.css hides the copy button.
-const live = ref(false)
+const live = useLive()
 /** What the button and the screen-reader announcement say after a copy; nothing at rest. */
 const message = ref('')
 let resetTimer: number | undefined
-onMounted(() => (live.value = true))
 onBeforeUnmount(() => clearTimeout(resetTimer))
 
 /** Copies the code, and says whether that worked for a moment. */

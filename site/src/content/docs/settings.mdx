@@ -1,0 +1,122 @@
+---
+title: Settings
+description: The theme, palette, shadow, highlight, scroll dots and light, set for a whole site from its configuration or code.
+group: Foundations
+order: 16
+new: true
+---
+
+import ApiReference from '../../components/ApiReference.astro'
+import Demo from '../../components/Demo.astro'
+import Button from '@oneonefour/rkui/components/button/Button.vue'
+
+Six settings style a whole site. Each is an attribute on `<html>` that the CSS reads, or for the
+light a custom property, so a site sets them in its configuration or its markup, with no control
+on the page. A reader's choice of one is stored under its key.
+
+| Setting                 | On `<html>`          | Values                                       | Stored under     |
+| ----------------------- | -------------------- | -------------------------------------------- | ---------------- |
+| Theme                   | `data-theme`         | `light`, `dark`; none follows the system     | `rkui-theme`     |
+| Palette                 | `data-palette`       | `cream` (the default), `slate`, `greige`     | `rkui-palette`   |
+| Shadow, in dark mode    | `data-shadow`        | `outline` (the default), `block`, `color`    | `rkui-shadow`    |
+| Highlight, in dark mode | `data-highlight`     | `cream` (the default), `dark`                | `rkui-highlight` |
+| Scroll dots             | `data-rkui-dots`     | `plain` (the default), `pill`                | `rkui-dots`      |
+| Light                   | `--rkui-light-angle` | an angle, `315deg` (the top left) by default | `rkui-light`     |
+
+## Fixed settings
+
+In an Astro site, `rkui({ settings })` fixes settings for every reader. They are written on each
+page's `<html>` as it renders, in `astro dev`, in a static build and on a server, so they show
+before the first paint and need no JavaScript. An attribute the layout already writes on `<html>`
+wins over the one given here.
+
+```js
+// astro.config.js
+rkui({ settings: { palette: 'slate', shadow: 'color', light: 45 } })
+```
+
+## On `<html>`
+
+Any site, including one with no JavaScript, writes the settings on `<html>` itself.
+
+```html
+<html lang="en" data-palette="slate" style="--rkui-light-angle: 45deg"></html>
+```
+
+## A section with its own settings
+
+Every setting but the theme also works on any element, for what is inside it.
+
+<Demo label="A slate section lit from the top right">
+  <div
+    data-palette="slate"
+    style="--rkui-light-angle: 45deg; padding: var(--rkui-space-5); background: var(--rkui-surface)"
+  >
+    <Button>Save</Button>
+  </div>
+</Demo>
+
+## Settings readers choose
+
+`switchable` lists the settings readers may change. A head script puts their stored choices back
+before the first paint, over the fixed ones, which are then only the defaults. The keys are shared
+by every site on the domain, so only the listed settings are put back: a choice made on another
+site doesn't change this one. Left out, `switchable` is `['theme']`; an empty list, or
+`settings: false`, injects no script.
+
+```js
+rkui({ settings: { palette: 'slate', switchable: ['theme', 'palette'] } })
+```
+
+A plain HTML page pastes `src/head-scripts/settings-init.js` inline at the top of `<head>`, and
+edits its `switchable` line.
+
+## The JavaScript API
+
+`@oneonefour/rkui/settings` is for a site's own controls and scripts, in any page, with or without
+Vue; a plain HTML page imports it from `rkui.js`. Settings are named as in the table (`'palette'`,
+`'light'`), and values are strings: the light's is its angle in degrees, such as `'45'`.
+
+- `SETTINGS`: every setting but the light, with its `legend`, its `attribute` on `<html>`, and its
+  `options`, each value with its label, the default first.
+- `readSetting(name)`: the value on the page now, or the default.
+- `applySetting(name, value)`: sets it on `<html>`, which restyles the page. It stores nothing.
+- `chooseSetting(name, value)`: the reader's choice. It stores it under `rkui-<setting>` and tells
+  the page's other controls, at once, and doesn't restyle the page.
+- `storedSetting(name)`: the reader's stored choice, or `null`.
+- `onSettingChange(name, callback, signal)`: calls `callback` with each new value on this page, or
+  chosen in another tab, which it also puts on this page. `signal`, an `AbortSignal`, is optional.
+
+A control of its own, here a `<select>` for the palette:
+
+```js
+import {
+  applySetting,
+  chooseSetting,
+  onSettingChange,
+  readSetting,
+} from '@oneonefour/rkui/settings'
+
+const select = document.querySelector('#palette')
+select.value = readSetting('palette')
+select.addEventListener('change', () => {
+  chooseSetting('palette', select.value)
+  applySetting('palette', select.value)
+})
+onSettingChange('palette', (value) => (select.value = value))
+```
+
+The switches in this site's settings drawer are built the same way, as a segmented control that
+restyles the page once its pill has slid there:
+[`site/src/components/SettingSwitch.astro`](https://github.com/OneOneFour/rkui/blob/develop/site/src/components/SettingSwitch.astro).
+
+## Controls that ship
+
+`ThemeToggle` switches the theme, and `LightDirection` turns the light
+([Shadows](../shadows/#light)). Any other control is the site's own.
+
+## Reference
+
+<ApiReference component="ThemeToggle" />
+
+<ApiReference component="LightDirection" />

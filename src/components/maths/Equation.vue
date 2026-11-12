@@ -6,8 +6,8 @@
   `class`, `style` and other attributes go on the wrapper; give it an `id` for an
   `EquationReference` to link to.
 
-  The site installs `katex` and loads its stylesheet before rkui's:
-  import 'katex/dist/katex.min.css'. A TeX error stops the build.
+  The site installs `katex`, sets `head: { styles: false }` in `rkui()` and imports
+  'katex/dist/katex.min.css' and then rkui's `styles.css` in its layout. A TeX error stops the build.
 
   @example
   <Equation id="eq-flow" tex="\frac{\mathrm{d}\mathbf{x}}{\mathrm{d}t} = \mathbf{f}(\mathbf{x}) \tag{1}" />

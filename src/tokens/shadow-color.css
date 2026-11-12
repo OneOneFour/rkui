@@ -24,6 +24,7 @@
 :is(.rkui-checkbox, .rkui-radio, .rkui-switch):checked,
 .rkui-dial-face,
 .rkui-clock-hand--hour .rkui-clock-tag,
+.rkui-light-direction-sun,
 .rkui-drawer--blind > .rkui-drawer-handle .rkui-drawer-pull {
   --rkui-shade-of: var(--rkui-selected);
   --rkui-extrusion: var(--rkui-shade);
@@ -167,8 +168,7 @@
       );
     }
 
-    /* A scroll region's pills are drawn in its background, so they take their own colour
-       (overflow.css). */
+    /* A scroll region draws its pills itself, so they take their own colour (overflow.css). */
     :scope.rkui-scroll,
     .rkui-scroll {
       --rkui-shade-of: var(--rkui-pill-fill);
