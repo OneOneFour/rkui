@@ -43,7 +43,7 @@
 
 /* The trend arrow: the icon at the value's size and in its colour (the hue's, with `hue`), solid
    and heavy to stand beside the bold number, turned over for "down". */
-.rkui-stat-trend {
+.rkui-stat .rkui-stat-trend {
   --rkui-icon-stroke: 36;
   --rkui-icon-fill: currentcolor;
 
@@ -65,9 +65,9 @@
    - Rolling: the first count up from zero, over --rkui-stat-count-duration (1.2s), or a change in
      its value, over --rkui-stat-change-duration (about 0.3s), both on an ease-out. The counter is
      a copy of the number's text laid over it (stat-enhance.js), so the number's own text stays in
-     place, unseen, and the layout never moves. In the counter each number is written out unseen,
-     so it keeps its final width, and the rolling number is set back over it, its end against the
-     number's end.
+     place, unseen, and the layout never moves. In the counter each number's room is written out
+     unseen, the final number (or, for a change, the wider of the old and new), and the rolling
+     number is set back over it, its end against the room's end.
    - Landed, after the first count only: the counter is gone and the number pops. Then it is
      "done", so showing it again (a tab switched back) doesn't pop it again. A change ends "done"
      with no pop.
@@ -136,8 +136,19 @@
     -webkit-text-fill-color: currentcolor;
   }
 
-  .rkui-stat-counter-final {
+  .rkui-stat-counter-final,
+  .rkui-stat-counter-wider {
     -webkit-text-fill-color: transparent;
+  }
+
+  /* The room for a change: the old and the new number on top of each other, as wide as the wider,
+     so a narrower number's spare room goes towards the end. */
+  .rkui-stat-counter-wider {
+    display: inline-grid;
+  }
+
+  .rkui-stat-counter-wider > * {
+    grid-area: 1 / 1;
   }
 
   /* No width of its own: its number sits against the end of the unseen one before it, and

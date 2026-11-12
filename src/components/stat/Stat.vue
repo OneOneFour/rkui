@@ -6,19 +6,22 @@
 
   The colour is `--rkui-stat-color`, which `hue` sets and a plain page can set itself.
 
-  With `animate`, the number counts up from zero the first time it is well in view
-  (stat-enhance.js, which comes in rkui.js), over `--rkui-stat-count-duration` (1.2s), then lands
-  with a small pop. Every number in the value counts, keeping its decimals and thousands commas,
-  and the words around it stay: "1,204" counts 0 to 1,204, and "3 to 9 in" counts both numbers
-  together. A sign or other symbol in front of a number stays as it is, so "−3 °C" counts 0 to 3
-  behind its minus. An animated stat already in view as the page loads counts too when the page
-  inlines `head-scripts/table-init.js`, which keeps it hidden until it starts; without it, that stat
-  shows its final value. After that, whenever the value changes it rolls from the number on screen
-  to the new one over `--rkui-stat-change-duration` (about 0.3s), with no pop, carrying on from
-  where it is if it changes again mid-roll; a value with a different count of numbers just shows.
-  With JavaScript off, or with reduced motion, the value shows at once. Screen readers read the
-  value itself, which changes at once, never the rolling numbers; the stat doesn't announce
-  changes, so a page that wants them read wraps it in its own `aria-live` region.
+  With `animate`, the number counts up from zero the first time it is well in view (stat-enhance.js,
+  which comes in rkui.js), over `--rkui-stat-count-duration` (1.2s), then lands with a small pop.
+  Every number in the value counts, keeping its decimals and thousands commas, and the words around
+  it stay: "1,204" counts 0 to 1,204, and "3 to 9 in" counts both numbers together. A sign or other
+  symbol in front of a number stays as it is, so "−3 °C" counts 0 to 3 behind its minus. An animated
+  stat already in view as the page loads counts too when the page inlines
+  `head-scripts/table-init.js`, which keeps it hidden until it starts; without it, that stat shows
+  its final value. After that, whenever the value changes it rolls from the number on screen to the
+  new one over `--rkui-stat-change-duration` (about 0.3s), with no pop, carrying on from where it is
+  if it changes again mid-roll; a change during the first count retargets it and keeps its pop. A
+  value of another shape (other numbers, or other words or signs around them) just shows. With
+  `animate`, the number's span carries `data-allow-mismatch="children"`, so Vue waking up over a
+  stat that is counting doesn't report its counter as a mismatch. With JavaScript off, or with
+  reduced motion, the value shows at once. Screen readers read the value itself, which changes at
+  once, never the rolling numbers; the stat doesn't announce changes, so a page that wants them read
+  wraps it in its own `aria-live` region.
 
   @example
   <Stat value="62 %" hue="teal" trend="up" animate small>
@@ -70,7 +73,7 @@ const vars = computed(() => ({
     :style="vars"
   >
     <p class="rkui-stat-value">
-      <span class="rkui-stat-number"
+      <span class="rkui-stat-number" :data-allow-mismatch="animate ? 'children' : undefined"
         >{{ value
         }}<ArrowUpIcon
           v-if="trend"

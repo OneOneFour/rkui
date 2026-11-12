@@ -1,17 +1,22 @@
 // Rolls an animated stat's numbers (.rkui-stat--animate; stat.css). The first time its value is in
-// view it counts up from zero over --rkui-stat-count-duration and lands with a small pop. After
-// that, whenever its value changes (a Vue prop, a page script), it rolls from the numbers on screen
-// to the new ones over --rkui-stat-change-duration and stops, with no pop; a change in the middle
-// of a roll carries on from where it is. Numbers are matched by position, keeping the decimals and
-// thousands commas the new value writes; a value with a different count of numbers just shows.
+// view it counts up from zero over --rkui-stat-count-duration and lands with a small pop; a change
+// during that count retargets it, keeping its time and its pop. After that, whenever its value
+// changes (a Vue prop, a page script), it rolls from the numbers on screen to the new ones over
+// --rkui-stat-change-duration and stops, with no pop; a change in the middle of a roll carries on
+// from where it is. Numbers are matched by position, keeping the decimals the new value writes,
+// with thousands commas while either value has them. A value of another shape (other numbers, or
+// other words or signs around them) just shows.
 // The stat's own text is never touched, so screen readers have the new value at once: a copy of it
-// rolls on top, hidden from them, with each number holding its final width, so nothing moves.
+// rolls on top, hidden from them. Each number in the copy holds its room, so nothing moves until
+// it lands: the final number's width on the first count, and the wider of the old and new numbers
+// on a change, so a narrower number's spare room goes towards the end.
 // A stat out of view waits with its number hidden, and counts to whatever its value is when it
 // comes into view. One already in view when the script finds it counts too if the page carries
 // table-init.js's mark, which kept it hidden; without the mark it may have shown its final value
 // already, so it keeps it. Under reduced motion it does nothing, and every value just shows. It
 // comes in rkui.js.
 import { eachElement } from '../../shared/each-element.js'
+import { timeOf } from '../../shared/css-time.js'
 
 /** A number in a value: digits, optional thousands commas, optional decimals. */
 const NUMBER = /\d+(?:,\d{3})*(?:\.\d+)?/g
@@ -21,6 +26,9 @@ const FRAME = 1000 / 60
 
 /** The numbers written in a text, e.g. '3 to 9 in' → ['3', '9']. */
 const numbersIn = (/** @type {string} */ text) => text.match(NUMBER) ?? []
+
+/** A text's shape: its words and signs, with each number as '#', e.g. '−3 °C' → '−# °C'. */
+const shapeOf = (/** @type {string} */ text) => text.replace(NUMBER, '#')
 
 /** A written number's value, e.g. '1,204' → 1204. */
 const valueOf = (/** @type {string} */ written) => Number(written.replaceAll(',', ''))
@@ -32,46 +40,70 @@ function textOf(/** @type {Element} */ number) {
 }
 
 /**
- * A number `progress` (0 to 1) of the way from `from` to `final`, written the way `final` is: the
- * same decimals, and thousands commas if it has them.
- * @param {number} from
- * @param {string} final
- * @param {number} progress
+ * One rolling number in a counter.
+ * @typedef {object} Rolling
+ * @property {Text} shown the text it writes
+ * @property {number} start where it starts
+ * @property {string} final the number it rolls to, as written
+ * @property {boolean} grouped whether it is written with thousands commas
  */
-function between(from, final, progress) {
+
+/**
+ * A number on its way from `start` to `final`, `share` (0 to 1) of the way there, with the
+ * decimals `final` has.
+ * @param {Rolling} rolling
+ * @param {number} share
+ */
+function between({ start, final, grouped }, share) {
   const decimals = final.includes('.') ? final.length - final.indexOf('.') - 1 : 0
-  return (from + (valueOf(final) - from) * progress).toLocaleString('en-US', {
+  return (start + (valueOf(final) - start) * share).toLocaleString('en-US', {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
-    useGrouping: final.includes(','),
+    useGrouping: grouped,
   })
 }
 
 /**
- * The counter for a value's text: its words as they are, and each number written out unseen, so
- * it holds its final width, followed by the rolling number, set back against it. Returns the
- * counter and each rolling text node with where it starts and ends.
+ * The counter for a value's text: its words as they are, and each number's room, unseen, followed
+ * by the rolling number, set back against the room's end. The room is the final number, or with
+ * `holdStarts` the wider of the start and the final.
  * @param {string} text
- * @param {number[]} starts where each number starts, in order
+ * @param {string[]} starts each number's start, as written
+ * @param {boolean} holdStarts
  */
-function makeCounter(text, starts) {
+function makeCounter(text, starts, holdStarts) {
   const counter = document.createElement('span')
   counter.className = 'rkui-stat-counter'
   counter.setAttribute('aria-hidden', 'true')
-  /** @type {{ shown: Text, from: number, final: string }[]} */
+  /** @type {Rolling[]} */
   const numbers = []
   let end = 0
   for (const { 0: final, index } of text.matchAll(NUMBER)) {
-    const from = starts[numbers.length]
-    const unseen = document.createElement('span')
-    unseen.className = 'rkui-stat-counter-final'
-    unseen.append(final)
-    const shown = new Text(between(from, final, 0))
-    const rolling = document.createElement('span')
-    rolling.className = 'rkui-stat-counter-now'
-    rolling.append(shown)
-    counter.append(text.slice(end, index), unseen, rolling)
-    numbers.push({ shown, from, final })
+    const start = starts[numbers.length]
+    const room = document.createElement('span')
+    if (holdStarts && start !== final) {
+      room.className = 'rkui-stat-counter-wider'
+      room.append(
+        ...[start, final].map((written) =>
+          Object.assign(document.createElement('span'), { textContent: written }),
+        ),
+      )
+    } else {
+      room.className = 'rkui-stat-counter-final'
+      room.append(final)
+    }
+    const rolling = {
+      shown: new Text(),
+      start: valueOf(start),
+      final,
+      grouped: start.includes(',') || final.includes(','),
+    }
+    rolling.shown.data = between(rolling, 0)
+    const now = document.createElement('span')
+    now.className = 'rkui-stat-counter-now'
+    now.append(rolling.shown)
+    counter.append(text.slice(end, index), room, now)
+    numbers.push(rolling)
     end = index + final.length
   }
   counter.append(text.slice(end))
@@ -79,22 +111,14 @@ function makeCounter(text, starts) {
 }
 
 /**
- * A length in milliseconds from one of stat.css's duration properties.
- * @param {Element} stat
- * @param {string} name
- */
-function duration(stat, name) {
-  const written = getComputedStyle(stat).getPropertyValue(name).trim()
-  return parseFloat(written) * (written.endsWith('ms') ? 1 : 1000) || 0
-}
-
-/**
- * A roll under way: its counter, each rolling number, and the timer whose eased progress it
- * follows.
+ * A roll under way. A first count lands with the pop; a change just stops.
  * @typedef {object} Roll
+ * @property {'first count' | 'change'} kind
  * @property {HTMLElement} counter
- * @property {{ shown: Text, from: number, final: string }[]} numbers
- * @property {Animation} timer
+ * @property {Rolling[]} numbers
+ * @property {Animation} timer an animation with no keyframes, whose eased progress the roll takes
+ * @property {number} from the timer's progress when the numbers set off, as a retargeted first
+ *   count carries on its own time
  */
 
 /** Each stat's roll while it lasts. @type {WeakMap<HTMLElement, Roll>} */
@@ -103,50 +127,83 @@ const rolls = new WeakMap()
 /** The text each stat last showed, to tell a change from the counter's own writes. */
 const shownTexts = new WeakMap()
 
+/** A timer's eased progress, 0 to 1. */
+const progressOf = (/** @type {Animation} */ timer) =>
+  timer.effect?.getComputedTiming().progress ?? 1
+
 /**
- * Rolls a stat's numbers from `starts` to the ones in its text: its first count, which pops as it
- * lands, or a change, which just stops. A roll already under way gives way to it.
+ * Rolls a stat's numbers to the ones in its text: a first count from zero, or a change from the
+ * numbers on screen. A change during the first count retargets it, keeping its time and its pop;
+ * any other roll under way gives way to the new one.
  * @param {HTMLElement} stat
- * @param {number[]} starts
- * @param {boolean} first
+ * @param {'first count' | 'change'} asked
  */
-function roll(stat, starts, first) {
+function roll(stat, asked) {
   const number = /** @type {HTMLElement} */ (stat.querySelector('.rkui-stat-number'))
   const text = textOf(number)
-  stop(stat)
-  shownTexts.set(stat, text)
-  const { counter, numbers } = makeCounter(text, starts)
-  number.append(counter)
-  // An animation with no keyframes only keeps time: its eased progress is the roll's.
-  const length = duration(
-    stat,
-    first ? '--rkui-stat-count-duration' : '--rkui-stat-change-duration',
-  )
-  const timer = stat.animate(null, { duration: length, easing: 'ease-out' })
-  // A change starts a frame in, so a stream of them (a dragged slider) keeps the number moving
-  // rather than holding it still each time.
-  if (!first) timer.currentTime = Math.min(FRAME, length)
-  const record = { counter, numbers, timer }
+  const current = rolls.get(stat)
+  const starts =
+    asked === 'first count'
+      ? numbersIn(text).map(() => '0')
+      : (current?.numbers.map(({ shown }) => shown.data) ?? numbersIn(shownTexts.get(stat) ?? ''))
+  const retarget = asked === 'change' && current?.kind === 'first count'
+  current?.counter.remove()
+  if (current && !retarget) current.timer.cancel()
+
+  let timer
+  if (retarget) {
+    timer = current.timer
+  } else {
+    const property =
+      asked === 'first count' ? '--rkui-stat-count-duration' : '--rkui-stat-change-duration'
+    const length = timeOf(stat, property)
+    timer = stat.animate(null, { duration: length, easing: 'ease-out' })
+    // A change starts a frame in, so a stream of them (a dragged slider) keeps the number moving
+    // rather than holding it still each time.
+    if (asked === 'change') timer.currentTime = Math.min(FRAME, length)
+  }
+  const { counter, numbers } = makeCounter(text, starts, asked === 'change')
+  /** @type {Roll} */
+  const record = {
+    kind: retarget ? 'first count' : asked,
+    counter,
+    numbers,
+    timer,
+    from: retarget ? progressOf(timer) : 0,
+  }
   rolls.set(stat, record)
+  shownTexts.set(stat, text)
+  number.append(counter)
   stat.dataset.rkuiCountState = 'rolling'
 
   const frame = () => {
     if (rolls.get(stat) !== record || !stat.isConnected) return
-    // A Vue island waking up over the stat removes the counter it didn't draw; put it back.
+    // Vue waking up over the stat removes the counter it didn't draw; put it back.
     if (!counter.isConnected) number.append(counter)
-    const progress = timer.effect?.getComputedTiming().progress ?? 1
-    for (const { shown, from, final } of numbers) shown.data = between(from, final, progress)
+    const share = record.from < 1 ? (progressOf(timer) - record.from) / (1 - record.from) : 1
+    for (const rolling of numbers) rolling.shown.data = between(rolling, share)
     requestAnimationFrame(frame)
   }
   frame()
+  if (retarget) return
   timer.finished.then(
     () => {
-      if (rolls.get(stat) !== record) return
+      const landing = rolls.get(stat)
+      if (landing?.timer !== timer) return
       stop(stat)
-      stat.dataset.rkuiCountState = first ? 'landed' : 'done'
+      stat.dataset.rkuiCountState = landing.kind === 'first count' ? 'landed' : 'done'
     },
     () => {},
   )
+}
+
+/** Ends a stat's roll, if it has one, and takes its counter away. */
+function stop(/** @type {HTMLElement} */ stat) {
+  const record = rolls.get(stat)
+  if (!record) return
+  rolls.delete(stat)
+  record.timer.cancel()
+  record.counter.remove()
 }
 
 /**
@@ -161,50 +218,22 @@ function popped(event) {
 }
 
 /**
- * Counts a waiting stat up from zero, or just shows its value if it has no numbers by now.
- * @param {HTMLElement} stat
- */
-function countUp(stat) {
-  const finals = numbersIn(textOf(/** @type {Element} */ (stat.querySelector('.rkui-stat-number'))))
-  if (finals.length > 0)
-    roll(
-      stat,
-      finals.map(() => 0),
-      true,
-    )
-  else delete stat.dataset.rkuiCountState
-}
-
-/** Ends a stat's roll, if it has one, and takes its counter away. */
-function stop(/** @type {HTMLElement} */ stat) {
-  const record = rolls.get(stat)
-  if (!record) return
-  rolls.delete(stat)
-  record.timer.cancel()
-  record.counter.remove()
-}
-
-/**
- * Answers a change in a stat's value: rolls from the numbers on screen to the new ones, or just
- * shows the new value when it has a different count of numbers. A stat still waiting to count
- * up counts to its value when it comes into view, so it needs nothing.
+ * Answers a change in a stat's value: rolls to the new numbers, or just shows the new value when
+ * its shape differs. A stat still waiting to count up counts to its value when it comes into
+ * view, so it needs nothing.
  * @param {HTMLElement} stat
  */
 function changed(stat) {
   const text = textOf(/** @type {Element} */ (stat.querySelector('.rkui-stat-number')))
-  const before = shownTexts.get(stat)
+  const before = shownTexts.get(stat) ?? ''
   if (text === before || stat.dataset.rkuiCountState === 'waiting' || !stat.isConnected) return
-  const record = rolls.get(stat)
-  const starts = record
-    ? record.numbers.map(({ shown }) => valueOf(shown.data))
-    : numbersIn(before ?? '').map(valueOf)
-  if (starts.length === 0 || starts.length !== numbersIn(text).length) {
+  if (shapeOf(text) !== shapeOf(before) || numbersIn(text).length === 0) {
     stop(stat)
     shownTexts.set(stat, text)
     stat.dataset.rkuiCountState = 'done'
     return
   }
-  roll(stat, starts, false)
+  roll(stat, 'change')
 }
 
 if (matchMedia('(prefers-reduced-motion: no-preference)').matches) {
@@ -214,11 +243,9 @@ if (matchMedia('(prefers-reduced-motion: no-preference)').matches) {
       if (!isIntersecting) continue
       observer.unobserve(target)
       const stat = /** @type {HTMLElement} */ (target.closest('.rkui-stat'))
-      // In an Astro island that hasn't woken up yet, Vue would throw the counter away as a
-      // mismatch, so the count waits for it.
-      const island = stat.closest('astro-island[ssr]')
-      if (island) island.addEventListener('astro:hydrate', () => countUp(stat), { once: true })
-      else countUp(stat)
+      const number = /** @type {Element} */ (stat.querySelector('.rkui-stat-number'))
+      if (numbersIn(textOf(number)).length > 0) roll(stat, 'first count')
+      else delete stat.dataset.rkuiCountState
     }
   }
   // A stat counts once its value is a quarter of the window's height above the bottom edge, so it

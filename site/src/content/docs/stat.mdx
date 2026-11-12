@@ -74,9 +74,10 @@ stat shows its final value at once.
 After its first count, an animated stat rolls from the number on screen to each new value, over
 about 0.3s (`--rkui-stat-change-duration`), with no pop. It works however the value changes: a Vue
 prop, or a script that sets the text on a plain page. A change while it is rolling carries on from
-the number shown, so a dragged slider glides. Numbers are matched by position, and a new value with
-a different count of numbers just shows. With JavaScript off, or with reduced motion, the new value
-shows at once.
+the number shown, so a dragged slider glides, and a change during the first count retargets it,
+keeping its pop. Numbers are matched by position, with thousands commas while either value has
+them. A new value of another shape (other numbers, or other words or signs around them, as "−3 °C"
+to "2 °C") just shows. With JavaScript off, or with reduced motion, the new value shows at once.
 
 Screen readers have the new value as soon as it is set, as the stat's own text changes at once.
 The stat doesn't announce it: a page that wants changes read out puts the stat in its own live
