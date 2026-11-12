@@ -11,6 +11,8 @@ import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
 import Card from '@oneonefour/rkui/components/card/Card.vue'
 import Stat from '@oneonefour/rkui/components/stat/Stat.vue'
+import ChangeWidget from '../../examples/stat/ChangeWidget.vue'
+import changeWidgetCode from '../../examples/stat/ChangeWidget.vue?raw'
 
 The value is a string, so it carries its own units and words. The slot goes under it.
 
@@ -65,6 +67,23 @@ stat shows its final value at once.
   <Stat value="3 to 9 in" animate />
   <Stat value="4.5 m" animate />
   <Stat value="−3 °C" animate />
+</Demo>
+
+## Changing value
+
+After its first count, an animated stat rolls from the number on screen to each new value, over
+about 0.3s (`--rkui-stat-change-duration`), with no pop. It works however the value changes: a Vue
+prop, or a script that sets the text on a plain page. A change while it is rolling carries on from
+the number shown, so a dragged slider glides. Numbers are matched by position, and a new value with
+a different count of numbers just shows. With JavaScript off, or with reduced motion, the new value
+shows at once.
+
+Screen readers have the new value as soon as it is set, as the stat's own text changes at once.
+The stat doesn't announce it: a page that wants changes read out puts the stat in its own live
+region (`aria-live`).
+
+<Demo vue={changeWidgetCode} label="A stat that follows a slider" stack widget>
+  <ChangeWidget client:visible />
 </Demo>
 
 ## In a card
