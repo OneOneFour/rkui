@@ -10,6 +10,13 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ## Decisions
 
+### 2026-11-14
+
+**A widget shows a Tooltip with `shown`** (Rob). A one-way prop, not a `v-model`: nothing writes
+back to the widget. Escape hides a shown tip until `shown` next turns false and back to true, with
+the listener in Tooltip only while the tip shows. With no `id`, a tooltip has no control and its
+bubble no `role`. A plain page toggles `data-rkui-shown` itself, as before.
+
 ### 2026-11-12
 
 **An animated Stat follows changes to its value** (Rob). Whenever an animated stat's value changes,
