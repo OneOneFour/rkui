@@ -27,7 +27,7 @@ const NAME = `A table lamp: ${new Intl.ListFormat('en-GB').format(
   PARTS.map((part) => part.name.toLowerCase()),
 )}`
 
-/** How far a part moves and rises when the lamp comes apart (lamp.css). */
+/** How far a part moves and rises when the lamp comes apart (the styles below). */
 function partVars({ apart: [x, y], depth }: Part) {
   return { '--rkui-part-apart-x': x, '--rkui-part-apart-y': y, '--rkui-part-depth': depth }
 }
@@ -74,3 +74,79 @@ const vars = computed(() => ({
     </Badge>
   </div>
 </template>
+
+<style>
+/* Lamp: a drawing on a grid of --rkui-lamp-columns × --rkui-lamp-rows units. The lamp is the
+   container, so a unit (--rkui-lamp-unit) is a share of its width, and each part sits at its box
+   (LampPart). Each part stands one layer up, and its shadow is half the resting shadow's
+   length for each layer. With .rkui-lamp--apart each part moves by its --rkui-part-apart-x and
+   -y, in units, and rises 1 + --rkui-part-depth layers more, so nearer parts cast longer
+   shadows. A part's label moves with it. */
+
+.rkui-lamp {
+  --rkui-lamp-unit: calc(100cqi / var(--rkui-lamp-columns));
+  --rkui-lamp-apart: 0;
+  --rkui-lamp-duration: var(--rkui-duration-spring);
+  --rkui-lamp-ease: var(--rkui-ease-snap);
+
+  position: relative;
+  container-type: inline-size;
+  inline-size: var(--rkui-lamp-size, 10rem);
+  aspect-ratio: var(--rkui-lamp-columns) / var(--rkui-lamp-rows);
+}
+
+/* Parts come apart on the spring and snap home. */
+.rkui-lamp--apart {
+  --rkui-lamp-apart: 1;
+  --rkui-lamp-duration: var(--rkui-duration-slide);
+  --rkui-lamp-ease: var(--rkui-ease-spring);
+}
+
+.rkui-lamp-ground {
+  position: absolute;
+  inset: 0;
+  stroke: var(--rkui-line-unfilled);
+  stroke-width: calc(2 * var(--rkui-outline-width));
+  stroke-linecap: round;
+}
+
+.rkui-lamp-ground path {
+  vector-effect: non-scaling-stroke;
+}
+
+.rkui-lamp > :is(.rkui-lamp-part, .rkui-lamp-label) {
+  --rkui-part-lift: calc(1 + var(--rkui-lamp-apart) * (1 + var(--rkui-part-depth)));
+
+  position: absolute;
+  inset-inline-start: calc(var(--rkui-part-x) * var(--rkui-lamp-unit));
+  inset-block-start: calc(var(--rkui-part-y) * var(--rkui-lamp-unit));
+  translate: calc(var(--rkui-lamp-apart) * var(--rkui-part-apart-x) * var(--rkui-lamp-unit))
+    calc(var(--rkui-lamp-apart) * var(--rkui-part-apart-y) * var(--rkui-lamp-unit));
+  transition:
+    translate var(--rkui-lamp-duration) var(--rkui-lamp-ease),
+    filter var(--rkui-lamp-duration) var(--rkui-lamp-ease),
+    opacity var(--rkui-lamp-duration) var(--rkui-lamp-ease);
+}
+
+/* The shadow, then its light edge in dark mode, as on the tooltip. */
+.rkui-lamp > .rkui-lamp-part {
+  --rkui-part-shadow: calc(var(--rkui-part-lift) * var(--rkui-shadow-offset) / 2);
+
+  filter: drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-part-shadow))
+        calc(var(--rkui-shadow-dy) * var(--rkui-part-shadow)) 0 var(--rkui-shadow-color)
+    )
+    drop-shadow(
+      calc(var(--rkui-shadow-dx) * var(--rkui-outline-width))
+        calc(var(--rkui-shadow-dy) * var(--rkui-outline-width)) 0 var(--rkui-shadow-edge)
+    );
+}
+
+/* A label sits centred over its part's top edge, and shows only while the lamp is apart. */
+.rkui-lamp > .rkui-lamp-label {
+  margin-block-start: calc(-1 * var(--rkui-space-1));
+  transform: translate(-50%, -100%);
+  opacity: var(--rkui-lamp-apart);
+  white-space: nowrap;
+}
+</style>

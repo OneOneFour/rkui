@@ -24,7 +24,7 @@ const { label = 'Take it apart', size } = defineProps<Props>()
 /** Whether the lamp is apart. */
 const apart = defineModel<boolean>({ default: false })
 
-/** Set once the component runs in the browser, which shows the switch (exploded-lamp.css). */
+/** Set once the component runs in the browser, which shows the switch (the styles below). */
 const live = useLive()
 </script>
 
@@ -34,3 +34,19 @@ const live = useLive()
     <Switch v-model="apart">{{ label }}</Switch>
   </div>
 </template>
+
+<style>
+/* Exploded lamp: a Lamp with a switch under it that takes it apart. The switch does nothing until
+   the component runs in the browser and sets data-rkui-live, so until then it is hidden, with its
+   space kept so nothing shifts. */
+
+.rkui-exploded-lamp {
+  display: grid;
+  justify-items: start;
+  gap: var(--rkui-space-4);
+}
+
+.rkui-exploded-lamp:not([data-rkui-live]) > .rkui-check {
+  visibility: hidden;
+}
+</style>
