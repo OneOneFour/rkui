@@ -444,7 +444,7 @@ Never decoration.
   the light, the outline width, the focus band. Accepted exceptions, each brief and in answer to
   the reader: a drawer's slam jolts its parent, text and all, by about 2px (DECISIONS,
   2026-11-08); a newly checked Segmented option and an opening Alert pop; a Range's value rides
-  over its thumb.
+  over its thumb; a Stat with `animate` counts up over 1.2s the first time it comes into view.
 - **Never turns**, so shadows stay on the light's side. Parts that turn have no shadow: the spinner
   wedge, the dial's notch (the knob stays still), the clock hands, whose tags counter-turn. The
   orbit spinner's dots counter-turn too.

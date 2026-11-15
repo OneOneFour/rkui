@@ -12,6 +12,10 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ### 2026-11-14
 
+**The error callout's focus band stays tangerine** (Rob). It measures about 1.55:1 against the
+coral tint in light mode (5.60:1 in dark), under the 3:1 the focus band asks; Rob accepts it as it
+is. The second focus colour, yellow, is worse there (1.10:1).
+
 **A widget shows a Tooltip with `shown`** (Rob). A one-way prop, not a `v-model`: nothing writes
 back to the widget. Escape hides a shown tip until `shown` next turns false and back to true, with
 the listener in Tooltip only while the tip shows. With no `id`, a tooltip has no control and its
@@ -33,9 +37,9 @@ changes read out gives it a live region of its own.
 With `animate` (`.rkui-stat--animate` on a plain page) its number counts up the first time it comes
 into view, then lands with the pop: A, chosen over B, which stopped with no pop. Rob also asked for
 a slower count than the 0.36s first built; the length, 1.2s on an ease-out
-(`--rkui-stat-count-duration`, from `--rkui-loop-steady`), is the agent's pick, awaiting his OK. It
-is longer than the 0.6s an entrance may otherwise take; the exception in DESIGN §5 waits for
-Rob's review. An animated stat in view on load counts
+(`--rkui-stat-count-duration`, from `--rkui-loop-steady`), was the agent's pick, and Rob accepted it
+on 2026-11-14. It is longer than the 0.6s an entrance may otherwise take, so DESIGN §5 lists it as
+an exception. An animated stat in view on load counts
 too, under `table-init.js`'s mark, as a table's entrance plays. For a day the count was on by
 default, with `still` to turn it off and `count="plain"` for B; both are gone.
 
