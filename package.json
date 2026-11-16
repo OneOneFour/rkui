@@ -1,6 +1,6 @@
 {
   "name": "@oneonefour/rkui",
-  "version": "0.0.4",
+  "version": "0.0.5-dev",
   "description": "Toon-style Vue components and design tokens, with an Astro integration.",
   "repository": {
     "type": "git",
