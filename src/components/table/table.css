@@ -100,6 +100,16 @@
   max-inline-size: 100%;
 }
 
+/* In the pill look the scroll region draws its pills over the table (overflow.css), above the
+   stuck header and first column and a lifted row. The sheet keeps those layers to itself. */
+.rkui-table {
+  isolation: isolate;
+}
+
+.rkui-table > .rkui-scroll::after {
+  z-index: 6;
+}
+
 /* The region's focus band moves to the sheet's outline. */
 .rkui-table > .rkui-scroll:focus-visible {
   outline: none;

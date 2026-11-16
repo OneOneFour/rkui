@@ -13,11 +13,12 @@
   <Clock v-model="wakeUp" label="Wake up" />
 -->
 <script setup lang="ts">
-import { onMounted, ref, useAttrs, useTemplateRef, watch } from 'vue'
+import { ref, useAttrs, useTemplateRef, watch } from 'vue'
 import SunIcon from '@oneonefour/rkui/icons/sun.vue'
 import MoonIcon from '@oneonefour/rkui/icons/moon.vue'
 import { useComponentId } from '../../shared/component-id'
 import { useLiveValue } from '../../shared/live-value'
+import { useLive } from '../../shared/live'
 import { splitAttrs } from '../../shared/split-attrs'
 import {
   FACE_STYLE,
@@ -52,8 +53,7 @@ const id = (attrs.id as string | undefined) ?? useComponentId('clock')
 const input = useTemplateRef<HTMLInputElement>('input')
 const face = useTemplateRef<HTMLElement>('face')
 // Set once the clock runs in the browser; until then clock.css hides the face.
-const live = ref(false)
-onMounted(() => (live.value = true))
+const live = useLive()
 
 /** The time the hands show: the input's, kept while the input is empty. */
 const shown = ref(parseTime(model.value ?? ''))

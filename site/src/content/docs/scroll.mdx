@@ -3,6 +3,7 @@ title: Scroll
 description: A region that scrolls sideways when its content is too wide.
 group: Navigation
 order: 91
+new: true
 component: Scroll
 ---
 
@@ -40,6 +41,10 @@ import looksCode from '../../examples/scroll/Looks.vue?raw'
 </Demo>
 
 CodeBlock, Table, Folder, Pagination, Sidebar and Equation take the same `dots`.
+
+The pill is drawn over the content with anchor positioning, so the region itself mustn't be
+positioned, transformed, filtered or paint-contained: put those on a wrapper. A box around the
+region that clips or scrolls needs `position: relative`, or the pill shows past its edge.
 
 <Demo label="Code block with pill dots" stack>
   <CodeBlock lang="shell" copy="never" dots="pill">

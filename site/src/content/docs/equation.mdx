@@ -3,6 +3,7 @@ title: Equation
 description: Display and inline maths, written in TeX.
 group: Containers
 order: 79
+new: true
 component: Equation
 ---
 
@@ -14,7 +15,9 @@ import Maths from '@oneonefour/rkui/components/maths/Maths.vue'
 import TryIt from '../../examples/equation/TryIt.vue'
 import tryItCode from '../../examples/equation/TryIt.vue?raw'
 
-A site that uses these components installs `katex` and loads its stylesheet before rkui's:
+A site that uses these components installs `katex`. With the default `rkui()` setup, rkui's
+stylesheet comes first and KaTeX's rules beat its maths styles, so the site sets
+`head: { styles: false }` and imports the stylesheets itself, KaTeX's first:
 
 ```js
 import 'katex/dist/katex.min.css'

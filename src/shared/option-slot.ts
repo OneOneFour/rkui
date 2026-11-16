@@ -18,7 +18,10 @@ type Selection = string | string[] | undefined
 interface OptionGroup {
   name: string
   multiple: boolean
-  /** The group's `v-model`. A group with no `v-model` of its own (Segmented) leaves it out. */
+  /**
+   * The group's `v-model`. Every group has one; the stand-in a SegmentedOption uses when no group
+   * is around it (rendered by Astro on its own) leaves it out.
+   */
   model?: Ref<Selection>
 }
 

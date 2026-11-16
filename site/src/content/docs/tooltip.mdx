@@ -3,6 +3,7 @@ title: Tooltip
 description: A short plain-text description of a control, shown on hover or focus.
 group: Containers
 order: 71
+new: true
 component: Tooltip
 ---
 
@@ -11,6 +12,8 @@ import Demo from '../../components/Demo.astro'
 import Button from '@oneonefour/rkui/components/button/Button.vue'
 import Tooltip from '@oneonefour/rkui/components/tooltip/Tooltip.vue'
 import CopyIcon from '@oneonefour/rkui/icons/copy.vue'
+import ChartTipWidget from '../../examples/tooltip/ChartTipWidget.vue'
+import chartTipWidgetCode from '../../examples/tooltip/ChartTipWidget.vue?raw'
 
 Hover or focus the button to show the tooltip.
 
@@ -46,6 +49,47 @@ Hover or focus the button to show the tooltip.
     </Tooltip>
   </div>
 </Demo>
+
+## Placed by a widget
+
+A widget can place and show a tooltip itself, for a tip that follows a point on a chart. Leave out
+the slot and `id`, position the tooltip with `style`, and bind `shown`. Escape hides the tip until
+`shown` next turns false and back to true, so a reader can dismiss it without moving the pointer
+(WCAG 1.4.13). Hover a bar:
+
+<Demo vue={chartTipWidgetCode} label="A tip that follows the pointer along a chart" widget>
+  <ChartTipWidget client:visible />
+</Demo>
+
+A tooltip with no `id` has no `role`, as it is not tied to a control. Add `aria-hidden="true"` when
+its text is repeated elsewhere, as in the chart's name here.
+
+### On a plain page
+
+A script writes an empty `.rkui-tooltip` positioned where the tip belongs, with the bubble inside,
+and toggles `data-rkui-shown` on it to show and hide the bubble:
+
+```html
+<span class="rkui-tooltip" style="position: absolute; left: 120px; top: 80px">
+  <span class="rkui-tooltip-bubble">62%</span>
+</span>
+```
+
+```js
+tooltip.toggleAttribute('data-rkui-shown', true)
+
+// The script hides the tip on Escape itself.
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') tooltip.removeAttribute('data-rkui-shown')
+})
+```
+
+The bubble sits above the point, `--rkui-tooltip-gap` away from it; set that custom property on
+the `.rkui-tooltip` to move it. `.rkui-tooltip`, `.rkui-tooltip-bubble`, `.rkui-tooltip--flat` and
+`data-rkui-shown` are public. Give the bubble no `role`.
+
+`tooltip-enhance.js` only dismisses tips that are hovered or hold focus, so it does not hide one
+the script shows. The script removes `data-rkui-shown` on Escape itself, as above.
 
 ## Reference
 

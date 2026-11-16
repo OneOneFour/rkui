@@ -130,10 +130,16 @@ const showChosen = (strip) => {
   if (!tab) return
   const down = runsDown(strip)
   const [start, end] = down ? ['top', 'bottom'] : ['left', 'right']
-  // The part that scrolls, inside the dots' gutters.
+  // The part that scrolls, inside the dots' gutters, less its scroll padding, which keeps the tab
+  // clear of the pills drawn over its edges (overflow.css).
   const outer = strip.getBoundingClientRect()
-  const viewStart = outer[start] + (down ? strip.clientTop : strip.clientLeft)
-  const viewEnd = viewStart + (down ? strip.clientHeight : strip.clientWidth)
+  const style = getComputedStyle(strip)
+  const [padStart, padEnd] = (down ? ['Top', 'Bottom'] : ['Left', 'Right']).map(
+    (side) => parseFloat(style[`scrollPadding${side}`]) || 0,
+  )
+  const inside = outer[start] + (down ? strip.clientTop : strip.clientLeft)
+  const viewStart = inside + padStart
+  const viewEnd = inside + (down ? strip.clientHeight : strip.clientWidth) - padEnd
   const box = tab.getBoundingClientRect()
   const by = Math.min(0, box[start] - viewStart) || Math.max(0, box[end] - viewEnd)
   if (by) strip[down ? 'scrollTop' : 'scrollLeft'] += by

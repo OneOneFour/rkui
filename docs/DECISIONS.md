@@ -10,6 +10,60 @@ new entry and update DESIGN.md; don't rewrite the old one.
 
 ## Decisions
 
+### 2026-11-14
+
+**The error callout's focus band stays tangerine** (Rob). It measures about 1.55:1 against the
+coral tint in light mode (5.60:1 in dark), under the 3:1 the focus band asks; Rob accepts it as it
+is. The second focus colour, yellow, is worse there (1.10:1).
+
+**A widget shows a Tooltip with `shown`** (Rob). A one-way prop, not a `v-model`: nothing writes
+back to the widget. Escape hides a shown tip until `shown` next turns false and back to true, with
+the listener in Tooltip only while the tip shows. With no `id`, a tooltip has no control and its
+bubble no `role`. A plain page toggles `data-rkui-shown` itself, as before.
+
+### 2026-11-12
+
+**An animated Stat follows changes to its value** (Rob). Whenever an animated stat's value changes,
+it rolls from the number on screen to the new one over about 0.3s (`--rkui-stat-change-duration`,
+from `--rkui-duration-slide`); a change in the middle of a roll carries on from the number shown.
+Numbers are matched by position, and a value of another shape (other numbers, or other words or
+signs around them) just shows. The pop stays on the first count, which a change retargets rather
+than cuts short; later changes stop with no pop. The stat adds no `aria-live`: a page that wants
+changes read out gives it a live region of its own.
+
+### 2026-11-11
+
+**A Stat counts up with the pop, opt-in through `animate`** (Rob). A stat is static by default.
+With `animate` (`.rkui-stat--animate` on a plain page) its number counts up the first time it comes
+into view, then lands with the pop: A, chosen over B, which stopped with no pop. Rob also asked for
+a slower count than the 0.36s first built; the length, 1.2s on an ease-out
+(`--rkui-stat-count-duration`, from `--rkui-loop-steady`), was the agent's pick, and Rob accepted it
+on 2026-11-14. It is longer than the 0.6s an entrance may otherwise take, so DESIGN §5 lists it as
+an exception. An animated stat in view on load counts
+too, under `table-init.js`'s mark, as a table's entrance plays. For a day the count was on by
+default, with `still` to turn it off and `count="plain"` for B; both are gone.
+
+**Settings are set globally, with no control required** (Rob). A site sets the theme, palette,
+shadow, highlight, scroll dots and light from its configuration or code. `rkui({ settings })`
+writes fixed ones on every page's `<html>` as it renders, so they need no JavaScript, and
+`@oneonefour/rkui/settings` is the public JavaScript API. The `Settings` wrapper and `SettingSwitch`
+(with `<rkui-setting-switch>`) are gone: a section writes the attributes on its own element, and a
+control other than ThemeToggle and LightDirection is the site's own, as the docs drawer's switch is.
+
+**LightDirection is a compass** (Rob). The sun is dragged round a whole ring, wrapping past 0,
+with a block in the middle casting the page's shadow, over an invisible range for keys and screen
+readers. It was chosen over a sky (a half circle over a horizon, on the angles the sun takes, with
+a moon at night) and the straight slider it replaces. Every LightDirection on a page shares one
+"Follow the time of day" switch.
+
+**Site-wide settings stay attributes the CSS reads** (Rob). A `Settings` wrapper sets the palette,
+shadow, highlight, scroll dots and light for a section, with no JavaScript. The storage keys
+`rkui-palette`, `rkui-shadow`, `rkui-highlight`, `rkui-dots` and the new `rkui-light` join
+`rkui-theme` as the library's own. `settings-init.js` replaces `theme-init.js` and puts back only
+the settings a site lists as switchable; `rkui({ settings })` writes that list and the site's fixed
+settings. `SettingSwitch` replaces the docs site's `ModeSwitch`. The light becomes one angle,
+`--rkui-light-angle`, which turns the light inside any container.
+
 ### 2026-11-09
 
 **Equation references are written by hand** (a record of what is built). The rehype plugin for

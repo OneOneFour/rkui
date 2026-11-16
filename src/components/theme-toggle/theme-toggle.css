@@ -1,7 +1,13 @@
-/* Theme toggle: a Segmented (segmented.css) with icons, built by ThemeToggle.vue. It does nothing
-   until it runs in the browser and sets data-rkui-live, so until then it is hidden, keeping its
-   space. */
+/* Theme toggle: a Segmented (segmented.css) with icons and words, built by ThemeToggle.vue; with
+   .rkui-theme-toggle--icon-only the words are visually hidden. It does nothing until it runs in
+   the browser and sets data-rkui-live, so until then it is hidden, keeping its space. */
 
 .rkui-theme-toggle:not([data-rkui-live]) {
   visibility: hidden;
+}
+
+/* Icons only (iconOnly): each option keeps the height it has with its word, so the bar's height
+   and the touch target stay the same. */
+.rkui-theme-toggle--icon-only label {
+  min-block-size: calc(1lh + 2 * var(--rkui-space-1));
 }

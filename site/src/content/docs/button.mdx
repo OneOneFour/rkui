@@ -3,6 +3,7 @@ title: Button
 description: A filled button, or a link that looks like one.
 group: Actions
 order: 20
+new: true
 component: Button
 ---
 
@@ -12,6 +13,8 @@ import Button from '@oneonefour/rkui/components/button/Button.vue'
 import PauseIcon from '@oneonefour/rkui/icons/pause.vue'
 import BusyScript from '../../examples/button/BusyScript.vue'
 import busyScriptCode from '../../examples/button/BusyScript.vue?raw'
+import PressedButtons from '../../examples/button/PressedButtons.vue'
+import pressedCode from '../../examples/button/PressedButtons.vue?raw'
 
 With `href`, a Button renders a link.
 
@@ -111,6 +114,19 @@ With `href`, a Button renders a link.
     Bold
   </Button>
 </Demo>
+
+## Pressed
+
+A button with `aria-pressed="true"` is pushed in the same way. Its script flips the value on each
+click.
+
+<Demo vue={pressedCode} label="Buttons with aria-pressed" widget>
+  <PressedButtons client:visible />
+</Demo>
+
+Use `toggle` for an on/off choice that is part of a form: it works with no JavaScript, submits
+with the form, and screen readers hear a checkbox. Use a button with `aria-pressed` when a script
+holds the state, such as showing or hiding part of the page: screen readers hear a toggle button.
 
 ## Reference
 

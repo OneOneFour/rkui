@@ -17,6 +17,7 @@ const VUE_HELPERS = new Set([
   'components/folder/tab-slot.ts',
   'shared/component-id.ts',
   'shared/define-element.ts',
+  'shared/live.ts',
   'shared/model-start.ts',
   'shared/option-slot.ts',
   'shared/slot-html.ts',

@@ -3,11 +3,14 @@ title: Segmented
 description: A pill group of radios, with a fill that slides to the checked option.
 group: Form controls
 order: 30
+new: true
 component: Segmented
 ---
 
 import ApiReference from '../../components/ApiReference.astro'
 import Demo from '../../components/Demo.astro'
+import ViewModel from '../../examples/segmented/ViewModel.vue'
+import viewModelCode from '../../examples/segmented/ViewModel.vue?raw'
 import Segmented from '@oneonefour/rkui/components/segmented/Segmented.vue'
 import SegmentedOption from '@oneonefour/rkui/components/segmented/SegmentedOption.vue'
 import Sun from '@oneonefour/rkui/icons/sun.vue'
@@ -102,6 +105,14 @@ Add `deck` for a row of raised keys.
       <Reset slot="icon" /> Reset
     </SegmentedOption>
   </Segmented>
+</Demo>
+
+## With v-model
+
+In a `.vue` file, `v-model` is the chosen option's value.
+
+<Demo vue={viewModelCode} label="Segmented control with v-model" widget>
+  <ViewModel client:visible />
 </Demo>
 
 ## Reference

@@ -10,8 +10,6 @@
 import 'katex/dist/katex.min.css'
 import '@oneonefour/rkui/styles.css'
 import '../styles/docs.css'
-import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'
-import tableInit from '@oneonefour/rkui/head-scripts/table-init.js?raw'
 import ThemeToggle from '@oneonefour/rkui/components/theme-toggle/ThemeToggle.vue'
 import Badge from '@oneonefour/rkui/components/badge/Badge.vue'
 import Button from '@oneonefour/rkui/components/button/Button.vue'
@@ -22,8 +20,8 @@ import Logo from '@oneonefour/rkui/components/logo/Logo.vue'
 import TopBar from '@oneonefour/rkui/components/topbar/TopBar.vue'
 import HelperBadge from '../components/HelperBadge.astro'
 import JsBadge from '../components/JsBadge.astro'
-import ModeSwitch from '../components/ModeSwitch.astro'
 import Search from '../components/Search.astro'
+import SettingSwitch from '../components/SettingSwitch.astro'
 import Sidebar from '../components/Sidebar.astro'
 import { link, type DocsPage } from '../lib/pages'
 import { version } from '../../../package.json'
@@ -38,73 +36,25 @@ const { page } = Astro.props
 const { title, description, component } = page.data
 const branch = gitBranch()
 
-// The settings drawer's switches. The head script restores a stored choice only while it is
-// still one of the options.
-const modes: ComponentProps<typeof ModeSwitch>[] = [
-  {
-    name: 'palette',
-    legend: 'Palette',
-    options: [
-      { value: 'cream', label: 'Cream' },
-      { value: 'slate', label: 'Slate' },
-      { value: 'greige', label: 'Greige' },
-    ],
-  },
-  {
-    name: 'shadow',
-    legend: 'Shadow',
-    note: 'in dark mode',
-    options: [
-      { value: 'outline', label: 'Outline' },
-      { value: 'block', label: 'Block' },
-      { value: 'color', label: 'Colour' },
-    ],
-  },
-  {
-    name: 'highlight',
-    legend: 'Highlight',
-    note: 'in dark mode',
-    options: [
-      { value: 'cream', label: 'Cream' },
-      { value: 'dark', label: 'Dark' },
-    ],
-  },
-  {
-    name: 'dots',
-    attribute: 'data-rkui-dots',
-    legend: 'Scroll dots',
-    options: [
-      { value: 'plain', label: 'Plain' },
-      { value: 'pill', label: 'Pill' },
-    ],
-  },
+// The settings drawer's switches (SettingSwitch.astro, the site's own control on rkui's settings
+// API), each under its name and a note on when it shows. The rkui() integration puts the stored
+// choices back before first paint (astro.config.js).
+const switches: {
+  setting: ComponentProps<typeof SettingSwitch>['setting']
+  name: string
+  note?: string
+}[] = [
+  { setting: 'palette', name: 'Palette' },
+  { setting: 'shadow', name: 'Shadow', note: 'in dark mode' },
+  { setting: 'highlight', name: 'Highlight', note: 'in dark mode' },
+  { setting: 'dots', name: 'Scroll dots' },
 ]
-const storedModes = modes.map(({ name, attribute = `data-${name}`, options }) => ({
-  name,
-  attribute,
-  values: options.map((option) => option.value),
-}))
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <script is:inline set:html={themeInit} />
-    <script is:inline set:html={tableInit} />
-    <script is:inline define:vars={{ storedModes }}>
-      // Inline, like the theme, so a stored palette, shadow, highlight or dots look doesn't flash
-      // the default first. Each is stored under rkui-<name> and set as its attribute on <html>,
-      // unless it is no longer one of the options (an old "slab" shadow, say).
-      try {
-        for (const { name, attribute, values } of storedModes) {
-          const value = localStorage.getItem(`rkui-${name}`)
-          if (values.includes(value)) document.documentElement.setAttribute(attribute, value)
-        }
-      } catch {
-        // Storage is blocked, so the page keeps the defaults.
-      }
-    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="" />
@@ -135,8 +85,13 @@ const storedModes = modes.map(({ name, attribute = `data-${name}`, options }) =>
         </Button>
         <Drawer label="Settings" remote overlay id="docs-settings" class="docs-settings">
           <div class="docs-settings-body">
-            {modes.map((mode) => (
-              <ModeSwitch {...mode} />
+            {switches.map(({ setting, name, note }) => (
+              <div>
+                <p class="docs-mode-name" aria-hidden="true">
+                  {name} {note && <span class="docs-mode-note">{note}</span>}
+                </p>
+                <SettingSwitch setting={setting} legend={note ? `${name}, ${note}` : name} />
+              </div>
             ))}
             <Button small unfilled popovertarget="docs-settings" popovertargetaction="hide">
               Close
@@ -173,9 +128,6 @@ const storedModes = modes.map(({ name, attribute = `data-${name}`, options }) =>
         </article>
       </main>
     </div>
-    <script>
-      import '@oneonefour/rkui/enhance.js'
-    </script>
     <script is:inline>
       // The browser bar takes the page's own background, so it follows the theme and palette
       // switches as well as the OS setting.

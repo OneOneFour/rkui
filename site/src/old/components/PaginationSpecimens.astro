@@ -29,36 +29,39 @@ const href = () => '#specimen-link'
     </Pagination>
   </Specimen>
   <Specimen label="page 3 focused">
-    <!-- Pagination's tiles written out, so one tile can carry the focus state class. -->
-    <nav class="rkui-pagination" aria-label="Pagination">
-      <a class="rkui-button rkui-button--small" href="#specimen-link" rel="prev">
-        <CaretLeftIcon class="rkui-icon rkui-icon--small" />
-        Previous
-      </a>
-      <div class="rkui-pagination-pages">
-        <ol class="rkui-tiles rkui-tiles--compact rkui-scroll">
-          {PAGES.map((page) =>
-            page === null ? (
-              <li>…</li>
-            ) : (
-              <li class="rkui-strip-item">
-                <a
-                  class:list={['rkui-tile', page === 3 && 'is-focus']}
-                  href="#specimen-link"
-                  aria-current={page === CURRENT ? 'page' : undefined}
-                >
-                  {page}
-                </a>
-              </li>
-            ),
-          )}
-        </ol>
-      </div>
-      <a class="rkui-button rkui-button--small" href="#specimen-link" rel="next">
-        Next
-        <CaretRightIcon class="rkui-icon rkui-icon--small" />
-      </a>
-    </nav>
+    <!-- Pagination's tiles written out, so one tile can carry the focus state class. The wrapper is the
+    Folder script's way to find the strip. -->
+    <div class="rkui-pagination-tiles rkui-pagination-tiles--scroll">
+      <nav class="rkui-pagination" aria-label="Pagination">
+        <a class="rkui-button rkui-button--small" href="#specimen-link" rel="prev">
+          <CaretLeftIcon class="rkui-icon rkui-icon--small" />
+          Previous
+        </a>
+        <div class="rkui-pagination-pages">
+          <ol class="rkui-tiles rkui-tiles--compact rkui-scroll">
+            {PAGES.map((page) =>
+              page === null ? (
+                <li>…</li>
+              ) : (
+                <li class="rkui-strip-item">
+                  <a
+                    class:list={['rkui-tile', page === 3 && 'is-focus']}
+                    href="#specimen-link"
+                    aria-current={page === CURRENT ? 'page' : undefined}
+                  >
+                    {page}
+                  </a>
+                </li>
+              ),
+            )}
+          </ol>
+        </div>
+        <a class="rkui-button rkui-button--small" href="#specimen-link" rel="next">
+          Next
+          <CaretRightIcon class="rkui-icon rkui-icon--small" />
+        </a>
+      </nav>
+    </div>
   </Specimen>
 </SpecimenRow>
 

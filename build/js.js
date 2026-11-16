@@ -2,7 +2,8 @@
 // plain-HTML sites: <script type="module" src="rkui.js">. The elements are the *-element.ts files
 // that register a Vue component as an element (shared/define-element.ts), which bring the Vue
 // runtime with them. src/enhance.js joins them, with every helper script (*-enhance.js); the build
-// fails if one under src/ is missing from its list.
+// fails if one under src/ is missing from its list. The module also exports the settings API
+// (settings.js), so a plain page imports it from the same file.
 import { glob, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -35,9 +36,12 @@ export async function buildJs() {
   for await (const file of glob('*/*-element.ts', { cwd: COMPONENTS })) {
     elementFiles.push(path.join(COMPONENTS, file))
   }
-  const imports = [path.join(SRC, 'enhance.js'), ...elementFiles.sort()]
-    .map((file) => `import ${JSON.stringify(file)}`)
-    .join('\n')
+  const imports = [
+    ...[path.join(SRC, 'enhance.js'), ...elementFiles.sort()].map(
+      (file) => `import ${JSON.stringify(file)}`,
+    ),
+    `export * from ${JSON.stringify(path.join(SRC, 'settings.js'))}`,
+  ].join('\n')
 
   await build({
     input: 'rkui-entry',

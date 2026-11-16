@@ -1,12 +1,16 @@
 {
   "name": "@oneonefour/rkui",
-  "version": "0.0.3",
+  "version": "0.0.4",
+  "description": "Toon-style Vue components and design tokens, with an Astro integration.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OneOneFour/rkui.git"
   },
   "homepage": "https://www.robertcking.com/rkui/",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "exports": {
     "./styles.css": "./src/index.css",
@@ -19,6 +23,10 @@
       "default": "./dist/colors.js"
     },
     "./enhance.js": "./src/enhance.js",
+    "./settings": {
+      "types": "./dist/types/settings.d.ts",
+      "default": "./src/settings.js"
+    },
     "./components/*.js": {
       "types": "./dist/types/components/*.d.ts",
       "default": "./src/components/*.js"
@@ -52,6 +60,7 @@
     "preview": "vite preview --outDir site/dist --base /rkui/ --port 4322 --strictPort",
     "dev": "node build/index.js && astro dev --root site --port 4321",
     "prepack": "node build/index.js",
+    "prepublishOnly": "vue-tsc -p src",
     "format": "prettier --write .",
     "screenshots": "playwright test"
   },

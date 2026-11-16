@@ -1,0 +1,60 @@
+---
+title: Callout
+description: A tinted panel with an icon, as a note, a warning or an error.
+group: Containers
+order: 64
+new: true
+component: Callout
+---
+
+import ApiReference from '../../components/ApiReference.astro'
+import Demo from '../../components/Demo.astro'
+import Callout from '@oneonefour/rkui/components/callout/Callout.vue'
+
+`kind` is `note` (the default), `warning` or `error`. Each has its own icon.
+
+<Demo label="Note, warning and error callouts" stack>
+  <Callout title="Note">
+    <p>
+      Pack my box with five dozen liquor jugs. <a href="#callout">A link</a>.
+    </p>
+  </Callout>
+  <Callout kind="warning" title="Warning">
+    <p>
+      The quick brown fox jumps over the lazy dog. <a href="#callout">A link</a>.
+    </p>
+  </Callout>
+  <Callout kind="error" title="Error">
+    <p>
+      Sphinx of black quartz, judge my vow. <a href="#callout">A link</a>.
+    </p>
+  </Callout>
+</Demo>
+
+## Without a title
+
+<Demo label="Callouts without a title" stack>
+  <Callout>
+    <p>How vexingly quick daft zebras jump.</p>
+  </Callout>
+  <Callout kind="error">
+    <p>The five boxing wizards jump quickly.</p>
+  </Callout>
+</Demo>
+
+## Announcing
+
+A callout has `role="note"`, so it isn't announced when it appears. A page that adds one puts it
+in a live region already on the page.
+
+<Demo label="A callout in a live region" stack>
+  <div aria-live="polite">
+    <Callout kind="error" title="Error">
+      <p>Jackdaws love my big sphinx of quartz.</p>
+    </Callout>
+  </div>
+</Demo>
+
+## Reference
+
+<ApiReference component="Callout" />

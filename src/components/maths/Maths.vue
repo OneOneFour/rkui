@@ -4,8 +4,8 @@
   tint behind a term, here and in `Equation`. `class`, `style` and other attributes go on the
   `<span>` around it.
 
-  The site installs `katex` and loads its stylesheet before rkui's:
-  import 'katex/dist/katex.min.css'. A TeX error stops the build.
+  The site installs `katex`, sets `head: { styles: false }` in `rkui()` and imports
+  'katex/dist/katex.min.css' and then rkui's `styles.css` in its layout. A TeX error stops the build.
 
   @example
   <p>With <Maths tex="\sigma = 10" /> and <Maths tex="\rho = 28" />, each <Maths tex="x_i(t)" /> stays bounded.</p>

@@ -1,7 +1,8 @@
 <!--
   A top bar: controls that stay at the top of the window as the page scrolls. The slot holds the
-  controls; put a `BackToTop` last. `class`, `style` and other attributes go on the `<header>`.
-  In Safari before 26 and Firefox before 159 the bar and its link show in full from the start.
+  controls, after a `TopBarNav` of page links if there is one; put a `BackToTop` last. `class`,
+  `style` and other attributes go on the `<header>`. In Safari before 26 and Firefox before 159
+  the bar and its link show in full from the start.
 
   @example
   <TopBar><ThemeToggle client:visible /><BackToTop /></TopBar>

@@ -3,6 +3,7 @@ title: Getting started
 description: Install rkui and set it up in an Astro site, a plain HTML page or a Vue app.
 group: Start
 order: 0
+new: true
 ---
 
 import Demo from '../../components/Demo.astro'
@@ -31,35 +32,50 @@ attributes rkui components hand on to their native elements:
 /// <reference types="@oneonefour/rkui/astro-attributes" />
 ```
 
-In the layout, import the stylesheet, inline the head scripts at the top of `<head>`, and import
-`enhance.js` in a script at the end of `<body>`:
+Add `rkui()` to the site's integrations. It puts the stylesheet, the global settings, the table
+mark and the helper scripts (<a id="helper-scripts"></a>`enhance.js`, which loads every
+`*-enhance.js`) in every page, keeps to one copy of Vue, lets the dev server read the package's
+fonts, keeps fonts as files, and writes `rkui-licences.txt` to the build output: the licences of
+the fonts and icons, which a site serving them ships. Link it from the footer.
 
-- `theme-init.js` applies the stored light or dark theme before the page paints;
-- `table-init.js` holds back a table's entrance until it plays;
-- <a id="helper-scripts"></a>`enhance.js` loads every helper script (`*-enhance.js`).
+```js
+// astro.config.js
+import { defineConfig } from 'astro/config'
+import vue from '@astrojs/vue'
+import rkui from '@oneonefour/rkui/astro'
+
+export default defineConfig({
+  integrations: [vue(), rkui()],
+})
+```
+
+Each part can be turned off: `rkui({ vite: false, licences: false, head: false, settings: false })`,
+or one piece of `head` (`{ tables, styles, enhance }`) or `vite` (`{ dedupeVue, allowPackage,
+fontFiles }`). The layout still writes `<meta charset>` and the viewport.
+
+`settings` fixes the site's palette, shadow, light and the rest for every reader, written on each
+page's `<html>` as it renders, and lists the ones readers may switch, whose stored choices a head
+script puts back before the first paint ([Settings](settings/)). It puts back only the theme when
+left out.
+
+```js
+rkui({ settings: { palette: 'slate', shadow: 'color', switchable: ['theme', 'palette'] } })
+```
 
 ```astro
 ---
 // src/layouts/Layout.astro
-import '@oneonefour/rkui/styles.css'
-import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'
-import tableInit from '@oneonefour/rkui/head-scripts/table-init.js?raw'
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <script is:inline set:html={themeInit} />
-    <script is:inline set:html={tableInit} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My site</title>
   </head>
   <body>
     <slot />
-    <script>
-      import '@oneonefour/rkui/enhance.js'
-    </script>
   </body>
 </html>
 ```
@@ -72,9 +88,9 @@ A component that runs in the browser, such as Stepper, gets `client:visible`.
 
 ### Fenced code and maths in MDX
 
-rkui's Astro integration renders, in MDX files, a fenced code block as CodeBlock, `$…$` as Maths and
-`$$…$$` as Equation. It needs `shiki` for the code and `katex` for the maths, with KaTeX's
-stylesheet loaded before rkui's ([Equation](equation/)).
+With `@astrojs/mdx` in the site, the integration renders, in MDX files, a fenced code block as
+CodeBlock, `$…$` as Maths and `$$…$$` as Equation. It needs `shiki` for the code and `katex` for
+the maths, with KaTeX's stylesheet loaded before rkui's, which needs `head: { styles: false }` ([Equation](equation/)).
 
 ```js
 // astro.config.js
@@ -103,7 +119,8 @@ print('Hello')
 - A fence's language is CodeBlock's `lang` (`plaintext` when there is none), and the rest of its
   first line is the `label`.
 - `rkui({ code: { copy: 'hover' } })` gives every fence's CodeBlock those attributes; `code: false`
-  or `maths: false` turns either off.
+  or `maths: false` turns either off. With a Markdown processor other than Sätteri, it leaves MDX
+  alone and warns.
 - `\$` is a dollar sign in text.
 - An equation that an EquationReference links to is written as a tag, with an `id`:
   `<Equation id="eq-flow" tex="…" />`.
@@ -111,15 +128,17 @@ print('Hello')
 
 ### Plain HTML
 
-Copy the package's `dist/` folder into the site. Paste `theme-init.js` and `table-init.js` (from
-`src/head-scripts/`) inline at the top of `<head>`, link `rkui.css`, and load `rkui.js`, which holds
+Copy the package's `dist/` folder into the site. Write the site's fixed settings on `<html>`
+([Settings](settings/)). Paste `settings-init.js` and `table-init.js` (from `src/head-scripts/`)
+inline at the top of `<head>`, with `settings-init.js`'s `switchable` line edited to list the
+settings readers may switch, link `rkui.css`, and load `rkui.js`, which holds
 the helper scripts and the custom elements, such as `<rkui-stepper>`.
 
 ```html
 <head>
   <meta charset="utf-8" />
   <script>
-    /* theme-init.js, pasted in */
+    /* settings-init.js, pasted in */
   </script>
   <script>
     /* table-init.js, pasted in */

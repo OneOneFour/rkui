@@ -8,8 +8,8 @@
   <ExplodedLamp v-model="apart" label="Take the lamp apart" />
 -->
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
 import Switch from '@oneonefour/rkui/components/switch/Switch.vue'
+import { useLive } from '@oneonefour/rkui/shared/live.ts'
 import Lamp from './Lamp.vue'
 
 interface Props {
@@ -24,9 +24,8 @@ const { label = 'Take it apart', size } = defineProps<Props>()
 /** Whether the lamp is apart. */
 const apart = defineModel<boolean>({ default: false })
 
-/** Set once the component runs in the browser, which shows the switch (exploded-lamp.css). */
-const live = ref(false)
-onMounted(() => (live.value = true))
+/** Set once the component runs in the browser, which shows the switch (the styles below). */
+const live = useLive()
 </script>
 
 <template>
@@ -35,3 +34,19 @@ onMounted(() => (live.value = true))
     <Switch v-model="apart">{{ label }}</Switch>
   </div>
 </template>
+
+<style>
+/* Exploded lamp: a Lamp with a switch under it that takes it apart. The switch does nothing until
+   the component runs in the browser and sets data-rkui-live, so until then it is hidden, with its
+   space kept so nothing shifts. */
+
+.rkui-exploded-lamp {
+  display: grid;
+  justify-items: start;
+  gap: var(--rkui-space-4);
+}
+
+.rkui-exploded-lamp:not([data-rkui-live]) > .rkui-check {
+  visibility: hidden;
+}
+</style>

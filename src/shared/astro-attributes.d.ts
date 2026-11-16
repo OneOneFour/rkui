@@ -41,6 +41,7 @@ declare namespace astroHTML.JSX {
     minlength?: number | string | undefined | null
     multiple?: boolean | string | undefined | null
     name?: string | undefined | null
+    open?: boolean | string | undefined | null
     pattern?: string | undefined | null
     placeholder?: string | undefined | null
     popovertarget?: string | undefined | null

@@ -1,10 +1,9 @@
 /* rkui shadow tokens: the light direction, shade, depth and the hard shadows. */
 
 :root {
-  /* The way shadows fall, as a multiple of each shadow length on each axis: 1 1 is down and to
-     the right. LightDirection sets them on <html>. */
-  --rkui-shadow-dx: 1;
-  --rkui-shadow-dy: 1;
+  /* Where the light comes from, clockwise from 12 o'clock: the top left. Set it on <html> or any
+     container to turn the light inside it; LightDirection sets it on <html>. */
+  --rkui-light-angle: 315deg;
 }
 
 /* A fill's shade, a quarter of the way to the outline colour: the sticky note's fold and the colour
@@ -29,6 +28,10 @@
    custom property resolves its var()s on the element that declares it, so these are declared on
    every element: each one builds them from its own inputs, wherever those were last set. */
 * {
+  /* The way shadows fall, away from the light, as a multiple of each shadow length on each axis:
+     1 1, down and to the right, at the default angle. Dividing by sin(45deg) makes that exact. */
+  --rkui-shadow-dx: calc(-1 * sin(var(--rkui-light-angle)) / sin(45deg));
+  --rkui-shadow-dy: calc(cos(var(--rkui-light-angle)) / sin(45deg));
   --rkui-shadow-offset: calc(var(--rkui-shadow-depth) * 4px);
   --rkui-shadow-offset-x: calc(var(--rkui-shadow-dx) * var(--rkui-shadow-offset));
   --rkui-shadow-offset-y: calc(var(--rkui-shadow-dy) * var(--rkui-shadow-offset));
@@ -65,6 +68,14 @@
       var(--rkui-shadow-edge);
   --rkui-shadow-inset: inset calc(var(--rkui-shadow-dx) * var(--rkui-shadow-offset-pressed))
     calc(var(--rkui-shadow-dy) * var(--rkui-shadow-offset-pressed)) 0 var(--rkui-line);
+}
+
+/* Browsers without CSS trigonometry (sin() and cos()) keep the default light. */
+@supports not (scale: sin(45deg)) {
+  * {
+    --rkui-shadow-dx: 1;
+    --rkui-shadow-dy: 1;
+  }
 }
 
 /* Shadow: data-shadow on <html> or any container sets how hard shadows look in dark mode, and

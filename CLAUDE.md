@@ -37,7 +37,7 @@ Rob King's toon component library. Rob reviews every diff by hand.
   - No `.css` or `.js` file under `src/` imports a framework (a `.astro` or `.vue` file, `astro` or
     `vue`). Components import the CSS classes and scripts beside them, never the other way round.
   - The `.ts` helpers that work with Vue (`tab-slot.ts`, `option-slot.ts`, `slot-html.ts`,
-    `model-start.ts`, `component-id.ts`, `define-element.ts`) and the
+    `model-start.ts`, `component-id.ts`, `define-element.ts`, `live.ts`) and the
     `*-element.ts` registrations may import Vue; no other `.ts` file in `src/` does, and none
     imports Astro. A new helper that needs Vue joins the list in `build/check-boundary.js`, which
     enforces all of this.
@@ -189,10 +189,10 @@ Every component follows these, so a site author learns them once:
   - it says in its header comment that it needs `client:visible` in an Astro page, and what it
     shows without it;
   - a control that only works with JavaScript (step buttons, a copy button) renders on the server
-    and is hidden with `visibility: hidden` until the component sets `data-rkui-live` on mount, so
-    nothing shifts; never `display: none`, `:hidden` or `:not(:defined)`. `data-rkui-live` goes on
-    the component's own element that holds those controls, which its CSS selects by class, not on
-    whatever happens to be outermost: CodeBlock's `<figure class="rkui-code">`, and Stepper's
+    and is hidden with `visibility: hidden` until the component sets `data-rkui-live` on mount
+    (`useLive()`, `src/shared/live.ts`), so nothing shifts; never `display: none`, `:hidden` or
+    `:not(:defined)`. `data-rkui-live` goes on the component's own element that holds those
+    controls, which its CSS selects by class, not on whatever happens to be outermost: CodeBlock's `<figure class="rkui-code">`, and Stepper's
     `.rkui-stepper` div, which sits inside the Field's frame when there is one;
   - an error it throws (a Folder with no Tab) stops the build: the docs site sets
     `throwUnhandledErrorInProduction` (`site/src/vue-app.js`).

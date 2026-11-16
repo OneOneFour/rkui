@@ -13,7 +13,7 @@
   The first time the sheet is seen, it plays a short entrance: the band fills, the rules draw
   across, the values are written in and the stickers stamp down. How much of it a page gets
   depends on what it loads:
-  - full entrance: `head-scripts/table-init.js` inlined in `<head>` beside `theme-init.js`, plus
+  - full entrance: `head-scripts/table-init.js` inlined in `<head>` beside `settings-init.js`, plus
     `table-enhance.js` (in `rkui.js`). A table in view on load plays it too.
   - scroll-in only: `table-enhance.js` alone. A table scrolled to plays it; one already in view
     on load only draws its rules, since it may have shown its values already.
@@ -22,6 +22,9 @@
   A table added after the page loads plays it when it is scrolled to; one in view when it is
   added only draws its rules, unless table-init.js's mark is still on, as in a Vue app's first
   render.
+
+  With `hiddenCaption` the caption is not drawn but still names the
+  table and its scroll region. A plain HTML page adds `rkui-visually-hidden` to the `<caption>`.
 
   A plain HTML page writes the HTML tab's markup. `<table class="rkui-table">` alone is the same
   sheet without the scrolling.
@@ -45,6 +48,11 @@ defineOptions({ inheritAttrs: false })
 interface Props {
   /** The table's caption, which also names its scroll region. */
   caption: string
+  /**
+   * Hides the caption from the eye while it still names the table and its scroll region, for a
+   * table the page's own heading already introduces; shown when left out.
+   */
+  hiddenCaption?: boolean
   /**
    * The header band's fill in the sheet, a hue or a hex code. When left out, the page's section
    * hue (`--rkui-section`); with none, ink in light mode, and the sheet's colour with a line under
@@ -82,6 +90,7 @@ interface Props {
 
 const {
   caption,
+  hiddenCaption,
   hue,
   variant = 'sheet',
   small,
@@ -132,7 +141,7 @@ const Rows = () => unwrappedSlot(slots.default?.() ?? [])
   >
     <Scroll :labelledby="captionId" :bar="bar">
       <table v-bind="pageAttrs().inner">
-        <caption :id="captionId">
+        <caption :id="captionId" :class="{ 'rkui-visually-hidden': hiddenCaption }">
           <span>{{ caption }}</span>
         </caption>
         <Rows />

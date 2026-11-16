@@ -68,7 +68,9 @@
   timeline-scope: --rkui-sidebar;
 }
 
+/* Positioned, so that it clips a scroll region's pills along with the region (overflow.css). */
 .rkui-sidebar-scroll {
+  position: relative;
   flex: 1 1 auto;
   min-block-size: 0;
   padding: var(--rkui-sidebar-pad);

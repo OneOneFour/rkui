@@ -2,10 +2,8 @@
 // KaTeX's stylesheet comes first, so rkui's maths styles win.
 import 'katex/dist/katex.min.css'
 import '@oneonefour/rkui/rkui.css'
-import themeInit from '@oneonefour/rkui/head-scripts/theme-init.js?raw'
 import ThemeToggle from '@oneonefour/rkui/components/theme-toggle/ThemeToggle.vue'
-import PaletteSwitcher from '../components/PaletteSwitcher.astro'
-import ShadowSwitcher from '../components/ShadowSwitcher.astro'
+import SettingSwitch from '../../components/SettingSwitch.astro'
 import BackToTop from '@oneonefour/rkui/components/topbar/BackToTop.vue'
 
 interface Props {
@@ -19,19 +17,6 @@ const { title } = Astro.props
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <script is:inline set:html={themeInit} />
-    <script is:inline>
-      // Inline, like the theme, so a stored palette, shadow or highlight doesn't flash the default
-      // first.
-      try {
-        for (const name of ['palette', 'shadow', 'highlight']) {
-          const value = localStorage.getItem(`rkui-${name}`)
-          if (value) document.documentElement.dataset[name] = value
-        }
-      } catch {
-        // Storage is blocked, so the page keeps the defaults.
-      }
-    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="icon"
@@ -42,8 +27,9 @@ const { title } = Astro.props
   </head>
   <body>
     <header class="specimen-header rkui-topbar rkui-topbar--toast">
-      <ShadowSwitcher />
-      <PaletteSwitcher />
+      <SettingSwitch setting="shadow" legend="Dark-mode shadow" />
+      <SettingSwitch setting="highlight" legend="Dark-mode highlight" />
+      <SettingSwitch setting="palette" legend="Page palette" />
       <ThemeToggle client:visible />
       <BackToTop />
     </header>

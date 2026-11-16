@@ -52,7 +52,8 @@ const {
 // name and type (option-group.ts).
 const group = inject(OPTION_GROUP, null)
 const inputType = computed(() => (group ? (group.value.multiple ? 'checkbox' : 'radio') : type))
-// Its checked state: its group's model in a Vue tree (a Ballot's), otherwise `checked`.
+// Its checked state: its group's model in a Vue tree (a Tiles' or a Ballot's), otherwise
+// `checked`.
 const selection = useOptionModel(group, { type: inputType.value, value, checked })
 const attrs = useAttrs()
 

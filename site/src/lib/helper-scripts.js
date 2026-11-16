@@ -25,16 +25,28 @@ const HELPERS = {
   'folder-enhance.js': ['Folder', 'Pagination'],
   // The "more" dots on scroll regions, without scroll-driven animations (overflow.css): Safari
   // before 26 and Firefox before 159.
-  'overflow-enhance.js': ['CodeBlock', 'Equation', 'Folder', 'Pagination', 'Scroll', 'Table'],
+  'overflow-enhance.js': [
+    'CodeBlock',
+    'Equation',
+    'Folder',
+    'Pagination',
+    'Scroll',
+    'Table',
+    'TopBarNav',
+  ],
   // Sets a quote under three lines a step larger.
   'quote-enhance.js': ['Quote'],
   // Opens a sidebar scrolled to its current page, without scroll-initial-target (Safari and
   // Firefox).
   'sidebar-enhance.js': ['Sidebar'],
+  // Counts a stat's numbers up when it scrolls into view.
+  'stat-enhance.js': ['Stat'],
   // A table's entrance, and its header band's measurements.
   'table-enhance.js': ['Table'],
   // Escape to hide an open tooltip.
   'tooltip-enhance.js': ['Tooltip'],
+  // Opens a top bar's narrow-screen line of page links scrolled to the current page's link.
+  'topbar-nav-enhance.js': ['TopBarNav'],
 }
 
 // Only the file names are read, to check the list above; nothing is imported.

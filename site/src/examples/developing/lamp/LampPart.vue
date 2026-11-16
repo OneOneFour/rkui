@@ -47,3 +47,24 @@ const viewBox = computed(() => `${box.x} ${box.y} ${box.width} ${box.height}`)
     <path :d="shape" />
   </svg>
 </template>
+
+<style>
+/* Lamp part: one outlined shape of a drawing, as large as its box on the grid. A grid unit is
+   --rkui-lamp-unit, which the Lamp sets from its width; a part on its own takes 0.6rem. */
+
+.rkui-lamp-part {
+  inline-size: calc(var(--rkui-part-width) * var(--rkui-lamp-unit, 0.6rem));
+  block-size: calc(var(--rkui-part-height) * var(--rkui-lamp-unit, 0.6rem));
+  overflow: visible;
+}
+
+/* The outline is a stroke twice its width under the fill, so only its outer half shows. */
+.rkui-lamp-part path {
+  fill: var(--rkui-part-fill);
+  stroke: var(--rkui-line);
+  stroke-width: calc(2 * var(--rkui-outline-width));
+  stroke-linejoin: round;
+  paint-order: stroke;
+  vector-effect: non-scaling-stroke;
+}
+</style>
