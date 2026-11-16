@@ -39,8 +39,10 @@ jobs:
           else
             echo "publish=true" >> "$GITHUB_OUTPUT"
           fi
+      # npm 11, not the newest: trusted publishing needs 11.5.1 or later, and npm 12 refuses the
+      # icon sources' GitHub tarball (phosphor-raw) and dependencies' install scripts by default.
       - if: steps.check.outputs.publish == 'true'
-        run: npm install -g npm@latest
+        run: npm install -g npm@11
       - if: steps.check.outputs.publish == 'true'
         run: npm ci
       - if: steps.check.outputs.publish == 'true'
